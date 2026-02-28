@@ -1,0 +1,111 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\title{SF1626 -- Flervariabelsanalys}
+\author{Yunshan Luo}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage[top=1.5cm,left = 2.5cm, right = 2.5cm, bottom= 2.5cm]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath} % Required for the align* environment
+\usepackage{float}
+\usepackage{pgfplots} 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+
+\section{SF1626 -- Flervariabelsanalys}
+\section{Koordinat system}
+\subsection{Polära koordinater}
+\begin{equation}
+    \begin{cases}
+        x = r \cos \theta \\
+        y = r \sin \theta
+    \end{cases}
+\end{equation}
+\textbf{Area elementet:}
+
+\noindent Härleds med hjälp av Jacobian determinant:
+\begin{equation}
+    \det\begin{bmatrix}
+        \frac{\partial x}{\partial r} & \frac{\partial x}{\partial \theta} \\
+        \frac{\partial y}{\partial r} & \frac{\partial y}{\partial \theta}
+    \end{bmatrix} = 
+    \det\begin{bmatrix}
+        \cos \theta & -r \sin \theta \\
+        \sin \theta & r \cos \theta
+    \end{bmatrix} = rcos^2 \theta + r \sin^2 \theta = r(cos^2 \theta + \sin^2 \theta) = r
+\end{equation}
+
+$$\implies dA = dxdy = rdrd\theta$$
+
+\subsection{Cylindriska koordinater}
+\begin{equation}
+    \begin{cases}
+        x = r \cos \theta \\
+        y = r \sin \theta \\
+        z = z
+    \end{cases}
+\end{equation}
+
+\noindent \textbf{Volym elementet:}
+\begin{equation}
+    \det\begin{bmatrix}
+        \frac{\partial x}{\partial r} & \frac{\partial x}{\partial \theta} & \frac{\partial x}{\partial z} \\
+        \frac{\partial y}{\partial r} & \frac{\partial y}{\partial \theta} & \frac{\partial y}{\partial z} \\
+        \frac{\partial z}{\partial r} & \frac{\partial z}{\partial \theta} & \frac{\partial z}{\partial z}
+    \end{bmatrix} = 
+    \det\begin{bmatrix}
+        \cos \theta & -r \sin \theta & 0\\
+        \sin \theta & r \cos \theta & 0\\
+        0 & 0 & 1
+    \end{bmatrix} = r
+\end{equation}
+$$\implies dV = dxdydz = rdrd\theta dz$$
+
+\section{Sfäriska koordinater}
+\begin{equation}
+    \begin{cases}
+        x = \rho \sin \phi \cos \theta \\
+        y = \rho \sin \phi \sin \theta \\
+        z = \rho \cos \phi
+    \end{cases}
+\end{equation}
+
+\noindent \textbf{Volym elementet:}
+\begin{equation}
+    \det\begin{bmatrix}
+        \frac{\partial x}{\partial \rho} & \frac{\partial x}{\partial \phi} & \frac{\partial x}{\partial \theta} \\
+        \frac{\partial y}{\partial \rho} & \frac{\partial y}{\partial \phi} & \frac{\partial y}{\partial \theta} \\
+        \frac{\partial z}{\partial \rho} & \frac{\partial z}{\partial \phi} & \frac{\partial z}{\partial \theta}
+    \end{bmatrix} = 
+    \det\begin{bmatrix}
+        \sin \phi \cos \theta & 0 & -\rho \sin \phi \sin \theta\\
+        \sin \phi \sin \theta & 0 & 0\\
+        cos\phi & -\rho sin\phi & 0
+    \end{bmatrix} = 
+    -\rho^2 sin^2\phi cos^2\theta - (-\rho^2 sin^2\phi sin^2\theta) = 
+    -\rho^2 sin^2\phi (cos^2\theta + sin^2\theta) = 
+    -\rho^2 sin^2\phi
+\end{equation}
+$$\implies dV = dxdydz = \rho^2 sin\phi d\rho d\phi d\theta$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

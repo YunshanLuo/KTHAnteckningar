@@ -1,0 +1,1449 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\title{ME1310NationalEkonoomi}
+\author{Yunshan Luo}
+\date{$\today$}
+
+\renewcommand{\baselinestretch}{0.2}
+
+\setlength{\hoffset}{-18pt}         
+\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
+\setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
+\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
+\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
+\setlength{\voffset}{-18pt} % Bon pour DOS
+\setlength{\marginparsep}{7pt} % Séparation de la marge
+\setlength{\topmargin}{0pt} % Pas de marge en haut
+\setlength{\headheight}{13pt} % Haut de page
+\setlength{\headsep}{4pt} % Entre le haut de page et le texte
+\setlength{\footskip}{27pt} % Bas de page + séparation
+\setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{enumitem}
+
+
+
+
+\begin{document}
+
+\section*{Föreläsning 1}
+
+
+
+\section*{Utbud- och efterfrågemodellen}
+\subsection*{Antaganden}
+\begin{itemize}
+    \item Enskild marknad/bransch
+    \item Homogen vara
+          \begin{itemize}
+              \item Alla produkter är likdana i.e alla kaffekoppar är likadana
+          \end{itemize}
+    \item Det finns många köpare och säljare på marknaden
+    \item Ingen information assymmetri
+\end{itemize}
+
+
+
+\subsection*{Efterfrågan}
+\begin{itemize}
+    \item Pris
+          \begin{itemize}
+              \item Normala varor
+                    \begin{itemize}
+                        \item Köper mer när priset minskar, köper mindre när priset ökar
+                    \end{itemize}
+          \end{itemize}
+          \begin{itemize}
+              \item Giffenvaror
+                    \begin{itemize}
+                        \item Köper mer när priset ökar, köper mindre när priset minskar
+                        \item T.ex pris i låginkomst länder där man köpe mer ris när ris gå upp i pris, \textit{Giffenvaror} är sällsynt i verkligenheten
+                    \end{itemize}
+          \end{itemize}
+\end{itemize}
+
+
+
+\subsection*{Typer av varor}
+\begin{itemize}
+    \item Normala varor
+          \begin{itemize}
+              \item Köper mer när man har högre inkomst
+          \end{itemize}
+\end{itemize}
+\begin{itemize}
+    \item Inferiör vara
+          \begin{itemize}
+              \item Efterfrågan på varan minskar när inkomsten ökar
+              \item T.ex friterad kyckling, vattenmelon och kool aid
+          \end{itemize}
+\end{itemize}
+\begin{itemize}
+    \item Substitut
+          \begin{itemize}
+              \item När Coca Cola blir dyrare ökar efterfrågan på Pepsi
+          \end{itemize}
+\end{itemize}
+\begin{itemize}
+    \item Komplement
+          \begin{itemize}
+              \item Kaffe och mjölk används tillsammans
+              \item När priset på mjölk ökar minskar efterfrågan på kaffe
+          \end{itemize}
+\end{itemize}
+
+
+\newpage
+\subsection*{Efterfråga kurva}
+$Q^D = 400 - 20P$ beskriver kvantiteten som en funktion av priset
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{EfterfrågeKurva.png}
+    \caption{Efterfrågan kurva som illustrerar kvantitet som en funktion av pris}
+    \label{fig:placeholder}
+\end{figure}
+
+
+\subsection*{Inverterad efterfrågekurva}
+$P = 20 - 0.05Q^D$ beskriver hur priset beror på kvantiteten
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{InverteradEfterfrageKurva.png}
+    \caption{Inverterad efterfrågekurva som illustrerar pris funktion av kvantiteten}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+\subsection*{Förändering av andra faktorer än pris}
+
+\subsection*{Inkomsten ökar (på en ej inferiör vara)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{InkomstökningHögerskift.png}
+    \caption{Högerskiftet kan motiveras av att inkomsten ökar som driver upp efterfrågan på en ej inferiör vara}
+    \label{fig:placeholder}
+\end{figure}
+
+
+\subsection*{Ökad pris på komplement (flingor)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{ÖkadPrisKomplement.png}
+    \caption{Vänsterskift tyder på en lägre efterfrågan på grund av prisökningar hos komplement}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+
+\subsection*{Ökad pris på substitut}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{ÖkadprisSubstitut.png}
+    \caption{Ökad pris på substitut leder till högre efterfrågan då substitut blir dyrare}
+    \label{fig:placeholder}
+\end{figure}
+
+
+\subsection*{Utbudsmodellen}
+Utbudsmodellen beror huvudsakligen på dessa faktorer
+\begin{itemize}
+    \item Pris
+    \item Antalet producenter
+    \item Produktionskostnader
+    \item Produktionsteknologi
+    \item Förväntningar om framtidensutveckling
+\end{itemize}
+
+\subsection*{Inverterad utbudskurva}
+Traditionellt så ritas kurvor med priset (P) i y-axeln och kvantitet (Q) i x-axeln
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{InverteradUtbudskurva.png}
+    \caption{$P = 2 +0.04 \cdot Q^{S}$}
+    \label{fig:placeholder}
+\end{figure}
+
+\newpage
+
+\subsection*{Minskning av enhetspriset för mjölk}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{MinskningEnhetspris.png}
+    \caption{Minskning av enhetspriset leder till ett högerskift}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Sammanfattning}
+Föränderingar i marknadssituationer kan illustreras med vänster- och högerskiften i utbuds och efterfrågekurva
+
+\subsection*{Sammansatt utbuds- och efterfrågekurva}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{utbudOchEfterfråga.png}
+    \caption{Sammansatt kurva som representerar marknadssituationen}
+    \label{fig:placeholder}
+\end{figure}
+Jämviktspriset representerar av där linjerna möts och kan även räknas ut algebraiskt.
+
+\newpage
+\subsection*{Algebraisk uträkning av jämnviktspris}
+{\large $$D: P =  20 - 0.05Q^D$$
+    $$S: P = 2 + 0.04Q^{S}$$
+    \begin{equation}
+        \begin{cases}
+            P = 20 - 0.05Q^D \\
+            P = 2 +0.04Q^S
+        \end{cases}
+    \end{equation}
+    $$E = D \Rightarrow 20 - 0.05Q^D = 2 + 0.04Q^{S} $$
+    $$\Rightarrow Q_e = 200, P_e = 10$$}
+\subsection*{Utbudsöverskott: Marknad ej i jämnvikt}
+$$P>P_e$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Utbudsöverskott.png}
+    \caption{Illustration av utbudsöverskott}
+    \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item Köparna är redo att köpa 100L för 15kr
+    \item Producenterna är redo att producera 325L för 15kr
+    \item Utbudsöverskottet blir $320 -100 = 225L$
+    \item I en oreglerad marknad kommer priset falla mot jämnviktspriset dvs. $15kr/L$
+\end{itemize}
+
+\subsection*{Marknadsjämnviktsprocess}
+\begin{itemize}
+    \item Konsumenterna är villiga att gå med på ett högre pris för att kunna köpa mer
+    \item Producenterna är villiga att producera mer för att sälja mer
+    \item Processen fortsätter tills jämnviktspriset nås
+\end{itemize}
+
+\subsection*{Marknadsjämviktsprocessen}
+\begin{itemize}
+    \item Beskrivs med två kurvor där båda är en funktion av kvantiteten
+    \item Allt förutom priset hålls konstant
+    \item Om något som inte är priset föränderas beskrivs det som ett skifte i kurvorna
+\end{itemize}
+
+\subsection*{Analysmetod komparativ statik}
+\begin{enumerate}
+    \item Utgår ifrån jämnvikt
+    \item En händelse sker
+    \item Tolkar händelsen i form och kurvskiften i utbuds- och efterfråganmodellen
+    \item Studera hur jämnviktspriset och kvanititet påverkas
+\end{enumerate}
+
+\subsection*{Exempel 1: Komparativ statik}
+\begin{itemize}
+    \item Händelse:
+          \begin{itemize}
+              \item En studie visar att mjölk ökar risken för prostatacnacer
+          \end{itemize}
+    \item Förändering
+          \begin{itemize}
+              \item Efterfrågekurvan skiftar till vänster
+          \end{itemize}
+    \item Analys
+          \begin{itemize}
+              \item Jämnviktspriset faller
+              \item Jämviktskvantiteten minskar
+          \end{itemize}
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{Ex1.png}
+    \caption{Illustration på exempel 1}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+
+\subsection*{Exempel 2: Komparativ statik}
+\begin{itemize}
+    \item Händelse
+          \begin{itemize}
+              \item Regeringen besultar att utöka antalet veterinärkontroller av mjölkböndernas gårdar
+              \item Ökad kostnad för bönderna
+          \end{itemize}
+    \item Förändering
+          \begin{itemize}
+              \item Utbudskurvan skiftar till vänster
+          \end{itemize}
+    \item Analys
+          \begin{itemize}
+              \item Ökad veterinärskontroller innebär ett högre pris på mjölk och minskad mjölkkonsumption
+          \end{itemize}
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{ex2.png}
+    \caption{Illustration av exempel 2}
+    \label{fig:placeholder}
+\end{figure}
+\subsection*{Komparativ statik: Möjliga utfall}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{utfall.png}
+    \caption{Möjliga utfall för kurvskiften}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+\subsection*{Elasticitet}
+\textbf{Elasticitet} beskriver hur mycket $P$ och $Q$ föränderas givet ett vänster- eller högerskift. Elatsticitet kan även tolkas som hur känslig $P$ och $Q$ är för höger respektive vänsterskift
+
+\subsection*{Priselasticitet för efterfrågan}
+{\large $$E^D = \frac{dQ^d / Q^D}{dP / P} = \frac{dQ^D}{dP} \cdot \frac{P}{Q^D}$$}
+Förklaring: {\large $$\frac{\text{Procentuella föränderingen i kvantitet}}{\text{Procentuella prisföränderingen}}$$
+
+\subsection*{Exempel: priselasticitet}
+$$Q^D = 400 - 20P$$
+\vspace{5pt}
+$$E^D = \frac{dQ^d / Q^D}{dP / P} =\frac{dQ^D}{dP} \cdot \frac{P}{Q^D} = -20 \cdot \frac{P}{Q^D}$$
+\begin{itemize}
+    \item $E^D < -1 \implies \text{Elastiskt}$
+    \item $E^D = -1 \implies \text{Enhetselastiskt}$
+    \item $1 < E^D < 0 \implies \text{Oelastiskt}$
+    \item $E^D = -\infty \implies \text{Perfekt elastisk}$
+    \item $E^D = 0 \implies \text{Perfekt oelastisk}$
+\end{itemize}
+
+\subsection*{Andra typer av elasticitet}
+Efterfrågans inkomstelastictet:
+\vspace{10pt}
+{\Large $$E^D_I = \frac{dQ^D / Q^D}{dI / I} = \frac{dQ^D}{dI} \cdot \frac{I}{Q^D}$$}
+
+\noindent Efterfrågans korspriselasticitet
+\vspace{10pt}
+{\Large $$E^D_{XY} = \frac{dQ_x^D/Q^D_x}{dP_Y / P_Y} = \frac{dQ^D_x}{dP_Y} \cdot \frac{P_Y}{Q_X^D}$$}
+
+\noindent{\Huge $\square$}
+
+\newpage
+\section*{Föreläsning 2}
+\section*{Konsument- och producentöverskott}
+\begin{itemize}
+    \item Visar hur mycket köpare och säljare "tjänar" på att marknaden existerar
+    \item Överskott skillnaden visar:
+          \begin{itemize}
+              \item Hur mycket köpare är villiga att betala och hur mycket de måste betala
+              \item Hur mycket säljare får betalt och vad de är villiga att sälja för
+          \end{itemize}
+    \item Överskottet $\equiv$ $\text{Vad aktören är villig att betala} - \text{Vad aktören behöver betala}$
+\end{itemize}
+
+\subsection*{Exempel på konsumentöverskott}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{konsumentÖverskott.png}
+    \caption{Illustration av konsumentöverskott}
+    \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item Jämnviktspriset är 10kr/L
+    \item Konsument A: Gör ett överskott på $19-10 = 9kr$
+    \item Konsument B: Gör ett överskott på $15-10 = 5kr$
+    \item Konsument C: Gör ett överskott på $10-10=0kr$
+    \item Det är ej möjligt för konsumenter att göra negativt överskott
+    \item Konsumenter som befinner sig höger om jämnviktspriset deltar inte i marknaden
+          \vspace{7pt}
+    \item Marknadstotal konsumentöverskott {\large $\equiv \int_{0}^{200} (20-0.05Q^DdQ^D) - 10 \cdot 200$}
+    \item Intuition: Konsumenter som är villiga att köpa för över marknadspriset tjänar på att marknaden existerar
+\end{itemize}
+\newpage
+\subsection*{Producentöverskott}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{producentöverskott.png}
+    \caption{Illustration på producentöverskott}
+    \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item Producentöverskottet är det varje producent får sälja under marknadspriset
+    \item Intuition: Producenter som är villiga är sälja under marknadspriset tjänar på att marknaden existerar
+    \item Producentöverskott $ = \frac{7 \cdot 200}{2} = 700$
+\end{itemize}
+\newpage
+
+\subsection*{Marknadens totala överskott}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{totalOverskott.png}
+    \caption{Illustration av marknadens totala överskott}
+    \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item Marknadens totala överskott $\equiv$ konsumentöverskott + producent överskott
+    \item I detta fall, Arean på blå triangel + area på röd triangel
+\end{itemize}
+
+
+\subsection*{Konsumentöverskott när efterfrågan minskar}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{vidMinskadEfter.png}
+    \caption{Enter Caption}
+    \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item Minskning av efterfrågan är ett vänsterskift av efterfrågekurvan
+    \item När detta sker så minskas arean av triangeln vilket ger till mindre konsumentöverskott
+\end{itemize}
+\newpage
+\subsection*{Producentöverskott när efterfrågan minskar}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{minskadEfterprod.png}
+    \caption{Illustration av förändering av producentöverskottet när efterfrågan minskar}
+    \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item När efterfrågan minskar minskas även arean på den röda triangeln
+    \item Det innebär att minskning av efterfrågan implicerar även ett minskad producentöverskott
+\end{itemize}
+
+\subsection*{Överskott och elasticitet}
+\begin{itemize}
+    \item Elasticiteten representeras av lutningen på kurvan
+    \item Vi kan se att om lutningen är brantare förändras konsument och producentöverskott mer av kurvskiften
+\end{itemize}
+
+\subsection*{Prisregleringar}
+\begin{itemize}
+    \item Administrativ åtgärd för att begränsa marknadens fria prissättning
+          \begin{itemize}
+              \item Prisgolv (tex. minimilön)
+              \item Pristak (tex. hyresreglering)
+          \end{itemize}
+    \item Prisgolv gynnar säljaren
+    \item Pristak gynnar köparen
+    \item Pristak måste vara under jämnviktspriset
+    \item Prisgolv måste vara över jämnviktspriset
+\end{itemize}
+
+\subsection*{Exempel: Prisgolv på mjölk}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{prisgolv.png}
+    \caption{Illustration av prisgolv på mjölk}
+\end{figure}
+\begin{itemize}
+    \item Regeringen vill stötta mjölkbönderna genom att införa ett minimipris på mjölk
+    \item Ett prisgolv på 15kr/L
+    \item Bönderna är villiga att sälja 325L mjölk för det priset
+    \item Konsumenterna är endast villiga att köpa 100L mjölk för det priset
+\end{itemize}
+\newpage
+\subsection*{Analys av prisgolv}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{analysPrisgolv.png}
+    \label{fig:placeholder}
+\end{figure}
+Konsument- och producentöverskottet i ursprungsläget är:
+\begin{itemize}
+    \item Konsumentöverskott $= A +B + C$
+    \item Producentöverskott $= D + E +F$
+\end{itemize}
+Nya konsument- och producentöverskottet blir:
+\begin{itemize}
+    \item Konsumentöverskott $=A$
+    \item Producentöverskott $= B + D + F$
+    \item Dödsviktskostnaden $= D + E$
+    \item Slutsats
+          \begin{itemize}
+              \item Konsumentöverskottet minskar
+              \item Producentöverskottet
+                    \begin{itemize}
+                        \item Producenterna vinner B men förlorar E
+                        \item Huruvida producentöverskottet ökar eller minskar beror på lutningen (elasticiteten)
+                    \end{itemize}
+              \item Samhällsekonomiskförlust = Dödsviktskostnaden
+          \end{itemize}
+\end{itemize}
+
+\newpage
+\subsection*{Kvantitetsregleringar}
+\begin{itemize}
+    \item Sätter tak på hur mycket som får produceras
+          \begin{itemize}
+              \item Exempelvis: Fiskekvoter, licenser, importkvoter
+          \end{itemize}
+    \item Kvantitetsregleringar på mjölkmarknaden
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{kvantitetsreglering.png}
+    \caption{Illustration av kvantitetsregleringar}
+\end{figure}
+\begin{itemize}
+    \item Följer samma resonemang för prisgolv
+    \item Det nya priset i detta fall blir samma som prisgolvet
+\end{itemize}
+\newpage
+\subsection*{Skatter}
+\begin{itemize}
+    \item Staten kan använda skatter för att få in pengar och påverka beteende
+    \item T.ex punktskatter på cigaretter
+\end{itemize}
+Antag att staten inför en skatt på 4kr/L för mjölk
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{mjolkskatt.png}
+    \caption{Illustration på vad som händer när staten inför skatt på mjölk}
+    \label{fig:placeholder}
+\end{figure}
+\noindent Konsument- och producentöverskottet i ursprungsläget är:
+\begin{itemize}
+    \item Konsumentöverskott $= A+B+C$
+    \item Producentöverskott $= D+E+F$
+\end{itemize}
+Konsument- och producentöverskottet i det nya läget blir:
+\begin{itemize}
+    \item Konsumentöverskott = A
+    \item Producentöverskott = F
+    \item Staten får D och B
+    \item Dödviktskostanderna är den samma dvs. $C$ och $E$
+    \item I figuren kommer konsumenterna få stå för $55\%$ av skatten och producenterna får stå för $45\%$
+\end{itemize}
+Sammanfattning för påverkan av skatter:
+\begin{itemize}
+    \item Dödsviktskostnader ökar generellt i kvadrat på ehetsskatten
+    \item Hur skatter påverkar producenterna och konsumenterna beror på elasticiteten för utbud och efterfrågan
+\end{itemize}
+
+\newpage
+\subsection*{Fördelning av skattebörda}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{skattefordelning.png}
+    \caption{Illustration på hur skattebördan fördelas}
+\end{figure}
+Skatteandelar för konsumenter respektive producenter beräknas:
+\begin{itemize}
+    \item Konsumenter = $\frac{E^S}{E^S + |E^D|}$
+    \item Producenter = $\frac{|E^D|}{E^S + |E^D|}$
+\end{itemize}
+
+\subsection*{Subventioner}
+Subventioner fungerar som en omvänd skatt och kan artificiellt skapa en högre efterfrågan
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{subventioner.png}
+    \caption{Illustration på vad som händer vid subventioner}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+\section*{Föreläsning 3}
+\section*{Konsumenteori}
+Vad är det som styr en konsuments beteende. Varför köper en konsument en vara och varför köper konsumenten i just den kvantiteten
+\subsection*{Preferenser}
+Konsumentens problem är
+\begin{itemize}
+    \item Bestämma vad och hur mycket och vilken vara som konsumenten ska köpa med pengarna den har
+    \item Styrs av preferenser
+\end{itemize}
+Antagande om preferenser:
+\begin{enumerate}
+    \item Kompletta: Kan alltid rangordna vad konsumenten föredrar
+    \item Desto mer desto bättre
+    \item Transitiva: Ex. om jag säger att jag gillar A mer än B och B mer än C så måste jag gilla A mer än C
+    \item Avtagande relativt bytesförhållande: Vill alltid byta Coca cola mot chipspåsar om jag hur många burkar cola men inte chips
+    \item Transitivitet säger att om jag alltid har varit transitiv så kommer jag vara det för framtida beslut också
+\end{enumerate}
+
+\subsection*{Nyttofunktioner}
+\begin{itemize}
+    \item $U(X)$ tar $X$ är det vi konsumerar och används som argument.
+    \item $U(X)$ blir nyttan
+    \item Alla tänkbara kombinationer av varor och tjänster är ett möjligt argument
+    \item Funktionen är ständigt ökande med avtagande marginalnytta
+    \item Ofta kontinuerlig och deriverbar
+\end{itemize}
+
+\subsection*{Exempel på nyttofunktion}
+$$U(X) = ln(1+X)$$
+\begin{itemize}
+    \item $X$ är antal äpplen (varukorgen)
+    \item $U(X)$ är nyttofunktionen
+    \item Funktionen har avtagande marginalnytta
+\end{itemize}
+
+\newpage
+    
+\subsection*{Indifferenskurvor}
+\begin{itemize}
+    \item Indifferenskurvor visar olika kombinationer av varor som ger samma nytta
+    \item En konsument är indifferent mellan alla kombinationer av $x_1$ och $x_2$ som ger samma nytta
+    \item Kan skrivas som funktion $U(x_1, x_2)$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{indifferenskurva.png}
+    \caption{Illustration av indifferenskurvor}
+    \label{fig:placeholder}
+\end{figure}
+
+\newpage
+\subsection*{Exempel på indifferenskurva}
+\begin{itemize}
+    \item Konsumenten är indifferent mellan dessa kombinationer av äpplen och skor
+    \item Alla punkter på kurvan ger samma nytta
+    \item En indifferenskurva får ej vara ökande eftersom konsument alltid föredrar mer 
+    \item Kurvorna för inte heller korsa varandra p.g.a transitivitet
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{exindifferenskurva.png}
+    \caption{Illustration av exempel på indifferenskurva}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Vanliga Nyttofunktioner}
+\begin{itemize}
+    \item Cobb-Douglas: {\large $U(x_1, x_2) = x_1^{\alpha} \cdot x_2^{\beta}$}
+    \item Perfekta substitut: {\large $U(x_1, x_2) = \alpha x_1 + \beta x_2$}
+    \item Perfekta komplement: {\large $U(x_1, x_2) = min\{\alpha x_1, \beta x_2\}, \alpha, \beta > 0$}
+\end{itemize}
+
+\subsection*{Grafiska representationer av nyttofunktioner}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.3\linewidth}
+        \centering
+        \begin{tikzpicture}[scale=0.8]
+            \draw[->] (0,0) -- (5,0) node[right] {$x_1$};
+            \draw[->] (0,0) -- (0,5) node[above] {$x_2$};
+            \draw[thick, smooth, domain=1:4.5] plot (\x, {min(4/\x, 4.8)});
+            \draw[thick, smooth, domain=1:4.5] plot (\x, {min(6/\x, 4.8)});
+            \draw[thick, smooth, domain=1:4.5] plot (\x, {min(8/\x, 4.8)});
+            \node at (2.5, 3) {$U_1$};
+            \node at (2.5, 2) {$U_2$};
+            \node at (2.5, 1.2) {$U_3$};
+        \end{tikzpicture}
+        \caption*{Cobb-Douglas}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \centering
+        \begin{tikzpicture}[scale=0.8]
+            \draw[->] (0,0) -- (5,0) node[right] {$x_1$};
+            \draw[->] (0,0) -- (0,5) node[above] {$x_2$};
+            \draw[thick] (0,4) -- (4,0);
+            \draw[thick] (0,4.5) -- (4.5,0);
+            \draw[thick] (0,3.5) -- (3.5,0);
+            \node at (1.5, 3.2) {$U_1$};
+            \node at (2, 2.7) {$U_2$};
+            \node at (1, 2.2) {$U_3$};
+        \end{tikzpicture}
+        \caption*{Perfekta substitut}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \centering
+        \begin{tikzpicture}[scale=0.8]
+            \draw[->] (0,0) -- (5,0) node[right] {$x_1$};
+            \draw[->] (0,0) -- (0,5) node[above] {$x_2$};
+            \draw[thick] (1,4) -- (1,1) -- (4,1);
+            \draw[thick] (1.5,4.5) -- (1.5,1.5) -- (4.5,1.5);
+            \draw[thick] (0.5,3.5) -- (0.5,0.5) -- (3.5,0.5);
+            \node at (1.2, 2.5) {$U_1$};
+            \node at (1.7, 3) {$U_2$};
+            \node at (0.7, 2) {$U_3$};
+        \end{tikzpicture}
+        \caption*{Perfekta komplement}
+    \end{minipage}
+\end{figure}
+
+\newpage
+\subsection*{Marginella substitutionskvoten, MRS}
+\begin{itemize}
+    \item MRS visar bytesförhållandet mellan två varor
+    \item Hur mycket behöver jag konsumera mer av den ena varan för att kompensera för att jag konsumerar mindre av den andra varan
+    \item MRS är lutningen på indifferenskurvan
+\end{itemize}
+
+\subsection*{Härledning av MRS}
+$$dU(x_1, x_2) = \frac{\partial U(x_1,x_2)}{\partial x_1}dx_1 + \frac{\partial U(x_1,x_2)}{\partial x_2}dx_2 = 0$$
+$$MRS_{x_1,x_2} = -\frac{dx_2}{dx_1} = \frac{(\frac{\partial U}{\partial x_1})}{(\frac{\partial U}{\partial x_2})} = \frac{MU_{x_1}}{MU_{x_2}}$$
+$$\frac{MU_{x_1}}{MU_{x_2}} \equiv \text{Kvoten mellan marginalnyttor}$$
+
+\subsection*{Konsumtionsset och budgetrestriktion}
+\begin{itemize}
+    \item Konsumtionssetet är alla kombinationer av varor som konsumenten utan restriktioner 
+    \item Men i verkligenheten finns oftast en restriktion
+\end{itemize}
+
+Olika type of restriktioner:
+\begin{itemize}
+    \item \textbf{Fysisk restriktion:} Konsumenten kan inte konsumera 24h fritid om dygnet
+    \item \textbf{Existensminimum:} Konsumenten måste ha en viss mängd mat för att överleva
+    \item \textbf{Budgetrestriktion:} Konsumenten har ändligt med pengar att spendera
+\end{itemize}
+
+\subsection*{Budgetrestriktion}
+\textbf{Antagande:}
+\begin{itemize}
+    \item Två varor $X$ och $Y$
+    \item Varorna ha konstanta priser $P_X$ och $P_Y$ och finns i obegränsad mängd
+    \item Konsumenten har en inkomst $I$
+    \item Konsumenten kan varken låna eller låna ut pengar
+\end{itemize}
+Budgetrestriktioner kan modellers med ekvationen:
+$$I = P_X Q_X + P_Y Q_Y \implies Q_Y = \frac{I}{P_Y} - \frac{P_X}{P_Y}Q_X$$
+Budgetrestriktion blir en rätlinje i $X, Y$ dimensionen. 
+Budgetsetet blir alla punkter under och på linjen dvs. det konsumenten har råd med 
+
+\newpage
+\subsection*{Exempel på budgetset}
+Utgå alltid från att $\mathbb{R}_+^2$ är hela konsumptionssetet om inte något annat nämns
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{budgetset.png}
+    \caption{Illustration av budgetset}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Visualisering $U(x_1, x_2)$ med begränsningar}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{visnytto.png}
+    \caption{Illustration av visualisering av $U(x_1, x_2)$ med begränsningar}
+    \label{fig:placeholder}
+\end{figure}
+
+\newpage
+\subsection*{Optimal konsumtionsval}
+I optimum så är lutningen på indifferenskurvan lika med lutningen på budgetrestriktionen
+$$\frac{MU_x}{MU_y} = \frac{P_X}{P_Y} \implies \frac{MU_x}{P_x} = \frac{MU_y}{P_y}$$
+Alltså lutningen av indifferenskurva = lutningen av budgetrestriktion
+
+\subsection*{Nyttomaxxing med Cobb-Douglas}
+Antag nyttfunktionen: $U(x_1, x_2) = x_1^\alpha x_2^\beta$
+\newline
+\newline
+\newline
+\noindent Marginal nyttor: $MU_{x_1} = \alpha x_1^{\alpha-1} x_2^\beta$, $MU_{x_2} = \beta x_1^\alpha x_2^{\beta-1}$
+\newline
+\newline
+\newline
+\noindent Optimumvilkor: $\alpha x_1^{\alpha-1} x_2^\beta / P_x = \beta x_1^\alpha x_2^{\beta-1} / P_y \implies P_{x_2} x_2= (\frac{\beta}{\alpha})P_{x_1} x_1$
+\newline
+\newline
+\newline
+
+\noindent Om man sätter in detta i budgetrestriktionen
+
+$$I = P_{x_1} x_1 + P_{x_2} x_2 = P_{x_1} x_1 + \left(\frac{\beta}{\alpha}\right)P_{x_1} x_1$$
+
+så fås:
+$$P_{x_1}x_1 = \frac{\alpha}{\alpha + \beta} I, \text{\hspace{100pt}}P_{x_2} x_2 = \frac{\beta}{\alpha + \beta} I$$
+
+\noindent Slutsats: Då konsumenten nyttomaxxar lägger hen $\frac{\alpha}{\alpha + \beta}$ av sin inkomst på vara $x_1$ och $1-\frac{\alpha}{\alpha + \beta}$ på vara $x_2$
+
+\subsection*{Hörnlösning}
+Optimum villkoren antar en inre lösningen men i vissa fall 
+kan det vara en hörnlösning som är optimalt. På tentan kommer
+hörnlösningar inte finnas
+
+\subsection*{Inkomstförändringar och optimal konsumption}
+Hur påverkas konsumentens optimala varukorg när inkomsten förändras?
+Målet är att hitta en högsta nivå kurvan som tangerar budgetlinjen
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{inkomstförändering.png}
+    \caption{Illustration av inkomstförändring för en normal vara}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+
+\subsection*{Inkomstförändringar, inferiör vara}
+I en inferiör vara minskar konsumtionen när inkomsten ökar
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{inkomstinf.png}
+    \caption{Illustration av inkomstförändring för en inferiör vara}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Income expansion path}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{inkomstexp.png}
+    \caption{Illustration av income expansion path}
+    \label{fig:placeholder}
+\end{figure}
+Income expansion path visar hur den optimala varukorgen förändras när inkomsten förändras
+\newpage
+\subsection*{Engelkurva}
+Vi kan skapa Engelkurva genom att dela upp förändering av den optimala varukorgen i flera delar
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{engelkurva.png}
+    \caption{Illustration av Engelkurva}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Inkomstelastictet}
+inkomstelastictet mäter hur många procent efterfrågan förändras då inkomsten
+föränderas med en procent
+$${E_I}^D = \frac{\% \Delta Q^D}{\% \Delta I}$$
+
+\begin{itemize}
+    \item ${E_I}^D > 0$ Normal vara
+    \begin{itemize}
+        \item Nödvändighetsvara: $0 < {E_I}^D < 1$ 
+        \item Lyxvara: ${E_I}^D > 1$ 
+    \end{itemize}
+    \item ${E_I}^D < 0$ Inferiör vara
+\end{itemize}
+
+\subsection*{Prisförändering och optimal konsumption}
+\begin{itemize}
+    \item Variera priset på en vara, ceteris paribus
+    \item Koppla varje pris till efterfrågad kvanititet
+\end{itemize}
+\newpage
+\subsection*{Härledning av efterfrågekurva på bröd}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{inkomstvar.png}
+    \caption{Illustration av efterfrågekurva på bröd för varierande inkomst}
+    \label{fig:placeholder}
+\end{figure}
+\noindent Genom att variera priset på bröd och hålla allt annat konstant kan vi härleda efterfrågekurvan för bröd
+
+\subsection*{Ändrade preferenser}
+När individen tycker mindre om en vara så vrids indifferenskurvan moturs
+Indifferenskurvan kommer vridas moturs vilket gör att tangeringspunkten med budgetlinjen sker vid en lägre kvantitet av varan
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{vridning.png}
+    \caption{Illustration av ändrade preferenser}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+
+\subsection*{Inkomst- och substitutionseffekten}
+Utgår ifrån en marknad som är i jämnvikt.
+När priset på en vara förändras händer två saker:
+\begin{itemize}
+    \item Konsumentens totala köpkraft förändras (inkomst effekt)
+    \item Varans relativa pris förändras (substitutionseffekt)
+\end{itemize}
+
+\noindent Substitutionseffekten är alltid negativ när det relativa priset ökar så faller konsumptionen av den varan i jämförelse med substitutionsvaran.
+
+\vspace{10pt}
+
+\noindent Inkomsteffekten kan vara både positiv och negativ beroende på om varan är normal eller inferiör
+
+
+\subsection*{Totaleffekten}
+Hur stor föränderas optimala varukorgen beroende på relativa prisförändringar
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{substitutionseffekt.png}
+    \caption{Illustration av totaleffekten vid prisförändring}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{itemize}
+    \item Skillnaden mellan punkt A och B är totaleffekten
+    \item Skillnaden mellan punkt A och C är substitutionseffekten
+    \item Skillnaden mellan punkt C och B är inkomsteffekten eller total effekt - substitutionseffekten
+\end{itemize}
+\newpage
+\subsection*{Lösningsscheman inkomst- och substitutionseffekten}
+\begin{enumerate}
+    \item Rita den nya budgetlinjen efter prisförändringen
+    \item Rita en parallell förskjuten budgetlinje som tangerar den
+    \item Rita in den nya optimala varukorgen efter prisförändringen
+    \item Markera punkterna A, B och C
+    \item Substitutionseffekten är skillnaden mellan A och C
+    \item Inkomsteffekten är skillnaden mellan C och B
+    \item Totaleffekten är skillnaden mellan A och B
+\end{enumerate}
+\subsection*{Aggregering och marknadens efterfrågan}
+Marknadens består av summan av de enskilda konsumenternas efterfrågan
+\subsection*{Exempel på summa av efterfrågan}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{tvåkurvor.png}
+    \caption{Illustration på två efterfrågekurvor}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+Dessa kurvor adderas horisontellt för att få fram marknadens efterfrågekurva
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{summakurva.png}
+    \caption{Illustration av summan av efterfrågekurvorna}
+    \label{fig:placeholder}
+\end{figure}
+
+\noindent{\Huge $\square$}
+
+\section*{Föreläsning 4}
+\subsection*{Produktions}
+Frågor:
+\begin{itemize}
+    \item Hur mycket ska produceras?
+    \item Produktionsfaktorer?
+    \item Tidshorisont? - Kort eller lång sikt?
+\end{itemize}
+
+\subsection*{Antagande inom producentteorin}
+Antanganden:
+\begin{enumerate}
+    \item Varje företag producerar en typ av product 
+    \item Företaget har redan valt vilken produkt den vill producera
+    \item Företagets mål är att minimera vid givet kvantitet
+    \item Det finns två produktionsfaktorer: Arbete (L) och Kapital (K)
+    \item Fixerad kapitalstock på kort sikt, på långsikt så kan kapital och arbetskraft variera.
+    \item Avtagande men positiv marginalavkastning på produktionsfaktorer
+    \item Obegränsad tillgång till produktionsfaktorer till fixa priser
+    \item Företaget har inga finansiella restriktioner
+\end{enumerate}
+
+\subsection*{Produktionsfunktion}
+\begin{enumerate}
+    \item $Q = f(K,L)$
+    \item $\frac{\partial Q}{\partial K} > 0, \frac{\partial Q}{\partial L} > 0$
+    \item $\frac{\partial^2Q}{\partial K^2} < 0, \frac{\partial^2Q}{\partial L^2} < 0$
+    \item På kortsikt: $Q = f(\bar{K}, L), \bar{K}$ är konstant
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{produktionsfunktion.png}
+    \caption{Illustration av produktionsfunktion}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Produktionsfunktion, kort sikt}
+Positiv marginalproduktivitet
+$$MP_L = \frac{\partial Q}{\partial L} > 0$$
+
+\noindent Men avtagande marginalproduktivitet
+$$\frac{\partial^2 Q}{\partial L^2} < 0$$
+
+\newpage
+
+\subsection*{Företagets problem}
+Företaget har ett minimeringsproblem: Producera en given mängd varor för så låg kostnad som möjligt
+\newline \noindent
+Viktiga komponenter:
+\begin{itemize}
+    \item Isokvant - Motsvarade indifferenskurva för produktion
+    \begin{itemize}
+        \item Isokvanten illustrerar alla kombinationer av produktionsfaktorer som ger samma produktion
+    \end{itemize}
+    \item Marginella teknisk substitutionskvoten (MRTS)
+    \begin{itemize}
+        \item Hur många enheter av en produktionsfaktor som krävs för att kompensera för en minskning av en annan produktionsfaktor, givet konstant produktion
+        \item Motsvarar MRS inom konsumentteorin
+        \item Isokost:
+        \begin{itemize}
+            \item motsvarar budgetrestriktionen
+            \item $C = R \cdot K \cdot W \cdot L \implies K = \frac{C}{R} - \frac{W}{R}L$
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Isokvant}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{isokvant.png}
+    \caption{Illustration av isokvant}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Marginella tekniska substitutionskvoten (MRTS)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{MRTS.png}
+    \caption{Illustration av MRTS}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Beräkning av MRTS}
+$$dQ = \frac{\partial Q}{\partial K}dK + \frac{\partial Q}{\partial L}dL = 0$$
+$$dQ = MP_K dK + MP_L dL = 0$$
+$$MRTS_{LK} = -\frac{dK}{dL} = \frac{MP_L}{MP_K}$$
+
+\subsection*{Isokost}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{isokost.png}
+    \caption{Illustration av isokost}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+\subsection*{Företagets kostnadsminimeringsproblem}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{kostnadsminimering.png}
+    \caption{När linjen flyttas inåt så att den tangerar isokvanten så har företaget hittat den kostnadsminimerande kombinationen av produktionsfaktorer}
+    \label{fig:placeholder}
+\end{figure}
+
+Algebraisk lösning:
+När isokosten har samma lutning som isokvanten så har företaget hittat den kostnadsminimerande kombinationen av produktionsfaktorer
+$$MRTS_{LK} = \frac{MP_L}{MP_K} = \frac{W}{R} \implies \frac{MP_L}{W} = \frac{MP_K}{R}$$
+
+Vad händer om:
+\begin{itemize}
+    \item $MRTS_{LK} > \frac{W}{R}$: Företaget kan minska kostnaden genom att använda mer av $L$ och mindre av $K$
+    \item $MRTS_{LK} < \frac{W}{R}$: Företaget kan minska kostnaden genom att använda mer av $K$ och mindre av $L$
+\end{itemize}
+\newpage
+\subsection*{Förändering av faktorer}
+Vad händer när det blir dyrare eller billigare att producera samma vara?
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{förändering.png}
+    \caption{Illustration av förändring av faktorpriser}
+    \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item Antag att i punkt A så så är faktorkvoten = $\frac{K}{L} = \frac{R}{W} = \frac{8}{8}$
+    \item Antag att lönen ökar så att $W$ blir 12 istället för 8
+    \item Nu är faktorkvoten = $\frac{K}{L} = \frac{R}{W} = \frac{8}{12}$
+    \item Företaget kan minska kostnaden genom att använda mer av $K$ och mindre av $L$
+    \item Den nya faktorkvoten är $\frac{K}{L} = \frac{12}{4} = 3$ till punkt B 
+\end{itemize}
+
+\newpage
+
+\subsection*{Skalavkastning}
+Beskriver hur produktionsvolymen förändras då flera produktionsfaktorer förändras samtidigt
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{skalavkastning.png}
+    \caption{Illustration av skalavkastning}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Beskriver konstant skalavkastning där produktionen ökar i samma takt som produktionsfaktorerna
+    \item Beskriver avtagande skalavkastning där produktionen ökar i en långsammare takt än produktionsfaktorerna
+    \item Beskriver ökande skalavkastning där produktionen ökar i en snabbare takt än produktionsfaktorerna
+\end{enumerate}
+
+\subsection*{Teknologisk förändering}
+$Q = Af(K,L),A$ är företagets totalfaktorproduktivitet (TFP)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{teknologi.png}
+    \caption{Illustration av teknologisk förändring}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Alternativkostnad (Opportunity cost)}
+Alternativkostnad är det högsta möjliga värdet som en aktör avstår ifrån på grund av ett beslut
+
+\begin{itemize}
+    \item Välja av att starta ett företag och avstår från lönen
+    \item Väljer att säljer flygbränsle istället för att flyga resan
+    \item Använda en kontorsbyggnad du äger istället för att hyra ut den till någon annan 
+\end{itemize}
+
+\subsection*{Sunk costs}
+Fasta kostnader som inte kan återvinnas
+\begin{itemize}
+    \item Licensavgifter, långsiktiga leasingavtal, etc
+    \item Sunk costs bör inte påverka beslutet om att fortsätta eller avveckla en verksamhet
+\end{itemize}
+
+\noindent Bara för att jag har köpt en gymkort måste jag inte gå och träna för att använda gymkortet, om stanna hemma och titta på Netflix är det bättre än att gå till gymmet och inte träna om det ger mer nytta
+
+\subsection*{Kostnadskurvor}
+
+\begin{itemize}
+    \item $FC$ = Fasta kostnader: Oberoende av produktionsvolym
+    \item $VC$ = Rörliga kostnader: Beror på produktionsvolym
+    \item $TC$ = Totala kostnader = $FC + VC$
+\end{itemize}
+
+\subsection*{Marginal- och genomsnittskostnad}
+Genomsnittlig totalkostnad:
+$$ATC = \frac{FC+VC}{Q} = AFC + AVC$$
+
+\noindent Marginalkostnad:
+$$MC = \frac{\partial TC}{\partial Q} = \frac{\partial VC}{\partial Q}$$
+\newpage
+\subsection*{Samband mellan olika kostnader, exempel}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{FK.png}
+    \caption{Illustration av kostnadskurvor}
+    \label{fig:placeholder}
+\end{figure}
+$$FC = 50$$
+$$VC = 0.1Q^3 + 1.5Q^2 + 10Q$$
+$$TC = 50 + 0.1Q^3 + 1.5Q^2 + 10Q$$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{atc.png}
+    \caption{Illustration av marginalkostnadskurvan}
+    \label{fig:placeholder}
+\end{figure}
+$$AVC = 0.1Q^2 -1.5Q + 10$$
+$$ATC = 0.1Q^2 -1.5Q + 10 + \frac{50}{Q}$$
+$$MC = 0.3Q^2 + 3Q + 10$$
+\newpage
+
+\subsection*{Kort- och långsiktiga kostnadskurvor}
+Kort sikt:
+\begin{itemize}
+    \item Kapitalstockens storlek går ej att påverka
+    \item Arbetskraftens storlek går att påverka
+\end{itemize}
+
+Lång sikt:
+\begin{itemize}
+    \item Både kapitalstockens storlek och arbetskraftens storlek går att påverka
+\end{itemize}
+
+\subsection*{Expansion path}
+Lång sikt då företaget kan förändra kapital och arbetskraft. Expansion path visar den kostnadsminimerande kombinationen av kapital och arbetskraft för varje produktionsnivå
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{expansionpath.png}
+    \caption{Illustration av expansion path}
+    \label{fig:placeholder}
+\end{figure}
+Den röda linjen illustrar expansion path på kort sikt och den blåa linjen illusterar expansion path på lång sikt
+\newpage
+\subsection*{ATC kort och långsikt}
+$Q = K^{0.4}L^{0.2}, W = R = 2, FC = 1000$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{atclk.png}
+    \caption{Illustration av ATC kort och långsikt}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{MC - kort och långsikt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{mclk.png}
+    \caption{Illustration av MC kort och långsikt}
+    \label{fig:placeholder}
+\end{figure}
+
+\newpage
+\subsection*{Stordriftsfördelar}
+Vad händer med den långsiktiga ATC när ett företag växer?
+$$ATC = \frac{TC}{Q}$$
+\begin{itemize}
+    \item Economies scale säger: Kostnadnerna stiger långsammare än produktionen
+    \item Constant economies of scale: Kostnaderna stiger i samma takt som produktionen
+    \item Diseconomies of scale: Kostnaderna stiger snabbare än produktionen
+\end{itemize}
+
+\noindent Notera att:
+\begin{itemize}
+    \item Skalavkastning beskriver hur produktionen föränderas när alla produktionsfaktorer föränderas lika mycket
+    \item Economies of scale baseras inte på någon gemensam faktor. Handlar bara vad som händer med den genomsnittliga kostnaden när produktionsvolymen föränderas
+\end{itemize}
+
+\noindent{\Huge $\square$}
+
+\newpage
+\section*{Föreläsning 5}
+
+\subsection*{Marknadsstrukturer och perfekt konkurrens}
+\subsection*{Företagets problem}
+Vad är den optimala mängden att producera 
+\begin{itemize}
+    \item Beror på det förväntade priset på produkten
+    \item Givet pris och kostnad- och marknadsstruktur så försöker företaget maximera vinsten
+\end{itemize}
+
+\subsection*{Marknadsstruktur}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{marknadsstruktur.png}
+    \caption{Illustration av marknadsstruktur}
+    \label{fig:placeholder}
+\end{figure}
+I kursen kommer endast perfekt konkurrens och monopol behandlas 
+
+\subsection*{Perfekt konkurrens}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{perfektkonk.png}
+    \caption{Illustration av perfekt konkurrens}
+    \label{fig:placeholder}
+\end{figure}
+Företaget har perfekt elasticitet i efterfrågan, det vill säga att företaget kan sälja så mycket som det vill till marknadspriset
+\newpage
+
+\subsection*{Vinstmaximering}
+Antar att företaget vinstmaximerar
+Vinstfunktion: $$\pi = TR - TC = PQ - TC$$
+Optimum villkor: $$\frac{\partial \pi}{\partial Q} = 0 \implies P = MC$$
+
+\subsection*{Vinstmaximering med graf}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{optimumvillkor.png}
+    \caption{Illustration av vinstmaximering}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Vilken vinst genereras av vinstfunktionen?}
+Vinstfunktionen kan skrivas som:
+$$\pi = P \cdot Q - (ATC \cdot Q) = (P-ATC) \cdot Q$$
+\begin{itemize}
+    \item Tänk att det är arean av en rektangel där basen är $Q$ och höjden är $P-ATC$
+    \item Positiv vinst kräver att $P > ATC$
+\end{itemize}
+
+\subsection*{Ex. Företaget går med vinst}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{vinst.png}
+    \caption{Illustration av vinstmaximering där företaget går med vinst}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Ex. Företaget går med förlust}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{förlust.png}
+    \caption{Illustration av vinstmaximering där företaget går med förlust}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Ska företaget lägga ned eller fortsätta?}
+På kostsikt måste företaget fortfarande betala sina fasta konstnader.
+Om företaget lägger ned blir vinsten:
+
+$$\pi_S = TR - TC = TR - VC - FC = -FC$$
+
+Alternativt att fortsätta sin verksamhet:
+$$\pi_F = TR - TC = TR - VC - FC$$
+
+Optimalt att fortsätta om:
+$$\pi_F > \pi_S \implies TR - VC - FC > -FC \implies TR > VC$$
+
+\subsection*{Utbudskurva, kort sikt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{utbudkort.png}
+    \caption{Illustration av utbudskurva på kort sikt}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{itemize}
+    \item Visar det samlade kortsiktiga utbudet för samtliga företag på marknaden
+    \item Aggregera företagens utbud för varje tänkbart pris
+\end{itemize}
+
+\subsection*{Företagets producentöverskott}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{företagsöverskott.png}
+    \caption{Illustration av producentöverskott}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Alternativ beräkning av producentöverskott}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{företagsöverskott2.png}
+    \caption{Illustration av alternativ beräkning av producentöverskott}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+
+\subsection*{Utbudskurva, lång sikt}
+\subsection*{Perfekt konkurrens, lång}
+Perfekt konkurrensutsatta marknader kännetecknas av:
+\begin{itemize}
+    \item Fri etableringsrätt
+    \item Möjlighet att gå in i bransch utan juridiska eller ekonomiska hinder
+\end{itemize}
+
+
+\subsection*{Positiva vinster och entry}
+När ett nytt företag kommer in på marknaden så ökar utbudet vilket leder till att priset faller. Detta fortsätter tills att alla vinster är noll och det inte längre är lönsamt för nya företag att komma in på marknaden
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{entry.png}
+    \caption{Illustration av entry på marknaden}
+    \label{fig:placeholder}
+\end{figure}
+
+\noindent Detta kommer ske om man antar att alla företag har samma kostnadsstruktur och att det inte finns några hinder för att komma in på marknaden
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{entry1.png}
+    \caption{Illustration av entry på marknaden där det finns hinder för att komma in på marknaden}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Illustration med industri och företag}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{entry2.png}
+    \caption{Illustration av entry på marknaden där det finns hinder för att komma in på marknaden}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Monopol}
+Ett företag med en unik produkt som inte har några nära substitut och där det finns höga inträdesbarriärer
+
+\subsection*{Exempel på inträdeshinder}
+\begin{itemize}
+    \item Produkten går inte att kopiera
+    \item Patent
+    \item Svårt/dyrt för kunderna att byta leverantör
+    \item Produktionsteknologin faller monotont i skala, economies of scale
+\end{itemize}
+
+\subsection*{Marknadskraft och marginalintäkt för monopolisten}
+Marknadskraft: Förmågan att påverka marknadspriset på sin egna vara
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{monopol.png}
+    \caption{Illustration av monopolistens marknadskraft och marginalintäkt}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Monopolistens marginalintäkt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{monopol2.png}
+    \caption{Illustration av monopolistens marginalintäkt}
+    \label{fig:placeholder}
+\end{figure}
+
+Monopolistens marginalintäkt är $C-A$ där $C$ är priset och $A$ är den förlorade intäkten på grund av att priset måste sänkas för att sälja fler enheter av varan
+\newline
+\noindent Monopolistens total intäkter ges av:
+$$TR = PQ$$
+Marginalintäkten ges av:
+$$MR = \frac{\partial TR}{\partial Q} = \frac{dP}{dQ} \cdot Q + P$$
+
+\subsection*{Monopolistens vinstmaximering}
+Monopolistens vinstmaximum nås Q är lika med den kvantitet där $MR = MC$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{monopol3.png}
+    \caption{Illustration av monopolistens vinstmaximering}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Lerners index för marknadskraft}
+Utgår ifrån att: 
+$$MR = MC \implies P(1-\frac{1}{|E^D|}) = MC \implies \frac{P-MC}{P} = \frac{1}{|E^D|}$$
+
+Utgår ifrån hur stor andel vinsten utgör. Desto högre andel av vinsten utgör desto mer marknadskraft har företaget.
+
+\subsection*{Vinnare och förlorare av monopol vs perfekt konkurrens}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{monopol4.png}
+    \caption{Illustration av vinnare och förlorare av monopol vs perfekt konkurrens}
+    \label{fig:placeholder}
+\end{figure}
+
+Producenterna tjänar på monopol och konsumenterna förlorar på monopol. Samhället som helhet förlorar på monopol eftersom det leder till en ineffektiv resursallokering
+
+\subsection*{Externaliteter}
+\begin{itemize}
+    \item Definition
+    \begin{itemize}
+        \item En kostnad eller nytta som påverkar tredje part som inte är iblandad i den ekonomiska transkationen
+    \end{itemize}
+    \item Problem 
+    \begin{itemize}
+        \item Den samhällsekonomiskakostnaden överensstämmer inte med den privatekonomiska kostnaden 
+    \end{itemize}
+    \item Konsekvens
+    \begin{itemize}
+        \item Det produceras antingen för mycket av varan (negativ externalitet) eller för lite av varan (positiv externalitet)
+    \end{itemize}
+\end{itemize}
+\newpage
+\subsection*{Negativ externalitet i perfekt konkurrens}
+Exempel antar att externaliteten är samhällsekonominska konstnaden i utsläpp
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{negativ.png}
+    \caption{Illustration av negativ externalitet i perfekt konkurrens}
+    \label{fig:placeholder}
+\end{figure}
+
+Den gula arean motsvarar dödsviktskostnadnen som uppstår i denna marknad.
+I en negativ externalitet så är den samhällsekonomiska kostnaden högre än den privatekonomiska kostnaden vilket leder till att det produceras för mycket av varan
+
+\subsection*{Positiv externalitet, perfekt konkurrens}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{positiv.png}
+    \caption{Illustration av positiv externalitet i perfekt konkurrens}
+    \label{fig:placeholder}
+\end{figure}
+
+Vi gör en samhällsekonominsk vinst eftersom den samhällsekonomiska nyttan är högre än den privatekonomiska nyttan vilket leder till att det produceras för lite av varan
+\newpage
+\subsection*{Hur hanteras externaliteter}
+\begin{itemize}
+    \item Anledning för staten att gå in:
+    \begin{itemize}
+        \item Negativ externalitet: Det produceras för mycket av varan
+        \item Positiv externalitet: Det produceras för lite av varan
+    \end{itemize}
+    \item Vad kan staten göra?
+    \begin{itemize}
+        \item Påverka priser: skatter, subventioner
+        \item Påverka kvanititet: restriktioner, kvoter
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Exempel: staten reglerar negativ externalitet med Pigouviansk skatt}
+Exempel genom att skatta företags utsläpp
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{pigou.png}
+    \caption{Illustration av Pigouviansk skatt}
+    \label{fig:placeholder}
+\end{figure}
+Målet med skatten är att flytta utbudskurvan uppåt så att
+jämvikten blir samhällsekonominsk effektiv och få producenter och
+konsumenter att internalisera den negativa externaliteten
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,653 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\renewcommand{\baselinestretch}{0.2}
+
+\setlength{\hoffset}{-18pt}         
+\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
+\setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
+\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
+\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
+\setlength{\voffset}{-18pt} % Bon pour DOS
+\setlength{\marginparsep}{7pt} % Séparation de la marge
+\setlength{\topmargin}{0pt} % Pas de marge en haut
+\setlength{\headheight}{13pt} % Haut de page
+\setlength{\headsep}{4pt} % Entre le haut de page et le texte
+\setlength{\footskip}{27pt} % Bas de page + séparation
+\setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{minted}
+
+\setminted{
+    linenos,
+    breaklines,
+    frame=lines,
+    fontsize=\normalsize,
+}
+\definecolor{BrickRed}{rgb}{0.8, 0.25, 0.33} % Define BrickRed color
+
+\begin{document}
+
+\section*{Föreläsning 1}
+\subsection*{Kretskopplade nätverk}
+\begin{itemize}
+    \item Förbindelser mellan tå enheter som uprättshålls med växlar innan överföringen kan starta
+    \item Kan ta lång tid att upprättahålla en anslutning
+    \item Ömtålig, om en resurs går ner så går alla anslutningar som använder resursen ner
+    \item Begränsad kapacitet
+    \item Exempel: Telefoninätet
+\end{itemize}
+
+\subsection*{Paketväxlande nätverk}
+\begin{itemize}
+    \item Förbindelselös kommunikation
+    \item Pakten överförs beroende av varandra
+    \item Paketen kan ta olika vägar
+    \item Nätet kan inte bli upptaget utan bara långsammare
+    \item T.ex IP(Internet Protocol), TCP(Transmission Control Protocol), UDP(User Datagram Protocol)
+\end{itemize}
+
+\subsection*{Protokoll}
+Protokoll är en samling av relger och överrenskommelser kring kommunikation 
+Innehåller bl.a. uppgifter om:
+\begin{itemize}
+    \item Förbindelser
+    \item Vägval
+    \item Sönderdelning av data
+    \item Sammansättning av data
+    \item Upprättande av ordningsföljd vid överföring
+    \item Felkorrigering
+\end{itemize}
+
+\subsection*{Exempel på HTTP-protokollet}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{httpprotocol.png}
+    \caption{HTTP Request och Response exempel}
+\end{figure}
+
+\subsection*{IP (Internet Protocol)}
+\begin{itemize}
+    \item Överför data mellan olika nätverk
+    \item Paketen kan fördubblas eller försvinna 
+    \item IPv4 består av 4 bytes och har formatet xxx.xxx.xxx.xxx där varje xxx är ett tal mellan 0-255
+    \item TTL (Time To Live): Kontrollfält
+    \item Dagens IPv4 håller på att ersätta IPv6 som har address på 128 bitar
+\end{itemize}
+
+\subsection*{Socket}
+\begin{itemize}
+    \item Ett gränssnitt som används för TCP/IP och UDP/IP och upprätthåller anslutningen baserat på IP för två maskiner
+    \item Kod för socket och server finns i föreläsningen
+\end{itemize}
+
+\newpage
+\subsection*{Sammanfattning}
+\subsection*{TCP(Transmission Control Protocol)}
+\begin{itemize}
+    \item Förbindesleorienterat protokoll
+    \item Säkerställer att data kommer fram i rätt ordning
+    \item Data förloras och fördubblas inte 
+\end{itemize}
+
+\subsection*{UDP(User Datagram Protocol)}
+\begin{itemize}
+    \item Förbindelselös
+    \item Data kan förloras eller fördubblas
+    \item Data kan komma i fel ordningsföljd
+\end{itemize}
+
+\subsection*{ICMP(Internet Control Message Protocol)}
+\begin{itemize}
+    \item Kopplat till TCP 
+    \item Skickas av mottagare som väntat på ett paket som inte kommit fram
+    \item \textit{\large traceroute}
+\end{itemize}
+
+\newpage 
+\section*{Föreläsning 2}
+\subsection*{HTTP protokollet}
+\begin{itemize}
+    \item Tillståndslös - under inga omständigheter sparas information om tidigare förfrågningar
+    \item Utbyggbart - Utvecklarna har möjlighet att lägga till egna metoder och headers för deras specifika tjänster
+    \item Hur protokollet funkar:
+    \begin{itemize}
+        \item HTTP-request skickas från en klient eller webbläsare till en server som en begäran eller förfrågan 
+        \item HTTP-repsonse skickas från servern tillbaka till klienten som svar på förfrågan
+    \end{itemize}
+    \item Sammanfattning av proceduren:
+    \begin{enumerate}
+        \item Klienten öppnar en anslutning
+        \item Klienten skickar en förfråga (request)
+        \item Servern skickar en respons (response)
+        \item Servern stänger anslutningen
+    \end{enumerate}
+\end{itemize}
+
+\subsection*{URL (Uniform Resource Locator)}
+\begin{itemize}
+    \item En resurs är en fil som skickas bit för bit till klienten 
+    \item Alternativt en exekverbar fil som ska exekveras hos servern sedan skickas utdata till klienten
+    \item De exekvera bara filen konfigureras på så sätt att servern vet att den ska exekvera filen istället för att skicka den som en vanlig fil
+\end{itemize}
+
+\subsection*{Standardiserad form för URL}
+{\Large {\color{blue}Protokoll}{\color{red}://}värd[:{\color{BrickRed}port}]/sökvägen till resursen}
+
+\subsection*{HTTP-request}
+Exempel på HTTP-request:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{httprequest.png}
+    \caption{HTTP Request exempel}
+\end{figure}
+\newpage
+Generella formatet för en HTTP-request:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{httpReq.png}
+    \caption{HTTP Request format}
+\end{figure}
+
+\subsection*{HTTP-metoder}
+Viktiga HTTP-metoder:
+\begin{itemize}
+    \item GET - Frågar efter en resurs
+    \item POST - Skickar data till servern
+\end{itemize}
+
+\noindent Mindre viktiga HTTP-metoder:
+\begin{itemize}
+    \item HEAD - Frågar efter informationen om en resurs
+    \item PUT - Skickar document till servern
+    \item DELETE - Tar bort en resurs
+    \item TRACE - När förfrågan måste passera genom en proxy, gateway etc
+    \item OPTIONS - Frågar efter tillåtna (tillgängliga) metoder
+\end{itemize}
+
+\subsection*{Viktiga headerfält i en request}
+\begin{itemize}
+    \item Accept: vilka mime-type av resurs kan hanteras
+    \item User-Agent: tex. Mozilla/4.75[en] (Win98)
+    \item Host: serverns domän-namn och portnummer
+    \item Cookie: används för sessionshantering och upprätthållande av tillstånd
+    \item Date: när paketet skapades
+\end{itemize}
+
+\subsection*{HTTP-response (binär exempel)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{httpresponse.png}
+    \caption{HTTP Response exempel}
+\end{figure}
+Generella formatet för en HTTP-response:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{httpresponsEx.png}
+    \caption{HTTP Response format}
+\end{figure}
+
+\subsection*{Viktiga headerfält i en response}
+\begin{itemize}
+    \item Content-Type: mime
+    \item Content-Length: storleken på resursen i byte
+    \item Server: info om server, t.ex: Apache
+    \item Set-Cookie: skickar datan
+    \item Set-Cookie: skickar kaka
+    \item Date: datum då servern skapade responsen 
+\end{itemize}
+\newpage
+\subsection*{Cookies}
+HTTP kan inte skilja klienter åt från varandra därför kan man spara en cookie hos klienten istället.
+Servern definierar cookienn i response headern
+\begin{itemize}
+    \item Set-Cookie: <namn> = <värde>
+    \item expires = <datum>
+    \item domain = <domän>
+    \item path = <bibliotek>
+    \item 
+\end{itemize}
+När servern vid ett senare tillfälle vill skicka en request till samma server så skickas cookien med i request headern:
+
+\subsection*{Response med set-cookie, exempel}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{cookieresponse.png}
+    \caption{HTTP Response med Set-Cookie header}
+\end{figure}
+
+\subsection*{Request med cookie, exempel}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{cookierequest.png}
+    \caption{HTTP Request med Cookie header}
+\end{figure}
+
+\newpage
+\subsection*{Set-Cookie Format}
+\begin{itemize}
+    \item Set-Cookie: <name> = <value>; $\leftarrow$ Raderas när man stänger av webbläsaren
+    \item Set-Cookie: <name> = <value>; Expires = <date>; $\leftarrow$ Sparas tills utgångsdatumet
+    \item Set-Cookie: <name> = <value>; Domain = <domain-value>;
+    \item Set-Cookie: <name> = <value>; Path = <path-value>;
+    \item Set-Cookie:: <name> = <value>; Max-Age = <seconds>;
+\end{itemize}
+
+\newpage
+\section*{Föreläsning 3}
+\subsection*{Statuskoder}
+\begin{itemize}
+    \item 1xx - Information: Kommunkation i protokoll nivå
+    \item 2xx - Success: Begäran lyckades
+    \item 3xx - Omdirigering: Klienten behöver utföra ytterligare handling 
+    \item 4xx - Klientfel: Fel hos klienten
+    \item 5xx - Serverfel: Fel hos servern
+\end{itemize}
+
+\subsection*{Statuskod 200 (OK)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{statuskod200.png}
+    \caption{HTTP Response med statuskod 200}
+\end{figure}
+
+\subsection*{Statuskod 303 (omdirigering)}
+Servern hittar inte resursen på den angivna platsen och skickar en omdirigeringsrespons till klienten med den nya platsen för resursen i Location-headern.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{statuskod303.png}
+    \caption{HTTP Response med statuskod 303}
+\end{figure}
+
+\newpage
+\subsection*{Form.java}
+Koden för Form.java finns i canvas
+\begin{enumerate}
+    \item Läs request 
+    \item Kolla om det är GET, POST eller en annan metod
+    \item Om GET
+    \begin{itemize}
+        \item Om cookie inte finns i requesten svara med formulär för att kunna skicka in förnamnet
+        \item Om cookie finns hämta data från minnet och avgöra nästa rutt
+    \end{itemize}
+    \item Om POST
+    \begin{itemize}
+        \item Läs cookie och hämta tillhörande ata från minnet
+        \item Om förnman och efternamnet är null svara med formulär för att kunna skicka in det
+        \item Om bara förnamn/efternamn är null svara med final-formulär för att kunna skicka in det saknade namnet och ogilgiltigförklara det namn som redan finns
+    \end{itemize}
+    \item Om annan metod ignorera
+    \item Stäng anslutningen
+
+\end{enumerate}
+
+\subsection*{PRG (Post/Redirect/Get)}
+\begin{itemize}
+    \item Designmönster
+    \item Problem som PRG löser:
+    \begin{itemize}
+        \item Högre säkerhet vid användning av POST-request
+        \item Hindrar oavsiktligt skickande av samma data som skickats i tidigare request
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Jämförelse av PRG och NO\_PRG}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{prg.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{noprg.png}
+    \end{minipage}
+\end{figure}
+
+\newpage
+\section*{Föreläsning 4}
+\subsection*{HTML (HyperText Markup Language)}
+\begin{itemize}
+    \item Hypertext: text som med länk till andra dokument
+    \item Markup Language: Ett språk som ger instruktioner om hur text och bild ska representeras för användaren
+    \item Textkoden består av HTML-element: <b>, <div>, <form, <input>,...
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{htmlex.png}
+    \caption{HTML element exempel}
+\end{figure}
+
+\subsection*{Vanliga HTML element}
+\begin{itemize}
+    \item <html> - html sida
+    \item <head> - huvud information
+    \item <Htle> - sidans titel
+    \item <body> - sidans innehåll
+    \item <h1> till <h6> - rubriker
+    \item <img source = "jag.jpg"> - bild
+    \item <form> <input> - webb formulär
+    \item <table><tr><td> - tabell, rad, kolumn
+    \item <div> - avdelare för att gruppera element
+    \item <p> - paragraf
+    \item <span> - gruppera element i rad
+    \item <br> - radbrytning
+    \item <script> - script språk
+    \item <ol> - ordnad lista
+    \item <ul> - oordnad lista
+\end{itemize}
+
+\subsection*{Generella attribut för HTML}
+\begin{itemize}
+    \item class - Formatteringsklass för gruppering 
+    \item id - referens till specifikt element
+    \item style - CSS
+\end{itemize}
+
+\subsection*{Vanliga sub-element för HEAD}
+\begin{itemize}
+    \item <base href 0 "(url för den sidan)"> = Prefix url för alla länkar på den sidan
+    \item <link href = "special.css" rel = "stylesheet" type = "text/css"> = Definierar relationen mellan två dokument 
+    \item <style type = "text/css"> = Inbäddad CSS, alltid
+    \item <script type = text/javascript"> = Inbäddad JavaScript
+    \item <title> = Dokumentets titel
+    \item <meta> = Information för sökmotorer och webbläsare
+\end{itemize}
+
+\subsection*{Dom}
+En trädstruktur som representerar HTML-dokumentet, javascript kan:
+\begin{itemize}
+    \item Lägga till nod
+    \item Ta bort nod
+    \item Ändra nod innehåll
+    \item Visa/dölja noder
+\end{itemize}
+
+\subsection*{Formulär och Dom}
+I elementet <form> kan man lägga vilka presentatioselement som helst
+\begin{itemize}
+    \item <input type = "text"> - textfält
+    \item <input type = "password"> - lösenordsfält
+    \item <input type = "submit"> - submit-knapp
+    \item <input type = "radio"> - radioknapp
+    \item <input type = "checkbox"> - kryssruta
+    \item <select> - rullgardinsmeny
+    \item <textarea> - textområde
+\end{itemize}
+Alla element kan refereras i javascript och ändras dynamiskt genom 
+\newline
+\noindent window.document.forms[3].efternman.value - refererar till efternamn elementet i det 4:e formuläret på sidan
+
+\subsection*{JavaScript}
+JavaScript använder event-handlers för att hantera user-input och andra händelser. Varje event-handler är associerad med ett element i DOM och körs när en specifik händelse inträffar på det elementet. M.h.a JavaScript kan man komma åt HTMl-element i dokumentet genom exempelvis: document.getElementByID("id")
+
+\newpage
+
+\subsection*{Event handler några exempel}
+\begin{itemize}
+    \item OnBlur - formulärelementet
+    \item OnChange - formulärelementet
+    \item OnClick - formulärelement, länkar
+    \item OnFocus - formulärelementet
+    \item OnSelect - text, textarea
+    \item OnSubmit - form
+\end{itemize}
+
+\subsection*{Exempel på JavaScript}
+\begin{minted}{JavaScript}
+<script type = "text/javascript">
+
+// Enkel form validering 
+function checkAddress(form) {
+    // Kontrollera att e-post och telefonnummer är ifyllda
+    if (form.email.value.length == 0 || form.email.value.index.indexOf('@') == -1) {
+        alert("Du måste ange en giltig e-postadress.");
+        form.email.focus();
+        return false;
+    }
+    // Kontrollera att telefonnummer är ifyllt
+    if (form.phone.value.length == 0) {
+        alert("Du måste ange ett telefonnummer!");
+        form.phone.focus();
+        return false;
+    }
+    return true;
+}
+\end{minted}
+
+\subsection*{CSS - \textbf{C}ascading \textbf{S}tyle \textbf{S}heets}
+\begin{itemize}
+    \item Används för att styra utseendet på HTML-element
+    \item Man slipper upprepningar av massa hårdkodningar i HTML filen
+    \item I CSS-filen kan man konfigurera varje element för sig själv.
+\end{itemize}
+
+\begin{minted}{css}
+/* CSS exempel */
+td{
+padding-top: 3px; 
+padding-left: 5px; 
+background-color: "#eeeeee"; 
+font-family: "sans-serif"; 
+font-size: 8pt;
+height: 20px;
+border-top: "1px #ffffff
+solid"; 
+} 
+
+th{ 
+background-color: "#ffffff"; 
+font-family: "sans-serif"; 
+font-size: 9pt;
+font-weight: bold; 
+height: 22px; 
+vertical-align: middle; 
+text-align: center; 
+padding: 3px; 
+border-top: "1px #aaaaaa
+dotted"; 
+border-bottom: "1px #aaaaaa
+dotted"; 
+}
+    
+\end{minted}
+
+\subsection*{Motsvarande HTML fil för CSS-exemplet}
+\begin{minted}{html}
+<!DOCTYPE html> <html> <head>
+<link rel="stylesheet" type="text/css”href="myStyle.css">
+</head>
+<body>
+<table>
+<th colspan="2">Post price </th>
+<tr> <td>Weight Kg</td> <td>Price$/Kg</td> </tr> 
+<tr> <td> 1 </td> <td>100</td> </tr> 
+<tr> <td> 2-5 </td> <td>90</td> </tr> 
+<tr> <td> 6-10 </td> <td> 80 </td></tr> 
+<tr> <td> 10 </td><td> 60 </td></tr>
+</table> 
+</body></html>
+\end{minted}
+
+\subsection*{CSS}
+\begin{minted}{css}
+p {
+    color: red;
+    text-align: center;
+}
+\end{minted}
+
+\begin{itemize}
+    \item Selector: p
+    \item Declaration: color: red;
+    \begin{itemize}
+        \item Property: color
+        \item Value: red
+    \end{itemize}
+    \item Declaration: text-align: center;
+    \begin{itemize}
+        \item Property: text-align
+        \item Value: center
+    \end{itemize}
+\end{itemize}
+\subsection*{Variabel deklaration i JavaScript}
+\begin{minted}{javascript}
+let age = 20;
+var age = 20;
+
+if (true) {
+    let x = 1;
+    var y = 2;
+}
+// x är inte tillgänglig här, den är block-scoped
+// y är tillgänglig här, den är function-scoped
+
+//================================================
+
+// konstant deklaration
+
+const PI = 3.14;
+
+// PI är final och kan inte ändras
+
+\end{minted}
+\newpage
+
+\subsection*{Typkonvertering i JavaScript}
+\begin{itemize}
+    \item 5 * null $\rightarrow$ 0
+    \item "5" - 3 $\rightarrow$ 2
+    \item "5" + 3 $\rightarrow$ "53"
+    \item "5" * 2 $\rightarrow$ NAN
+    \item false == 0 $\rightarrow$ true
+    \item false === 0 $\rightarrow$ false
+    \item "4711" == new String("4711") $\rightarrow$ true
+    \item "4711" === new String("4711") $\rightarrow$ false
+\end{itemize}
+
+\subsection*{Deklarera funktioner}
+\begin{minted}{javascript}
+//1. Funktionsdeklaration
+const calc = function(x, y) {
+    return x + y;
+};
+
+//2. Funktionsuttryck
+function calc(x, y) {
+    return x + y;
+}
+
+//3. Arrow-funktion
+const calc = (x, y) => {
+    return x + y;
+};
+
+//4. Kortare Arrow-funktion
+const calc = (x, y) => x + y;
+
+// ===============================================
+//Optional parameter
+    function halvera(a, b) {
+        if (b === undefined) {
+            return a/2;
+        }
+        else {
+            return a/2;
+        }
+    }
+    halvera(4, 54, "blahonga"); // Ignorerar extra argument
+    halvera(4); // Returnerar 2
+    halvera(4, undefined); // Returnerar 2
+\end{minted}
+
+\subsection*{Högre ordningens funktion}
+Nestlade funktioner som kan ta andra funktioner som argument eller returnera en funktion som resultat
+\begin{minted}{javascript}
+
+//Ex. 1
+function högreOrdningensFunktion(func) {
+    return function(x) {
+        return func(x) * 2;
+    }
+}
+
+//Ex. 2
+function högreOrdningensFunktion(func) {
+    return (a, b) => {console.log(a+b); }
+}
+\end{minted}
+
+\subsection*{Closure}
+Funktioner som returnerar andra funktioner eller tar andra funktioner som argument 
+\begin{minted}{javascript}
+//1. Funktion som returnerar en annan funktion
+
+function makeMultiplier(multiplier) {
+    return function(x) {
+        return x * multiplier;
+    }
+}
+
+//2. Funktion som tar en annan funktion som argument
+function applyFunction(func, value) {
+    return func(value);
+}
+\end{minted}
+
+\subsection*{Arrays}
+\begin{minted}{javascript}
+    let namnlista = ["Alice", "Bob", "Charlie"]; // Skapar en array med tre element
+    namnlista.push("David"); // Lägger till "David" i slutet av arrayen
+    namnlista.unshift("Eve"); // Lägger till "Eve" i början av arrayen
+    namnlista.pop(); // Tar bort det sista elementet ("David")
+    namnlista.shift(); // Tar bort det första elementet ("Eve")
+    namnlista.length; // Returnerar längden på arrayen (3)
+    namnlista[2] = "Petter"; // Ändrar det tredje elementet till "Petter"
+    // nytt element på index 100, mellanliggande index blir undefined
+    namnlista[100] = "Zara"; 
+\end{minted}
+
+\subsection*{Object}
+\begin{minted}{javascript}
+    let person = {
+        name: "Petter",
+        labs: [1, 2],
+    }
+
+    Object.keys(person); // Returnerar ["name", "labs"]
+    Object.assign(person, {labs: [3, 4]}, {betyg: "A"}); // Uppdaterar person-objektet med nya värden
+    console.log(person); // ger {name: "Petter", labs: [3, 4], betyg: "A"}
+\end{minted}
+
+\subsection*{JSON - JavaScript Object Notation}
+\begin{itemize}
+    \item Serialiserat format 
+    \item Likt JavaScript-objekt och arrays
+\end{itemize}
+Exempel:
+\begin{minted}{json}
+{
+    "name": "Alice",
+    "age": 30,
+    "isStudent": false,
+    "hobbies": ["reading", "traveling", "coding"],
+    "address": {
+        "street": "123 Main St",
+        "city": "Anytown",
+        "country": "USA"
+    }
+}
+\end{minted}
+
+
+
+
+\end{document}

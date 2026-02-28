@@ -1,0 +1,792 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{}
+\usepackage[T1]{fontenc}
+\title{Språck sammanfattning}
+\author{Jamal Brown}
+
+
+\renewcommand{\baselinestretch}{0.2}
+
+\setlength{\hoffset}{-18pt}         
+\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
+\setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
+\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
+\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
+\setlength{\voffset}{-18pt} % Bon pour DOS
+\setlength{\marginparsep}{7pt} % Séparation de la marge
+\setlength{\topmargin}{0pt} % Pas de marge en haut
+\setlength{\headheight}{13pt} % Haut de page
+\setlength{\headsep}{4pt} % Entre le haut de page et le texte
+\setlength{\footskip}{27pt} % Bas de page + séparation
+\setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath} % Required for the align* environment
+\usepackage{float}
+\usepackage{pgfplots} 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\pgfplotsset{compat=1.18}
+
+
+\begin{document}
+
+\section*{Föreläsning 1}
+\subsection*{Begrepp}
+\begin{itemize}
+    \item \textbf{Tokens} := ord eller tecken \textit{eg. "att vara eller inte vara."} innehåller 6 tecken
+    \item \textbf{Lemmatisering} := Göra ord till grundform i.e dess lemma \textit{eg. pettrar $\rightarrow$ petter}
+    \item \textbf{Lemma} := Grundformen av ett ord
+    \item \textbf{Substantiv} := Ord på saker och ting \textit{eg. En \textbf{petter}}
+    \item \textbf{Verb} := Saker som man gör \textit{eg. \textbf{pettra} sig}
+    \item \textbf{Adjektiv} := Beskriver saker och ting \textit{eg. \textbf{svart} som en petter}
+    \item \textbf{Affix} := Del av ett ord som ändrar ordets betydelse
+    \item \textbf{Prefix} := Affix morfemet som är början av ordet \textit{eg. \textbf{o-} i ordet \textbf{o-tydlig}}
+    \item \textbf{Suffix} := Affix morfemet i slutet av ett ord \textit{eg \textbf{-ar-na-s} i ordet \textbf{stolarnas}}
+    \item \textbf{Infix} := Ett affix i mitten av ordet eg. \textit{\textbf{m} i \textbf{korru-m-pera}}
+    \item \textbf{Circumfix} := Affix runt om ordet \textit{eg. ge-sag-t} 
+    
+    
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Morfologi}
+Morfem är delar av ett ord eg:
+\begin{itemize}
+    \item Skolböckerna $\rightarrow$ skol--böck--er--na
+    \item Barnvagnarna $\rightarrow$ barn--vagn--ar--na
+    \item Olyckligaste $\rightarrow$ O--Lycklig--ast--e 
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Omformattering av ord}
+\begin{itemize}
+    \item \textbf{Inflection (böjning)} := Böja ord utan att förändra betydelsen \textit{eg. springa $\rightarrow$ springer, sprang, sprungit}
+    \item \textbf{Derivation (avledning)}: Böja ord så att betydelsen förändras \textit{eg. glad $\rightarrow$ glädje, gladhet, oglad}
+    \item \textbf{Compounding (sammansättning)}: Sätta ihop ord \textit{eg. matematikeföreläsningar}
+\end{itemize}
+
+\noindent\hrulefill
+\newline
+\newline
+{\Huge $\square$}
+
+\newpage
+
+\section*{Föreläsning 2 ft. Viggo Kahn}
+\subsection*{Regex notation}
+\begin{itemize}
+    \item \textbf{.} := matchar alla karaktärer förutom "newline"
+    \item $[\;]$ := Matchar alla karaktärer innanför $[\;]$ OR endast en gång
+    \item * := Matchar noll eller fler gånger
+    \item + := Matchar en eller fler gånger
+    \item \$ := Slutet av en rad
+    \item ? := Matchar noll eller en gång
+    \item \{n\} := Exakt n gånger
+    \item \{n,m\} := Matchar $i$ gånger där $n < i < m$
+    \item | := OR logik
+    \item ( ) := Matchar hela strängen innanför ( )
+    \item $\backslash$ := Escaping precis som i latex
+    
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Chomsky's syntax träd}
+\begin{flalign*}
+    \text{S}  &\to \text{NP} \ \text{VP} &&\\
+    \text{NP} &\to \text{PM} \mid \text{Det} \ \text{N} \mid \text{Det} \ \text{N} \ \text{PP} &&\\
+    \text{VP} &\to \text{V} \ \text{NP} \mid \text{V} \ \text{NP} \ \text{PP} &&\\
+    \text{PP} &\to \text{P} \ \text{NP} &&
+\end{flalign*}
+
+\begin{itemize}
+    \item S := Sentence i.e \textit{en sats eller mening}
+    \item NP := Nominalfras (Noun Phrase) eg. \textit{apa, en apa, apan på taket}
+    \item VP := Verbfras (Verb Phrase) eg. \textit{äter, äter vattenmelon på basketplanen}
+    \item PP := Prepositionfras eg \textit{på basketplanen, i KFC}
+    \item PM (Proper name/noun) := Egennamn eg. \textit{Jamal, Tyrone, Jerome...}
+    \item Det (determinerare) := \textit{The, a, two, every, each...}
+    \item N (Noun) := Substantiv
+    \item V (Verb) := Verb
+    \item P (Preposition) := \textit{Under, på, i, vid, när...}
+    
+\end{itemize}
+
+\noindent\hrulefill
+\newline
+\newline
+{\Huge $\square$}
+
+\newpage
+
+\section*{Föreläsning 3}
+\subsection*{Levenstein avstånd}
+Avståndet för att gå från \textbf{en sträng} till \textbf{en annan} med:
+\begin{itemize}
+    \item \textbf{Insertion }:= Lägger till en bokstav (kostar 1)
+    \item \textbf{Deletion} := Tar bort en bokstav (kostar 1)
+    \item \textbf{Substitution} := Byter ut en bokstav mot en annan (kostar 2, tänk deletion sen insertion) 
+    \item \textbf{Levenstein avstånd} returnerar det\textbf{ kostaste möjliga sättet} att ta sig från en sträng till en annan
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Brute force algoritm: Levenstein avstånd, \textit{ej viktigt}} 
+\begin{enumerate}
+    \item För varje bokstav beräkna kostnaden för varje operation
+    \item Bilda ett träd med alla möjliga vägar till två tomma strängar
+    \item Levenstein avstånd $=$ Kortaste vägen
+\end{enumerate}
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{Screenshot 2026-01-03 200910.png}
+        \caption{Trädvisualisering för att beräkna Levenstein avstånd för is $\rightarrow$ has}
+        \label{fig:placeholder}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Insertion} representeras av en radering av andra strängen
+    \item \textbf{Deletion} representeras av en borttagning av en karaktär i denna sträng
+    \item \textbf{Substitution} representeras av en borttagning av en karaktär för båda
+    \item Slutar när båda strängarna är 0, om båda strängarna är lika så tas de bort med kostnad 0
+\end{itemize}
+\noindent\hrulefill
+\newpage
+\subsection*{Dynamisk metod: Levenstein avstånd}
+Givet att $D(i, k)$ är levenstein avståndet mellan de första $i$ bokstäver i $s_1$ och de första $k$ bokstäverna i $s_2$. Beräknas levenstein avståndet på följande sätt:
+
+\begin{align*}
+    D(i, 0) &= i \quad 0 \leq i \leq length(s) \\
+    D(0, k) &= k \quad 0 \leq k \leq length(t) \\
+    D(i, k) &= \min \begin{cases}
+        D(i-1, k) + 1 \\
+        D(i, k-1) + 1 \\
+        D(i-1, k-1) + \begin{cases} 
+            2 & \text{if } s[i] \neq t[k] \\
+            0 & \text{if } s[i] = t[k]
+        \end{cases}
+    \end{cases}
+\end{align*}
+Givet ett stadie så har vi kommit dit antingen via insertion, deletion eller substitution. Därför är det trivialt att bilda en matris för att beräkna levenstein avståndet för varje steg.
+% 1. Reduce column padding to fit more columns
+\setlength{\arraycolsep}{3pt} 
+% 2. Increase row height slightly for clarity
+\renewcommand{\arraystretch}{1.2}
+
+\[
+\renewcommand{\arraystretch}{1.5} % 1.0 is default, 1.5 is 50% larger
+\setlength{\arraycolsep}{1em}     % Increases space between columns
+\begin{array}{c|cccccccc}
+      & & S & I & T & T & I & N & G \\
+    \hline
+     & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+    K & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+    I & 2 & 3 & 2 & 3 & 4 & 5 & 6 & 7 \\
+    T & 3 & 4 & 3 & 2 & 3 & 4 & 5 & 6 \\
+    T & 4 & 5 & 4 & 3 & 2 & 3 & 4 & 5 \\
+    E & 5 & 6 & 5 & 4 & 3 & 4 & 5 & 6 \\
+    N & 6 & 7 & 6 & 5 & 4 & 5 & \mathbf{4} & 5 \\
+\end{array}
+\]
+
+\noindent\hrulefill
+
+\subsection*{Länkning (alignment)}
+\begin{itemize}
+    \item Från given cell (i, k)
+    \item Fortsätt tills i = 0 och k = 0
+    \item Om (i-1, k-1) \textit{diagonalen} är minst implicerar samma bokstav. Länka $S_1[i]$ med $S_2[k]$ 
+    \item Om (i-1, k) \textit{ovanför} är minst implicerar insertion. länka $S_1[i]$ med " "
+    \item Om (i, k-1) \textit{vänster} är minst implicerar deletion. Länka " " med $S_2[k]$   
+\end{itemize}
+
+\noindent\hrulefill
+\newline
+\newline
+{\Huge $\square$}
+
+\newpage
+
+\section*{Föreläsning 4}
+\subsection*{Statistiska språkmodeller}
+\begin{itemize}
+    \item Förekomsten av ord är en stokastisk process
+    \item \textbf{Zipf's law} säger att det vanligaste ordet är 2x vanligare än det 2:a vanligaste, 3x än det 3:e vanligaste, 4x än det 4:e vanligast osv. 
+    \item \textbf{Heap's law} säger att antalet unika ord är proportionellt till $\sqrt{n}$ där \textit{n} är antalet tokens
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Notation}
+\begin{itemize}
+    \item $P(W) :=$ Sannolikheten att \textit{W} förekommer utan kontext
+    \item $P(W_1, W_2, W_3,...,W_n) :=$ Sannolikheten för sekvensen $W_1 W_2 W_3...W_n$ att förekomma
+    \item Alla sannolikheter är större än 0
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Kedjeregeln för sannolikheter}
+$$ P(A_1, \dots, A_n) = \prod_{i=1}^{n} P(A_i \mid A_1, \dots, A_{i-1}) $$
+Eg. $P(\text{I really like ants}) = P(\text{ants} | \text{I really like})P(\text{like} | \text{I really})P(\text{really} | \text{I})P(\text{I})$
+\newline
+\newline
+\newline
+\newline
+I verkliga fallet är vi ett \textbf{markov antagande} som säger att ordet som förekommer beror bara på ett fåtal ord innan dessa modeller kallas för:
+\begin{itemize}
+    \item \textbf{Unigram} som ger ingen kontext alls
+    \item \textbf{Bigram} som tar hänsyn till ett ord innan
+    \item \textbf{Trigram} som tar hänsyn till två ord innan
+\end{itemize} 
+\noindent\hrulefill
+
+\subsection*{Maximum likelihood estimation för n-gram}
+\textit{Maximum Likelihood Estimation} är bara ett fancy namn för att räkna och dividera, då räkna och dividera ger maximal likelihood. eg:
+
+\begin{itemize}
+    \item \textbf{Unigram:} {\large $ P(W_i) = \frac{Count(W_i)}{Count(Total \, Words)} $}
+    \item \textbf{Bigram:} {\large $ P(W_i | W_{i-1}) = \frac{Count(W_{i-1}, W_i)}{Count(W_{i-1})} $}, \textit{aka. definitionen av betingad sannolikhet}
+    \item \textbf{Trigram:} {\large $ P(W_i | W_{i-2}, W_{i-1}) = \frac{Count(W_{i-2}, W_{i-1}, W_i)}{Count(W_{i-2}, W_{i-1})} $}
+\end{itemize}
+
+\subsection*{Zero probability solve methods}
+\begin{itemize}
+    \item Laplace smoothing (Add 1 smoothing)
+    \item Backoff
+    \item Linear interpolation
+\end{itemize}
+\newpage
+\subsection*{Laplace smoothing (Add 1 smoothing)}
+Anta att sannolikheten för \textit{bigram} ser ur såhär: 
+{\large $$P(W_i|W_{i-1}) = \frac{Count(W_{i-1}, W_i)}{Count(W_{i-1})}$$}
+\newline
+$P_L(W_i|W_{i-1})$ som är $P(W_i|W_{i-1})$ med \textit{Laplace smoothing} ser då ut såhär:
+{\large
+$$P_L(W_i|W_{i-1}) = \frac{Count(W_{i-1}, W_i) +1}{Count(W_{i-1}) + V}$$
+}
+Där $V$ är antalet \textbf{unika ord} i träningsdatan
+\newline
+\newline
+
+\noindent\hrulefill
+
+\subsection*{Backoff}
+Uppskattar \textbf{sannolikheten} för {$P(W_i|W_{i-1})$} genom:
+{\large $$P(W_i|W_{i-1}) \approx P(W_i) \cdot P(W_{i-1})$$}
+Denna \textbf{sannolikeheten} kommer \textbf{underskatta} den verkliga \textbf{sannolikheten} eftersom:
+\newline
+\newline
+
+$$P(W_i|W_{i-1}) = \frac{Count(W_{i-1}, W_i)}{Count(W_{i-1})} = \frac{Count(W_{i}) \cdot Count(W_{i-1})}{Count(W_{i-1})}$$
+
+$$P(W_i) \cdot P(W_{i-1}) = \frac{Count(W_i)}{Count(Totala \; ord)} \cdot \frac{Count(W_{i-1})}{Count(Totala \; ord)} = \frac{Count(W_{i}) \cdot Count(W_{i-1})}{Count(Totala \; ord)}$$
+
+$$\implies \frac{Count(W_{i}) \cdot Count(W_{i-1})}{Count(W_{i-1})} > \frac{Count(W_{i}) \cdot Count(W_{i-1})}{Count(Totala \; ord)} \implies P(W_i|W_{i-1}) > P(W_i) \cdot P(W_{i-1})$$ 
+\newline
+\newline
+
+\noindent\hrulefill
+\subsection*{Linjär interpolation}
+\begin{itemize}
+    \item $\lambda_1 \cdot P(W_i \mid W_{i-1}) + \lambda_2 \cdot P(W_i) + \lambda_3$
+    \item $\sum \lambda = 1$
+    \item Oftast är $\lambda_1 \approx 0.99$, $\lambda_2 \approx 0.01$ och $\lambda_3 \approx 10^{-6}$ 
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Intrinsic evaluering och entropi}
+Tillskillnad från \textbf{extrinsic} evaluering som handlar om att jämföra en modell med en annan så använder vi \textbf{intrinsic evaluering} som använder \textit{KPI:er} såsom \textit{entropi} och \textit{korsentropi}
+\newline
+\newline
+
+\noindent\hrulefill
+
+\subsection*{Informationen}
+\textit{Infomationen} mäter hur överraskad en model blir över given händelse. \textit{Informationen} är en logaritmisk skala för sannolikheten. Givet att en händelse har sannolikhet $P$ definieras \textit{infomationen} som:
+$$I(P) = log_2(P)$$
+\noindent\hrulefill
+
+\newpage
+\subsection*{Entropi}
+\textit{Entropi} är \textbf{väntevärdet} på \textbf{informationen} och beräknas på följande sätt:
+{\Large $$H(X) = - \sum_{\forall x} p(x) \log p(x)$$}
+\begin{itemize}
+    \item Om \textit{entropin} är lägre är texten mer förutsägbar
+    \item Om \textit{entropin} är högre är texten svårare att förutse
+    \item Maximal \textit{entropi} uppnås vid likformig fördelning, kan bevisas med ML-skattning
+    \item Minimal \textit{entropi} uppnås när det bara finns en händelse
+\end{itemize}
+\noindent\hrulefill
+
+
+\subsection*{Korsentropi (Cross Entropy)}
+\textit{Korsentropin} mäter är mycket \textit{guld standard} sannolikheten skiljer sig från \textit{modellens} sannolikhet. Antag att:
+\begin{itemize}
+    \item $P(x) = $ Guld sannolikheten 
+    \item $Q(x) =$ Vad modellen tror vi har för sannolikhet
+\end{itemize}
+
+
+Då definieras \textit{korsentropin} som:
+$$H(P, Q) = - \sum_{\forall x} P(x) \log Q(x)$$
+
+\noindent\hrulefill
+\newline
+\newline
+{\Huge $\square$}
+
+\newpage
+\section*{Föreläsning 5}
+
+\noindent\hrulefill
+\subsection*{Ordklass taggning}
+Målet med \textit{ordklasstaggning} är att givet en sekvens av ord $W_1,W_2,..,W_n$ vill vi hitta de mest 
+sannolika \textit{taggarna} $t_{1}, t_2,...,t_n$ genom \textit{ekvationen}:
+{\large $$\operatorname*{arg\,max}_{t_1 \dots t_n} P(t_1 \dots t_n | w_1 \dots w_n)$$}  Omskrivning med \textit{Bayes sats} ger
+{\large $$\implies \operatorname*{arg\,max}_{t_1 \dots t_n} P(w_1 \dots w_n | t_1 \dots t_n) P(t_1 \dots t_n)$$}
+\noindent\hrulefill
+
+\subsection*{Ordklass taggning med n-gram}
+För \textit{bigram} fallet försöker vi hitta den mest sannolika \textit{taggningen} genom:
+{\large $$\operatorname*{arg\,max}_{t_1 \dots t_n} \prod_{i=1}^{n} P(t_i | t_{i-1}) P(w_i | t_i)$$}
+\newline \noindent
+Och för n-gram fallet gör vi såhär:
+{\large $$\operatorname*{arg\,max}_{t_1 \dots t_n} \prod_{i=1}^{N} P(t_i | t_{i-n+1} \dots t_{i-1}) P(w_i | t_i)$$}
+\noindent\hrulefill
+
+\subsection*{Viterbi funktionen}
+$v(t,k) \equiv$ Sannolikheten att vara i stadie $q_k$ efter har gått igenom $t$ observationer och samtidigt valt den mest sannolika vägen $q_1,...,q_{k-1}$ 
+
+\vspace{6.7pt}
+\noindent\hrulefill
+
+\subsection*{Viterbi algoritm}
+\subsubsection*{Bigram fallet}
+För första tidsteget beräknas sannolikheten för $v(0,k)$ såhär:
+$$v(0,k) = P(q_k|START)P(o_0|q_k)$$
+
+\begin{itemize}
+    \item $P(q_k|START)$ är \textbf{initiala sannolikheten} de vill säga sannolikheten att vi hamnar i ordklassen $q_k$ i början 
+    \item $P(o_0|q_k)$ är \textbf{emission sannolikheten} det vill säga givet ordklassen $q_k$ hur sannolikt är ordet $o_0$
+\end{itemize}
+
+\noindent Alla andra tidssteg $v(t,k)$, $\forall t \neq 0$ beränkas så här:
+$$v(t, k) = \max_{i} \left[ v(t-1, i) P(q_k \mid q_i) P(o_t \mid q_k) \right]$$
+\begin{itemize}
+    \item $v(t-1,i)$ hur sannolikt är det att förra ordet var tillhörde ordklass $i$
+    \item $P(q_k|q_i)$ hur sannolikt att förra ordklassen $q_i$ följs av denna ordklassen $q_k$
+    \item $P(o_t,q_k)$ hur sannolikt är ordet $o_t$ emitteras givet är vi är i ordklassen $q_k$ 
+    \item Med $\boldsymbol{\max\limits_{i}}$ menas kolla på \textbf{varje} ordklass som förra ordet kan ha. Vilken ger oss \textbf{högst} sannolikhet 
+\end{itemize}
+\newpage
+$Backptr(t,k)$ \textbf{lagrar} argument $i$ som användes för att uppnå \textbf{maximal} $v(t,k)$ och är:
+$$backptr(t, k) \equiv \operatorname*{arg\,max}_{i} \left[ v(t-1, i) \cdot p(q_k \mid q_i) \cdot p(o_t \mid q_k) \right]$$
+
+\subsubsection*{Trigram fallet}
+Precis som i \textit{bigram fallet} men istället för att endast kolla \textbf{ett steg} bakåt kollar vi nu\textbf{ två steg }bakåt alltså blir ekvationerna så här:
+
+\begin{align*}
+v(0, \text{START}, k) &= p(q_k \mid \text{START}, \text{START}) \cdot p(o_0 \mid q_k) \\
+v(t, j, k) &= \max_{i} \left[ v(t-1, i, j) \cdot p(q_k \mid q_i, q_j) \cdot p(o_t \mid q_k) \right] \\
+\text{backptr}(t, j, k) &= \operatorname*{arg\,max}_{i} \left[ v(t-1, i, j) \cdot p(q_k \mid q_i, q_j) \cdot p(o_t \mid q_k) \right]
+\end{align*}
+\noindent\hrulefill
+
+\subsection*{Viterbi Trellis}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-04 135446.png}
+    \caption{För går igenom varje steg hittas den maximala totala sannolikheten}
+    \label{fig:placeholder}
+\end{figure}
+\noindent\hrulefill
+\subsection*{Beam search}
+Om vi kollar alla möjliga ordklasser för varje steg i \textit{viterbi trellisen} tar det jättelång tid därför använder vi $BeamSearch$ som endast kollar $\beta$ olika klasser med högst $v(t,k)$ värde för varje steg
+
+\vspace{6.7pt}
+\noindent\hrulefill
+\newline
+\newline
+{\Huge $\square$}
+
+\newpage
+\section*{Föreläsning 6}
+\subsection*{Teori}
+\begin{itemize}
+    \item \textbf{Övervakad maskininlärning} utgår från en \textit{träningsmängd} $[(x_1,y_1), (x_2,y_2),...,(x_n,y_n)]$
+    \item Målet med \textbf{Övervakad maskininlärning} är att hitta en funktion $H(x)$ sådana att $H(x) = y$ blir så bra som möjligt på osedd data
+    \item Om träningsmängden är ändlig bir det ett \textbf{klassifierings problem} om träningsmängden är kontinuerlig blir det ett \textbf{regressions problem}
+    \item \textbf{Features} är en representation på data eg. \textit{språk på en bok, antal ord, författare, hudfärg för en crime predictor}   
+    
+\end{itemize}
+\noindent\hrulefill
+
+\subsection*{Vektor behandling}
+En model med $n$ features görs till en \textit{bag of words }\textbf{vektorrepresentation} med $dim(n)$. Likhet mellan vektorer används ofta för modellens \textbf{klassifiering eller regression.} Det finns huuvudsakligen \textbf{3 likhetsmått}:  
+\begin{itemize}
+    \item Euklidiskt avstånd $\equiv \sum\limits_{\forall i}\sqrt{(x_i - y_i)^2}$
+    \item Manhattan avstånd $\equiv \sum\limits_{\forall i} \sqrt{|x_i - y_i|}$
+    \item Cosine similarity { $\displaystyle \equiv \frac{\overline{v_1} \cdot \overline{v_2}}{|\overline{v_1}||\overline{v_2}|}$}
+
+\end{itemize}
+\noindent\hrulefill
+
+\subsection*{K-nearest neighbors}
+Klassiferingen som kollar hur majoriteten av de närmsta grannar har för klass. Eg. \textit{De 5 närmsta grannarna är spam därför är detta också spam}
+
+\noindent\hrulefill
+\subsection*{Dimensionell reduction vanliga metoder}
+\begin{itemize}
+    \item Ta bort stop ord
+    \item Ta bort vanligt förekommande ord
+    \item Lemmatisering 
+    \item Erätt nummer med \textit{<number>}
+    \item Casefolding
+    
+\end{itemize}
+
+\noindent\hrulefill
+
+\subsection*{Naive bayes Classifier}
+Givet ett dokument med ord $W_1,...,W_n$ vad är den mest sannolika etikettten $y$?
+$$\arg \max_{y} P(y \mid w_1, \dots, w_n)$$
+Kan skrivas om med bayes sats till:
+$$\arg \max_{y} P(w_1 \mid y) \dots P(w_n \mid y) P(y)$$
+Laplace smoothing kan tillämpas på \textit{naive bayes classifier} genom att lägga till 1 på alla ord som är 0 och lägga till totala unika ord i nämnaren.
+
+\newpage
+\section*{Evaluering och av klassifikations modell}
+\begin{itemize}
+    \item Precision = {\large $\frac{TP}{TP+FP}$}, straffar \textit{false postives}
+    \item Recall = {\large $\frac{TP}{TP+FN}$}, straffar \textit{false negatives}
+    \item Accuracy = {\large $\frac{Correct\; output}{Total\; output} = \frac{TP + TN}{TP + TN +FP +FN}$}
+    \item Arithmetic average precision/recall = {\large $\frac{P+R}{2}$}
+    \item Geometric mean (F-score) = {\large $\frac{2PR}{P+R}$}
+    \item arithmetic average har en svaghet att R = 0.99 och P = 0.01 vilket som är en horribel model fortfarande ger 0.5
+    
+\end{itemize}
+\noindent\hrulefill
+\newline
+\newline
+\newline
+{\Huge $\square$}
+\newpage
+
+\section*{Föreläsning 7}
+En \textbf{generativ model} beräknar gemensamma sannolikheten för $x$ och $y$ samtidigt i.e {$P(x,y) = P(x|y) \cdot P(y)$}medans en \textbf{diskriminativ model} beräknar endast {$\arg \max_{y} P(y|x)$} det vill säga att den direkt beräknar sannolikheten för att $y$ förekommer givet $x$
+
+\subsection*{Vektorisering av features och vikter}
+\begin{itemize}
+    \item Featuresvektorn $\equiv \overline{x} = 
+    \begin{bmatrix}
+    1 & x_1 & x_2 \dots x_n
+    \end{bmatrix}$
+    \item Viktvektorn $\equiv \overline{\theta} =$
+    $\begin{bmatrix}
+    \theta_0 & \theta_1 & \theta_2 \dots \theta_n
+    \end{bmatrix}$
+Genom att beräkna $\overline{\theta} \cdot \overline{x}$ så fås
+$$\theta_0 \cdot 1 + \theta_1 \cdot \overline{x_1}+ \theta_2 \cdot \overline{x_2}+\dots+ \theta_n \cdot \overline{x_n}$$
+
+\end{itemize}
+Modellen hittar vikterna $\overline{\theta}$ automatiskt genom \textit{logistisk regression med gradient descent}. $\overline{\theta} \cdot \overline{x}$ sätts sedan tranformeras sedan genom sigmoid funktionen $\sigma(z)$:
+
+Vanligtvis klassifierar vi alla $\sigma(z) > 0.5$ som positiva exempel och $\sigma(z) < 0.5$ som negativa exempel. 
+{\large $$\sigma(z) = \frac{e^z}{1+e^z}$$}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    grid=major,
+    samples=200,
+    domain=-6:6,
+    width=5cm, height=3cm,
+    ymin=0, ymax=1.1,
+    xtick={-6,-4,-2,0,2,4,6},
+    ytick={0,0.25,0.5,0.75,1},
+    xlabel={}, ylabel={},
+]
+
+\addplot[red, thick] {exp(x)/(1 + exp(x))};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Logistisk regression model}
+Anta att vi har $n$ \textbf{särdrag} med $m$ \textbf{datapunkter} som bildar matris $A$ där första raden är dummy variabeln 1. Matrisen kan ska sedan multipliceras med $\overline{\theta}$. Modellens mål är att lära sig $\theta$ så att så att mycket av träningsdatan blir rätt som möjligt
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis lines=middle,
+            xlabel=$X_1$,
+            ylabel=$X_2$,
+            xmin=-7, xmax=7,
+            ymin=-7, ymax=7,
+            xtick={\empty}, ytick={\empty},
+            axis line style={->, >=stealth, thick},
+            every axis x label/.style={at={(ticklabel* cs:1)},anchor=west},
+            every axis y label/.style={at={(ticklabel* cs:1)},anchor=south},
+            samples=50,
+            width=10cm, height=10cm
+        ]
+
+        % THE LINE: x2 = 4 * x1
+        \addplot[dashed, blue, thick, domain=-1.8:1.8] {4*x};
+        
+        % MOVED LABEL: Changed coordinate to (1.5, 5.5) to move it up and right
+        \node[blue, anchor=west] at (axis cs:1.5, 5.5) {$x_2 = 4x_1$};
+
+        % Red data points
+        \addplot[only marks, mark=*, red, mark size=4pt] coordinates {
+            (-2, 5) (-5, 2) (-3, -5)
+        };
+
+        % Green data points
+        \addplot[only marks, mark=*, green, mark size=4pt] coordinates {
+            (2, 2) (4, 4) (4, 2) (5, -3)
+        };
+
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+\newline
+Modellens mål är att given ett $dim(n)$ rum med $\overline{x}$ av $dim(n)$ hittar en linjärt hölje som delar en negativa och positiva klasser rätt
+ 
+ \newpage
+
+\subsection*{Maximum likelihood estimation av parametrar}
+Givet att för binär klassifiering:
+$$P(y|x) = \sigma(\theta^Tx)^y(1-\sigma(\theta^Tx))^{1-y}$$
+Om vi antar att träningsexempelen är oberoende får vi:
+$$L(x,y,\theta) = \prod\limits_{\forall i}P(y_i, x_i) =$$
+$$ =\prod\limits_{\forall i}\sigma(\theta^Tx_i)^{y_i}(1-\sigma(\theta^Tx_i))^{1-y_i}$$
+Vi försöker hitta $\overline{\theta}$ som maximerar funktionen vilket är samma sak som $min(log(L(x,y,\theta)))$ detta kan beskrivas som en styckvis funktion:
+$$L(x_{i}, y_{i}, {\theta}) =
+\begin{cases}
+    -\log(\sigma(\theta^T x_{i})) & \text{, om } y_{i} = 1 \\
+    -\log(1 - \sigma(\theta^T x_{i})) & \text{, om } y_{i} = 0
+\end{cases}$$
+
+\subsection*{Gradient descent}
+Givet att $$L(x_{i}, y_{i}, {\theta}) = L(x_i, y_i, \theta) = -y_i \log(\sigma(\theta^T x_i)) - (1 - y_i) \log(1 - \sigma(\theta^T x_i))$$ är formad som en en skål och alltid har en minimipunkt
+$$
+\nabla_{\theta} \cdot L(x_i, y_i, \theta) =
+{\large \begin{bmatrix}
+\frac{\partial L}{\partial \theta_0} \\[1em]
+\frac{\partial L}{\partial \theta_1} \\[1em]
+\frac{\partial L}{\partial \theta_2} \\
+\vdots \\
+\frac{\partial L}{\partial \theta_n}
+\end{bmatrix}
+}$$
+
+Givet en startgissning $\overline{x_i}$ och learning rate $\alpha$ itererar vi följande formel tills $|\nabla L| < \epsilon$:
+\vspace{6pt}
+{\large $$\overline{x}_{i+1} = \overline{x}_i - \alpha \cdot \nabla_{\theta} L$$}
+\newpage
+\subsection*{Batch gradient descent pseudocode, memorera}
+\begin{algorithm}
+\caption{Gradient Descent Step}
+\begin{algorithmic}
+    % ADJUST THIS VALUE TO INCREASE/DECREASE SPACING
+    \setlength{\baselineskip}{2em} 
+
+    \Repeat
+        \For{$k = 0$ \textbf{to} $n$}
+            \State $\text{gradient}[k] \gets \frac{1}{m} \sum_{i=1}^{m} \left( \sigma(\theta^T x^{(i)}) - y^{(i)} \right) x_k^{(i)}$
+        \EndFor
+        
+        \For{$k = 0$ \textbf{to} $n$}
+            \State $\theta_k \gets \theta_k - \alpha \cdot \text{gradient}[k]$
+        \EndFor
+    \Until{convergence}
+\end{algorithmic}
+\end{algorithm}
+\subsubsection*{Variationer av gradient descent}
+Eftersom den vanliga \textit{batch gradient descent} endast beräknar gradienten för alla datapunkter är den extremt långsam istället används ofta:
+\begin{itemize}
+    \item \textbf{Stochastic gradient descent} som använder en random datapunkt i varje iteration
+    \item \textbf{Minibatch gradient descent} väljer slumpmässigt $n$ punkter varje iteration
+\end{itemize}
+
+\subsection*{Tidig stopp}
+Om training loss minskar och validerings loss ökar kan det betyda överträning. Vi använder en hyperparameter \textit{P} som är antalet interationer som träningsloss kontinuerligt ökar innan vi avbryter
+
+\subsection*{Regularisering}
+När vikterna som beräknas är extremt stor är det ett typ exempel på typiskt exempel på \textit{overfitting}. Därför använder vi \textit{regularisering} för att undvika detta:
+$$\hat{L}(\theta) = L(\theta) + \lambda \sum\limits_{\forall i} \theta_i^2$$
+
+\subsection*{Multinomial logistic regression}
+\subsubsection*{Softmaxxing}
+Anta att vi har mer än 2 klasser eg. 5st då kan vi inte längre använda $1-P(y|x)$ och $P(y|x)$. Vi kan inte längre använda sigmoid utan måste använda \textbf{softmax:}
+$$softmax(z) = \frac{e^{z_k}}{\sum\limits_{\forall i} e^{z_i}}$$
+
+\newpage
+\subsection*{Ickebinär klassifiering}
+Det finns $n$ klass representeras och varje klass är $m$ features som representeras med hjälp av en $n \times m$ matris $\theta$
+
+
+$$\theta =
+\begin{pmatrix}
+\theta_{1,0} & \theta_{1,1} & \theta_{1,2} & \theta_{1,3} \\
+\theta_{2,0} & \theta_{2,1} & \theta_{2,2} & \theta_{2,3} \\
+\theta_{3,0} & \theta_{3,1} & \theta_{3,2} & \theta_{3,3}
+\end{pmatrix}$$
+
+\begin{enumerate}
+    \item Givet en vektor med features $\overline{x}$ beräknar vi $\theta \overline{x}$
+    \item Softmaxxa sedan $softmax(\theta \overline{x})$
+    \item välj därefter klassen med högst sannolikhet
+\end{enumerate}
+
+\subsection*{Gradient descent for multinomial klassifiering}
+Kommer ens detta på tentan?
+
+\section*{Föreläsning 8}
+\subsection*{Semantisk representation}
+Ordvektorer avbildar \textit{ord} som punkter i ett rum
+\begin{figure}[h]
+    \centering % This command centers the plot on the page
+    \begin{tikzpicture}
+        % 1. Draw the Grid
+        \draw[step=1cm, gray!50, thin] (0,0) grid (4.9, 4.9);
+
+        % 2. Draw the Axes
+        % Thick black arrows
+        \draw[->, ultra thick, black] (0,0) -- (5, 0); % X axis
+        \draw[->, ultra thick, black] (0,0) -- (0, 5); % Y axis
+
+        % 3. Define Styles
+        \tikzset{point/.style={circle, fill=black, inner sep=2.5pt}}
+        \tikzset{lbl/.style={font=\sffamily\large}}
+
+        % 4. Plot Points and Labels
+        % Cat
+        \node[point, label={[lbl]left:cat}] at (1.2, 4.2) {};
+
+        % Lion
+        \node[point, label={[lbl]left:lion}] at (1.9, 3.8) {};
+
+        % Car
+        \node[point, label={[lbl]left:car}] at (4.2, 1.2) {};
+
+    \end{tikzpicture}
+\end{figure}
+\begin{itemize}
+    \item Axlarna är någon objectiv ranking
+    \item Enligt \textit{distributional hypotes} avgörs ordets betydelse av dess sammanhang
+\end{itemize}
+
+\subsection*{Ord document matris}
+Exempelvis kan man använda ord document vektorer som visar hur många gånger ett ord förekommer givet ett dokument
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Screenshot 2026-01-05 162649.png}
+    \label{fig:placeholder}
+\end{figure}
+\newpage
+
+\subsection*{Ord-ord matris}
+En \textit{ord-ord matris} visar hur ofta ett ord förekommer i kontexten av ett annat ord. Kontexten defineras som n ord före och efter
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Screenshot 2026-01-05 172713.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection*{Singular value decomposition}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{Screenshot 2026-01-05 164154.png}
+    \label{fig:placeholder}
+\end{figure}
+\begin{enumerate}
+    \item Givet axlarna $x_1$ och $x_2$
+    \item Gör ett basbyte till $u_1$ och $u_2$
+    \item Släng bort $u_2$
+    \item $u_1$ och $u_2$ kommmer motsvara \textit{latenta dimensioner}. Vi vet inte vilka reella koncept de motsvarar
+\end{enumerate}
+
+\subsection*{Random indexing}
+\begin{enumerate}
+    \item Ge varje ord en random stor (d = 2000) random vektor $\overline{r}(w)$  
+    \item Fyll $\overline{r}(w)$ med 100 värden som är -1 eller 1 på slumpmässiga positioner
+    \item Fyll kontextvektorn $\overline{c}(w)$ med 0:or
+    \item För varje ord addera $n$ ord före och efter i dess $\overline{c}(w)$ med $\overline{r}(w)$ från $n$ ord före och efter
+\end{enumerate}
+
+\newpage
+\subsection*{Word2Vec}
+\begin{itemize}
+    \item Advancerade egenskaper som:  $v(France) -v(Paris) +v(Rome) = v(Italy)$
+    \item \textit{Semi-supervised learning} labels för datapunkterna sätts automatiskt
+    \item Använder också $c(w)$ och $r(w)$ precis som random indexing
+\end{itemize}
+
+\subsection*{Skipgram prediction}
+Förutse context ord givet ett focus ord. $P(u|v)$ sannolikheten att ordet $u$ förekommer givet kontexten $v$.
+{\large $$P(u|v) = \sigma(\Tilde{u}^Tv)$$}
+Vi kan också träna modellen med \textit{negativa exempel} eg. $P(text|to)$ ska va nära 0 innebär att $1 - P(text|to) = {\sigma(-text^T \cdot to )}$ ska vara nära 1
+För varje positivt exempel bör 5-20 negativa exemplar användas. 
+
+\subsection*{Loss function}
+Målet är att minimera sannolikheten för negativa exempel och maximera sannolikheten för positiva exempel:
+{\large \textbf{Behövs ej då den här har aldrig kommit på tenta}}
+
+\newpage
+
+\section*{Föreläsning 9} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

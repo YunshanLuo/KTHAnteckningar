@@ -1,0 +1,1094 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{}
+\usepackage[T1]{fontenc}
+\title{Språck sammanfattning}
+\author{Jamal Brown}
+
+
+\renewcommand{\baselinestretch}{0.2}
+
+\setlength{\hoffset}{-18pt}         
+\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
+\setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
+\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
+\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
+\setlength{\voffset}{-18pt} % Bon pour DOS
+\setlength{\marginparsep}{7pt} % Séparation de la marge
+\setlength{\topmargin}{0pt} % Pas de marge en haut
+\setlength{\headheight}{13pt} % Haut de page
+\setlength{\headsep}{4pt} % Entre le haut de page et le texte
+\setlength{\footskip}{27pt} % Bas de page + séparation
+\setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath} % Required for the align* environment
+\usepackage{float}
+\usepackage{pgfplots} 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\pgfplotsset{compat=1.18}
+
+
+\begin{document}
+\section{Föreläsning 1: Intro}
+\subsection{Vad är makroekonomi?}
+Studerar ekonomi som en helhet, inte enskilda marknader.
+På både lång och kort sikt.
+
+\subsection{Tre modeller}
+\begin{itemize}
+    \item Mycket långsikt: Solowmodellen
+    \item Långsikt: AS-AD modellen
+    \item Kortsikt: IS-LM modellen
+\end{itemize}
+
+\subsection{AS--AD modellen}
+Aggregerad efterfrågaekurva(AD)
+\begin{itemize}
+    \item Sammanvägning av alla efterfrågekurvor i ekonomin
+    \item Lutar alltid nedåt
+\end{itemize}
+
+\noindent Aggregerat utbudskurva(AS)
+\begin{itemize}
+    \item Sammanvägning av alla utbudskurvor i ekonomin
+    \item Beror på tidshorisonten
+\end{itemize}
+
+\subsection{Aggregerad utbud--mycket långsikt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ASLong.png}
+\end{figure}
+\begin{itemize}
+    \item Ackumulering av produktionsfaktorer
+    \item Teknisk utveckling
+    \item Studerar vad det är som får kurvan att röra sig åt höger
+\end{itemize}
+
+\subsection{Aggregerat utbud--långsikt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ASMedium.png}
+\end{figure}
+\begin{itemize}
+    \item Klassiska modellen
+    \item Produktionsfaktorer uttnyttjas fullt ut
+    \item Alltid i jämnvikt
+\end{itemize}
+
+\subsection{Aggregerat utbud--kortsikt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ASShort.png}
+\end{figure}
+Keynesiansk teori:
+\begin{itemize}
+    \item Priser och löner är trögrörliga (konstanta)
+    \item Produktionsfaktorer inte fullt utnyttjade
+\end{itemize}
+
+\newpage
+\subsection{Dynamik på kort och långsikt}
+Exempel: Expansiv penningpolitik
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Dynamic.png}
+\end{figure}
+
+\noindent På kort sikt:
+\begin{itemize}
+    \item Ökar produktionen dvs. kvantiteten
+    \item Priserna är konstanta
+\end{itemize}
+
+\noindent På lång sikt:
+\begin{itemize}
+    \item Priserna ökar
+    \item Produktionen återgår till det ursprungliga
+    \item Ingen effekt på produktionen
+\end{itemize}
+
+\noindent På medellång sikt:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{asm.png}
+\end{figure}
+\begin{itemize}
+    \item Företaget producerar mer än det naturliga utbudet
+    \item Företaget höjer priserna
+    \item Produkten återgår till det naturliga utbudet
+    \item $A\rightarrow B \rightarrow C$
+\end{itemize}
+
+\subsection{BNP och real tillväxt, Sverige 1820--2018}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{BNP.png}
+\end{figure}
+
+\begin{itemize}
+    \item Brukar mätas som procentuell förändring av BNP
+    \item Normalt 2--3\% per år
+    \item Beror på faktoranvändning och produktivitet 
+\end{itemize}
+
+\subsection{BNP och potentiell BNP}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{BNP2.png}
+\end{figure}
+
+\begin{itemize}
+    \item Potentiell BNP: Om samtliga produktionsfaktorer används fullt ut på ett långsiktigt hållbart sätt
+    \item Produktionsgap = BNP - Potentiell BNP
+    \item Övernyttjande bidrar till inflation
+    \item Undernyttjande bidrar till arbetslöshet
+\end{itemize}
+
+\subsection{Produktionsgap, Sverige 1945--2018}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{BNP3.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{BNP4.png}
+\end{figure}
+
+\begin{itemize}
+    \item Vi kan se att variationen i produktionsgapet blir större och större i nominala termer
+    \item Men procentuellt är den i princip lika stor
+\end{itemize}
+
+\subsection{Konjunkturcykelns terminologi}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{konjunktur.png}
+\end{figure}
+\begin{itemize}
+    \item BNP över potentiell BNP: Högkonjunktur
+    \item BNP under potentiell BNP: Lågkonjunktur
+    \item BNP påväg upp: konjunkturuppgång
+    \item BNP påväg ner: konjunkturnedgång
+\end{itemize}
+
+\subsection{Samband produktion och arbetslöshet}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{BNP5.png}
+\end{figure}
+
+\begin{itemize}
+    \item När produktionen ökar, minskar arbetslösheten
+    \item När produktionen minskar, ökar arbetslösheten
+\end{itemize}
+
+\subsection{AS och Philipskurvan}
+\begin{itemize}
+    \item Samband mellan produktion och prisnivån
+    \item Samband mellan arbetslöshet och inflation
+\end{itemize}
+
+\subsection{Årlig philipskurva i Sverige}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{philip.png}
+\end{figure}
+
+\subsection{BNP}
+\begin{itemize}
+    \item Marknadsvärdet på alla varor och tjänster som produceras i ett land under en viss tidsperiod
+    \item Räknar ej med insatsvaror, dvs. varor som används i produktionen av andra varor
+\end{itemize}
+
+Problem: 
+\begin{itemize}
+    \item Inkluderar inte hemmaproduktion eller svartproduktion
+    \item Ta inte hänsyn till miljöförstöring
+    \item Att du lagar mat åt dig själv räknas inte, men om du beställer mat räknas det 
+\end{itemize}
+
+\subsection{BNP per capita}
+BNP per capita är ett välståndsmått men:
+\begin{itemize}
+    \item Tar inte hänsyn till inkomstfördelning
+    \item Inkluderar inte populationens välbefinnande
+\end{itemize}
+
+\subsection{HDI -- Human Development Index}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{HDI.png}
+    \caption{Finns en korrelation mellan BNP per capita och HDI, men det är inte perfekt.}
+\end{figure}
+
+\subsection{Egen rapporterad livskvalitet}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{life.png}
+    \caption{Även egen rapporterad lycka finns det ett samband}
+\end{figure}
+
+\subsection{Tillväxt BNP per capita OECD}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{BNP6.png}
+\end{figure}
+
+\subsection{BNP per capita i Sverige 1950--2031}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{BNP7.png}
+\end{figure}
+
+\subsection{Sveriges utveckling i OECD välståndsliga}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{BNP8.png}
+\end{figure}
+\begin{itemize}
+    \item Sverige har legat i topp i många år
+    \item Men nu har vi halkat ner till från 4:e till 13:e plats
+\end{itemize}
+
+\subsection{Nationalräkenskaper}
+Vad är nationalräkenskaper?
+\begin{itemize}
+    \item Visar vad BNP består av
+    \begin{itemize}
+        \item Inkomst
+        \item Produktion
+        \item Användning
+    \end{itemize}
+    \item Ett sätt att karaktärisera ekonomin
+\end{itemize}
+
+\subsection{Ekonomins storlek förenklat}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{BNP9.png}
+\end{figure}
+
+\subsection{Utbudets och efterfrågans komponenter}
+Totala utbud av varor och tjänster:
+\begin{itemize}
+    \item Inhemsk produktion (Y)
+    \item Import (Q)
+\end{itemize}
+
+\noindent Totala efterfråga på varor och tjänster
+\begin{itemize}
+    \item Hushållens konsumtion (C)
+    \item Företagens investeringar (I)
+    \item Offentliga konsumtion (G)
+    \item Export (X)
+\end{itemize}
+
+\noindent Fundamental nationainkomstidentitet:
+{\large $$ Y + Q = C + I + G + X $$}
+{\large $$\implies Y = C + I + G + NX$$}
+{\large $$NX = X - Q$$}
+\noindent Där $NX$ är nettoexporten
+
+\subsection{Hushållens konsumtion (C)}
+Inköp av varor hos hushållen 
+\begin{itemize}
+    \item Varaktiga varor: bilar, möbler, etc.
+    \item Icke-varaktiga varor: mat, fika, etc.
+    \item Tjänster: frisör, restaurang, etc.
+\end{itemize}
+
+\subsection{Hushållens konsumtion (C) \% av BNP}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{C.png}
+\end{figure}
+I Sverige består konsumtionen av BNP betydligt mindre än andra länder. I Sverige har vi väldigt stor offentilg konsumtion istället
+
+\subsection{Företagens investeringar (I)}
+\begin{itemize}
+    \item Bostadsbyggande
+    \item Nya maskiner 
+    \item Byggade av favriker och kontor
+    \item Förändring av varulager
+\end{itemize}
+
+Investeringar inkluderar inte:
+\begin{itemize}
+    \item Investering i utbildning
+    \item Köp av obligationer och aktier
+    \item Konsumenternas privata investeringar i t.ex. aktier och fonder räknas som konsumtion, inte investeringar
+\end{itemize}
+
+\subsection{Offentlig konsumtion (G)}
+\begin{itemize}
+    \item Nationellt försvar
+    \item Löner av statliga anställda
+    \item Bidrag till hushåll och företag räknas inte som offentlig konsumtion, utan som transfereringar
+\end{itemize}
+
+\subsection{Olika komponenter i Sverige}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{components.png}
+\end{figure}
+\newpage
+\subsection{Nominel vs real BNP}
+Nominell BNP beräknas 
+$$NGDP_t = \sum_{i=1}^{n} P_i Q_i$$
+
+\noindent Där $P_i$ är priset på vara $i$ och $Q_i$ är kvantiteten av vara $i$ som produceras under år $t$.
+
+\vspace{15pt}
+\noindent Tillväxt i nominell BNP beräkas som: 
+$$G_{t+1} = \frac{NGDP_t - NGDP_{t-1}}{NGDP_{t-1}}$$
+$$G_{t+1} = \sum_{i}\omega_{i,t}(\hat{P}_{i,t+1} + \hat{Q}_{i,t+1} + \hat{P}_{i,t+1} \hat{Q}_{i,t+1})$$
+$$\omega_{i,t} = \frac{P_i Q_i}{NGDP_t}$$
+$\hat{}$ representerar procentuell förändring mellan år $t$ och $t+1$
+\vspace{15pt}
+
+\noindent Hur ska vi fånga upp enbart kvanitetsförändring?
+$$G_{t+1} = \sum_{i}\omega_{i,t}(\hat{P}_{i,t+1} + \hat{Q}_{i,t+1} + \hat{P}_{i,t+1} \hat{Q}_{i,t+1}), \omega_{i,t} = \frac{P_i Q_i}{NGDP_t}$$
+
+\noindent Vi håller priserna konstanta vid ett valt basår
+$$g_{t+1} = \sum_{i} \hat{\omega}_{i,t} \hat{Q}_{i,t+1}, \hspace{15pt} \hat{\omega}_{i,t} = \frac{P_{i,B} Q_{i,t}}{P_{i,B} Q_{i,B}}, \hspace{15pt} RGDP_t = \sum_{i} P_{i,B} Q_{i,t}$$
+
+\noindent $g$ är den reala tillväxten i ekonomin mellan år $t$ och $t+1$. $P_{i,B}$ är priset på vara $i$ i basåret. $RGDP$ är den reala BNPn.
+
+\vspace{15pt}
+\noindent $G$ inkluderar båda pris- och kvanitetsänderingar, medan $g$ inkluderar endast kvantitetsförändringar.
+
+\subsection{Nominell vs real BNP i Sverige}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{BNP10.png}
+\end{figure}
+
+\subsection{Viktiga identiteter}
+\begin{itemize}
+    \item Nationalinkomstidentiteten: $Y = C + I + G + NX$
+    \item Disponibel inkomst (YD): $YD = Y + TR - TA_{skatter}$
+    \item Fördelning av disponibel inkomst: $YD = C + S$
+    \item Sparande (S): $S = I + (G+TR-TA)+NX, \hspace{15pt} (G + TR - TA) = BD$
+    \item Hushållen kan fördela sitt sparande på tre sätt
+    \begin{itemize}
+        \item Lån til företag (I)
+        \item Lån till staten (BD)
+        \item Lån till utlandet (NX)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Inflation (KPI)}
+Tidsserie över KPI i Sverige 1980--2025
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{kpi.png}
+\end{figure}
+
+\subsection{Inflation: Förändering av KPI (YoY)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{kpi2.png}
+\end{figure}
+
+\subsection{Inflation: beräkning}
+Procentuella förändring i den allmänna prisnivån mellan år $t$ och $t+1$:
+$$\pi_{t+1} = \frac{P_{t+1} - P_t}{P_t}$$
+
+\subsection{BNP--deflator}
+Definierar som kvoten mellan nominell BNP och real BNP:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{deflator.png}
+\end{figure}
+
+\subsection{Konsumentprisindex, KPI}
+\begin{itemize}
+    \item Mäts med en standardiserad varukorg---representativt för konsumenter
+    \item Visar levnadskostnaderna för ett genomsnittligt hushåll
+\end{itemize}
+
+\subsection{Jämförelse mellan KPI mot BNP--deflator}
+\begin{itemize}
+    \item KPI är mer begränsad varukorg
+    \item BNP--deflator inkluderar alla varor och tjänster som produceras i ekonomin
+    \item KPI inkluderar importvaror, medan BNP--deflator inte gör det
+\end{itemize}
+
+\subsection{Producentprisindex, PPI}
+\begin{itemize}
+    \item Standardiserad varukorg för producenter
+    \item Fångar produktionskostnad för ett genomsnittligt företag
+    \item Inkluderar både råvaror och insatsvaror
+    \item Fångar inflation i tidigare skede än KPI
+\end{itemize}
+
+\subsection{Inflation, nominell och real ränta}
+Antar att jag idag har $x$ kronor då kan jag vid tidspunkt $t$ köpa:
+$$\frac{x}{P_t} \text{enheter BNP}$$
+\noindent Om jag istället investerar mina pengar kan jag vid tidpunkt $t+1$ köpa: 
+$$\frac{x(1+R)}{P_{t+1}} \text{enheter BNP}$$ 
+\noindent Den reala räntan fås genom:
+$$r_{t+1} = \frac{x(1+R_t)/P_{t+1} - x/P_t}{x/P_t} = \frac{1+R_t}{1 + \pi_{t+1}}$$
+$$\implies R_t = r_{t+1} + \pi_{t+1} + r_{t+1} \pi_{t+1}$$
+
+\section{Föreläsning 2: Ekonomisk tillväxt}
+\subsection{Inkomstfördelning 2023}
+\begin{itemize}
+    \item Europa, Nordamerika samt Chile är hög inkomstländer
+    \item BNP per capita är 112 gånger högre i top 5 länderna än i botten 5 länderna
+    \item BNP per capita och ljusintensitet samvarierar
+\end{itemize}
+
+\subsection{Inkomstfördelning 156 länder}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{inkomstfördelning.png}
+\end{figure}
+
+\begin{itemize}
+    \item Vi kan se ojämnlikheten i BNP per capita har ökat 1970--2014
+    \item Däremot ökar BNP per capita i helhet på alla länder 
+\end{itemize}
+
+\subsection{Lorenzkurvan}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{lorenz.png}
+\end{figure}
+
+\begin{itemize}
+    \item Mäter andel av världens inkomst som en funktion av andel av världens population
+    \item Gini-koefficienten är arean mellan den räta linjen och Lorenzkurvan, delat med arean under den räta linjen
+\end{itemize}
+
+\subsection{Tillväxt takt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{growth.png}
+    \caption{Om dessa länder kommer att ha samma tillväxttakt från 1990-2019}
+\end{figure}
+
+\subsection{BNP per capita rank 1970 vs 2019}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{rank.png}
+    \caption{illustration av ländernas rank 2019 vs 1970}
+\end{figure}
+
+\subsection{Tillväxtdekomponering}
+Produktionsfunktion: $Y = A \cdot F(K,N)$
+\begin{itemize}
+    \item $Y$: BNP
+    \item $A$: Teknologisk nivå
+    \item $K$: Kapitalstock
+    \item $N$: Antal sysselsatta
+\end{itemize}
+
+\noindent I perfekt konkurrens gäller:
+$$w = MPL = A \cdot F_N(K,N), \hspace{15pt} r = MPK = A \cdot F_K(K,N)$$
+
+\noindent Sammanfattningvis:
+$$\frac{\Delta Y}{Y} = \frac{\Delta A}{A} + \underbrace{(\frac{w \cdot N}{Y})}_{1-\theta}\frac{\Delta N}{N} + \underbrace{(\frac{r \cdot K}{Y})}_{\theta}\frac{\Delta K}{K}$$
+
+\begin{itemize}
+    \item Arbetskraftens bidgrag till tillväxt: {\Large $(\frac{w \cdot N}{Y})\frac{\Delta N}{N}$}
+    \item Kapitalets bidrag till tillväxt: {\Large $(\frac{r \cdot K}{Y})\frac{\Delta K}{K}$}
+\end{itemize}
+\newpage
+\subsection{Tillväxtdekomponering, empiriskt}
+Räkna ut teknologi faktorn i en solow residual:
+\vspace{15pt}
+
+\noindent Exempel på tillväxtdekomponering i Sverige 2010--2019:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{dekomponering.png}
+\end{figure}
+
+\subsection{Tillväxt teori}
+Två typer 
+\begin{itemize}
+    \item Exogen tillväxtteori: Teknologisk utveckling sker utanför modellen
+    \item Endogen tillväxtteori: Teknologisk utveckling sker inom modellen
+    \item Solowmodellen: En neoklassisk exogen tillväxtmodell
+    \item Solowmodellen baseras på en neoklassisk produktionsfunktion 
+\end{itemize}
+
+\subsection{Neoklassisk produktionsfunktion, villkor}
+Alla produktionsfunktioner måste uppfylla följande villkor för att användas i solowmodellen:
+\begin{enumerate}
+    \item Konstant skalavkastning: $F(A,\lambda K, \lambda N) = \lambda Y, \text{\hspace{15pt}} \lambda > 0$
+    \item Positiva och avtagande marginalprodukter: 
+    \begin{itemize}
+        \item {\large $\frac{\partial F(A,K,N)}{\partial K} > 0$}
+        \item {\large $\frac{\partial F(A,K,N)}{\partial N} > 0$}
+        \item {\large $\frac{\partial^2 F(A,K,N)}{\partial K^2} < 0$}
+        \item {\large $\frac{\partial^2 F(A,K,N)}{\partial N^2} < 0$}
+    \end{itemize}
+    \item Inadavillkor
+    \begin{itemize}
+        \item {\large $\lim\limits_{K \to 0}\frac{\partial F(A,K,N)}{\partial K} = \lim\limits_{N \to 0}\frac{\partial F(A,K,N)}{\partial N} = \infty$}
+        \item {\large $\lim\limits_{K \to \infty}\frac{\partial F(A,K,N)}{\partial K} = \lim\limits_{N \to \infty}\frac{\partial F(A,K,N)}{\partial N} = 0$}
+    \end{itemize} 
+
+\end{enumerate}
+
+\subsection{Solowmodellen}
+Produktionsfunktion: $Y = A \cdot F(K,N)$
+\vspace{5pt}
+
+\noindent På grund av konstant skalavkastning kan vi skriva om produktionsfunktionen i per capita termer:
+\begin{itemize}
+    \item $y = f(k)$
+    \item $y = \frac{Y}{N}$
+    \item $k = \frac{K}{N}$
+    \item $f(k) = A \cdot F(\frac{K}{N},1)$
+\end{itemize}
+
+\noindent Aggregerad kapitalachumuleringsfunktion: 
+\begin{itemize}
+    \item $\Delta K = sY - dK$
+    \item Vi antar en sluten ekonomi dvs. en ekonomi utan utrikeshandels 
+    \item Vi har inte heller in offentlig sektor, därför går alla besparingar till investeringar
+\end{itemize}
+
+\noindent Förändering i kapitalstock är alltså:
+$$sparkvot * produktion - deprecieringstakt * kapitalstock$$
+
+\noindent i per capita termer:
+$$\Delta k = s y - (d + n)k, \hspace{7pt}\text{n är populations tillväxten}$$
+
+\noindent Sammanfattningsvis två funktioner:
+\begin{itemize}
+    \item Produktionsfunktion: $y = f(k)$
+    \item Kapitalackumuleringsfunktion: $\Delta k = s y - (d + n)k$
+    \item Systems jämnvikt: $\Delta k = 0 \implies s f(k^*) = (d + n)k^*$
+\end{itemize}
+
+\subsection{Solowmodellen, visuell lösning}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{solow.png}
+\end{figure}
+
+\subsection{Solowmodellen, ökar sparande till s'}
+Vad händer när politiker gör det mer lönsamt att spara, dvs. ökar sparkvoten från $s$ till $s'$?
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{solow2.png}
+\end{figure}
+
+\subsection{Hur ser övergången ut?}
+\begin{itemize}
+    \item $y = f(k)$
+    \item $\Delta k = s y - (d + n)k$
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{solow3.png}
+\end{figure}
+
+\subsection{Slutsatser}
+\begin{itemize}
+    \item Ekonomin sträver mot en jämnvikt
+    \item Vid jämvikten i den enkla modellen är tillväxten per capita lika med 0
+    \item OM sparkvoten ökar
+    \begin{itemize}
+        \item Tillväxttakten ökar omedelbart och konvergerar sedan mot 0
+        \item Om kapitalstocken, sparandet och BNP per capita ökar, så konvergerar över tid mot högre jämnviktsnivåer
+        \item Konsumptionen per capita kan kovergera antingen mot en ny högre eller lägre jämnviktsnivå
+    \end{itemize}
+\end{itemize}
+
+\subsection{Solowmodellen med teknologisk utveckling}
+Produktionsfunktion: $Y = F(K, A \cdot N)$
+
+\noindent Omskrivning med konstant skalavkastning:
+\begin{itemize}
+    \item $\tilde{y} = f(\tilde{k})$
+    \item $\tilde{y} = \frac{Y}{A \cdot N}$
+    \item $\tilde{k} = \frac{K}{A \cdot N}$
+    \item $f(\tilde{k}) = F(\frac{K}{A \cdot N},1)$
+\end{itemize}
+
+\noindent Aggregerad kapitalackumuleringsfunktion: 
+$$\Delta K = sY - dK$$
+
+\noindent Uttryckt i per capitaform:
+$$\Delta \tilde{k} = s \tilde{y} - (d + n + g)\tilde{k}, \hspace{7pt}\text{g är teknologisk utveckling}$$
+
+\subsection{Solowmodellen med teknologisk utveckling, visuellt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{solow4.png}
+\end{figure}
+
+\subsection{Slutsatser: Solowmodellen med teknologisk utveckling}
+\begin{itemize}
+    \item Ekonomin konvergerar mot ett jämnviktsläge
+    \item BNP per effektiv arbetare är konstant vid jämnvikten: $\Delta \tilde{y} = 0$
+\end{itemize}
+
+\noindent Vad gäller för BNP per arbetare?
+$$\tilde{y} = \frac{Y}{AN} = \frac{y}{A} \implies y = \tilde{y}A$$
+
+\noindent Tillväxttakten ges av:
+$$\frac{\Delta y}{y} = \frac{\Delta A}{A} = g$$
+
+\noindent BNP per capital växer i samma takt som teknologin 
+\vspace{7pt}
+
+\noindent Tillväxttakten är exogen, förklaras inte i modellen utan är en input parameter
+
+\section{Föreläsning 3}
+Solow modellen har en del begränsningar. Den förklarar inte utvecklingen av sysselsättning, investeringar och teknologisk utveckling. 
+\subsection{Endogen tillväxtteori}
+Tre huvudsakliga vägar:
+\begin{itemize}
+    \item Antag konstant marginalavkastning på kapital: AK-modellen
+    \item Learning by doing: En bieffekt  
+    \item Investeringar i FoU
+\end{itemize}
+
+\subsection{AK-modellen vs solowmodellen}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{ak.png}
+\end{figure}
+\begin{itemize}
+    \item I Solowmodellen är marginalavkastningen på kapital avtagande
+    \item Vi har en konstant marginalavkastning på kapital i AK-modellen
+    \item I AK-modellen kommer ekonomin att växa i en konstant takt, och det finns ingen konvergens mot en jämnviktsnivå
+\end{itemize}
+
+\subsection{AK-modellen}
+\begin{itemize}
+    \item Antar produktionsfunktion: $Y = A \cdot K$
+    \item Kapitalackumuleringsfunktion: $\Delta K = sY - dK$
+    \item Möjliggör positiv tillväxt på lång sikt
+    \item Politik kan påverka tillväxttakten genom att påverka sparkvoten
+    \item Nackdel: Orealistisk bygger på antagandet om konstant avkastning på kapital
+\end{itemize}
+
+\subsection{Learning by doing}
+\begin{itemize}
+    \item De sysselsatta blir mer produktiva när de får mer erfarenhet
+    \item Produktiviteten ökar när produktionen ökar
+\end{itemize}
+
+Företagets produktionsfunktion:
+$$Y_i = B K_i^{\theta} N_i^{1-\theta} \hspace{15pt} B \text{ är konstant för det enskilda företaget}$$
+
+På aggregerad nivå:
+$$B = A \cdot (\frac{K}{N})^{1-\theta} \cdot K^{\theta} N^{1-\theta}$$
+$$\implies Y = A \cdot K$$
+
+\begin{itemize}
+    \item Fördel: Mer realistisk än AK-modellen
+    \item Nackdel: Mycket starka antagande, om vi avviker det minsta från antaganden så får vi olika slutsatser
+\end{itemize}
+
+\subsection{Investeringar i FoU}
+\begin{itemize}
+    \item Företag investerar i FoU för att hitta nya och förbättrade produkter
+    \item Introducerar nya sektorer i ekonomin -- betydligt mer kompexa men realistiska modeller
+\end{itemize}
+
+\newpage
+\subsection{AS (Aggregerad utbud)/AD (Aggregerad efterfrågan) modellen}
+Skift i aggregerad efterfråga (AD) påverkar pris och produktion
+olika beroende på hur utbudskurvvan (AS) ser ut
+\begin{itemize}
+    \item Kort sikt (Keynesiansk AS)
+    \begin{itemize}
+        \item Priser och löner är konstanta 
+        \item Horisontell
+        \item Arbetslöshet
+    \end{itemize}
+    \item Långsikt (Klassisk AS)
+    \begin{itemize}
+        \item Alla priser i ekonomin anpassar sig till efterfrågan 
+        \item Vertikal 
+        \item Potential output/BNP, Y*
+        \item Naturlig arbetslöshet, u*
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{as-ad.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{asad1.png}
+    \end{minipage}
+\end{figure}
+
+\begin{itemize}
+    \item Höjd efterfrågan leder till högre produktion och högre priser på kort sikt
+    \item Högre efterfrågan leder till högre priser men ingen förändring i produktion på lång sikt
+\end{itemize}
+
+\subsection{Från Keynes till klassisk AS}
+\begin{itemize}
+    \item En dynamisk prismekanism $P_{t+1} = P_t (1 + \lambda (Y_t - Y^*))$
+    \item Relaterar prisnivå och output gap 
+    \item Relaterar även inflation och output gap $\pi_{t+1} = \lambda (Y_t - Y^*)$
+\end{itemize}
+
+När $P_{t+1} = P_t(1 + \lambda (Y_t - Y^*))$ sker iterativt så sker detta:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{dynamic2.png}
+\end{figure}
+
+\subsection{Icke-linjär AS-kurva}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{as.png}
+\end{figure}
+
+\subsection{AS-kurvan, sammanfattning}
+\begin{itemize}
+    \item En flack AS-kurva $\implies$ Förändering i produktion har liten påverkan på priserna 
+    \item En brant AS-kurva $\implies$ Förändering i produktion har stor påverkan på priserna
+    \item Vid icke-linjär AS-kurva så kan effekterna variera med ekonomisk aktivitet
+\end{itemize}
+
+\subsection{AD-kurvan}
+\begin{itemize}
+    \item Aggregerad efterfrågekurva beror på värdet av penningsmängden 
+    \item $\frac{\overline{M}}{P}, \overline{M}$ innebär att den är exogen
+    \item Penningmängden bestäms av Riksbanken och banksystemet
+\end{itemize}
+
+\subsection{AD och penningmarknaden}
+\begin{itemize}
+    \item Ignorera varumarknaden fokus på penningmarknaden 
+    \item Kvantitetsteorin: 
+    \begin{itemize}
+        \item Totalt spenderade kronor på ett år $NGDP = P \cdot Y$
+        \item Pengar omsättningshastighet: $V$
+        \item Riksbankens utgivna penningmängd: $M$
+        \item Kvantitetsteorin säger: $M \cdot V = P \cdot Y$
+    \end{itemize}
+\end{itemize}
+
+\subsection{AD och penningmarknaden}
+\begin{itemize}
+    \item Antag konstant omsättningshastighet: $V = \overline{V}$
+    \item Beskriver AD-kurvan: $M \cdot \overline{V} = P \cdot Y$
+    \item Ökar prisnivån för en given penningmängd måste efterfrågan minska---AD-kurvan lutar nedåt
+    \item Ökad penningmängd skiftar AD-kurvan utåt
+\end{itemize}
+
+\subsection{AD och politik -- kort sikt} 
+Antag att ekonomin initialt i jämnvikt punkt E
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{ad.png}
+\end{figure}
+Ett skifte sker i AD-kurvan 
+\begin{itemize}
+    \item En ny jämnvikt bildas vid punkten E'
+    \item Oförändrad prisnivå
+    \item Ökad produktion 
+    \item Minskad arbetslöshet
+\end{itemize}
+
+\subsection{AD och Politik -- lång sikt}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{ad2.png}
+\end{figure}
+\begin{itemize}
+    \item På lång sikt är punkt E' inte hållbar
+    \item På sikt kommer löner att stiga som tvingar företagen att höja sina priser
+    \item Rör oss mot punkt E'' 
+    \item Värdet av pengar M/P minskar, utgifterna minskar till Y*
+\end{itemize}
+
+\subsection{Utbudspolitik (supply side economics)}
+\begin{itemize}
+    \item Fokus på AS istället för AD för att stimulera ekonomin
+    \item Syftar till att öka potentiell BNP, dvs. skifta AS-kurvan utåt
+\end{itemize}
+
+Exempel på utbudspolitik:
+\begin{itemize}
+    \item Förenkla regelverk
+    \item Uppmuntra FoU, entreprenörskap och utbildning
+    \item Effektiva skatteincitament
+\end{itemize}
+
+\subsection{Utbudspolitk och skatter}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{supply.png}
+\end{figure}
+
+Läger skatter och AS, AD
+\begin{itemize}
+    \item AD skiftar utåt pga. ökad disponibel inkomst
+    \item AS skiftar utåt pga. ökad arbetsutbud
+    \item AD skiften är störst
+\end{itemize}
+
+\noindent På kort sikt: E' (AD-effekten dominerar)
+\begin{itemize}
+    \item Lägre skatteintäkter 
+\end{itemize}
+
+\noindent På lång sikt: E'' (AS-effekten dominerar)
+\begin{itemize}
+    \item Skatteintäkter faller när produktionen minskar och priserna stiger
+\end{itemize}
+
+\subsection{Utbudspolitik och skatter -- Lafferkurvan}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{laffer.png}
+\end{figure}
+
+\begin{itemize}
+    \item Om staten tar för lite skatt minskar skatteintäkterna
+    \item Om staten tar för mycket skatt minskar skatteintäkterna på mindre incitament
+    \item Kurvan illustrerar att det finns en optimal skattesats som ger maximala intäkter
+\end{itemize}
+
+\subsection{Utbudspolitik och skatter -- Lafferkurvan}  
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{laffer2.png}
+    \caption{Lafferkurvan för olika länder}
+\end{figure}
+Sverige är en av de få länder där skattesatsen ligger höger om det optimala skattesatsen 
+\newpage
+\subsection{Aggregerat utbud och Philipskurvan}
+Philipskurvan visar sambandet mellan arbetslöshet och inflation
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{philips.png}
+\end{figure}
+$$g_w = -\epsilon (u - u^*),\hspace{10pt} g_w = \frac{W_{t+1} - W_t}{W_t}$$
+
+\begin{itemize}
+    \item Vi antar ett linjärt förhållandet mellan löneinflation och arbetslösheten
+\end{itemize}
+
+\subsection{Phillipskurvan USA 1961-1969}
+\begin{itemize}
+    \item Visar en tradeoff mellan arbetslöshet och inflation på kort sikt
+    \item På lång sikt finns ingen tradeoff, arbetslösheten återgår till den naturliga arbetslösheten $u^*$
+    \item Eftersom på lång sikt så är AS vertikal
+    \item Priset varierar, men inte utbudet $\implies$ inflation men oförändrad arbetslöshet
+\end{itemize}
+
+\subsection{Samband efter 60-talet med flera år}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{phillips2.png}
+\end{figure}
+\noindent Vi kan se att det inte finns ett tydligt samband när man kollar på flera år
+
+\subsection{Phillipskurvan med inflationsförväntningar}
+Det som saknades i analysen var förväntad inflation
+\begin{itemize}
+    \item Köpkraft är det som betyder något
+    \item Sambandet mellan förväntad reallöneförändring och arbetslöshetsgap
+\end{itemize}
+$$g_w = \pi^e - \epsilon (u - u^*)$$
+
+\subsection{Utökad Phillipskurva, USA}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{philips3.png}
+\end{figure}
+
+\noindent Svagt negativt trend med $\epsilon \approx 0.5$
+
+\subsection{Stagflation}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{stagflation.png}
+\end{figure}
+\begin{itemize}
+    \item När vi inkluderar inflationsförväntningar 
+    \item När inflation stiger kommer philipskurvan skita uppåt
+\end{itemize}
+\newpage
+\subsection{Sammanfattning}
+\begin{itemize}
+    \item Endogena tillväxtmodeller
+    \item AS/AD-modellen
+    \item Utbudskurvan (kort och lång)
+    \item Efterfrågekurvan
+    \item Utbudspolitik och Lafferkurvan 
+    \item Phillipskurvan
+    \item Stagflation
+\end{itemize}
+
+\newpage 
+
+\section{Föreläsning 4}
+\subsection{Rationella förväntningar}
+Problem med den utökade Phillipskurvan: $\pi - \pi^e = -\epsilon (u - u^*)$
+\begin{itemize}
+    \item Förutspår att verklig inflation blir högre än förväntad inflation när $u < u^*$
+    \item Människor missbedömer inflationen på ett förutsägbart sätt
+\end{itemize}
+
+\noindent Rationella förväntningar innebär att vi inte gör systematiskt fel
+$$M\uparrow \implies AD \uparrow \implies \pi^e \uparrow \implies \text{Philipskurvan skiftar uppåt}$$
+\begin{itemize}
+    \item Gradvis över tid (traditionell modell)
+    \item Omedelbart (rationella förväntningar)
+\end{itemize}
+
+\subsection{Trögrörliga priser och nominella löner}
+Imperfekt information
+\begin{itemize}
+    \item Feltolkar nominella löneökningar som real löneökning
+    \item Nominella löner styr beteende på kort sikt 
+\end{itemize}
+
+\noindent Koordinationsproblem
+\begin{itemize}
+    \item Antar att riksbanken bedriver en expansiv penningpolitik som ger högre efterfrågan 
+    \item Företagen vill inte höja sina priser om de inte tror att andra företag kommer att göra det
+\end{itemize}
+
+\noindent Effektivitetslöner
+\begin{itemize}
+    \item Företaget väljer att betala sina anställa mer än jämnviktslönen 
+    \item Använder löner för att motivera arbetarna
+\end{itemize}
+
+\noindent Kontrakt 
+\begin{itemize}
+    \item Långsiktiga lönekontrakt
+    \item Bundna hyrskontrakt 
+    \item Alla kontrakt omförhandlas inte hela tiden 
+\end{itemize}
+
+\noindent Insider-outsider modellen
+\begin{itemize}
+    \item Insiders har ett övertag över outsides
+    \item De som har ett jobb har förhandlingskraft medans de som inte har ett jobb har inte förhandlingskraft
+    \item Företag kommer inte att sänka lönen för insiders, även om det skulle vara optimalt att göra det
+\end{itemize}
+
+\subsection{Från Philipskurva till AS -- fyra steg}
+\begin{enumerate}
+    \item Länka produktion $Y$ till sysselsättning/arbetslöshet
+    \item Länka priser till företagens kostnader
+    \item Utnyttja Phillipskurvans relation mellan löner och sysselsättning/arbetslöshet    
+    \item Kombinera alla tre för att få AS-kurvan
+\end{enumerate}
+\newpage
+
+\subsection{Länka produktion till sysselsättning}
+Okuns lag: $100(\frac{Y-Y^*}{Y^*}) = -\omega(u - u^*), \hspace{10pt} \omega \approx 2$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{okun.png}
+\end{figure}
+
+\subsection{Länka priser till företagens kostnader}
+Antag att varje arbetare producerar: $a$ enheter
+\begin{itemize}
+    \item Enhetsarbetskostnad: $\frac{W}{a}$
+    \item Företag prissätter med en markup: $P = \frac{(1+z)W}{a}$
+    \item $z$ är markups, som kan bero på konkurrensförhållanden
+\end{itemize}
+\noindent Implikation: pris- och löneinlfation sammanlänkas
+$$\frac{P_{t+1} - P}{P_t} = \frac{W_{t+1} - W_t}{W_t}$$
+
+\subsection{Philipskurvan och plocka ihop}
+Philipskurvan: 
+$$\frac{W_{t+1} - W_t}{W_t} - \pi^e = -\epsilon (u - u^*)$$
+
+\noindent Steg 1: Länka produktion till sysselsättning:
+$$\frac{W_{t+1 - W_t}}{W_t} - \pi^e = \frac{\epsilon}{\omega}(\frac{Y-Y^*}{Y^*})$$
+
+\noindent länka priser till företagens kostnader:
+$$\frac{P_{t+1} - P_t}{P_t} - \frac{P_{t+1}^e - P_t}{P_t} = \frac{\epsilon}{\omega}(\frac{Y-Y^*}{Y^*})$$
+
+\newpage
+\subsection{Dynamiska prisekvationen}
+$$P_{t+1} = P_t^e + P_t\frac{\epsilon}{\omega}(\frac{Y-Y^*}{Y^*})$$
+$$\implies P_{t+1} = P_{t+1}^e(1 + \frac{P_t}{P_{t+1}^e}\frac{\epsilon}{\omega Y^*}(Y-Y^*))$$
+$$\implies P_{t+1} = P_{t+1}^e(1 + \lambda (Y-Y^*)), \hspace{10pt} \lambda = \frac{P_t}{P_{t+1}^e}\frac{\epsilon}{\omega Y^*}$$
+
+\subsection{Översikt av philipskurvan}
+Positivt samband mellan produktion och priser:
+\begin{itemize}
+    \item \textbf{Ökad proudktion} $\implies$ Ökad sysselsättning (Okuns lag)
+    \item Ökad sysselsättning $\implies$ Minskar arbetslöshet (Okuns lag)
+    \item Minskad arbetslöshet $\implies$ Ökade nominella löner (Phillipskurvan)
+    \item Ökade nominella löner $\implies$ \textbf{Ökad prisnivå} (prissättningsmodellen)
+\end{itemize}
+
+\noindent Positivt samband mellan förväntad prisnivå och faktiskt prisnivå:
+\begin{itemize}
+    \item \textbf{Ökad förväntad prisnivå} $\implies$ Ökad nominella löner (Phillipskurvan)
+    \item Ökade nominella löner $\implies$ \textbf{Ökad prisnivå} (prissättningsmodellen)
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{philips4.png}
+\end{figure}
+
+\subsection{Utbudschock}
+\begin{itemize}
+    \item Chock som påverkar AS-kurvan 
+    \item En negativ utbudschock skiftar AS-kurvan uppåt
+\end{itemize}
+
+Oljeprischock
+\begin{itemize}
+    \item Företagen måste höja priserna för att täcka de ökade kostnaderna 
+    \item AS-kurvan skiftar uppåt
+\end{itemize}
+
+Illustration:
+\begin{itemize}
+    \item Vi antar att ursprungssituationen är i jämnvikt
+    \item Anta att oljepriserna ökar kraftigt
+\end{itemize}
+
+$$P' = \frac{(1 + z_1)W_0}{a}, \hspace{10pt} z_1 > z_0$$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oil.png}
+\end{figure}
+
+$$P'' = \frac{(1+z_1)W_1}{a}, \hspace{10pt} z_1 > z_0, W_1 < W'' < W_0$$
+
+\subsection{Slutsats}
+\begin{itemize}
+    \item På lång sikt kommer både produktion och prisnivå tillbaka i ursprungsläget
+    \item Nominella och reala löner kommer vara lägre
+    \item Det tar lång tid för ekonomin att anpassa sig 
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
