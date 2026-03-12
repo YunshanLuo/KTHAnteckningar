@@ -1001,6 +1001,12 @@ Okuns lag: $100(\frac{Y-Y^*}{Y^*}) = -\omega(u - u^*), \hspace{10pt} \omega \app
     \centering
     \includegraphics[width=0.75\textwidth]{okun.png}
 \end{figure}
+\begin{itemize}
+    \item $Y = \text{BNP}$
+    \item $Y^* = \text{Potentiell BNP}$
+    \item $u = \text{Arbetslöshet}$
+    \item $u^* = \text{Naturlig arbetslöshet}$
+\end{itemize}
 
 \subsection{Länka priser till företagens kostnader}
 Antag att varje arbetare producerar: $a$ enheter
@@ -1009,7 +1015,7 @@ Antag att varje arbetare producerar: $a$ enheter
     \item Företag prissätter med en markup: $P = \frac{(1+z)W}{a}$
     \item $z$ är markups, som kan bero på konkurrensförhållanden
 \end{itemize}
-\noindent Implikation: pris- och löneinlfation sammanlänkas
+\noindent $\implies$ pris- och löneinlfation sammanlänkas
 $$\frac{P_{t+1} - P}{P_t} = \frac{W_{t+1} - W_t}{W_t}$$
 
 \subsection{Philipskurvan och plocka ihop}
@@ -1069,19 +1075,392 @@ $$P' = \frac{(1 + z_1)W_0}{a}, \hspace{10pt} z_1 > z_0$$
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{oil.png}
+    \includegraphics[width=0.75\textwidth]{oil.png}
 \end{figure}
 
 $$P'' = \frac{(1+z_1)W_1}{a}, \hspace{10pt} z_1 > z_0, W_1 < W'' < W_0$$
-
-\subsection{Slutsats}
+\begin{itemize}
+    \item LRAS = Long run aggregate supply
+    \item AS = Aggregerat utbudskurva
+    \item AD = Aggregerad efterfrågekurva
+    \item P = Prisnivå
+    \item W = Nominell lönenivå
+\end{itemize}
+Slutsats:
 \begin{itemize}
     \item På lång sikt kommer både produktion och prisnivå tillbaka i ursprungsläget
     \item Nominella och reala löner kommer vara lägre
     \item Det tar lång tid för ekonomin att anpassa sig 
 \end{itemize}
+\newpage
 
-% Fortsätt på 28:41
+\subsection{Ackommodationspolitik}
+\begin{itemize}
+    \item Utrymme för politiska åtgärder för att öka sysselsättningen snabbare
+    \item Hur påverkar det ekonomin?
+\end{itemize}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{accomodation.png}
+\end{figure}
+Slutsats:
+\begin{itemize}
+    \item Prisnivå blir högre men produktionen är oförändrad
+    \item Nominella löner behöver inte minska
+    \item Reala löner blir lägre
+\end{itemize}
+
+\subsection{BNP per capita och arbetslöshet}
+BNP per capita kan skrivas som:
+$$\frac{GDP}{POP} = \underbrace{\frac{POP_{16\text{-}64}}{POP}}_{\text{Demografi}} \cdot \underbrace{\frac{LF_{16\text{-}64}}{POP_{16\text{-}64}}}_{\text{Deltagande}} \cdot \underbrace{\frac{EMPL_{16\text{-}64}}{LF_{16\text{-}64}}}_{\text{Sysselsättningsgrad}} \cdot \underbrace{\frac{HOURS_{16\text{-}64}}{EMPL_{16\text{-}64}}}_{\text{Timmar}} \cdot \underbrace{\frac{GDP}{HOURS_{16\text{-}64}}}_{\text{Produktivitet}}$$
+\begin{itemize}
+    \item Alla dessa faktorer påverkar BNP per capita
+    \item $\underbrace{\frac{EMPL_{16-64}}{LF_{16-64}}}_{\text{Sysselsättningsgrad}} = 1 - \text{Arbetslöshet} = 1 - u$
+\end{itemize}
+\newpage
+\subsection{Beveridgekurva, Sverige 1908-2017}
+Dekomponering av olika faktorer som påverkar BNP per capita:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{beveridge.png}
+\end{figure}
+\begin{itemize}
+    \item Visa samband mellan arbetslöshet och vakanta arbetsplatser
+    \item Beveridgekurvan visar hur bra matchning det är på arbetsmarknaden
+\end{itemize}
+
+\subsection{Arbetslöshet i Sverige}
+Hur stor arbetslöshet Sverige hade haft om den gamla beveridgekurvan gällde efter 90-tals krisen
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{beveridge2.png}
+\end{figure}
+\newpage
+\subsection{BNP per capita i Sverige}
+Hur hade BNP per capita i Sverige utvecklatas om den gamla beveridgekurvan gällde
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{beveridge3.png}
+\end{figure}
+
+\subsection{Befolking 15-74 år andra kvartalet 2018}
+Klassifieringsträd som visar hur befolkningen kategoriseras i arbetsmarkanden
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{population.png}
+\end{figure}
+\newpage
+\subsection{Sysselsättningsgrad, 1970--2020}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{employment.png}
+\end{figure}
+
+\subsection{Dekomponering av arbetslöshet}
+\begin{itemize}
+    \item U = Antal arbetslösa
+    \item u = arbetslöshet
+    \item LF = arbetskraften
+\end{itemize}
+
+$$u = \frac{U}{LF} = \sum_{i=1}^I \frac{U_i}{LF} = \sum_{i=1}^I \frac{LF_i}{LF} \cdot \frac{U_i}{LF_i} = \sum_{i=1}^I \omega_i u_i, \hspace{10pt} w_i = \frac{LF_i}{LF}$$
+
+\subsection{Arbetslöshet Sverige åldergrupper, 2023}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{unemployment.png}
+\end{figure}
+
+\subsection{Olika typer av arbetslöshet}
+$$u = \underbrace{(u - u^*)}_{\text{Cyklisk}} + \underbrace{u^*}_{\text{Naturlig arbetslöshet}}$$
+
+\subsection{Arbetslöshetpool: in- och utflöde}
+\begin{itemize}
+    \item En del personer lämnar sina jobb kontinuerligt
+    \item Vid varje tillfälle finns det även arbetslösa personer som hittar ett jobb
+    \item Antag att sannolikehten att bli arbetslös $p$ och antalet att hitta ett jobb $s$
+    \item Antal som hittar jobb: $sU$
+    \item Antal som blir arbetslösa: $pU$
+\end{itemize}
+
+\subsection{Jämnviktsflöden och naturlig arbetslöhet}
+$$pN = sU \implies p(LF - U) = sU \implies \frac{U}{LF} = \frac{p}{p+s}$$ 
+$$\text{Naturlig arbetslöshet}: u^* = \frac{p}{p+s}$$
+
+\subsection{Naturlig arbetslöshet}
+Bestäms av:
+\begin{itemize}
+    \item Flödet in i arbetslöshet
+    \item Arbetslöshetens långvarighet
+\end{itemize}
+
+\noindent Flödet in i arbetslösheten bestäms bl.a. av:
+\begin{itemize}
+    \item Arbetskraften tillväxt
+    \item Variationen i arbetskraftsefterfrågan hos företagen 
+\end{itemize}
+
+\noindent Hur långvarig arbetslösheten är bestäms bl.a. av:
+\begin{itemize}
+    \item Arbetsmarknadens organisation
+    \item Demografi (yngre/mindre erfarna har svårare att komma in)
+    \item Sökintensitet (påverkar bla. av arbetsförmedlingen)
+\end{itemize}
+
+\subsection{Vägar att minska naturlig arbetslöshet}
+Hjälpa unga till sysselsättning, t.ex.
+\begin{itemize}
+    \item Minimilöner
+    \item Lärlingssytem 
+    \item Subventioner
+\end{itemize}
+\noindent Perioder av hög arbetslöshet tenderar att driva upp den naturliga arbetslösheten 
+
+\subsection{Kostander med cyklisk arbetslöshet}
+\begin{itemize}
+    \item Minskad produktion och Okuns lag
+    \item Ökar ojämnlikheten: drabbar oftast de som redan har det svårt --- unga, lågutbildade, nyanlända, funktionsnedsatta
+    \item Svårt att etablera sig för nya på arbetsmarknaden 
+    \item Drabbar det offentliga välfärdssystemet dubbelt --- ökade kostnader och mindre skatteintäkter
+\end{itemize}
+
+\subsection{Inflation}
+Kan viss inflation vara bra? 
+\begin{itemize}
+    \item Reala löner måste ned för att nå jämvikt efte en chock
+    \item Kan ske genom sänkta löner eller högre priser
+    \item Nominella lönesänktningar är svåra att genomföra, så det är lättare att låta priserna stigas
+    \item Undivker för deflation som kan leda till en nedåtgående spiral
+\end{itemize}
+
+\noindent Förväntad inflation
+\begin{itemize}
+    \item Pengars värde minskar
+    \item Skolälderkostnader -- Kostnaden av att hålla icke räntabärande tillgångar ökar
+    \item Menykostnader -- Kostnaden av att konstant ändra priser 
+\end{itemize}
+
+\subsection{Oförväntad inflation}
+\begin{itemize}
+    \item Introducerar extra risk i långsiktiga kontrakt
+    \item Omfördelning av förmögenheter, gynnar låntagare och missgynnar långivare
+    \item Hög inflation tenderar att ge volatil inflation
+\end{itemize}
+\newpage
+\section{Föreläsning 5}
+\subsection{Taylorregeln}
+$$i_t = r^* + \pi_t + \alpha(\pi_t - \pi^*) + \beta (\frac{Y_t - Y^*}{Y^*})$$
+\begin{itemize}
+    \item $i$ = Nominell ränta
+    \item $r$ 0 Real ränta 
+    \item $\pi$ = Inflation
+    \item * innebär jämnviktsläge
+\end{itemize}
+
+\noindent Riskbanken använder penningpolitik för att justera räntan
+\begin{itemize}
+    \item Styrräntan 
+    \item Handel med värdepapper
+    \item Använder dessa verktyg för att styra den ekonomiska aktiviteten
+\end{itemize}
+
+\subsection{Keynesiansk modell}
+Används för att studera ekonomiska svängningar runt potentiell BNP
+\begin{itemize}
+    \item Antagande
+    \begin{itemize}
+        \item Priser är orörlig -- horizontell AS
+        \item Räntan är exogen 
+    \end{itemize}
+\end{itemize}
+
+\subsection{Oplanerade lagerinvesteringar}
+\begin{itemize}
+    \item Aggregerad efterfrågan $AD = C + I + G + NX$
+    \item Jämnvikt där $Y = AD$
+    \item Oplanerade lagerföränderingar $IU = Y - AD$
+    \item Oplanerade lagerföränderingar styr ekonomin mot jämnvikt
+    \item AD = aggregerad efterfrågan
+    \item C = Privat konsumtion
+    \item I = Investeringar
+    \item G = Offentliga konsumtion
+    \item NX = Nettoexport
+    \item Y = BNP
+    \item IU = Oplanerade lagerförändringar
+\end{itemize}
+
+\subsection{Konsumtion}
+Keynes
+\begin{itemize}
+    \item Saknar mikrofundament
+    \item Konstumtionen bestäms av disponibel inkomst
+    \item Desto rikare desto lägre andel av inkomsten konsumeras
+\end{itemize}
+
+Friedman (Permanenta inkomsthypotes)
+\begin{itemize}
+    \item Mikrobaserad
+    \item Dynamisk optimering över tid 
+    \item Konsumtionen bestäms av livstidsinkomsten 
+    \item Konsumtionen relativt konstant, sparandet varierar
+\end{itemize}
+
+\subsection{Konsumtionsfunktion}
+Keynes konsumtionsfunktion:
+$$C = \overline{C} + cYD, \hspace{10pt} 0 < c < 1, \hspace{10pt} \overline{C} > 0$$
+\begin{itemize}
+    \item $C$ = Konsumtion
+    \item $\overline{C}$ = Autonom konsumtion, given utanför modellen (exogen)
+    \item $c$ = Marginal konsumtionsbenägenhet (MPC)
+    \item $YD$ = Disponibel inkomst
+\end{itemize}
+
+\subsection{Keynes kors utan skatte och transferering}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{keynes5.png}
+\end{figure}
+
+\begin{itemize}
+    \item $AD$ = Aggregerad efterfrågan
+    \item $C$ = Privat konsumtion
+    \item $G$ = Offentliga konsumtion
+    \item $Y$ = BNP
+    \item $NX$ = Nettoexport
+    \item $c$ = Marginal konsumtionsbenägenhet (MPC)
+\end{itemize}
+
+\subsection{Keynes kors med skatt och transfereringar}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{keynes6.png}
+\end{figure}
+
+\subsection{Keynes kors mot jämnvikt}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{keynes7.png}
+\end{figure}
+\begin{itemize}
+    \item På grund av oplanerade lagerföränderingar så kommer ekonomin att röra sig mot jämnvikt
+    \item Eftersom $IU = Y - AD$, så kommer ekonomin att röra sig mot jämnvikt där $Y = AD$
+    \item Företagen vill inte ha oplanerade lagerföränderingar
+\end{itemize}
+    
+\subsection{Jämnvikt i ekonomin}
+Jämnvikten fås som:
+$$AD_0 = Y_0 \implies \overline{A} + cY_0 = Y_0 \implies Y_0 = \frac{\overline{A}}{1 - c}$$
+\noindent Jämnvikten bestäms av MPC och exogena utgifter
+
+\subsection{MPC och multiplikator}
+$$\Delta AD = \frac{1}{1+c}$$
+\begin{itemize}
+    \item $AD$ = Aggregerad efterfrågan
+    \item $c$ = Marginal konsumtionsbenägenhet (MPC)
+\end{itemize}
+
+\noindent Generellt kan multiplikatorn skrivas som:
+$$\Delta AD = (\frac{1}{1+c})\Delta \overline{A} = \Delta Y_0$$
+$$\implies \frac{\Delta Y_0}{\Delta \overline{A}} = \frac{}{}{1-c}$$
+$$\overline{A} = \overline{C} + c\overline{TR} - c\overline{TA} + \overline{I} + \overline{G} + \overline{NX}$$
+
+\noindent Multiplikatorn brukar illusteras med $\alpha$
+$$\alpha = \frac{1}{1-c}$$
+
+\subsection{Illustration av multiplikator effekten}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{multiplier.png}
+\end{figure}
+
+\subsection{Offentlig sektor}
+Finanspolitik:
+\begin{itemize}
+    \item Offentlig konsumtion $G$
+    \item Transfereringar $TR$
+    \item Skatter $TA$
+\end{itemize}
+
+\noindent Antag autonom offentlig konsumtion och transfereringar
+$$G = \overline{G}, TR = \overline{TR}$$
+
+\noindent Proportionella skatter:
+$$TA = tY$$
+
+\noindent Disponibel inkomst blir:
+$$YD = Y + \overline{TR} - \overline{tY}$$
+
+\noindent Konsumtionsfunktionen blir:
+$$C = \overline{C} + c(Y + \overline{TR} - tY) \implies C = \overline{C} + c\overline{TR} + c(1-t)Y$$
+
+\noindent Aggregerad efterfrågan blir:
+$$AD = \overline{A} + c(1-t)Y$$
+
+\noindent Jämnvikten i ekonomin blir:
+$$Y_0 = \frac{\overline{A}}{1 - c(1-t)}$$
+
+\newpage
+
+\subsection{Jämförelse multiplikator}
+\noindent Multiplikator med offentlig sektor:
+$$\alpha_G = \frac{1}{1-c(1-t)}$$
+
+\noindent Multiplikator utan offentlig sektor:
+$$\alpha = \frac{1}{1-c}$$
+
+\subsection{Illustration av jämförelsen}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{multiplier2.png}
+\end{figure}
+
+\subsection{Finanspolitik och multiplikatorn}
+Givet att multiplikatorn ges av:
+$$\frac{\Delta Y_0}{\Delta \overline{A}} = \alpha_G$$
+
+\noindent De autonoma utgifterna ges av:
+$$\overline{A} = \overline{C} + c\overline{TR} - c\overline{tY} + \overline{I} + \overline{G} + \overline{NX}$$
+
+\noindent Två exempel med expansiv finanspolitik:
+\begin{enumerate}
+    \item Ökad offentlig konsumtion $G\uparrow$
+$$\Delta Y_0 = \alpha_G \Delta \overline{A} = \alpha_G \Delta \overline{G}$$
+    \item Ökade transfereringar $TR\uparrow$
+$$\Delta Y_0 = \alpha_G \Delta \overline{A} = \alpha_G c \Delta \overline{TR}$$
+\end{enumerate}
+
+\subsection{Finanspolitik}
+Finanspolitiken kan påverka ekonomin genom:
+\begin{itemize}
+    \item Diskretionär finanspolitk -- Aktivt ingripande
+    \item Automatiska stabilisatorer -- Indirekt verkande
+    \begin{itemize}
+        \item Minskar konjunktursvängningar automatiskt
+        \item Skatter $\alpha_G < \alpha$
+        \item Arbetslöshetsersättning
+    \end{itemize}
+\end{itemize}
+
+\subsection{Automatiska stabilisatorer och budgetsaldo}
+Budgetöverskottet ges av:
+$$BS = tY - \overline{G} - \overline{TR}$$
+\begin{itemize}
+    \item $Y$ = BNP (Produktion)
+    \item $\overline{G}$ = Offentlig konsumtion
+    \item $\overline{TR}$ = Transfereringar
+    \item $BS$ = Budgetsaldo
+\end{itemize}
+
+\subsection{Offentlig konsumtion och budgetsaldo}
+Antag att ekonomin befinner sig i en recession och att staten önskar stimulera ekonomin via ökad offentlig konsumtion. Hur påverkas det offentliga budgetsaldot?
+$$\Delta Y_0 = \alpha_G \Delta \overline{G}$$
+\noindent Skatteintäkerna ökar med:
+$$\Delta TA = t \Delta Y_0 = t \alpha_G \Delta \overline{G}$$
+\noindent Budgetsalotet förändras med:
+$$\Delta BS = \Delta TA - \Delta \overline{G} = (t \alpha_G - 1) \Delta \overline{G}$$
+$\implies \Delta BS = -(\frac{(1-c)(1-t)}{1-c(1-t)})\Delta \overline{G} < 0$
+
+
 
 
 
