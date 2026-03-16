@@ -81,6 +81,75 @@ $$\text{f(x,y,z) = (x AND y) OR (NOT(x) AND z)}$$
         & = \text{x OR y}
 \end{align*}
 
+\subsection{Truth table to Boolean expression}
+\begin{enumerate}
+    \item Find where function output = 1
+    \item Not on all 0s and keep all 1s
+    \item And all variables in the same row together
+    \item Or all the results of all rows where output = 1
+    \item Simplify the expression using Boolean identities
+    \item All Boolean functions can be expressed using only AND, or, and NOT
+    \item Furthermore, all boolean functions can be expressed as NAND
+    \item Proof that all logic can be implemented using only NAND:
+    \begin{itemize}
+        \item NOT(x) = x NAND x
+        \item x AND y = NOT(x NAND y) = (x NAND y) NAND (x NAND y)
+        \item x OR y = NOT((NOT(x) NAND NOT(y))) = (x NAND x) NAND (y NAND y)
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Logic gates}    
+\begin{itemize}
+    \item Elementary logic gates: AND, OR, NOT, NAND
+    \item Composite logic gates: Mux, Adder, Dmux
+\end{itemize}
+
+\subsection{Nand gate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{nand.png}
+\end{figure}
+
+Truth table:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{nandTruthTable.png}
+\end{figure}
+
+\subsection{Other gates}
+OR gate:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{or.png}
+\end{figure}
+
+\noindent NOT gate:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{not.png}
+\end{figure}
+
+\subsection{Circuit implementation}
+\begin{itemize}
+    \item Logic gates can be represented as circuits
+    \item For example through parallel and series connections can represent AND and OR
+\end{itemize}
+
+\subsection{Hardware Description Language (HDL)}
+General idea of building XOR:
+out = 1 when:
+$$\text{(a and NOT(b)) or (b and NOT(a)) = a XOR b}$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{xor.png}
+\end{figure}
+
+\begin{itemize}
+    \item The red connections are those that we make
+    \item Each red connections should be named appropriately
+    \item The black connections comes with the hardware
+    \item The order of the HDL language does not matter
+\end{itemize}       
 
 
 
@@ -89,10 +158,7 @@ $$\text{f(x,y,z) = (x AND y) OR (NOT(x) AND z)}$$
 
 
 
-
-
-
-
+   
 
 
 
