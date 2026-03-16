@@ -32,9 +32,54 @@
 
 
 \begin{document}
+\section{Section 1}
+\subsection{Boolean logic}
+Example of common truth tables: AND, OR, NOT:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{truthTable.png}
+\end{figure}
 
+\subsection{Evaluating Boolean expressions}
+$$\text{NOT(0 OR (1 AND 1)) = NOT(0 OR 1) = NOT(1) = 0}$$
 
+\subsection{Evaluating Boolean functions}
+$$\text{f(x,y,z) = (x AND y) OR (NOT(x) AND z)}$$
+\noindent We can derive the truth table for this function by evaluating it for all combinations of x, y, and z:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{truthTable2.png}
+\end{figure}
+\newpage
+\subsection{Boolean Identities}
+\begin{itemize}
+    \item Commutative Laws applies for AND and OR:
+    \begin{itemize}
+        \item x AND y = y AND x
+        \item x OR y = y OR x
+    \end{itemize}
+    \item Associative Laws applies for AND, OR and NOT:
+    \begin{itemize}
+        \item (x AND y) AND z = x AND (y AND z)
+        \item (x OR y) OR z = x OR (y OR z)
+        \item NOT(NOT(x)) = x
+    \end{itemize}
+    \item De Morgan's Laws describes how NOT interacts with AND and OR:
+    \begin{itemize}
+        \item NOT(x AND y) = NOT(x) OR NOT(y)
+        \item NOT(x OR y) = NOT(x) AND NOT(y)
+    \end{itemize}
+\end{itemize}
 
+\subsection{Example of applying Boolean identities}
+\begin{align*}
+        &   \text{NOT(NOT(x) AND NOT(x or y))}: \\
+        & = \text{NOT(NOT(x) AND (NOT(x) AND NOT(y)))} \\
+        & = \text{NOT(NOT(x) AND NOT(x) AND NOT(y))} \\
+        & = \text{NOT(NOT(x) AND NOT(y))} \\
+        & = \text{NOT(NOT(x)) OR NOT(NOT(y))} \\
+        & = \text{x OR y}
+\end{align*}
 
 
 
