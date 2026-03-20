@@ -19,6 +19,7 @@
 \setlength{\headsep}{4pt} % Entre le haut de page et le texte
 \setlength{\footskip}{27pt} % Bas de page + séparation
 \setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+\setlength{\parindent}{0pt}
 
 \usepackage{natbib}
 \usepackage{graphicx}
@@ -767,11 +768,97 @@ AND är linjärt separerbar medan XOR är inte linjärt separerbar
 \end{figure}
 Med flera artificiala neuroner kan man lösa icke linjärt separerbara problem såsom XOR
 
+\newpage
+\subsection*{XOR i neuralt nätverk}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{xor.png}
+\end{figure}
+XOR truth table:
+\begin{center}
+\begin{tabular}{cc|c}
+$x_1$ & $x_2$ & XOR \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+\end{tabular}
+\end{center}
+Beräkning av $\theta$ och $\lambda$ för XOR:
+$$\lambda_1 \sigma (\theta_{11} x_1 + \theta_{12} x_2 + \theta_{10}) + \lambda_2 \sigma(\theta_{21} x_1 + \theta_{22} x_2 + \theta_{20}) + \lambda_0$$
 
+\[
+\begin{cases}
+    \lambda_1 \sigma (\theta_{11} + \theta_{12} + \theta_{10}) + \lambda_2 \sigma(\theta_{21} + \theta_{22} + \theta_{20}) + \lambda_0 \approx 0 & \text{, om } x_1 = 1 \text{ och } x_2 = 1 \\
+    \lambda_1 \sigma (\theta_{11} + \theta_{10}) + \lambda_2 \sigma(\theta_{21} + \theta_{20}) + \lambda_0 \approx 1 & \text{, om } x_1 = 1 \text{ och } x_2 = 0 \\
+    \lambda_1 \sigma (\theta_{12} + \theta_{10}) + \lambda_2 \sigma(\theta_{22} + \theta_{20}) + \lambda_0 \approx 1 & \text{, om } x_1 = 0 \text{ och } x_2 = 1 \\
+    \lambda_1 \sigma (\theta_{10}) + \lambda_2 \sigma(\theta_{20}) + \lambda_0 \approx 0 & \text{, om } x_1 = 0 \text{ och } x_2 = 0 \\
+\end{cases}
+\]
 
+För enkelhetenskull kan vi gruppera operationer till neuroner så att det ser ut såhär:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{xor2.png}
+\end{figure}
+Den första lagret kallas för hidden layer och den andra lagret kallas för output layer.
 
+\subsection*{Beräkning av XOR nätverket med matris multiplikation}
+Hidden layer beräknas:
+$$a = \sigma(\theta x)$$
+Output layer beräknas:
+$$\tilde{y} = \sigma(\lambda a)$$
 
+Med siffror kan det se ut såhär:
+$$\theta = \begin{bmatrix}
+    -3 & -5 & \phantom{-}5 \\
+    -5 & \phantom{-}5 & -5
+\end{bmatrix}$$
 
+$$\lambda = \begin{bmatrix}
+    -1 & \phantom{-}2 & \phantom{-}2
+\end{bmatrix}$$
+
+$$x = \begin{bmatrix}
+    1 \\[0.5em]
+    x_1 \\[0.5em]
+    x_2
+\end{bmatrix}$$
+
+Sedan beräknas $a$ och $\tilde{y}$:
+$$a = \sigma(\theta x + b_{\theta})$$
+$$\tilde{y} = \sigma(\lambda a + b_{\lambda})$$
+
+\subsection*{Feed forward networks}
+För många gömda lager kan det beräknas på följande sätt:
+$$z_1 = \theta_1 x$$
+$$a_1 = g(z_1)$$
+
+För lager $i$:
+$$z_i = \theta_i a_{i-1}$$
+$$a_i = g(z_i)$$
+
+För output lager:
+$$z_n = \theta_n a_{n-1}$$
+$$\tilde{y} = g_n(z_n)$$
+
+$g$ är någon icke linjär funktion såsom sigmoid och softmax
+
+Sammanfattning av feed forward nätverk:
+\begin{itemize}
+    \item Nätverket beräknar någon icke funktion av inputten
+    \item Varje lager beräknar en linjär och icke linjär transformation
+    \item Nätverket kan sammanfattningsvis beskrivas som $f = f_1 \circ f_2 \circ \dots \circ f_n$
+    \item Varje $f_i$ är en linjär och icke linjär transformation och $f_i$ är viktad med $\theta_i$ som tränas
+\end{itemize}
+
+\subsection*{Aktiverings funktioner}
+Det finns alternativ till sigmoid och softmax såsom:
+\begin{itemize}
+    \item Rectified Linear Unit (ReLU): $ReLU(z) = \max(0, z)$
+    \item Hyperbolic tangent (tanh): $tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}$
+\end{itemize}
 
 
 
