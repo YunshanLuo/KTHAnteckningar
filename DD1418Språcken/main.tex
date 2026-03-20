@@ -745,10 +745,26 @@ Målet är att minimera sannolikheten för negativa exempel och maximera sannoli
 \newpage
 
 \section*{Föreläsning 9} 
+\subsection*{Binär logistisk regreesion}
+\begin{itemize}
+    \item Feature vektorn: $\overline{x} = (x_1, x_2, \dots, x_n)$
+    \item Modellen har vikiter: $\overline{\theta} = (\theta_0, \theta_1, \dots, \theta_n)$
+    \item $h(\overline{x}) = \sigma(\overline{\theta}^T \overline{x})$, Sannolikehten att x tillhör den positiva klassen
+    \item $\sigma(z) = \frac{e^z}{1+e^z}$, Sigmoid funktionen
+\end{itemize}
 
+Visualisering av logistisk regression i neuralt nätverk:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{nn.png}
+\end{figure}
 
-
-
+\subsection*{Linjär separerbarhet}
+AND är linjärt separerbar medan XOR är inte linjärt separerbar
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{linear.png}
+\end{figure}
 
 
 
