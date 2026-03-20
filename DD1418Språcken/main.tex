@@ -860,6 +860,21 @@ Det finns alternativ till sigmoid och softmax såsom:
     \item Hyperbolic tangent (tanh): $tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}$
 \end{itemize}
 
+\subsection*{Inlärning}
+I logistisk regression används gradient descent med två steg:
+\begin{itemize}
+    \item Ett framåt steg för att beräkna predicerade värdet
+    \item Ett bakåt steg för att beräkna förlusten 
+\end{itemize}
+
+Anta att vi har en loss funktion $L(\theta)$ då är gradienten: 
+$$\nabla_{\theta} L = \begin{bmatrix}
+    \frac{\partial L}{\partial \theta_0} \\[0.5em]
+    \frac{\partial L}{\partial \theta_1} \\[0.5em]
+    \vdots \\[0.5em]
+    \frac{\partial L}{\partial \theta_n}
+\end{bmatrix}$$
+
 
 
 
