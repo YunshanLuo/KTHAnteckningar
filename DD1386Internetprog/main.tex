@@ -7,12 +7,14 @@
 \renewcommand{\baselinestretch}{1.1}
 
 % ... dina marginalinställningar ...
+\setlength{\parindent}{0pt}
+
 
 \usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{xcolor}
-\usepackage[outputdir=build]{minted}
+\usepackage[outputdir=build]{minted2}
 
 % Definiera färger
 \definecolor{BrickRed}{rgb}{0.8, 0.25, 0.33} 
@@ -31,8 +33,8 @@
 \usemintedstyle{friendly} % 'friendly' eller 'colorful' passar bättre på ljus bakgrund än monokai
 \begin{document}
 
-\section*{Föreläsning 1}
-\subsection*{Kretskopplade nätverk}
+\section{Föreläsning 1}
+\subsection{Kretskopplade nätverk}
 \begin{itemize}
     \item Förbindelser mellan tå enheter som uprättshålls med växlar innan överföringen kan starta
     \item Kan ta lång tid att upprättahålla en anslutning
@@ -41,7 +43,7 @@
     \item Exempel: Telefoninätet
 \end{itemize}
 
-\subsection*{Paketväxlande nätverk}
+\subsection{Paketväxlande nätverk}
 \begin{itemize}
     \item Förbindelselös kommunikation
     \item Pakten överförs beroende av varandra
@@ -50,7 +52,7 @@
     \item T.ex IP(Internet Protocol), TCP(Transmission Control Protocol), UDP(User Datagram Protocol)
 \end{itemize}
 
-\subsection*{Protokoll}
+\subsection{Protokoll}
 Protokoll är en samling av relger och överrenskommelser kring kommunikation 
 Innehåller bl.a. uppgifter om:
 \begin{itemize}
@@ -62,14 +64,14 @@ Innehåller bl.a. uppgifter om:
     \item Felkorrigering
 \end{itemize}
 
-\subsection*{Exempel på HTTP-protokollet}
+\subsection{Exempel på HTTP-protokollet}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{httpprotocol.png}
     \caption{HTTP Request och Response exempel}
 \end{figure}
 
-\subsection*{IP (Internet Protocol)}
+\subsection{IP (Internet Protocol)}
 \begin{itemize}
     \item Överför data mellan olika nätverk
     \item Paketen kan fördubblas eller försvinna 
@@ -78,29 +80,29 @@ Innehåller bl.a. uppgifter om:
     \item Dagens IPv4 håller på att ersätta IPv6 som har address på 128 bitar
 \end{itemize}
 
-\subsection*{Socket}
+\subsection{Socket}
 \begin{itemize}
     \item Ett gränssnitt som används för TCP/IP och UDP/IP och upprätthåller anslutningen baserat på IP för två maskiner
     \item Kod för socket och server finns i föreläsningen
 \end{itemize}
 
 \newpage
-\subsection*{Sammanfattning}
-\subsection*{TCP(Transmission Control Protocol)}
+\subsection{Sammanfattning}
+\subsection{TCP(Transmission Control Protocol)}
 \begin{itemize}
     \item Förbindesleorienterat protokoll
     \item Säkerställer att data kommer fram i rätt ordning
     \item Data förloras och fördubblas inte 
 \end{itemize}
 
-\subsection*{UDP(User Datagram Protocol)}
+\subsection{UDP(User Datagram Protocol)}
 \begin{itemize}
     \item Förbindelselös
     \item Data kan förloras eller fördubblas
     \item Data kan komma i fel ordningsföljd
 \end{itemize}
 
-\subsection*{ICMP(Internet Control Message Protocol)}
+\subsection{ICMP(Internet Control Message Protocol)}
 \begin{itemize}
     \item Kopplat till TCP 
     \item Skickas av mottagare som väntat på ett paket som inte kommit fram
@@ -108,8 +110,8 @@ Innehåller bl.a. uppgifter om:
 \end{itemize}
 
 \newpage 
-\section*{Föreläsning 2}
-\subsection*{HTTP protokollet}
+\section{Föreläsning 2}
+\subsection{HTTP protokollet}
 \begin{itemize}
     \item Tillståndslös - under inga omständigheter sparas information om tidigare förfrågningar
     \item Utbyggbart - Utvecklarna har möjlighet att lägga till egna metoder och headers för deras specifika tjänster
@@ -127,17 +129,17 @@ Innehåller bl.a. uppgifter om:
     \end{enumerate}
 \end{itemize}
 
-\subsection*{URL (Uniform Resource Locator)}
+\subsection{URL (Uniform Resource Locator)}
 \begin{itemize}
     \item En resurs är en fil som skickas bit för bit till klienten 
     \item Alternativt en exekverbar fil som ska exekveras hos servern sedan skickas utdata till klienten
     \item De exekvera bara filen konfigureras på så sätt att servern vet att den ska exekvera filen istället för att skicka den som en vanlig fil
 \end{itemize}
 
-\subsection*{Standardiserad form för URL}
+\subsection{Standardiserad form för URL}
 {\Large {\color{blue}Protokoll}{\color{red}://}värd[:{\color{BrickRed}port}]/sökvägen till resursen}
 
-\subsection*{HTTP-request}
+\subsection{HTTP-request}
 Exempel på HTTP-request:
 \begin{figure}[H]
     \centering
@@ -152,7 +154,7 @@ Generella formatet för en HTTP-request:
     \caption{HTTP Request format}
 \end{figure}
 
-\subsection*{HTTP-metoder}
+\subsection{HTTP-metoder}  
 Viktiga HTTP-metoder:
 \begin{itemize}
     \item GET - Frågar efter en resurs
@@ -168,7 +170,7 @@ Viktiga HTTP-metoder:
     \item OPTIONS - Frågar efter tillåtna (tillgängliga) metoder
 \end{itemize}
 
-\subsection*{Viktiga headerfält i en request}
+\subsection{Viktiga headerfält i en request}
 \begin{itemize}
     \item Accept: vilka mime-type av resurs kan hanteras
     \item User-Agent: tex. Mozilla/4.75[en] (Win98)
@@ -177,7 +179,7 @@ Viktiga HTTP-metoder:
     \item Date: när paketet skapades
 \end{itemize}
 
-\subsection*{HTTP-response (binär exempel)}
+\subsection{HTTP-response (binär exempel)}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{httpresponse.png}
@@ -190,7 +192,7 @@ Generella formatet för en HTTP-response:
     \caption{HTTP Response format}
 \end{figure}
 
-\subsection*{Viktiga headerfält i en response}
+\subsection{Viktiga headerfält i en response}
 \begin{itemize}
     \item Content-Type: mime
     \item Content-Length: storleken på resursen i byte
@@ -200,7 +202,7 @@ Generella formatet för en HTTP-response:
     \item Date: datum då servern skapade responsen 
 \end{itemize}
 \newpage
-\subsection*{Cookies}
+\subsection{Cookies}
 HTTP kan inte skilja klienter åt från varandra därför kan man spara en cookie hos klienten istället.
 Servern definierar cookienn i response headern
 \begin{itemize}
@@ -212,14 +214,14 @@ Servern definierar cookienn i response headern
 \end{itemize}
 När servern vid ett senare tillfälle vill skicka en request till samma server så skickas cookien med i request headern:
 
-\subsection*{Response med set-cookie, exempel}
+\subsection{Response med set-cookie, exempel}  
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{cookieresponse.png}
     \caption{HTTP Response med Set-Cookie header}
 \end{figure}
 
-\subsection*{Request med cookie, exempel}
+\subsection{Request med cookie, exempel}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{cookierequest.png}
@@ -227,7 +229,7 @@ När servern vid ett senare tillfälle vill skicka en request till samma server 
 \end{figure}
 
 \newpage
-\subsection*{Set-Cookie Format}
+\subsection{Set-Cookie Format}
 \begin{itemize}
     \item Set-Cookie: <name> = <value>; $\leftarrow$ Raderas när man stänger av webbläsaren
     \item Set-Cookie: <name> = <value>; Expires = <date>; $\leftarrow$ Sparas tills utgångsdatumet
@@ -237,8 +239,8 @@ När servern vid ett senare tillfälle vill skicka en request till samma server 
 \end{itemize}
 
 \newpage
-\section*{Föreläsning 3}
-\subsection*{Statuskoder}
+\section{Föreläsning 3}
+\subsection{Statuskoder}
 \begin{itemize}
     \item 1xx - Information: Kommunkation i protokoll nivå
     \item 2xx - Success: Begäran lyckades
@@ -247,14 +249,14 @@ När servern vid ett senare tillfälle vill skicka en request till samma server 
     \item 5xx - Serverfel: Fel hos servern
 \end{itemize}
 
-\subsection*{Statuskod 200 (OK)}
+\subsection{Statuskod 200 (OK)}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{statuskod200.png}
     \caption{HTTP Response med statuskod 200}
 \end{figure}
 
-\subsection*{Statuskod 303 (omdirigering)}
+\subsection{Statuskod 303 (omdirigering)}
 Servern hittar inte resursen på den angivna platsen och skickar en omdirigeringsrespons till klienten med den nya platsen för resursen i Location-headern.
 \begin{figure}[H]
     \centering
@@ -263,7 +265,7 @@ Servern hittar inte resursen på den angivna platsen och skickar en omdirigering
 \end{figure}
 
 \newpage
-\subsection*{Form.java}
+\subsection{Form.java}
 Koden för Form.java finns i canvas
 \begin{enumerate}
     \item Läs request 
@@ -284,7 +286,7 @@ Koden för Form.java finns i canvas
 
 \end{enumerate}
 
-\subsection*{PRG (Post/Redirect/Get)}
+\subsection{PRG (Post/Redirect/Get)}
 \begin{itemize}
     \item Designmönster
     \item Problem som PRG löser:
@@ -294,7 +296,7 @@ Koden för Form.java finns i canvas
     \end{itemize}
 \end{itemize}
 
-\subsection*{Jämförelse av PRG och NO\_PRG}
+\subsection{Jämförelse av PRG och NO\_PRG}
 
 \begin{figure}[H]
     \centering
@@ -310,8 +312,8 @@ Koden för Form.java finns i canvas
 \end{figure}
 
 \newpage
-\section*{Föreläsning 4}
-\subsection*{HTML (HyperText Markup Language)}
+\section{Föreläsning 4}
+\subsection{HTML (HyperText Markup Language)}
 \begin{itemize}
     \item Hypertext: text som med länk till andra dokument
     \item Markup Language: Ett språk som ger instruktioner om hur text och bild ska representeras för användaren
@@ -324,7 +326,7 @@ Koden för Form.java finns i canvas
     \caption{HTML element exempel}
 \end{figure}
 
-\subsection*{Vanliga HTML element}
+\subsection{Vanliga HTML element}
 \begin{itemize}
     \item <html> - html sida
     \item <head> - huvud information
@@ -343,14 +345,14 @@ Koden för Form.java finns i canvas
     \item <ul> - oordnad lista
 \end{itemize}
 
-\subsection*{Generella attribut för HTML}
+\subsection{Generella attribut för HTML}
 \begin{itemize}
     \item class - Formatteringsklass för gruppering 
     \item id - referens till specifikt element
     \item style - CSS
 \end{itemize}
 
-\subsection*{Vanliga sub-element för HEAD}
+\subsection{Vanliga sub-element för HEAD}
 \begin{itemize}
     \item <base href 0 "(url för den sidan)"> = Prefix url för alla länkar på den sidan
     \item <link href = "special.css" rel = "stylesheet" type = "text/css"> = Definierar relationen mellan två dokument 
@@ -360,7 +362,7 @@ Koden för Form.java finns i canvas
     \item <meta> = Information för sökmotorer och webbläsare
 \end{itemize}
 
-\subsection*{Dom}
+\subsection{Dom}
 En trädstruktur som representerar HTML-dokumentet, javascript kan:
 \begin{itemize}
     \item Lägga till nod
@@ -369,7 +371,7 @@ En trädstruktur som representerar HTML-dokumentet, javascript kan:
     \item Visa/dölja noder
 \end{itemize}
 
-\subsection*{Formulär och Dom}
+\subsection{Formulär och Dom}
 I elementet <form> kan man lägga vilka presentatioselement som helst
 \begin{itemize}
     \item <input type = "text"> - textfält
@@ -384,12 +386,12 @@ Alla element kan refereras i javascript och ändras dynamiskt genom
 \newline
 \noindent window.document.forms[3].efternman.value - refererar till efternamn elementet i det 4:e formuläret på sidan
 
-\subsection*{javascript}
+\subsection{javascript}
 JavaScript använder event-handlers för att hantera user-input och andra händelser. Varje event-handler är associerad med ett element i DOM och körs när en specifik händelse inträffar på det elementet. M.h.a JavaScript kan man komma åt HTMl-element i dokumentet genom exempelvis: document.getElementByID("id")
 
 \newpage
 
-\subsection*{Event handler några exempel}
+\subsection{Event handler några exempel}
 \begin{itemize}
     \item OnBlur - formulärelementet
     \item OnChange - formulärelementet
@@ -399,7 +401,7 @@ JavaScript använder event-handlers för att hantera user-input och andra hände
     \item OnSubmit - form
 \end{itemize}
 
-\subsection*{Exempel på JavaScript}
+\subsection{Exempel på JavaScript}
 \begin{minted}{javascript}
 <script type = "text/javascript">
 
@@ -421,7 +423,7 @@ function checkAddress(form) {
 }
 \end{minted}
 
-\subsection*{CSS - \textbf{C}ascading \textbf{S}tyle \textbf{S}heets}
+\subsection{CSS - \textbf{C}ascading \textbf{S}tyle \textbf{S}heets}
 \begin{itemize}
     \item Används för att styra utseendet på HTML-element
     \item Man slipper upprepningar av massa hårdkodningar i HTML filen
@@ -458,7 +460,7 @@ dotted";
     
 \end{minted}
 
-\subsection*{Motsvarande HTML fil för CSS-exemplet}
+\subsection{Motsvarande HTML fil för CSS-exemplet}
 \begin{minted}{html}
 <!DOCTYPE html> <html> <head>
 <link rel="stylesheet" type="text/css”href="myStyle.css">
@@ -475,7 +477,7 @@ dotted";
 </body></html>
 \end{minted}
 
-\subsection*{CSS}
+\subsection{CSS}
 \begin{minted}{css}
 p {
     color: red;
@@ -496,7 +498,7 @@ p {
         \item Value: center
     \end{itemize}
 \end{itemize}
-\subsection*{Variabel deklaration i JavaScript}
+\subsection{Variabel deklaration i JavaScript}
 \begin{minted}{javascript}
 let age = 20;
 var age = 20;
@@ -519,7 +521,7 @@ const PI = 3.14;
 \end{minted}
 \newpage
 
-\subsection*{Typkonvertering i javascript}
+\subsection{Typkonvertering i javascript}
 \begin{itemize}
     \item 5 * null $\rightarrow$ 0
     \item "5" - 3 $\rightarrow$ 2
@@ -531,7 +533,7 @@ const PI = 3.14;
     \item "4711" === new String("4711") $\rightarrow$ false
 \end{itemize}
 
-\subsection*{Deklarera funktioner}
+\subsection{Deklarera funktioner}
 \begin{minted}{javascript}
 //1. Funktionsdeklaration
 const calc = function(x, y) {
@@ -566,7 +568,7 @@ const calc = (x, y) => x + y;
     halvera(4, undefined); // Returnerar 2
 \end{minted}
 
-\subsection*{Högre ordningens funktion}
+\subsection{Högre ordningens funktion}
 Nestlade funktioner som kan ta andra funktioner som argument eller returnera en funktion som resultat
 \begin{minted}{javascript}
 
@@ -583,7 +585,7 @@ function högreOrdningensFunktion(func) {
 }
 \end{minted}
 
-\subsection*{Closure}
+\subsection{Closure}
 Funktioner som returnerar andra funktioner eller tar andra funktioner som argument 
 \begin{minted}{javascript}
 //1. Funktion som returnerar en annan funktion
@@ -600,7 +602,7 @@ function applyFunction(func, value) {
 }
 \end{minted}
 
-\subsection*{Arrays}
+\subsection{Arrays}
 \begin{minted}{javascript}
     let namnlista = ["Alice", "Bob", "Charlie"]; // Skapar en array med tre element
     namnlista.push("David"); // Lägger till "David" i slutet av arrayen
@@ -613,7 +615,7 @@ function applyFunction(func, value) {
     namnlista[100] = "Zara"; 
 \end{minted}
 
-\subsection*{Object}
+\subsection{Object}
 \begin{minted}{javascript}
     let person = {
         name: "Petter",
@@ -625,13 +627,13 @@ function applyFunction(func, value) {
     console.log(person); // ger {name: "Petter", labs: [3, 4], betyg: "A"}
 \end{minted}
 
-\subsection*{JSON - JavaScript Object Notation}
+\subsection{JSON - JavaScript Object Notation}
 \begin{itemize}
     \item Serialiserat format 
     \item Likt JavaScript-objekt och arrays
 \end{itemize}
 Exempel:
-\begin{minted}{json}
+\begin{minted}{JavaScript}
 {
     "name": "Alice",
     "age": 30,
@@ -644,6 +646,123 @@ Exempel:
     }
 }
 \end{minted}
+
+\section{Föreläsning 5}
+3 delar i labb 2
+\begin{enumerate}
+    \item Textbaserat med nodejs (ingen HTTP-server)
+    \item Grafisk html bara i webbläsaren (ingen HTTP-server)
+    \item Liten webbserver i nodejs server (med HTTP-server)
+\end{enumerate}
+
+Spelflöde och dokumentation:
+\begin{enumerate}
+    \item Skapa spelplan -- $createGameplan(row,col)$
+    \item Skapa spelare -- $createPlayer(gameplan)$
+    \item Välj ruta -- $selectCell(plyaer, turn, gameplan)$
+    \item Uppdatera spelplan -- $Update(gameplan, sign, row, col)$
+    \item Kontrollera vinnare -- $checkWinner(checkWinner, row, col, minInLine2Win)$
+    \item Kontrollera om spelplanen är full -- $noEmptyCells(gameplan)$
+    \item Byt tur till nästa spelare -- Löser automatiskt
+    \item Upprepa spelflödet -- Löser automatiskt
+\end{enumerate}
+
+Tester för spelet:
+\begin{itemize}
+    \item $createGameplanTest()$
+    \item $updateTest()$
+    \item $noEmptyCellsTest()$
+    \item $checkWinnerTest()$
+\end{itemize}
+
+\section{Föreläsning 6}
+\subsection{Nodejs}
+\begin{itemize}
+    \item Platform för att skapa serverapplikationer i JavaScript
+    \item Innehåller allt man behöver för att skapa en webbserver
+\end{itemize}
+
+\subsection{Exempelkod}
+
+\subsection{Npm}
+\begin{itemize}
+    \item Node Package Manager
+    \item Hanterar tredjepartsbibliotek och verktyg
+\end{itemize}
+
+Exempel på enkel Nodejs server:
+\begin{minted}{javascript}
+    //file: serverhttp.js
+    const {createServer} = require("http");
+    let server = createServer((request, response) => {
+        response.writeHead(200, {`Content-Type`:`text/html`});
+        response.write(`<h1>Du kör Nodejs!!! </h1>
+                        <p>urln:n i förfrågan:
+                        <code>${request.url}</code></p>`);
+        response.end();
+    });
+    server.listen(8000);
+    console.log("Listening! (port 8000)");
+\end{minted}
+
+Förklaring av koden:
+\begin{itemize}
+    \item $require$ - Importerar moduler i detta fall http
+    \item const $createServer$ - Gör basically följande i ett steg
+    \begin{enumerate}
+        \item let http\_modulen = require("http");
+        \item let createServer = http-\_modulen.createServer;
+        \item (request, response) => {...} - Callback-funktion som körs varje gång en request kommer in
+        \item server.listen(8000) - Startar servern och lyssnar på port 8000
+        \item console.log("Listening! (port 8000)") - Skriver ut i konsolen att servern är igång
+    \end{enumerate}
+\end{itemize}
+
+Exempel med modulen URL:
+\begin{minted}{javascript}
+    import http from "http";
+    const server = http.createServer((req, res) => {
+        res.writeHead(200, {"Content-Type": "text/plain"})
+        res.write("resurs" + req.url);
+        res.end();
+    });
+    server.listen(3000, () => {
+        console.log("Servern är igång på port http://localhost:3000");
+    });
+\end{minted}
+
+Exempel med url parameter name:
+\begin{minted}{javascript}
+    import http from "http";
+    import {URL} from "url";
+    const server = http.createServer((req, res) => {
+        // initierar URLen
+        const myURL = new URL(req.url, "http://localhost:3000");
+        res.writeHead(200, {"Content-Type": "text/plain"});
+        res.write("pathname: " + myURL.pathname + "\n");
+        res.write("name: " + myURL.pathname + "\n");
+        res.write("name: " + myURL.searchParams.get("name") + "\n");
+        res.end();
+    })
+    server.listen(3000, () => {
+        console.log("Servern är igång på port http://localhost:3000");
+        console.log("prova med http://127.0.0.1:3000/index.html?name=KTH")
+    });
+\end{minted}
+
+\section{Föreläsning 7}
+%Fortsätt på föreläsning 7 imorgon
+
+
+
+
+
+
+
+
+
+
+
 
 
 
