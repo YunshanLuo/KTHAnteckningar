@@ -844,7 +844,8 @@ $$z_n = \theta_n a_{n-1}$$
 $$\tilde{y} = g_n(z_n)$$
 
 $g$ är någon icke linjär funktion såsom sigmoid och softmax
-
+\newline
+\vspace{10pt}
 Sammanfattning av feed forward nätverk:
 \begin{itemize}
     \item Nätverket beräknar någon icke funktion av inputten
@@ -874,8 +875,39 @@ $$\nabla_{\theta} L = \begin{bmatrix}
     \vdots \\[0.5em]
     \frac{\partial L}{\partial \theta_n}
 \end{bmatrix}$$
+\newpage
+\subsection*{Backpropagation}
+Exempel: Givet att loss är $L$
+$$L(x,y,z) = (x+y)z$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{backprop.png}
+\end{figure}
 
+\begin{itemize}
+    \item Vi får via ett framåt pass att $L(-2,5,-4) = -12$
+\end{itemize}
 
+För att göra en backpropagation måste vi beräkna derivatorna:
+$$q(x,y) = x + y, \hspace{10pt} \frac{\partial q}{\partial x} = 1, \hspace{10pt} \frac{\partial q}{\partial y} = 1$$
+$$L(q,z) = qz, \hspace{10pt} \frac{\partial L}{\partial q} = z, \hspace{10pt} \frac{\partial L}{\partial z} = q$$
+Vi vill hitta $\frac{\partial L}{\partial x}, \hspace{5pt} \frac{\partial L}{\partial y}, \hspace{5pt} \frac{\partial L}{\partial z}$
+$$\frac{\partial L}{\partial q} = z = -4$$
+$$\frac{\partial L}{\partial z} = q = 3$$
+$$\frac{\partial L}{\partial y} = \frac{\partial L}{\partial q} \cdot \frac{\partial q}{\partial y} = z \cdot 1 = -4 \cdot 1 = x+y = -4$$
+$$\frac{\partial L}{\partial x} = \frac{\partial L}{\partial q} \cdot \frac{\partial q}{\partial x} = z \cdot 1 = -4 \cdot 1 = x+y = -4$$
+
+\newpage
+\subsection*{Korsentropi loss function}
+Antag att vi har $\theta = [-0.1; 0.5; -0.3]$ och $x = [1; 1]$ gör ett framåt pass här:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{cross.png}
+\end{figure}
+\begin{itemize}
+    \item Framåt pass ger oss $\approx 0.744$
+    \item Bakåt pass ger oss $\approx 0.525$ för alla
+\end{itemize}:
 
 
 
