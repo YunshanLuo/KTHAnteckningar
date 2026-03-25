@@ -168,6 +168,142 @@ It is easier to think in multiple bits instead of single bits
     \includegraphics[width=0.75\textwidth]{adder.png}
 \end{figure}
 
+%% Continue att 1.7 
+
+\section{Section 2}
+%% Continue at 2.1 do this after sections 3 is done
+
+\section{Section 3}
+\subsection{Sequential logic}
+\begin{itemize}
+    \item We see time as discrete steps
+    \item Computers does not compute everything instantaneously rather stablizes after some time
+    \item We choose a clock cycle so that the signal stabilizes 
+\end{itemize}
+
+\subsection{Combintorial vs Sequential Logic}
+\begin{itemize}
+    \item Combinatorial: $out[t] = function(in[t])$
+    \item Sequential: $out[t] = function(in[t-1])$
+\end{itemize}
+
+\subsection{Flip flops}
+\begin{itemize}
+    \item In order to move information from $[t-1]$ to $[t]$, we need a storage element called flip flop
+    \item DFF (Data Flip Flop) has the functionality: $out[t] = in[t-1]$
+    \item At any time unit it returns the output for the previous time unit
+    \item The DFF gate is given and not built as a part of the course 
+\end{itemize}
+
+\subsection{1-bit Register}
+\begin{itemize}
+    \item The 1-bit register can remember a single bit of information forever
+    \item If load(t-1) then out(t) = in(t-1) else out(t) = out(t-1)
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{register.png}
+\end{figure}
+
+\subsection{1-bit Register implementation}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{registerImpl.png}
+\end{figure}
+
+\subsection{Memory units: Von Neumann architecture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{vonNeumann.png}
+\end{figure}
+
+\begin{itemize}
+    \item Main memory: RAM (Random Access Memory)
+    \item Secondary memory: Disk, memory sticks, etc
+    \item Volatile and non-volatile memory
+    \item RAM is used for Data and Instructions
+\end{itemize}
+
+\subsection{Register: The elemantary building block}
+\begin{itemize}
+    \item Register has a word width of 16-bits in this course
+    \item A register's state is the value that is stored in the register
+    \item A 16-bit register consists of multiple 1-bit registers with a load signal
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{register16.png}
+\end{figure}
+
+\subsection{Write logic}
+Suppose we want ot write value $v$ to the register
+\begin{itemize}
+    \item set $in = v$
+    \item set $load = 1$
+    \item The register will store and output the value $v$ at the next time unit
+\end{itemize}
+
+\subsection{RAM unit}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{ram.png}
+\end{figure}
+\begin{itemize}
+    \item RAM unit is a collection of registers 
+    \item We can only select one register at a time to read of write
+    \item The address is used to select which register 
+    \item Given a RAM unit with $n$ registers, we need $\log_2(n)$ bits to map every register
+    \item The RAM unit has a load signal, if load = 1 RAM out be writable
+\end{itemize}
+
+\subsection{RAM: Read and Write logic}
+To read:
+\begin{enumerate}
+    \item set $address = i$
+    \item out: outputs the state of register $i$
+\end{enumerate}
+
+To write:
+\begin{enumerate}
+    \item set $address = i$
+    \item set $in = v$
+    \item set $load = 1$
+    \item The RAM will store the value $v$ 
+    \item In the next clock cycle and onwards RAM will write the value $v$
+\end{enumerate}
+
+\subsection{The RAM chips we will build}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{ramChips.png}
+\end{figure}
+Regardless of the size of the RAM chip or which register you select every register can be read/written at with the same delay
+
+\subsection{Counters}
+Three possible control settings for a counter:
+\begin{itemize}
+    \item Rest -- $PC = 0$
+    \item Next -- $PC++$
+    \item Fetch -- $PC = n$
+\end{itemize}
+
+\subsection{Counter abstraction}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{counter.png}
+\end{figure}
+\newpage
+\subsection{Counter logic}
+\begin{itemize}
+    \item if (reset == 1) out[t + 1] = 0 -- Resetting the counter
+    \item else if (load[t] == 1) out[t + 1] = in[t] -- Setting counter = value
+    \item else if (inc[t] == 1) out[t + 1] = out[t] + 1 -- Incrementing the counter
+    \item else out[t + 1] = out[t] -- Keep the same value
+\end{itemize}
+
+
+
 
 
 
