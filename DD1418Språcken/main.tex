@@ -909,9 +909,31 @@ Antag att vi har $\theta = [-0.1; 0.5; -0.3]$ och $x = [1; 1]$ gör ett framåt 
     \item Bakåt pass ger oss $\approx 0.525$ för alla
 \end{itemize}:
 
+\subsection*{Neurala språkmodeller}
+$$\text{Word embeddnings} \rightarrow \text{Hidden layer} \rightarrow \text{Output layer}$$
+\begin{itemize}
+    \item Hidden layer: $z = \sigma(W_1 x)$
+    \item Output layer: $ \text{logit} \hspace{5pt} \tilde{y} = \sigma(W_2 z), \hspace{10pt} softmax(\tilde{y}) = P(w_{n+1} | w_1,..,w_n)$
+\end{itemize}
 
+Genom att träna neurala nätverket och minimera loss via forward och backword propagation kan vi kan vi få fram sannolikehterna för nästa ord
 
+\subsection*{Sampling tekniker}
+Tekniker att välja nästa ord:
+\begin{itemize}
+    \item Greedy decoding: Alltid välja det mest sannolika outputten
+    \item Random sampling: Välja nästa ord baserat på sannolikheten
+    \item Top-k sampling: Slumpar $k$ vanligaste orden och väljer sedan baserat på sannolikheten
+    \item Top-p (nucleus sampling) sampling: Väljer de minsta mängden ord vars sannolikhet är större än $p$ och väljer sedan baserat på sannolikheten
+\end{itemize}
 
+\subsection{Temperatur sampling}
+Temperatur är $T$:
+\begin{itemize}
+    \item Genom att räkna ut $softamx(\frac{\tilde{y}}{T})$
+    \item Då jämnas sannolikeheten ut och det blir mer sannolikt att välja mindre sannolika ord 
+    \item Det vill säga att variansen på variansen minskar när $T$ ökar
+\end{itemize}
 
 
 
