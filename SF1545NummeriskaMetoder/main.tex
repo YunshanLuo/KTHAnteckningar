@@ -1,3 +1,7 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
 \setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
 \setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
 \setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
@@ -22,21 +26,182 @@
 
 
 \begin{document}
+\section{Föreläsning 1}
+Nummerisk metod -- Algoritm som löser problem approximativt:
+\begin{itemize} 
+    \item Ekvationslösning
+    \begin{itemize}
+        \item För funktioner av en variabel
+            \[
+            f(x) = 0
+            \]
+        \item För system av ekvationer
+            \[
+            \begin{cases}
+            f_1(x_1, x_2, \ldots, x_n) = 0 \\
+            f_2(x_1, x_2, \ldots, x_n) = 0 \\
+            \vdots \\
+            f_n(x_1, x_2, \ldots, x_n) = 0
+            \end{cases}
+            \]
+    \end{itemize}
+    \item Kurvanpassning
+    \begin{itemize}
+        \item Interpolation, minsta kvadrat, etc.
+    \end{itemize}
+    \item Integration 
+    \[
+    \int_a^b f(x) dx \approx \sum_{i=1}^n f(x_i) \Delta x
+    \]
+    \item Derivering
+    \[
+    f'(x) \approx \frac{f(x + \Delta x) - f(x)}{\Delta x}
+    \]
+    \item Ordinära differentialekvationer
+    \[
+    \frac{dy(t)}{dt} = f(t, y(t)), \hspace{10pt} y(0) = y_0
+    \]
+\end{itemize}
 
+\section{Föreläsning 2}
+\subsection{Iterativ metod}
+\[
+x_0, x_1, x_2, \ldots, x_n \rightarrow x^*, \hspace{10pt} f(x^*) = 0
+\]
+Exempelvis genom intervall halvering och fixpunkt iteration. Den generlla metoden är:
+\begin{enumerate}
+    \item Hitta en startgissning $x_0$.
+    \item Iterera $x_{n} \rightarrow x_{n+1}$
+    \item Upprepa tills $|x_{n+1} - x_n| < \epsilon$.
+    \item De vanliga frågorna är om den konvergerar och dess konvergens ordning
+\end{enumerate}
 
+\subsection{Intervall halvering}
+Antag att $f$ är en kontinuerlig funktion samt:
+\begin{itemize}
+    \item $a_0 < \sqrt{x^*} < b_0$
+    \item $x_0 = \frac{a_0 + b_0}{2}$
+    \item Om $f(a_0)$ och $f(x_0)$ har olika tecken 
+    \begin{itemize}
+        \item Byt till $[a_0, x_0]$
+    \end{itemize}
+    \item Om $f(a_0)$ och $f(x_0)$ har samma tecken
+    \begin{itemize}
+        \item Byt till $[x_0, b_0]$
+    \end{itemize}
+    \item Basically binär sökning för att hitta när $f(x) = 0$
+\end{itemize}
 
+\subsubsection{Konvergens ordning för intervall halvering}
+\begin{itemize}
+    \item Intervall längden halveras varje iteration
+    \item Detta gör konvergens ordningen 1, eftersom $|x_{n+1} - x^*| \approx \frac{1}{2} |x_n - x^*|$.
+\end{itemize}
 
+\subsection{Fixpunktsiteration}
+Givet en funktion $f(x) = 0$ kan den alltid skrivas i fixpunktsform:
+\[
+x = \Phi(x)
+\]
+Då gäller:
+$$x^* = \Phi(x^*) \iff f(x^*) = 0$$
+Metoden är:
+\begin{enumerate}
+    \item Börja med en startgissning $x_0$.
+    \item Iterera $x_{n+1} = \Phi(x_n)$.
+    \item Upprepa tills $|x_{n+1} - x_n| < \epsilon$
+\end{enumerate}
 
+\subsubsection{Analys av fixpunktsiteration}
+$$|x_{n+1} - x^*| = |\Phi'(x_n)||x_n - x^*|$$
+Felet avtar med faktorn $|\Phi'(x_n)|$ för varje iteration som kan bevisas:
+$$x_{n+1} - x^* = \Phi(x_n) - \Phi(x^*)$$
+Medelvärdessatsen säger att:
+$$f(b) - f(a) = f'(c)(b-a), \hspace{10pt} a < c < b$$
+$$\implies \Phi(x_n) - \Phi(x^*) = \Phi'(c)(x_n - x^*), \hspace{10pt} x_n < c < x^*$$
+$$\implies |x_{n+1} - x^*| = |\Phi'(c)||x_n - x^*|$$
 
+Där för gäller det att konvergensen beror på $|\Phi'(c)|$:
+\begin{itemize}
+    \item Om $|\Phi'(c)| < 1$ så konvergerar metoden
+    \item Om $|\Phi'(c)| > 1$ så divergerar metoden
+    \item Om $|\Phi'(c)| = 1$ så kan det vara svårt att avgöra konvergensen
+    \item Om $|\Phi'(c)| = 0$ fås kvadratisk konvergens
+\end{itemize}
 
+Kvadratisk konvergens innebär:
+$$|x_{n+1} - x^*| \approx S|x_n - x^*|^2, \hspace{10pt} C > 0$$
+För fixpunktsiteration vid kvadratisk konvergens gäller att:
+$$|x_{n+1} - x^*| \approx \frac{|\Phi''(c)|}{2}|x_n - x^*|^2$$
+Generellt om $|\Phi^{(n)}(c)| = 0$ gäller att:
+$$|x_{n+1} - x^*| \approx \frac{|\Phi^{(n)}(c)|}{n!}|x_n - x^*|^n$$  
 
+\newpage
+\section{Föreläsning 3}
+\subsection{Newtons metod}
+Givet $f(x) = 0$ så kan man linjärisera kring punkten $x_n$:
+$$f(x) \approx L(x) = f(x_n) + f'(x_n)(x - x_n)$$
+Låt $L(x_{n+1}) = 0$
+$$\implies 0 = L(x_{n+1}) = f(x_n) + f'(x_n)(x_{n+1} - x_n)$$
+$$\implies 0 = f(x_n) + f'(x_n)(x_{n+1} - x_n)$$
+$$\implies x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
 
+\subsubsection{Analys av Newtons metod}
+\begin{itemize}
+    \item $\exists f'''(x) \implies \text{Lokal konvergens}$
+    \item Lokal konvergens innebär att metoden endast konvergerar om stargissningen är nära nog
+    \item $f'(x) = 0$ händer inte i kursen
+    \item Bevis nedan:
+\end{itemize}
+\noindent Givet att fixpunktsiterationer är lokalt konvergenta om $|\Phi(x^*)| < 1$:
 
+$$\Phi(x) = x - \frac{f(x)}{f'(x)}$$
+$$\implies \frac{d}{dx}\Phi(x) = 1 - \frac{f'(x)^2 - f(x)f''(x)}{f'(x)^2}$$
+$$\implies \Phi'(x^*) = 1 - \frac{f'(x^*)^2 - f(x^*)f''(x^*)}{f'(x^*)^2}$$
+$$\implies \Phi'(x^*) = 1 - \frac{f'(x^*)^2}{f'(x^*)^2} + \frac{f(x^*)f''(x^*)}{f'(x^*)^2}$$
+$$\implies \Phi'(x^*) = \frac{f(x^*)f''(x^*)}{f'(x^*)^2}$$
+$$f(x^*) = 0 \implies \Phi'(x^*) = 0$$
+Gäller endast om $f'''(x)$ existerar, vilket ger kvadratisk konvergens
 
+\subsubsection{Newtons metod konvergens}
+\begin{itemize}
+    \item Newtons metod har kvadratisk konvergens eftersom $|\Phi'(x^*)| = 0$.
+    \item Vi får $|x_{n+1} - x^*| \approx \frac{|\Phi''(c)|}{2}|x_n - x^*|^2$
+\end{itemize}
+\newpage
+\subsection{Sekant metoden}
+\begin{itemize}
+    \item Kräver två startgissningar $x_n$ och $x_{n-1}$.
+    \item Basically Newton med approximerad derivata:
+    \item Lokalt konvergent om $f'(x^*) \neq 0$
+\end{itemize}
+Anta:
+\[
+f'(x_n) \approx \frac{f(x_n) - f(x_{n-1})}{x_n - x_{n-1}}
+\]
+Då blir iterationsformeln:
+\[
+x_{n+1} = x_n - f(x_n)\frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}
+\]
 
+\subsection{Approximativ newton}
+Om $f'(x)$ är odefinierad eller svår att beräkna kan kan approximera $f'(x_n)$ som:
+$$f'(x_n) \approx \frac{f(x_n + h) - f(x_n)}{h}, \hspace{10pt} h = 10^{-5} \approx 0$$
+Detta ger då:
+$$x_{n+1} = x_n - \frac{h \cdot f(x_n)}{f(x_n + h) - f(x_n)}$$
 
+\subsection{Konvergens}
+\subsubsection{Linjärkonvergens}
+Felet i $x_{n+1}$ är ungefär proportionellt $x_n$
+$$|x_{n+1} - x^*| \approx C|x_n - x^*|, \hspace{10pt} C > 0$$
+$$\frac{|x_{n+1} - x^*|}{|x_n - x^*|} \approx C$$
 
+\subsubsection{Kvadratisk konvergens}
+$$|x_{n+1} - x^*| \approx S|x_n - x^*|^2, \hspace{10pt} C > 0$$
+$$\frac{|x_{n+1} - x^*|}{|x_n - x^*|^2} \approx C$$
+Antalet korrekta dubblas efter varje iteration
 
+\section{Föreläsning 4}
 
 
 
