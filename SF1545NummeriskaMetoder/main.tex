@@ -1,28 +1,35 @@
 \documentclass[a4paper,11pt]{article}
+
+% --- Language and Encoding ---
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
-\setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
-\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
-\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
-\setlength{\voffset}{-18pt} % Bon pour DOS
-\setlength{\marginparsep}{7pt} % SÃƒÂ©paration de la marge
-\setlength{\topmargin}{0pt} % Pas de marge en haut
-\setlength{\headheight}{13pt} % Haut de page
-\setlength{\headsep}{4pt} % Entre le haut de page et le texte
-\setlength{\footskip}{27pt} % Bas de page + sÃƒÂ©paration
-\setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
-\setlength{\parindent}{0pt}
+% --- Page Layout (The Fix) ---
+\usepackage[
+    a4paper,
+    left=2cm,       % ADJUST THIS TO CHANGE LEFT MARGIN
+    right=2cm,      % Adjust right margin
+    top=2cm,      % Adjust top margin
+    bottom=2cm,   % Adjust bottom margin
+    headheight=13pt,
+    headsep=15pt
+]{geometry}
 
-\usepackage{natbib}
+\setlength{\parindent}{0pt} % Keeps your no-indent preference
+
+% --- Math and Graphics ---
+\usepackage{amsmath, amssymb}
 \usepackage{graphicx}
-\usepackage{amssymb}
-\usepackage{amsmath} % Required for the align* environment
 \usepackage{float}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% --- Algorithms and Bibliography ---
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\pgfplotsset{compat=1.18}
+\usepackage{natbib}
+
+
 
 
 \begin{document}
@@ -202,12 +209,149 @@ $$\frac{|x_{n+1} - x^*|}{|x_n - x^*|^2} \approx C$$
 Antalet korrekta dubblas efter varje iteration
 
 \section{Föreläsning 4}
+\subsection{Olinjära ekvationssystem}
+Intervallhalvering och sekantmetoden kan inte användas däremot funkar alla fixpunktsiterationer
+\begin{enumerate}
+    \item Skriv om systemet till: $\overline{F}(\overline{x}) = \overline{0}$
+    \item På fixpunktsform $\overline{x}_{n+1} = \overline{\Phi}(\overline{x}_n)$
+\end{enumerate}
 
+\newpage
+\subsection{Linjärisering av ekvationssystem}
+Givet den vektorvärda funktionen $\overline{F}(\overline{x})$ kan skrivas som:
+\[ \overline{F}(\overline{x}) = 
+\begin{bmatrix}
+g(x, y) \\
+h(x, y) \\
+\end{bmatrix}
+\]
+Är Jacobianen av $\overline{F}$:
+\[
+J(\overline{x}) = \begin{bmatrix}
+g_x(x, y) & g_y(x, y) \\
+h_x(x, y) & h_y(x, y) \\
+\end{bmatrix}
+\]
 
+Linjärisering av funktionen kring startgissningen $\overline{x}_0$ blir:
+\[
+\overline{F}(\overline{x}) \approx \overline{F}(\overline{x}_0) + J(\overline{x}_0)(\overline{x} - \overline{x}_0)
+\]
 
+\subsection{Konvergens är metoderna}
+\begin{itemize}
+    \item Konvergens om $max(|\lambda|) < 1$ där $max(|\lambda|)$ är den största absolutbeloppet egenvärdet av $J(\overline{x}^*)$.
+    \item Linjär konvergens om $|\lambda| \neq 0$ och kvadratisk konvergens om $|\lambda| = 0$.
+\end{itemize}
 
+\subsection{Newtons metod för system}
+Metoden är:
+$$\overline{x}_{n+1} = \overline{x}_n - J(\overline{x}_n)^{-1}\overline{F}(\overline{x}_n)$$
+Alternativt kan man formulera det som 
+$$J(\overline{x}_n)\delta = -\overline{F}(\overline{x}_n)$$
+$$\overline{x}_{n+1} = \overline{x}_n + \delta$$
 
+\subsection{Newton för system teori}
+Newtons metod kan relateras till fixpunktsiterations där:
+$$\overline{\Phi}(\overline{x}) = \overline{x} - J(\overline{x})^{-1}\overline{F}(\overline{x})$$
+\begin{itemize}
+    \item $J_{\Phi}(\overline{x^*}) = 0$ Vilket innebär lokal konvergens ($x_0 \approx x^*$)
+    \item Kvadratisk konvergens när $J(\overline{x^*})$ är inverterbar
+\end{itemize}
+$$||\overline{x}_{n+1} - \overline{x}^*|| \leq C||\overline{x}_n - \overline{x}^*||^2$$
 
+\subsection{LU-faktorisering}
+\[ A = LU \]
+
+\[ 
+A = \left[
+\begin{array}{ccc|c}
+    4 & 8 & -4 & -12 \\
+    2 & 2 & 6 & 12 \\
+    1 & 2 & 8 & 5 \\
+\end{array}
+\right]
+\left[
+\begin{array}{ccc}
+    R_2 = R_2 - \frac{2}{4}R_1 \\
+    R_3 = R_3 - \frac{1}{4}R_1 \\
+    R_3 = R_3 - \frac{10}{-2}R_2
+\end{array}
+\right]
+\implies
+\left[
+    \begin{array}{ccc|c}
+        4 & 8 & -4 & -12 \\
+        0 & -2 & 8 & 18 \\
+        0 & 0 & 49 & -98 \\  
+    \end{array}
+\right]
+\]
+
+\[L = 
+\left[
+\begin{array}{ccc}
+    1 & 0 & 0 \\
+    \frac{2}{4} & 1 & 0 \\
+    \frac{1}{4} & \frac{10}{-2} & 1 \\
+\end{array}
+\right]
+, \hspace{10pt}
+U = \left[
+\begin{array}{ccc}
+    4 & 8 & -4 \\
+    0 & -2 & 8 \\
+    0 & 0 & 49 \\
+\end{array}
+\right]
+\]
+Då gäller det att $A = LU$ och genom att lösa:
+\begin{enumerate}
+    \item $L\tilde{b} = b$ för att få $\tilde{b}$
+    \item $Ux = \tilde{b}$ för att få $x$
+\end{enumerate}
+Går det mycket snabbare än att lösa $Ax = b$ direkt med dator
+
+\subsection{Pivotering} % Skriv lite mer om pivotering inför labben men det räcker för tentan
+\begin{itemize}
+    \item Ibland kan det hända att man inte kan gaussa direkt på $A$ eftersom det kan finnas 0 i diagonalen
+    \item Att gaussa direkt på $A$ kan leda till numeriska instabiliteter eller divsion med 0
+    \item Då kan man kasta om raderna i $A$ så att det inte finns 0 i diagonalen
+\end{itemize}
+
+\section{Föreläsning 5}
+\subsection{Beräkningskostnad och komplexitet}
+\begin{itemize}
+    \item Beräkningskostnad är antalet operationer såsom +, --, $\times$, / som krävs för att lösa ett problem
+    \item Beräkningstiden är den faktiska tid det tar att lösa problemet i sekunder, är porportionell med beräkningskostnaden
+    \item Komplexitet är hur beräkningskostnaden växer med problemets storlek, t.ex. ${O}(n^2)$, $O(n^3)$, etc.
+\end{itemize}
+
+\subsection{Komplexitet för vanliga linjär algebra operationer}
+\begin{itemize}
+    \item $\overline{V_1} \cdot \overline{V_2} \rightarrow O(n)$
+    \item $A \cdot \overline{V} \rightarrow O(n^2)$
+    \item $A \cdot B \rightarrow O(n^3)$
+    \item Lösa $A\overline{x} = \overline{b}$ om $A$ är triangulärt $\rightarrow O(n^2)$
+    \item LU faktorisering med Gauss elimination $\rightarrow O(n^3)$
+    \item Lösa $A\overline{x} = \overline{b} \rightarrow O(n^3) + O(n^2) = O(n^3)$ 
+\end{itemize}
+
+\subsection{Komplexitet för lösning av ekvationsystem}
+\begin{itemize}
+    \item Naiv metod n gånger gauss elimination + bakåtsubstitution $\rightarrow O(n^4)$
+    \item LU faktorisering och läsa 2 triangulära matriser $\rightarrow O(2n \cdot n^2) = O(n^3)$ 
+    \item Glesa matriser som löses med funktionen $sparse()$ har komplexitet $O(n)$
+\end{itemize}
+
+\subsection{Vektornormer}
+\begin{itemize}
+    \item 2-normen av en vektor $\overline{v}$ är $||\overline{v}||_2 = \sqrt{\sum_{i=1}^n v_i^2}$
+    \item 1-normen av en vektor $\overline{v}$ är $||\overline{v}||_1 = \sum_{i=1}^n |v_i|$
+    \item max-normen av en vektor $\overline{v}$ är $||\overline{v}||_{\infty} = \max_{1 \leq i \leq n} |v_i|$
+\end{itemize}
+
+\subsection{Störningsanalys}
 
 
 
