@@ -407,10 +407,137 @@ Detta kan sedan skrivas som $\mathbb{V}\overline{c} = \overline{y}$ där $\mathb
     y_n \\
 \end{bmatrix}
 \]
-%Fortsätt på sida 10 i föreläsning 7 (newtons ansats)
+
+\subsection{Felet i polynom interpolation}
+Givet att $\forall x_i \in [a, b]$ så gäller att:
+\[
+f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x - x_0)(x - x_1)\hdots(x - x_n), \hspace{10pt} \xi \in [a, b]
+\]
 
 
+\subsection{Newtons ansats}
+Om Vandermonde matrisen blir illa konditionerad kan man använda Newtons ansats istället:
+\[
+p(x) = d_0 + d_1(x - x_0) + d_2(x - x_0)(x - x_1) + \hdots + d_n(x - x_0)(x - x_1)\hdots(x - x_{n-1})
+\]
+Då blir matrisen följande:
+\[
+\begin{bmatrix}
+    1 & 0 & 0 & \hdots & 0 \\
+    1 & (x - x_0) & 0 & \hdots & 0 \\
+    1 & (x - x_0) & (x - x_0)(x - x_1) & \hdots & 0 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    1 & (x - x_0) & (x - x_0)(x - x_1) & \hdots & (x - x_0)(x - x_1)\hdots(x - x_{n-1}) \\
+\end{bmatrix}
+\]
 
+\subsection{Minsta kvadratsmetoden}
+Givet att $A\overline{x} = \overline{b}$ inte har en exakt lösning så kan man minsta kvadratslösningen.
+\[
+A^T A \overline{x} = A^T \overline{b}
+\]
+
+\subsection{Gauss-newtons metod}
+Iterativ metod för att hitta minsta kvadratslösningen för funktionen $\overline{F}(\overline{x}) = 0$:
+\[
+\overline{x}_{k+1} = \overline{x}_k - (J(\overline{x}_k)^T J(\overline{x}_k))^{-1} J(\overline{x}_k)^T \hspace{2pt} \overline{F}(\overline{x}_k)
+\]
+Alternativt kan metoden även skrivas som:
+\[
+J(\overline{x}_k)\overline{d}_k = -\overline{F}(\overline{x}_k), \hspace{10pt} \overline{x}_{k+1} = \overline{x}_k + \overline{d}_k
+\]
+
+\subsection{Ekvidistans interpolation}
+\[
+x_j = a + jh, \hspace{10pt} h = \frac{b-a}{n}
+\]
+Felet kan uppskattas genom:
+\[
+|f(x) - p(x)| = |\frac{f^{(n+1)}(\xi)}{4(n+1)}h^{n+1}|, \hspace{10pt} \xi \in [a, b]
+\]
+
+\subsection{Styckvis linjär interpolation}
+\begin{itemize}
+    \item Dra raka streck mellan punkterna
+\end{itemize}
+Felet kan uppskattas genom:
+\[
+h = \frac{b - a}{n}
+\]
+\[
+M = \max_{\xi \in [a, b]} \frac{|f''(\xi)|}{8}
+\]
+\[
+\max_{x \in [a, b]} |f(x) - p(x)| \leq Mh^2
+\]
+Alltså blir felet proportionellt mot $O(h^2)$
+
+\subsection{Nummerisk derivering}
+Framåt differens:
+\[
+f'(x_0) \approx \frac{f(x_0 + h) - f(x_0)}{h}, \hspace{10pt} h \approx 0
+\]
+Felet blir: $f'(x_0) + O(h)$
+
+Bakåt differens:
+\[
+f'(x_0) \approx \frac{f(x_0) - f(x_0 - h)}{h}, \hspace{10pt} h \approx 0
+\]
+
+Central differens:
+\[
+\frac{f'_{fram}(x_0) + f'_{bak}(x_0)}{2} = f'(x_0) \approx \frac{f(x_0 + h) - f(x_0 - h)}{2h}, \hspace{10pt} h \approx 0
+\]
+
+\subsection{Noggrannhetsordning}
+$p$ är konvergensordningen när metoden har felet $O(h^p)$
+
+\subsection{Nummerisk integration}
+\[
+\int_{a}^{b}dx \approx \sum_{j=0}^{n} w_j f(x_j)
+\]
+\begin{itemize}
+    \item $w_j$ är vikter
+    \item $x_j \in [a, b]$ är noder
+\end{itemize}
+
+\subsection{Trapetsregeln}
+Diskretisera $x_j = a + jh, \hspace{10pt} h = \frac{b-a}{n}$, då blir $I(f)$:
+\[
+I(f) = T_1 + T_2 + \hdots + T_n
+\]
+Sammanfattningsvis blir trapetsregeln:
+\[
+I_h(f) = h(\frac{f(x_0)}{2} + f(x_1) + f(x_2) + \hdots + f(x_{n-1}) + \frac{f(x_n)}{2})
+\]
+Felet av trapetsregeln kan uppskattas genom:
+\[
+|I(f) - I_h(f)| \leq Ch^2, \hspace{10pt} C = \frac{b-a}{12} \max_{\xi \in [a, b]} |f''(\xi)|
+\]
+
+\subsection{Simpsons formel}
+Styckvis kvadratisk interpolation av $f$
+\[
+I_h(f) = \frac{h}{3}(f(x_0) + 4\sum_{\text{j udda}} f(x_j) + 2\sum_{\text{j jämn}} f(x_j) + f(x_n)), \hspace{10pt} h = \frac{b-a}{n}, \hspace{10pt} n \text{ är jämnt}
+\]
+Noggrannhetsordningen är $O(h^4)$
+
+\subsection{Integration över ett delintervall}
+Trapetsregeln:
+\[
+T(f) = (b-a)\frac{f(a) + f(b)}{2}
+\]
+Simpsons formel:
+\[
+s(f) = \frac{b-a}{6}(f(a) + 4f(\frac{a+b}{2}) + f(b))
+\]
+
+\subsection{Precisionsgrad}
+\begin{itemize}
+    \item Trapetsregeln har precisionsgrad 1 eftersom den är exakt för alla polynom av grad 1 eller mindre
+    \item Simpsons formel har precisionsgrad 3 eftersom den är exakt för alla polynom av grad 3 eller mindre
+\end{itemize}
+Noggranhetsordningen $p$ är $p = d + 1$ där $d$ är precisionsgraden
 
 
 
