@@ -515,6 +515,10 @@ Felet av trapetsregeln kan uppskattas genom:
 |I(f) - I_h(f)| \leq Ch^2, \hspace{10pt} C = \frac{b-a}{12} \max_{\xi \in [a, b]} |f''(\xi)|
 \]
 
+\subsection{Trapetsregeln i två dimensioner}
+\[\int_{a}^{b} \int_{c}^{d} f(x, y) dx dy \approx \frac{h_x h_y}{4} \sum_{i=0}^{n_x} \sum_{j=0}^{n_y} w_i w_j f(x_i, y_j)\]
+Där $w_i$ och $w_j$ är vikter som
+
 \subsection{Simpsons formel}
 Styckvis kvadratisk interpolation av $f$
 \[
@@ -539,24 +543,298 @@ s(f) = \frac{b-a}{6}(f(a) + 4f(\frac{a+b}{2}) + f(b))
 \end{itemize}
 Noggranhetsordningen $p$ är $p = d + 1$ där $d$ är precisionsgraden
 
+\subsection{Noggranhetsordning}
+För trapetsregeln gäller att:
+\[
+|I - I_h| \leq Ch^2, \hspace{10pt} C = \max_{a \leq \xi \leq b} |f''(\xi)|\frac{b-a}{12}
+\]
+
+\section{Föreläsning 7}
+\subsection{Reguljär konvergens}
+\[
+u_h - u = Ch^p + O(h^{p+1}) \implies u_h - u \approx Ch^p
+\]
+
+\subsection{Richardsonextrapolation}
+Genom att approximera $\tilde{u}$ med $u_h$ och $u_{h/2}$ kan vi får $p + 1$ i noggranhetsordning och gör genom:
+\[\tilde{u} = \frac{u_h - u_{h/2}}{2^p - 1}\]
+
+\subsection{ODE}
+Omskrivning av högre ordning ODE till system av första ordningens ODE:
+\[
+y'' = f(t, y, y'), \hspace{10pt} y(0) = y_0, \hspace{10pt} y'(0) = y_1
+\]
+Skriv om med $u_1 = y$ och $u_2 = y'$:
+\[
+\overline{u}(t) = \begin{bmatrix}
+    u_1(t) \\
+    u_2(t) \\
+\end{bmatrix}
+\]
+Då gäller att:
+\[
+\frac{d\overline{u}}{dt} = 
+\begin{bmatrix}
+    u_1'(t) \\
+    u_2'(t)\\
+\end{bmatrix} = 
+\begin{bmatrix}
+    y' \\
+    f(t, y, y') \\
+\end{bmatrix}
+\]
+samt \[
+\overline{u}(0) = \begin{bmatrix}
+    y(0) \\
+    y'(0) \\
+\end{bmatrix} = \begin{bmatrix}
+    y_0 \\
+    y_1 \\
+\end{bmatrix}
+\]
+Systemet av första ordningens ODE är:
+\[\overline{u}'(t) = \overline{F}(t, \overline{u}), \hspace{10pt} \overline{u}(0) = \overline{u}_0\]
+
+\subsection{Framåt Euler}
+\begin{enumerate}
+    \item Diskretisera $t_n = nh, \hspace{10pt} n = 0, 1, 2, \ldots$
+    \item Tidstega
+\end{enumerate}
+
+\[
+y_{n+1} = y_n + hf(t_n, y_n), \hspace{10pt} y_0 = y(0)
+\]
+Allså blir det framåt Euler metoden:
+
+$$y_{1} = y_0 + hf(t_0, y_0)$$
+$$y_{2} = y_1 + hf(t_1, y_1)$$
+$$\vdots$$
+$$y_{n+1} = y_n + hf(t_n, y_n)$$
+
+\section{Föreläsning 8}
+\subsection{Bakåt Euler}
+\begin{enumerate}
+    \item Diskretisera $t_n = nh, \hspace{10pt} n = 0, 1, 2, \ldots$
+    \item Tidstega
+\end{enumerate}
+\[
+y_{n+1} = y_n + hf(t_{n+1}, y_{n+1}), \hspace{10pt} y_0 = y(0)
+\]
+$y'$ approximeras med bakåt differens:
+\[
+f(t_n, y_n) = y'(t_n) \approx \frac{y_n - y_{n-1}}{h}
+\]
+\[
+f(t_{n+1}, y_{n+1}) = y'(t_{n+1}) \approx \frac{y_{n+1} - y_n}{h}
+\]
+Alltså kan metoden skrivas som:
+$$y_{1} = y_0 + hf(t_1, y_1)$$
+$$y_{2} = y_1 + hf(t_2, y_2)$$
+$$\vdots$$
+$$y_{n+1} = y_n + hf(t_{n+1}, y_{n+1})$$
+
+\subsection{Trapetsmetoden för ODE}
+Tar medelvärdet av framåt och bakåt Euler:
+\[
+y_{n+1} = y_n + \frac{h}{2}(f(t_n, y_n) + f(t_{n+1}, y_{n+1}))
+\]
+
+\subsection{Heuns metod (Runge--Kutta 2)}
+Byter ut $y_{n+1}$ i trapetsmetoden mot ett framåt Euler steg:
+\[
+y_{n+1} = y_n + \frac{1}{2}h(f(t_n, y_n) + f(t_{n+1}, y_n + hf(t_n, y_n)))
+\]
+
+\subsection{Leap-frog-metoden}
+\[
+y_{n+1} = y_{n-1} + 2hf(t_n, y_n)
+\]
+Aprroximerar $f(t_n, y(t_n))$ med central differens:
+\[
+y'(t_n) = f(t_n, y(t_n)) \approx \frac{y(t_{n+1}) - y(t_{n-1})}{2h}
+\] 
+
+\subsection{Runge kutta 4}
+$$k_1 = f(t_n, y_n)$$
+$$k_2 = f(t_n + \frac{h}{2}, y_n + \frac{h}{2}k_1)$$
+$$k_3 = f(t_n + \frac{h}{2}, y_n + \frac{h}{2}k_2)$$
+$$k_4 = f(t_n + h, y_n + hk_3)$$
+$$y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)$$
+
+\subsection{Fel och konvergens}
+\[
+\max_{0 \leq n \leq N} |y_n - y(t_n)| \leq Ch^p
+\]
+För framåt Euler gäller:
+\[
+y(t_{n+1}) = y(t_n) + hf(t_n, y(t_n)) + O(h^2)
+\]
+$$\implies \max_{0 \leq n \leq N} |y_n - y(t_n)| \leq Ch$$
+
+För trapetsmetoden gäller:
+\[
+y(t_{n+1}) = y(t_n) + \frac{h}{2}(f(t_n, y(t_n)) + f(t_{n+1}, y(t_{n+1}))) + O(h^3)
+\]
+$$\implies \max_{0 \leq n \leq N} |y_n - y(t_n)| \leq Ch^2$$
+
+För Runge-Kutta 4 gäller:
+\[
+y(t_{n+1}) = y(t_n) + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4) + O(h^5)
+\]
+$$\implies \max_{0 \leq n \leq N} |y_n - y(t_n)| \leq Ch^4$$
+
+\subsection{Noggranhetsordning}
+\begin{itemize}
+    \item Ordning 1
+    \begin{itemize}
+        \item Framåt Euler
+        \item Bakåt Euler
+    \end{itemize}
+    \item Ordning 2
+    \begin{itemize}
+        \item Trapetsmetoden
+        \item Heuns metod
+        \item Leap-frog-metoden
+    \end{itemize}
+    \item Ordning 4
+    \begin{itemize}
+        \item Runge-Kutta 4
+    \end{itemize}
+\end{itemize}
+
+\subsection{Lokalt och globalt fel}
+Om det lokala felet $|l_n|$ är $O(h^{p+1})$ så är det globala felet $|e_n| = O(h^p)$ dvs:
+\[
+\max_{0 \leq nh \leq T} |e_n| \leq C_1h^p \implies \max_{0 \leq nh \leq T} |l_n| \leq C_2h^{p+1}
+\]
+För framåt Euler gäller
+\[
+p=1, \hspace{10pt} C_1 = \frac{1}{2} \max_{0 \leq \xi \leq T} |y''(\xi)|, \hspace{10pt} C_2 = C_1 Te^{LT}, \hspace{10pt} L = \max |f'|
+\]
+Samt:
+\[
+l_n \approx \frac{h^2}{2} y''(t_n) \implies h \text{måste vara litet när} y''(t) \text{är stort}
+\]
 
 
+\section{Föreläsning 10}
+\subsection{Randvärdesproblem}
+Givet:
+\[
+y(a) = \alpha, \hspace{10pt} y(b) = \beta
+\]
+Hitta en lösning 
+\[
+\frac{d^2y}{dx^2} = F(x, y, y')
+\]
+Man får två randvärden $\alpha$ och $\beta$ istället för begynnelsevärden
 
+\subsection{Finita differensmetoden}
+Lösa problemet $y''(x) = f(x), \hspace{10pt} x \in (a,b)$
+\[
+\text{Diskretisera fallet}
+x_j = a + jh, \hspace{10pt} h = \frac{b-a}{n+1}
+\]
+Givet att
+\[
+y''(x_j) = \frac{y(x_{j-1}) - 2y(x_j) + y(x_{j+1})}{h^2} + O(h^2)
+\]
+Insättning i ekvationen $y''(x) = f(x)$ ger:
+\[
+\frac{y(x_{j-1}) - 2y(x_j) + y(x_{j+1})}{h^2} = f(x_j) + O(h^2)
+\]
+Där med får vi formeln:
+\[
+\frac{y_{j-1} - 2y_j + y_{j+1}}{h^2} = f(x_j)
+\]
 
+Vid $j = 1$ gäller $y_0 = \alpha$ som ger:
+\[
+\frac{\alpha - 2y_1 + y_2}{h^2} = f(x_1) \implies \frac{-2y_1 + y_2}{h^2} = f(x_1) - \frac{\alpha}{h^2}
+\]
 
+Vid $j = n$ gäller $y_{n+1} = \beta$ som ger:
+\[
+\frac{y_{n-1} - 2y_n + \beta}{h^2} = f(x_n) \implies \frac{y_{n-1} - 2y_n}{h^2} = f(x_n) - \frac{\beta}{h^2}
+\]
 
+Vilket som kan skrivas om till matrisform:
+\[
+\begin{bmatrix}
+    -2 & 1 & 0 & \hdots & 0 \\
+    1 & -2 & 1 & \hdots & 0 \\
+    0 & 1 & -2 & \hdots & 0 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & 0 & \hdots & -2 \\
+\end{bmatrix}
+\begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    y_3 \\
+    \vdots \\
+    y_n \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    h^2 f(x_1) - \frac{\alpha}{h^2} \\
+    h^2 f(x_2) \\
+    h^2 f(x_3) \\
+    \vdots \\
+    h^2 f(x_n) - \frac{\beta}{h^2} \\
+\end{bmatrix}
+\]
 
+\subsection{Inskjutningsmetoden}
+Givet randvärdesproblemet:
+$$y'' = f(x), \hspace{10pt} x \in [a, b]$$
+$$y(a) = \alpha, \hspace{10pt} y(b) = \beta$$ 
 
+Vi betraktar: 
+$$u''(x) = f(x), \hspace{10pt}x > a$$
+$$u(a) = \alpha, \hspace{10pt} u'(a) = z$$
 
+Försök hitta $z$ så att $u(b) = \beta$ genom att ansätta $G(z)$:
+\[
+G(z) = u(b; z) - \beta = 0 \\
+\]
+Löses med t.ex. Newtons metod
 
+\section{Föreläsning 10}
+\subsection{Stabilitet}
+\begin{itemize}
+    \item Explicita metoder har en stabilitetsgräns $h_{\text{stab}}$
+    \item Implicita metoder har ingen stabilitetsgräns
+\end{itemize}
 
+\subsection{Framåt Euler stabilitet}
+\[
+\begin{cases}
+    y' = \lambda y, \hspace{10pt} \lambda < 0 \\
+    y(0) = y_0 \\
+\end{cases}
+\]
+\begin{itemize}
+    \item Om $y(t) = e^{\lambda t} \rightarrow 0 \text{ när } t \rightarrow \infty$ måste den nummeriska lösningen bete sig likadant:
+    \item För den framåt euler gäller det att
+\end{itemize}
+\[
+|1 + h \lambda| < 1 
+\]
+Vilket ger stabilitetsgränsen:
+\[-1 < h \lambda < 1 \implies h < \frac{2}{|\lambda|}\]
 
+\subsection{Bakåt Euler stabilitet}
+\begin{itemize}
+    \item Alltid stabilt eftersom $|1 - h \lambda| > 1$ för alla $h > 0$ och $\lambda < 0$
+    \item Alltid stabilt eftersom metoden är implicit
+\end{itemize}
 
-
-
-
-
-
+\subsection{Styva ODE}
+Sker när $h_{\text{stab}} << h_{\text{nog}}$
+\begin{itemize}
+    \item Stabilitetskravet är mycket strängare än noggrannhetskravet
+    \item Vilket gör att implicita metoder är att föredra
+\end{itemize}
 
 
 
