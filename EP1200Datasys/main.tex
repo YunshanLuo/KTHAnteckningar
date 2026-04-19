@@ -302,9 +302,96 @@ Three possible control settings for a counter:
     \item else out[t + 1] = out[t] -- Keep the same value
 \end{itemize}
 
+\section{Unit 4} 
+\begin{itemize}
+    \item Compilation: translating a high-level language into machine language
+    \item Instructions like this in the course: $\underbrace{| 0 1 0 0 0 1 0 |}_{\text{ADD}}\underbrace{| 0 0 1 1 |}_{\text{R3}}\underbrace{| 0 0 1 0 |}_{\text{R2}}$
+    \item In assembly language it looks like ADD 1, Mem[129]
+    \item In assembly we can assume memory location be using index instead of Mem[129] and write ADD 1, index
+\end{itemize}
 
+\subsection{Machine Languages: Elements}
+There are mainly three different operations:
+\begin{itemize}
+    \item Arithmetic and logical operations: ADD, SUB, NEG, EQ, GT
+    \item Logical operations: AND, OR, NOT
+    \item Flow control operations: JMP, JGT, JLT, JEQ
+\end{itemize}
 
+\subsection{Registers}
+The CPUs usually contains a few registers that are easily accessed
 
+\subsection{Example of different Addressing modes}
+\begin{itemize}
+    \item Add R1, R2: $R2 \leftarrow R1 + R2$
+    \item Add R1, M[200]: Mem[200] $\leftarrow$ R1 + Mem[200]
+    \item Add R1, @A: Mem[A] $\leftarrow$ R1 + Mem[A]
+    \item Add 73, R1: R1 $\leftarrow$ 73 + R1
+\end{itemize}
+
+\subsection{Flow control}
+\begin{itemize}
+    \item JMP: Unconditional jump to a specific address
+    \item JGT: Jump if greater than zero
+    \item JLT: Jump if less than zero
+    \item JEQ: Jump if equal to zero
+\end{itemize}
+
+\subsection{Hack computer: hardware}
+\begin{itemize}
+    \item Data memory: RAM[0], RAM[1], ..., RAM[16383]
+    \item Instruction memory: ROM[0], ROM[1], ..., ROM[32767]
+    \item Buses move data between the different components
+\end{itemize}
+
+\noindent The hack machine language has two types of instructions:
+\begin{itemize}
+    \item A-instruction: @value -- value can be a number or a symbol
+    \item C-instruction: dest=comp;jump
+\end{itemize}
+
+\subsection{Registers}
+The hack computer has three registers:
+\begin{itemize}
+    \item D register: holds a 16-bit value
+    \item A register: holds a 16-bit value
+    \item M register is the selected RAM location, M = RAM[A]
+\end{itemize}
+
+\subsection{A instruction}
+\begin{itemize}
+    \item A instruction @value
+\end{itemize}
+
+Example: @21 means A = 21, M = RAM[21]
+\begin{enumerate}
+    \item Sets the A register to 21
+    \item RAM[21] is selected as the M register
+\end{enumerate}
+
+Example set RAM[100] = -1:
+\begin{enumerate}
+    \item @100
+    \item M = -1   
+\end{enumerate}
+
+\subsection{C-instruction}
+dest = comp; jump
+\newline 
+The different computations are (comp):
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{comp.png}
+\end{figure}
+
+\noindent dest can be: null, M, D, MD, A, AM, AD, AMD
+jump can be: null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP
+
+\begin{itemize}
+    \item Example (if D - 1 == 0 jump to execute the instruction stored in ROM[56])
+    \item @56
+    \item D - 1; JEQ 
+\end{itemize}
 
 
 
