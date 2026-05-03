@@ -393,6 +393,53 @@ jump can be: null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP
     \item D - 1; JEQ 
 \end{itemize}
 
+\subsection{Hack language specification}
+Hack machine language:
+\begin{itemize}
+    \item A-instructions
+    \item C-instructions
+\end{itemize}
+Hack program = Sequence of instructions written in the Hack machine language 
+
+\subsection{C-instruction}
+\begin{itemize}
+    \item Symbolic syntax: dest = comp; jump
+    \item Binary syntax: $\text{1 1 1 }\underbrace{\text{a c1 c2 c3 c4 c5 c6}}_{\text{comp bits}} \text{ | } \underbrace{\text{d1 d2 d3}}_{\text{dest bits}} \text{ | } \underbrace{\text{j1 j2 j3}}_{\text{jump bits}}$
+\end{itemize}
+
+\subsection{I/O devices}
+the hack computer has two I/O devices:
+\begin{itemize}
+    \item Screen: 512 x 256 pixels, each pixel can be black or white
+    \item Keyboard: 16-bit code of the key being pressed, 0 if no key is being pressed
+\end{itemize}
+
+\subsection{Screen memory map}
+\begin{itemize}
+    \item The screen is mapped to RAM[16384] to RAM[24575]
+    \item Each RAM location corresponds to a 16-pixel row on the screen
+    \item Black is represented by 1 and white is represented by 0
+    \item Each row is represented by 32 rams (16 pixels per RAM) 16*32 = 512 pixels per row
+    \item There are 256 rows, each row is represented by 32 rams, so total 32*256 = 8192 rams for the screen
+\end{itemize}
+
+Settings pixel (x, y) to black:
+\begin{enumerate}
+    \item $i = 32 \cdot row + \frac{col}{16}$
+    \item word = Screen[$32 \cdot row + \frac{col}{16}$]
+    \begin{itemize}
+        \item word = RAM[$16384 + 32 \cdot row + \frac{col}{16}$]
+    \end{itemize}
+    \item Set the (col mod 16)th bit of word to 1
+    \item Commit word to the RAM
+\end{enumerate}
+
+\subsection{Keyboard}
+The keyboard is mapped to RAM[24576] 
+\begin{itemize}
+    \item Each key is represented by a unique 16-bit code
+    \item If no key is being pressed, RAM[24576] = 0
+\end{itemize}
 
 
 
