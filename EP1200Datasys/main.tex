@@ -165,8 +165,41 @@ It is easier to think in multiple bits instead of single bits
 \subsection{Example: 16-bit adder}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{adder.png}
+    \includegraphics[width=0.5\textwidth]{adder.png}
 \end{figure}
+
+\subsection{Multiplexor}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mux.png}
+\end{figure}
+$$\text{if sel = 0 then out = a else out = b}$$
+
+\subsection{Example usage of Mux}
+AndMuxOr:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{andMuxOr.png}
+\end{figure}
+
+\subsection{Demultiplexor}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{demux.png}
+\end{figure}
+$$\text{if sel = 0 then out = a else out = b}$$
+
+\subsection{Bit indexing}
+\begin{itemize}
+    \item Bit busses are indexed from right to left starting from 0
+    \item For example, in a 16-bit bus, the rightmost bit is indexed as 0 and the leftmost bit is indexed as 15
+\end{itemize}
+
+
+
+
+
+
 
 %% Continue att 1.7 
 
