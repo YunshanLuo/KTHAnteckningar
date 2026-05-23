@@ -212,6 +212,65 @@ $$\text{if sel = 0 then out = a else out = b}$$
 \end{itemize} 
 
 \subsection{Binary addition}
+\begin{itemize}
+    \item Use addtion with carry over method
+    \item For example add $0 0 0 1 0 1 0 1$ and $ 0 1 0 1 1 1 0 0$:
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{binaryAddition.png}
+\end{figure}
+
+\subsubsection{Overflow}
+\begin{itemize}
+    \item We cannot go beyond the maximum value that can be represented
+    \item This is known as overflow
+    \item We will simply ignore the carry bit that goes beyond the maximum value
+\end{itemize}
+
+\subsubsection{3 types of Adders}
+\begin{itemize}
+    \item Half adder --- adds two bits 
+    \item Full adder --- adds three bits
+    \item Adder --- Adds two 16-bit numbers
+\end{itemize}
+
+\subsection{Negative numbers}
+2's complement representation:
+\begin{itemize}
+    \item The number $-x$ is represented as $2^n - x$ where n is the number of bits
+    \item All possible positive numbers will be $0 \hdots 2^{n-1} - 1$ 
+    \item All possible negative numbers will be $-1 \hdots -2^{n-1}$
+    \item This implementation will work for our Adder circuit without any modification 
+\end{itemize}
+
+\subsubsection{Negating a number}
+\[
+-x = 2^n - x = (2^n - 1) - x + 1
+\]
+\[
+2^n - 1 = 111\hdots 11
+\]
+
+Example negating $4$ in 8 bits:
+\begin{enumerate}
+    \item input = $0100$
+    \item $1111 - 0100$ = $1011$
+    \item $1011 + 1$ = $1100$
+    \item $-4$ is represented as $1100$ in 8 bits
+    \item output = $1100$
+\end{enumerate}
+
+\subsection{ALU -- Arithmetic Logic Unit}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{alu.png}
+\end{figure}
+\begin{itemize}
+    \item ALU computes logical and arithmetic operations
+    \item ALU has two 16-bit inputs and one 16-bit output
+    \item The ALU can be generalized as $f(in[0], in[1]) = out$ or $f(x, y) = z$
+\end{itemize}
 
 \section{Section 3}
 \subsection{Sequential logic}
@@ -481,9 +540,8 @@ The keyboard is mapped to RAM[24576]
     \item If no key is being pressed, RAM[24576] = 0
 \end{itemize}
 
+\subsection{Hack programming language part 1}
 
-
-   
 
 
 
