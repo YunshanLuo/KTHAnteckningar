@@ -541,21 +541,81 @@ The keyboard is mapped to RAM[24576]
 \end{itemize}
 
 \subsection{Hack programming language part 1}
+\subsubsection{A--instructions}
+\begin{itemize}
+    \item Syntax: @value
+    \item value can be a number or a symbol
+    \item If value is a number, the A register is set to that number
+    \item If value is a symbol, the assembler will translate it to a number and set the A register to that number
+\end{itemize}
 
+\subsubsection{C--instructions}
+\begin{itemize}
+    \item Syntax: dest = comp; jump
+    \item dest can be: null, M, D, MD, A, AM, AD, AMD
+    \item comp can be: 0, 1, -1, D, A, M, !D, !A, !M, -D, -A, -M, D+1, A+1, M+1, D-1, A-1, M-1, D+A, D+M, D-A, D-M, A-D, M-D
+    \item jump can be: null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP
+\end{itemize}
 
+\subsubsection{Hack assembler}
+\begin{itemize}
+    \item Compiles Hack assembly language into Hack machine language
+    \item Translates symbolic A-instructions into binary A-instructions
+    \item Translates C-instructions into binary C-instructions
+\end{itemize}
 
+\subsubsection{Working with registers and memory}
+\begin{itemize}
+    \item D: Data register 
+    \item A: Address register
+    \item M: Currently selected RAM location, M = RAM[A]
+\end{itemize}
 
+\noindent Example set RAM[10] = 10:
+\begin{enumerate}
+    \item @10
+    \item D = A
+\end{enumerate}
+Example set D = RAM[17]:
+\begin{enumerate}
+    \item @17
+    \item D = M
+\end{enumerate}
 
+\subsubsection{Hack program example: Adding two numbers}
+RAM[2] = RAM[0] + RAM[1]
+\begin{enumerate}
+    \item @0
+    \item D = M
+    \item @1
+    \item D = D + M
+    \item @2
+    \item M = D
+\end{enumerate}
 
+\subsubsection{Terminating a program}
+\begin{itemize}
+    \item End the program by an infinite loop
+    \item For example:
+    \begin{enumerate}
+        \item @6
+        \item 0;JMP 
+    \end{enumerate}
+\end{itemize}
 
-
-
-
-
-
-
-
-
+\subsubsection{Built in symbols}
+\begin{itemize}
+    \item R0, R1, ..., R15 -- RAM[0] to RAM[15]
+    \item Instead of writing @0, we can write @R0, instead of writing @1, we can write @R1, etc
+    \item Keep in mind that $R5 \neq r5$ -- Hack is case sensitive
+    \item SCREEN -- RAM[16384]
+    \item KBD -- RAM[24576]
+    \item SP -- RAM[0]
+    \item LCL -- RAM[1]
+    \item ARG -- RAM[2]
+    \item THIS -- RAM[3]
+    \item THAT -- RAM[4]
+\end{itemize}
 
 
 
