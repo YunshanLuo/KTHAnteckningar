@@ -912,9 +912,68 @@ The symbols are:
     \item Variables -- temp, i, sum, etc
 \end{itemize}
 
+\subsection{Handling instructions}
+\subsubsection{Translating A--instruction}
+\begin{itemize}
+    \item @value, eg @21
+    \item Translate to binary, eg 0000000000010101
+\end{itemize}
 
+\subsubsection{Translating C--instructions}
+Generalised to: $\underbrace{\text{dest}}_{\text{Optional}}$=comp; $\underbrace{\text{jump}}_{\text{Optional}}$
+\begin{itemize}
+    \item Use the comp, dest and jump table to translate the instruction
+\end{itemize}
 
+\subsection{Handling symbols}
+There are three types of symbols:
+\begin{enumerate}
+    \item \textbf{Variable symbols:} temp, i, sum, (Represents the locations where the programmer stored values)
+    \item \textbf{Label symbols:} (LOOP), (END), etc (Represents the destinations of goto instructions)
+    \item \textbf{Predefined symbols:} R0, R1, ..., R15, SCREEN, KBD, SP, LCL, ARG, THIS, THAT (Special memory locations)
+    \item The symbols will be mapped to a memory address by the assembler
+\end{enumerate}
 
+\subsubsection{Predefined symbols}
+\begin{itemize}
+    \item There are 23 predefined symbols:
+    \item These symbols only appear in A-instructions
+\end{itemize}
+
+\subsubsection{Label symbols}
+\begin{itemize}
+    \item Change the program counter (PC) to the address of the instruction following the label declaration
+    \item For example, if we have the instruction (LOOP) at line 10, then the assembler will set the address of LOOP to 10
+    \item The assembler will keep track of the address of each label in a symbol table
+\end{itemize}
+
+\subsubsection{Variable symbols}
+\begin{itemize}
+    \item These symbols are represented by an memory address starting with 16
+    \item So the first variable symbol will be stored at RAM[16], the second variable symbol will be stored at RAM[17], and so on
+    \item A symbol that does not appear as a label will be treated as a variable
+\end{itemize}
+
+\subsubsection{Assembly process}
+Initialization:
+\begin{itemize}
+    \item Construct an empty symbol table
+    \item Add the pre-defined symbols to the symbol table
+\end{itemize}
+
+\noindent First pass:
+\begin{itemize}
+    \item Scan the entire program 
+    \item For each "instruction" of the form (xxx)
+    \item Add the pair (xxx, address) to the symbol table, where address is the address of the instruction following the label declaration
+\end{itemize}
+
+\noindent Second pass:
+\begin{itemize}
+    \item Scan the entire program again for each instruction
+    \item if the instruction is @symbol, look up the symbol in the symbol table
+    \item if not in the symbol table it is an variable, add it to the symbol table and assign it the next available memory address
+\end{itemize}
 
 
 
