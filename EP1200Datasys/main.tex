@@ -617,6 +617,305 @@ RAM[2] = RAM[0] + RAM[1]
     \item THAT -- RAM[4]
 \end{itemize}
 
+\subsection{Hackprogramming part 3}
+\subsubsection{Branching}
+\begin{itemize}
+    \item Branching is used to implement flow control in a program
+    \item In Hack we only have goto instructions
+\end{itemize}
+Example: if R0 > 0 R1 = 1 else R1 = 0
+\begin{enumerate}
+    \item @R0
+    \item D=M
+    \item @8
+    \item D;JGT
+    \item @R1
+    \item M=0
+    \item @10
+    \item 0;JMP
+    \item @R1
+    \item M=1
+    \item @10
+    \item 0;JMP
+\end{enumerate}
+
+\subsubsection{Labels}
+Labels are symbolic references to instruction addresses
+\begin{enumerate}
+    \item @R0
+    \item D=M
+    \item @IfPositive
+    \item D;JGT
+    \item @R1
+    \item M=0
+    \item @End
+    \item 0;JMP
+    \item (IfPositive)
+    \item @R1
+    \item M=1
+    \item (End)
+    \item @End
+    \item 0;JMP
+\end{enumerate}
+Instead of saying at line 8 we can say at (IfPositive)
+
+\subsubsection{Variabel usage}
+for example flipping RAM[0] and RAM[1] using a temp variabel:
+\begin{enumerate}
+    \item @R1
+    \item D=M
+    \item @temp
+    \item M=D
+    \item @R0
+    \item D=M
+    \item @R1
+    \item M=D
+    \item @temp
+    \item D=M
+    \item @R0
+    \item M=D
+    \item (END)
+    \item @END
+    \item 0;JMP   
+\end{enumerate}
+\begin{itemize}
+    \item Variables are stoed RAM[16] and onwards
+    \item The assembler will automatically allocate memory for variables
+\end{itemize}
+
+\subsubsection{Iteration}
+Example: Set RAM[0] = 1 + 2 + ... + n
+\begin{verbatim}
+D=M
+@n 
+M=D
+@i
+M=1
+@sum
+M=0
+(LOOP)
+@i
+D=M
+@n
+D=D-M
+@STOP
+D;JGT
+@i
+D=M
+@sum
+M=D+M
+@i
+M=M+1
+@LOOP
+0;JMP
+(STOP)
+@sum
+D=M
+@R1
+M=D
+(END)
+@END
+0;JMP    
+\end{verbatim}
+
+\subsubsection{Pointers}
+For example:
+\begin{verbatim}
+    for (i = 0, i < n, i++) {
+        arr[i] = -i
+    }
+\end{verbatim}
+Would be translated to:
+\begin{verbatim}
+    // arr = 100
+    @100
+    D=A
+    @arr
+    M=D
+    // n = 10
+    @10
+    D=A
+    @n
+    M=D
+    // initialize i = 0
+    (LOOP)
+    // if (i == n) goto END
+    @i
+    D=M
+    @n
+    D=D-M
+    @END
+    D;JEQ
+
+    // RAM[arr + i] = -1
+    @arr
+    D=M
+    @i
+    A=D+M
+    M=-1
+    // i++
+    @i
+    M=M+1
+    // goto LOOP
+    @LOOP
+    0;JMP 
+    (END)
+    @END
+    0;JMP
+\end{verbatim}
+
+\subsubsection{I/O handling}
+\begin{itemize}
+    \item Datamemory 0 -- 16384 is for general purpose use
+    \item Screen memory is mapped to RAM[16384] to RAM[24575]
+    \item Keyboard memory is mapped to RAM[24576]
+    \item Screen and keyboard have symbols @SCREEN and @KBD respectively
+\end{itemize}
+
+\subsubsection{Pseudo code: rectangle drawing}
+\begin{verbatim}
+    for (i = 0; i < n; i++) {
+        draw 10 black pixels at the beginning of row i
+    }
+    addr= SCREEN
+    n = RAM[0]
+    i = 0
+    LOOP:
+        if (i == n) goto END
+        RAM[addr] = 1111111111111111 = -1
+        addr = addr + 32
+        i = i + 1
+        goto LOOP
+    END:
+        goto END
+\end{verbatim}
+
+\subsubsection{Keyboard}
+\begin{itemize}
+    \item Each key is represented by a unique 16-bit code
+    \item If no key is being pressed, RAM[24576] = 0
+    \item To read the keyboard, we can simply read the value of RAM[@KBD]
+\end{itemize}
+
+\section{Section 5}
+\subsection{Von neumann architecture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{vonNeumann2.png}
+\end{figure}
+\begin{itemize}
+    \item The CPU has an ALU and registers
+    \item The memory has program and data
+\end{itemize}
+
+\subsection{Information Flows}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{infoFlow.png}
+\end{figure}
+\begin{itemize}
+    \item Control, Address, Data will be different buses that connects the different components together
+\end{itemize}
+
+\subsection{Fetch-Execute Cycle}
+The CPU only does two things:
+\begin{enumerate}
+    \item \textbf{Fetch} instruction from memory
+    \item \textbf{Execute} the instruction
+\end{enumerate}
+The program counter (PC) is used to keep track of which instruction to execute next
+
+\subsubsection{Hierachy of chips parts}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{hierarchy.png}
+\end{figure}
+
+\subsubsection{CPU implementation}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{cpu.png}
+\end{figure} 
+
+\subsubsection{Memory abstraction}
+\begin{itemize}
+    \item \textbf{Address 0 -- 16383:} Data memory
+    \item \textbf{Address 16384 -- 24575:} Screen memory
+    \item \textbf{Address 24576:} Keyboard memory
+\end{itemize}
+
+\subsubsection{ROM implementation}
+Basically a RAM with a fixed value that cannot be changed
+
+\subsubsection{Hack computer overview}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{hackOverview.png}
+\end{figure}
+
+\section{Section 6}
+\subsubsection{Assembler}
+Translates Hack assembly language into Hack machine language by:
+\begin{itemize}
+    \item Reads next assembly language command
+    \item Break it into different field it is composed of
+    \item Lookop the binary code for each field
+    \item Combine the binary codes into a 16-bit instruction
+    \item Output the machine language command 
+\end{itemize}
+
+\subsubsection{Symbol handling}
+\begin{itemize}
+    \item Labels -- i.e JMP, (LOOP), etc
+    \item Variables -- i.e temp, i, sum, etc
+    \item We need to make map variables to an address
+    \item We also need to have a pointer for labels
+\end{itemize}
+
+\subsubsection{Forward referecing}
+\begin{itemize}
+    \item Sometimes we need to jump to a label that we haven't seen yet
+    \item Therefore we need two passes of the assembler:
+    \begin{enumerate}
+        \item First pass: scan the assembly code and record the address of each label
+        \item Second pass: translate the assembly code into machine code, using the label addresses recorded in the first pass
+    \end{enumerate} 
+\end{itemize}
+
+\subsection{The Assembly Process: Handling instructions}
+Whitespaces and comments are always ignored by the assembler
+\subsubsection{Translating A-instructions}
+\begin{itemize}
+    \item Symbolic syntax: @value
+    \item Which is actually @21
+    \item Would be translated to 0000000000010101 in binary
+\end{itemize}
+
+\subsubsection{Translating C-instructions}
+The C-instruction is always: $\underbrace{\text{dest}}_{\text{Optional}}$ = comp; $\underbrace{\text{jump}}_{\text{Optional}}$ 
+which is mapped with table
+
+\subsubsection{Translating symbols}
+The symbols are:
+\begin{itemize}
+    \item R0, R1, ..., R15 -- RAM[0] to RAM[15]
+    \item SCREEN -- RAM[16384]
+    \item KBD -- RAM[24576]
+    \item SP -- RAM[0] (Stack Pointer)
+    \item LCL -- RAM[1] (Local segment base address)
+    \item ARG -- RAM[2] (Argument segment base address)
+    \item THIS -- RAM[3] (This segment base address)
+    \item THAT -- RAM[4] (That segment base address)
+\end{itemize}
+\begin{itemize}
+    \item Labels -- (LOOP), (END), etc
+    \item Variables -- temp, i, sum, etc
+\end{itemize}
+
+
+
+
+
 
 
 
