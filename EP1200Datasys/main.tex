@@ -975,6 +975,74 @@ Initialization:
     \item if not in the symbol table it is an variable, add it to the symbol table and assign it the next available memory address
 \end{itemize}
 
+\section{Section 7}
+\subsection{Part 2: Summary}
+\begin{itemize}
+    \item Assembler 
+    \item Virtual machine
+    \item Compiler
+    \item Operating system
+\end{itemize}
+\subsubsection{From high level to low level}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{highToLow.png}
+\end{figure}
+
+\subsection{Program Compilation}
+Instead of writing a compiler in every language we do like Java "write once run anywhere"
+\begin{itemize}
+    \item Jack just like Java uses two tier compilation instead of compiling directly to binary
+    \item Java comiples to bytecode which is run on the Java Virtual Machine (JVM)
+\end{itemize}
+
+\subsection{VM abstraction -- The stack}
+\begin{itemize}
+    \item The datastructure stack is like a stack of plates
+    \item The stack has these operations:
+    \begin{itemize}
+        \item \textbf{Push:}Adds a plate at the stack's top
+        \item \textbf{Pop: }Removes the top plate
+        \item \textbf{Add: }Adds the top two plates and pushes the result back on the stack
+        \item \textbf{Neg: }Negates the top plate and pushes the result back on the stack 
+        \item \textbf{eq: }Check equal for top two plates and pushes 1 if they are equal and 0 if they are not equal
+        \item \textbf{or: }Check if either of the top two plates is non-zero and pushes 1 if true and 0 if false
+    \end{itemize}
+    \item \textbf{Stack pointer (SP):} Points to the next empty slot on the stack
+\end{itemize}
+
+\subsection{VM abstraction: Memory segments}
+The VM has 8 memory segments:
+\begin{enumerate}
+    \item local
+    \item argument
+    \item this 
+    \item that 
+    \item constant 
+    \item static 
+    \item pointer 
+    \item temp
+\end{enumerate}
+
+\subsection{VM implementation: The stack}
+\subsubsection{Pointer manipulation}
+\begin{itemize}
+    \item We store the address of the top of the stack in RAM[0] (@SP)
+    \item When we add something to the stack, we write it to RAM[SP] and then increment SP
+    \item When we pop something from the stack, we decrement SP and then read the value from RAM[SP]
+\end{itemize}
+
+\subsection{VM implementation: Memory segments}
+
+
+
+
+
+
+
+
+
+
 
 
 
