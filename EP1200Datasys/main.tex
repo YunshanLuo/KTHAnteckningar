@@ -1033,10 +1033,32 @@ The VM has 8 memory segments:
 \end{itemize}
 
 \subsection{VM implementation: Memory segments}
+The memory segment pointers are
+\begin{itemize}
+    \item local segment pointer: RAM[1] (@LCL)
+    \item argument segment pointer: RAM[2] (@ARG)
+    \item this segment pointer: RAM[3] (@THIS)
+    \item that segment pointer: RAM[4] (@THAT)
+    \item THIS stores stores field variables of the current object
+    \item THAT stores the array that is currently being manipulated
+\end{itemize}
 
+\subsubsection{Local implementation}
+\begin{itemize}
+    \item We use @LCL to point to the base of the local segment
+    \item To access the ith local variable, we can compute the address as LCL + i and then read/write to that address
+\end{itemize}
 
+\subsubsection{Constant implementation}
+\begin{itemize}
+    \item Constant segment does not have a memory location
+    \item We push constant by pushing onto the stack the value of the constant and advancing SP
+\end{itemize}
 
-
+\subsubsection{Static implementation}
+\begin{itemize}
+    \item 
+\end{itemize}
 
 
 
