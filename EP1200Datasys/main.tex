@@ -1039,6 +1039,7 @@ The memory segment pointers are
     \item argument segment pointer: RAM[2] (@ARG)
     \item this segment pointer: RAM[3] (@THIS)
     \item that segment pointer: RAM[4] (@THAT)
+    \item temp segment pointer: RAM[5] (@TEMP)
     \item THIS stores stores field variables of the current object
     \item THAT stores the array that is currently being manipulated
 \end{itemize}
@@ -1057,11 +1058,111 @@ The memory segment pointers are
 
 \subsubsection{Static implementation}
 \begin{itemize}
-    \item 
+    \item Stores all static variables of a program  
+    \item Static variables are seen by all methods in a program
+    \item We do this by staring static variables as assembly variables which will be mapped RAM[16] and onwards
 \end{itemize}
 
+\begin{verbatim}
+    // pop static 5
+    @Foo.5
+    M=D
 
+    // pop static 2
+    @Foo.2
+    M=D
+\end{verbatim}
+                        
+\subsubsection{Temp implementation}
+\begin{itemize}
+    \item temp is a fixed 8 place memory segment
+    \item Mapped to RAM[5] to RAM[12]
+\end{itemize}
 
+\subsubsection{Pointer implementation}
+\begin{itemize}
+    \item The poiner segment is fixed and points to 2 locations
+    \item pointer 0 points to THIS (RAM[3])
+    \item pointer 1 points to THAT (RAM[4])
+    \item push pointer 0 means push the value of THIS onto the stack
+    \item push pointer 1 means push the value of THAT onto the stack
+    \item pop pointer 0 means pop the top of the stack and store it in THIS
+    \item pop pointer 1 means pop the top of the stack and store it in THAT
+\end{itemize}
+
+\subsection{VM emulator}
+The VM emulator is a program that takes a VM program as input and executes it by simulating the stack and memory segments
+
+\subsection{VM implementation}
+\subsubsection{VM translator}
+\begin{itemize}
+    \item Translates VM code into Hack assembly 
+    \item Each VM command gets translated into a sequence of Hack assembly instructions
+\end{itemize}
+
+\subsection{Hack ram mapping}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{hackRam.png}
+\end{figure}
+
+The standard symbols are:
+\begin{itemize}
+    \item SP -- RAM[0]
+    \item LCL -- RAM[1]
+    \item ARG -- RAM[2]
+    \item THIS -- RAM[3]
+    \item THAT -- RAM[4]
+    \item R13-R15 -- RAM[13] to RAM[15]
+    \item Xxx.i -- static variable i in file Xxx.asm, mapped to RAM[16] and onwards
+\end{itemize}
+
+\subsection{Program flow control}
+\begin{itemize}
+    \item Abstraction: Using functions to abstract away details
+    \item Branching: Control the order of execution of instructions
+\end{itemize}
+Branching commands in VM:
+\begin{itemize}
+    \item \textbf{label: }Defines a label that can be used as a goto destination
+    \item \textbf{goto: }Unconditional jump to a label
+    \item \textbf{if-goto: }Conditional jump to a label if the
+    \item the if command evaluates the top of the stack
+\end{itemize}
+
+\subsection{Functions}
+\begin{itemize}
+    \item Caller -- the function that calls another function
+    \item Callee -- the function gets called by another function
+\end{itemize}
+\subsubsection{Calling a function}
+Calling a function involves:
+\begin{itemize}
+    \item Pushing the arguments onto the stack
+    \item Calling the function using the call command
+\end{itemize}
+\begin{verbatim}
+push x
+push 17
+sub
+push 5
+call Math.multiply 
+add
+call Math.sqrt
+\end{verbatim}
+
+\subsubsection{Defining a function}
+Defining a function involves:
+\begin{verbatim}
+function <name> <nVars>
+
+// function body
+
+return 
+\end{verbatim}
+\begin{itemize}
+    \item The last pushed value before return is the return value
+\end{itemize}
 
 
 
