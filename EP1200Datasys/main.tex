@@ -1164,14 +1164,123 @@ return
     \item The last pushed value before return is the return value
 \end{itemize}
 
+\subsection{Function call return}
+\subsubsection{Function execution}
+\begin{itemize}
+    \item During a given point only a few functions are executing 
+    \item Calling chain is the chain of functions that are currently executing
+\end{itemize}
 
+\subsubsection{Function run-time}
+\begin{itemize}
+    \item Each function uses a working stack + memory segments
+    \item The working stack + memory segments are initiated when the functions runs 
+    \item They are recycled when the function returns
+\end{itemize}
 
+The function replaces the arguments in the caller stack with the return value
+\begin{itemize}
+    \item When the function calls nArgs we use the argument pointer to find the arguments
+    \item Function sets arg and saves the caller frame
+    \item The frame is return address, local, argument, this and that
+\end{itemize}
 
+\subsubsection{Return command}
+\begin{itemize}
+    \item We take the top value of the function stack and copy to argument 0
+    \item Restore the segment pointer of the caller
+    \item Clears the function stackk
+    \item Sets stack pointer for the caller
+    \item Jumps to the return address within the caller's code
+\end{itemize}
 
+\subsubsection{The global stack}
+\begin{itemize}
+    \item The global stack is the stack that is used by all functions in a program
+    \item Each function has its own working stack which is a portion of the global stack
+\end{itemize}
+\newpage
+\subsection{Function -- Run-time simulation}
+Example of recursive function factorial(n):
+\begin{verbatim}
+int main() {
+    return factorial(3);
+}
+// Returns n!
+int factorial(int n) {
+    if (n == 1)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+\end{verbatim}
+In pseudo code:
+\begin{verbatim}
+function main
+    push 3
+    call factorial
+    return 
 
+function factorial
+    push n 
+    push 1
+    eq
+    if-goto BASECASE
+    push n
+    push n
+    push 1
+    sub 
+    call factorial
+    call mult
+    return
+\end{verbatim}
+In actual VM code:
+\begin{verbatim}
+function main 0
+    push constant 3
+    call factorial 1   // 1 is the number of arguments
+    return 
 
+functoin factorial 0
+    push argument 0
+    push constant 1
+    eq 
+    if goto BASECASE
+    push argument 0
+    push argument 0 
+    push constant 1 
+    sub 
+    call factorial 1
+    call mult 
+    return 
+\end{verbatim}
 
+\subsubsection{Visualization}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{functionCall.png}
+\end{figure}
 
+\subsection{Function implementation}
+The callee function process:
+\begin{enumerate}
+    \item Argument is initialized by the caller
+    \item Local segment is initialized to 0
+    \item Static segment is shared by all functions
+    \item Working stack is empty 
+    \item Before returning the push value onto the stack  
+\end{enumerate}
+
+\subsubsection{Handling a call}
+\textbf{VM command: } call <functionName> <nArgs>
+\begin{verbatim}
+    push returnAddress  // Where the function should return value
+    push LCL  // Save the caller's LCL
+    push ARG  // Save the caller's ARG
+    push THIS  // Save the caller's THIS
+    push THAT  // Save the caller's THAT
+    ARG = SP - nArgs - 5  // Reposition ARG for the callee
+\end{verbatim}
 
 
 
