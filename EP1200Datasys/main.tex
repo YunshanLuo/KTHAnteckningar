@@ -1469,8 +1469,30 @@ Terminal and non-terminal rules:
     \item Parsing is determining if a given input conforms to the grammar
 \end{itemize}
 
-
-
+\subsubsection{Parse tree}
+Parse trees can be represented as a tree structure or as an XML file
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[t]{0.42\textwidth}
+        \vspace{0pt}
+        \centering
+        \includegraphics[width=\linewidth]{parsetree.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.52\textwidth}
+        \vspace{0pt}
+        \begin{verbatim}
+<expression>
+    <term>
+        <identifier> count </identifier>
+    </term>
+    <symbol> + </symbol>
+    <term>
+        <integerConstant> 1 </integerConstant>
+    </term>
+</expression>
+        \end{verbatim}
+    \end{minipage}
+\end{figure}
 
 
 
