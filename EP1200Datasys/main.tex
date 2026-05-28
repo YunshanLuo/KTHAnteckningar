@@ -1292,9 +1292,146 @@ Stack the numbers on top of each other and multiply algorithmically
 \end{itemize}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{multi.png}
+    \includegraphics[width=0.75\textwidth]{multi.png}
 \end{figure}
 Now we can multiply in O(log n) time instead of O(n) time
+
+\newpage
+\subsection{Mathematical operations} 
+\subsection{Naive division}
+\begin{itemize}
+    \item Subtract the divisor from the dividend until the remainder is less than the divisor
+    \item The algorithm runs in O(n) time 
+\end{itemize}
+
+\subsection{Long division algorithm}
+By implementing the long division algorithm we can divide in O(log n) times
+
+\subsection{Recursive division algorithm}
+\begin{verbatim}
+// Same idea as binary search
+divide(x, y)
+    if (y > x) return 0
+    q = divide(x, 2*y)
+    if ((x-1 * q * y) < y)
+        return 2*q
+    else
+        return 2*q + 1
+\end{verbatim}
+
+\subsection{Square root algorithm}
+\begin{verbatim}
+sqrt(x)
+    y = 0
+    for j = n/2 - 1... do
+        if (y+2^j)^2 <= x then
+            y = y + 2^j
+    return y
+\end{verbatim}
+
+\subsection{Max/min function}
+Trivialt
+
+\subsection{Multiplication algorthm pseudocode}
+\begin{verbatim}
+multiply(x, y)
+    sum = 0
+    shiftedX = x
+    for i = 0...w-1 do
+        if ((i'th bit of y) == 1)
+            sum = sum + shiftedX
+        shiftedX = shiftedX << 1
+    return sum 
+\end{verbatim}
+
+\subsection{Negative numbers}
+\begin{itemize}
+    \item Negative numbers will work and handled just fine
+    \item Overflow will be handled the first 16 bit will be correct
+    \item Dividing negative numbers we can simply divide absolute values then add a minus sign 
+\end{itemize}
+
+\subsection{Bit shifting}
+\begin{itemize}
+    \item The Jack language does not have bit shifting operations
+    \item We can use arrays to implement bit shifting
+    \item For example, to shift x to the left by 1 bit, we can simply multiply x by 2
+\end{itemize}
+
+\subsection{Memory management}
+\begin{itemize}
+    \item Peek -- Read a value from a memory location without modifying it
+    \item Poke -- Write a value to a memory location
+\end{itemize}
+
+\subsection{Heap}
+Objects and arrays are allocated on the heap, which is a region of memory that is used for dynamic memory allocation
+\begin{itemize}
+    \item alloc -- Allocate a block of memory on the heap and return its address
+    \item dealloc -- Recycles a block of memory on the heap given its address
+\end{itemize}
+Assume we create a object then the stack will point to the address of the object on the heap
+
+\subsection{Heap management}
+Initialization:
+\begin{itemize}
+    \item free = heapBase -- The entire heap is free at the beginning
+    \item alloc(size):
+    \begin{itemize}
+        \item Assume we want to allocate a block of memory of size 3
+        \item We go from free to free + size and mark those memory locations as allocated
+        \item We then update free to free + size
+        \item Then return the block to the caller
+    \end{itemize}
+    \item deAlloc(Object): 
+    \begin{itemize}
+        \item Keep track of allocated blocks as a linked list
+    \end{itemize}
+\end{itemize}
+
+\subsection{Segment illustration}
+\begin{itemize}
+    \item Each segment contains two blocks: a next segment pointer and block size 
+    \item When alloc(size) is called we traverse the linked list of segments until we find a free segment with size >= size
+    \item When append the dealloced block to the freeList
+\end{itemize}
+
+\subsection{alloc(size) function}
+When we allocate a block we search the freeList with these algorithm:
+\begin{itemize}
+    \item First fit: Allocate the first block that is big enough
+    \item Best fit: Allocate the smallest block that is big enough
+\end{itemize}
+
+\subsection{deAlloc(object) function}
+When deallocating a block we simply append the block to the freeList however this will fragment the freeList
+
+\subsection{Defragmentation}
+\begin{itemize}
+    \item We can defragment the freeList by merging adjacent free blocks into a single block
+    \item This will reduce fragmentation and make it easier to find large blocks of memory
+\end{itemize}
+
+\subsection{Initiating the heap}
+\begin{itemize}
+    \item heapBase = 2048
+    \item freeList = heapBase
+    \item heap[0] = 0 // next segment pointer
+    \item heap[1] = 32768 - heapBase // block size
+\end{itemize}
+After memory has been allocated and deallocated freeList will change
+\begin{itemize}
+    \item The freeList variable points to the first free block of memory on the heap
+    \item Each memory block has the size and points to the next free block of memory
+    \item When we allocate a block of memory we update the freeList to point to the next free block of memory
+\end{itemize}
+
+
+
+
+
+
+
 
 
 
