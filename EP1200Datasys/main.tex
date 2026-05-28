@@ -1426,6 +1426,57 @@ After memory has been allocated and deallocated freeList will change
     \item When we allocate a block of memory we update the freeList to point to the next free block of memory
 \end{itemize}
 
+\subsection{Lexical analysis}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{jackcomp.png}
+\end{figure}
+
+\subsection{Tokenizing}
+In order to compile we need to tokenize the code first
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{tokenizing.png}
+\end{figure}
+
+\subsubsection{5 category of tokens}
+\begin{itemize}
+    \item Keyword -- class, constructor, function, method... 
+    \item Symbol -- { } ( ) [ ] . , ; + - * / \& | < > = ~
+    \item integerConstant -- 0, 1, 2, ..., 32767
+    \item StringConstant -- "Here is a string constant not including the double quotes"
+    \item Identifier -- to represent variable names, class names, method names, etc can start with a letter or an underscore
+\end{itemize}
+Tokenizer process:
+\begin{enumerate}
+    \item The tokenizer reads the input stream and breaks it into tokens
+    \item The tokenizer ignores whitespace and comments
+    \item The tokenizer surrounds each token with <tokenType> token </tokenType> tags and outputs the result with one token per line
+\end{enumerate}
+
+\subsection{Grammar}   
+Terminal and non-terminal rules:
+\begin{itemize}
+    \item Terminal rules: Right hand side consists of constants only
+    \item Non-terminal rules: Right hand side contains at least one non-terminal
+\end{itemize}
+
+\subsubsection{Jack grammar}
+\begin{itemize}
+    \item statement: ifStatement | whileStatement | letStatement 
+    \item ifStatement: 'if' '(' expression ')' '{' statement* '}' 
+    \item The rest is available in the exam handbook
+    \item Parsing is determining if a given input conforms to the grammar
+\end{itemize}
+
+
+
+
+
+
+
+
+
 
 
 
