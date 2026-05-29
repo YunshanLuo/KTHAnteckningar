@@ -1494,13 +1494,99 @@ Parse trees can be represented as a tree structure or as an XML file
     \end{minipage}
 \end{figure}
 
+\subsection{Handling variables}
+Assume the code is sum = x * (1 + rate);
+\begin{itemize}
+    \item x is argument 2
+    \item rate is static 0
+\end{itemize}
+The vm code for this would be:
+\begin{verbatim}
+push argument 2
+push constant 1
+push static 0 
+add 
+call Math.multiply 2
+pop local 3
+\end{verbatim}
+Different variable types are stored in different memory segments:
+\begin{itemize}
+    \item Class level variables
+    \begin{itemize}
+        \item field 
+        \item static
+    \end{itemize} 
+    \item Subroutine level variables
+    \begin{itemize}
+        \item argument
+        \item local
+    \end{itemize}
+\end{itemize}
+Each variable as 4 properties:
+\begin{itemize}
+    \item name -- identifer of the variable
+    \item type -- int, char, boolean, class type
+    \item kind -- field, static, local, argument
+    \item scope -- class level, subroutine level
+\end{itemize}
 
+\subsubsection{Symbol table}
+Always <name, type, kind, scope>
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{symbolTable.png}
+\end{figure}
 
+Each time we compile we need two symbol tables:
+\begin{itemize}
+    \item Class level symbol table -- for class level variables
+    \item Subroutine level symbol table -- for subroutine level variables
+\end{itemize}
 
+\subsubsection{Nested scoping}
+In java you can create variables in nested scopes, for example:
+\begin{verbatim}
+void foo() {
+    method bar() {  // scop 1
+        // variables declared here are in the scope of bar
+        {  // scope 2
+            // variables declared here are in the scope of the block within bar
+        }
+    }
+}
+\end{verbatim}
+We can use a stack of symbol tables to handle nested scoping:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{nestedScope.png}
+\end{figure}
 
-
-
-
+\subsection{Handling expressions}
+The stack oriented VM makes expressions post fix while the language is infix so we need to convert infix to post fix:
+\begin{verbatim}
+    if exp is a number n:
+        output "push n"
+    
+    if exp is a variable var:
+        output "push var"
+    
+    if exp is "exp_1 op exp_2":
+        compile exp_1
+        compile exp_2
+        output "op"
+    
+    if exp is "op exp":
+        compile exp
+        output "op"
+    
+    if exp is "f(exp_1, exp_2, ..., exp_n)":
+        compile exp_1
+        compile exp_2
+        ...
+        compile exp_n
+        output "call f n"
+\end{verbatim}
+The jack language does not have operator priority the language features parentheses to specify the order of operations
 
 
 
