@@ -1588,9 +1588,184 @@ The stack oriented VM makes expressions post fix while the language is infix so 
 \end{verbatim}
 The jack language does not have operator priority the language features parentheses to specify the order of operations
 
+\subsection{Handling objects}
+\begin{itemize}
+    \item Object data is accessed through the THIS segment
+    \item Array data is accessed through the THAT segment
+    \item Local and argument are on the stack
+    \item This and that are on the heap
+\end{itemize}
+\begin{verbatim}
+    // set THIS to 8000
+    push constant 8000
+    pop pointer 0
+\end{verbatim}
+Example of RAM[8000] = 123 and THIS[0] = 123:
+\begin{verbatim}
+    push 8000
+    pop pointer 0
+    push constant 123
+    pop this 0
+\end{verbatim}
 
+\subsection{Objects construction}
+Assume this code:
+\begin{verbatim}
+    var Point p1, p2;
+    var int d;
 
+    let p1 = Point.new(2, 3);
+    let p2 = Point.new(5, 7);
+\end{verbatim}
+The symbol table after the first two lines would be:
+\begin{itemize}
+    \item <name> <type> <kind> <scope> 
+    \item p1 Point local 0
+    \item p2 Point local 1
+    \item d int local 2
+\end{itemize}
+The vm code for the last two lines would be:
+\begin{verbatim}
+    push constant 2
+    push constant 3
+    call Point.new 
+    
+    // p1 is the base address of the new object, we want p1 to point to the new object
+    pop p1
+\end{verbatim}
+\begin{itemize}
+    \item When declaring variables we only allocate memory of the base address of the object
+    \item Only when object is constructed will the variable point to the actual object on the heap
+\end{itemize}
 
+\subsubsection{Compiling constructors}
+Lets assume we have the following constructor:
+\begin{verbatim}
+class Point {
+    field int x, y;
+    static int pointCount;
+
+    constructor Point new(int ax, int ay) {
+        let x = ax;
+        let y = ay;
+        let pointCount = pointCount + 1;
+        return this;
+    }
+}
+\end{verbatim}
+Focusing on the constructor part:
+\begin{verbatim}
+// Two argument are passed to the constructor, ax and ay
+push 2 
+call Memory.alloc 1 
+pop pointer 0 // set THIS to point to the new object
+// after the constructor runs it return the address of the new object
+\end{verbatim}
+
+\subsection{Object manipulation}
+Example of object manipulation:
+\begin{verbatim}
+    var Point p1, p2, p3;
+    var int x, d;
+
+    let p1 = Point.new(2, 3);
+    let p2 = Point.new(5, 7);
+
+    let x = p1.x;    
+    let p3 = p1.plus(p2);
+    let d = p1.distance(p2);
+\end{verbatim}
+\begin{enumerate}
+    \item Push the object pointer onto the stack
+    \item Push the arguments on the stack
+    \item call the method
+\end{enumerate}
+
+Example of compiling a class method call:
+\begin{verbatim}
+    // let d = p1.distance(p2); becomes
+
+    push argument 0 // Currently operating object is argument 0 
+    pop pointer 0 // set THIS to the currently operating object
+    // let dx = x - other.getx();
+    push this 0 
+    push argument 1
+    call Point.getx 1
+    sub 
+    pop local 0 // dx is local 0
+\end{verbatim}
+
+Compling void method that does not return a value:
+\begin{itemize}
+    \item The method will manipulate the symbol table
+    \item We will simply return 0, which is a dummy value
+    \item Then we pop temp 0 to discard the dummy return value
+\end{itemize}
+
+\subsection{Handling Arrays}
+Array declaration:
+\begin{itemize}
+    \item When we declare an array be \textit{var Array arr;} we put local 0 to 0
+    \item When we construct an array by \textit{let arr = Array.new(10);} we allocated a block of 10 memory on the heap and set local 0 to point to the base address of the array
+    \item var Array arr; does not generate code only changing to symbol table
+\end{itemize}
+
+Array manipulation:
+\begin{itemize}
+    \item Use THIS to represent the values of the current object
+    \item Use THAT to represent the values of the current array
+\end{itemize}
+
+Supposed that we want to RAM[8056] = 17
+\begin{verbatim}
+    push constant 8056
+    pop pointer 1 
+    push constant 17
+    pop that 0
+\end{verbatim}
+
+Example arr[2] = 17;
+\begin{verbatim}
+    push arr  // base address of the array
+    push constant 2 
+    add 
+    pop pointer 1
+    push constant 17
+    pop that 0
+\end{verbatim}
+Advantage with VM is that the code won't escape the VM RAM therefore it is safer
+  
+\subsubsection{Generalized array access}
+\begin{verbatim}
+    // a[i] = b[j]
+    push a 
+    push i
+    add 
+    pop pointer 1
+
+    // now handle b[j]
+    push b
+    push j
+    add 
+    pop pointer 1 
+    push that 0
+\end{verbatim}
+This code does not work because we overwrite the pointer when handling b[j] instead we should do this:
+\begin{verbatim}
+    push a 
+    push i 
+    add
+    push b
+    push j 
+    add
+    pop pointer 1
+    push that 0 
+    pop temp 0  
+    pop pointer 1
+    push temp 0
+    pop that 0 
+\end{verbatim}
+In summary always use temp to store intermediate values when handling arrays
 
 
 
