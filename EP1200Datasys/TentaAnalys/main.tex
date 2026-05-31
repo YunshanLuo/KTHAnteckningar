@@ -1,0 +1,654 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{}
+\usepackage[T1]{fontenc}
+\title{EP1200 - Datasys anteckningar}
+\author{Yunshan Luo}
+
+
+\renewcommand{\baselinestretch}{0.2}
+
+\setlength{\hoffset}{-18pt}         
+\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
+\setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
+\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
+\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
+\setlength{\voffset}{-18pt} % Bon pour DOS
+\setlength{\marginparsep}{7pt} % Séparation de la marge
+\setlength{\topmargin}{0pt} % Pas de marge en haut
+\setlength{\headheight}{13pt} % Haut de page
+\setlength{\headsep}{4pt} % Entre le haut de page et le texte
+\setlength{\footskip}{27pt} % Bas de page + séparation
+\setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath} % Required for the align* environment
+\usepackage{float}
+\usepackage{pgfplots} 
+\usepackage{algorithm}
+\usepackage{algpseudocode} % test comment
+\usepackage[hidelinks]{hyperref}
+\pgfplotsset{compat=1.18}
+
+
+\begin{document}
+\title{EP1200 -- Tenta analys}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Fråga 1 på tentan}
+\subsection{Boolean Algebra \& ALU Logic Proofs}
+\textbf{Core concept:} The exams frequently ask you to prove how the ALU computes a specific output (e.g., $out = 1$) or to simplify logic gates (e.g., XOR) using pure Boolean algebra, \textit{not} truth tables.
+\begin{itemize}
+    \item \textbf{XOR Simplification:} 
+    $x \oplus y = (\overline{x} \cdot y) + (x \cdot \overline{y})$. 
+    A common exam proof is showing $x \oplus x = 0$:
+    $$x \oplus x = (\overline{x} \cdot x) + (x \cdot \overline{x}) = 0 + 0 = 0$$
+    \item \textbf{ALU Output Proofs (e.g., computing $out = 1$):}
+    The ALU uses 6 control bits: \texttt{zx, nx, zy, ny, f, no}. To output $1$, the control bits are usually all set to $1$. The mathematical proof is:
+    \begin{itemize}
+        \item \texttt{zx=1, nx=1}: Input $x$ is zeroed ($00\dots0$), then negated ($11\dots1$). In 2's complement, all 1s equals $-1$.
+        \item \texttt{zy=1, ny=1}: Input $y$ is similarly zeroed and negated, becoming $-1$.
+        \item \texttt{f=1}: The ALU performs addition: $x + y \rightarrow -1 + -1 = -2$. In binary, $-2$ is $11\dots110$.
+        \item \texttt{no=1}: The output is bitwise negated. $\text{NOT}(11\dots110) = 00\dots001$, which equals $1$.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Binary Arithmetic \& 2's Complement}
+\textbf{Core concept:} Performing manual subtraction or addition using binary to show how the hardware processes it.
+\begin{itemize}
+    \item \textbf{Formula for negative numbers:} $-x = \text{NOT}(x) + 1$
+    \item \textbf{Example Proof ($4 - 5 = -1$):}
+    \begin{itemize}
+        \item Represent $4$ in binary (e.g., 4 bits): $0100$
+        \item Represent $5$ in binary: $0101$
+        \item Convert $5$ to $-5$ using 2's complement: $\text{NOT}(0101) = 1010$. Add $1$: $1010 + 1 = 1011$ (This is $-5$).
+        \item Add $4$ and $-5$: $0100 + 1011 = 1111$.
+        \item The result $1111$ in 2's complement represents $-1$.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Combinational vs. Sequential Logic (Chip Design)}
+\textbf{Core concept:} Knowing when to use memory (state) vs pure logic, and how to construct mid-level chips using basic parts (Mux, Add16, Not16).
+\begin{itemize}
+    \item \textbf{Sequential vs Combinational:} A chip is \textit{sequential} if it contains a storage element (like a DFF or Register) to hold a state across clock cycles (e.g., a multiplier that adds repeatedly needs a register to store the running sum). If output depends \textit{only} on current inputs, it is \textit{combinational}.
+    \item \textbf{Example Chip Design (Absolute Value / \texttt{Abs16}):} 
+    To build a chip that outputs the absolute value of a 2's complement 16-bit integer without using an ALU:
+    \begin{verbatim}
+    // 1. Negate the input (2's complement: NOT + 1)
+    Not16(in=in, out=notIn);
+    Inc16(in=notIn, out=negIn);
+    
+    // 2. The MSB (in[15]) is the sign bit. 1 = negative, 0 = positive.
+    // Use Mux16 to choose the negated version if the original was negative.
+    Mux16(a=in, b=negIn, sel=in[15], out=out);
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Memory-Mapped I/O \& Hardware Expansion}
+\textbf{Core concept:} Extending the Hack computer by adding new external devices (e.g., network buffers, mouse) and explaining how the CPU interacts with them via memory addresses.
+\begin{itemize}
+    \item \textbf{Memory Spaces:} 
+    \begin{itemize}
+        \item \texttt{RAM16K}: Addresses $0$ -- $16383$
+        \item \texttt{Screen}: Addresses $16384$ -- $24575$
+        \item \texttt{Keyboard}: Address $24576$
+        \item \textbf{Expansion Space:} Addresses $> 24576$ (or unused blocks) are used to map new registers (e.g., mapping a Mouse X/Y coordinates to $24577$ and $24578$).
+    \end{itemize}
+    \item \textbf{Hardware Modification (\texttt{Memory.hdl}):} To add a new chip, you must route the main \texttt{load} signal. You use a \texttt{DMux} (or \texttt{DMux4Way}) using the Most Significant Bits (MSBs) of the \texttt{address} bus as the \texttt{sel} pins. This directs the \texttt{load=1} signal exclusively to the targeted device. To read from it, you feed the \texttt{out} of the new device back into a \texttt{Mux16} alongside the standard RAM outputs.
+    \item \textbf{Assembly Access:} The CPU treats the new device as standard memory. To read a mouse X-coordinate at address 24577: \texttt{@24577}, \texttt{D=M}.
+\end{itemize}
+
+\subsection{CPU Control Signals \& Instruction Execution}
+\textbf{Core concept:} Tracing the exact hardware activation path for specific instructions (like \texttt{M=M+1} or memory reads).
+\begin{itemize}
+    \item \textbf{Clock Cycles \& Memory Reads:} In the Von Neumann architecture, an instruction requires cycles to Fetch and Execute. To read a value into the D-register (e.g., \texttt{D=M}), the CPU first spends 1 cycle fetching the instruction. During the execute phase, the memory outputs the value at the current A-register address, which is fed to the ALU, and the \texttt{load} bit of the D-register is asserted.
+    \item \textbf{Tracing \texttt{M=M+1} in the CPU:}
+    \begin{itemize}
+        \item \textbf{Data Routing:} The A-register holds the address. The Mux before the ALU is set to select the Memory input (\texttt{M}) instead of the A-register.
+        \item \textbf{ALU Computation:} The ALU receives \texttt{M} as the $y$-input. To compute $y+1$, the control bits are set to: \texttt{zx=1, nx=1, zy=0, ny=1, f=1, no=0}.
+        \item \textbf{Write Back:} The \texttt{writeM} control signal is asserted ($1$), the \texttt{outM} bus carries the ALU output, and the \texttt{addressM} bus carries the A-register value, writing the result back to RAM at the clock cycle boundary.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Fetch-Execute Cycle \& Clock Timing (Exam 2024 Edge Case)}
+\textbf{Core concept:} Understanding exactly how many clock cycles an instruction takes to execute, specifically when reading from memory.
+\begin{itemize}
+    \item \textbf{The 2-Cycle Process:} To execute a command like \texttt{D=M} (assuming the A-register already holds the target address), it requires exactly \textbf{two clock cycles}.
+    \item \textbf{Cycle 1 (Fetch):} The Program Counter (PC) outputs the address to the Instruction Memory (ROM). The memory retrieves the 16-bit instruction and feeds it into the CPU.
+    \item \textbf{Cycle 2 (Execute):} The CPU decodes the instruction. The A-register asserts its address to the Data Memory (RAM). The RAM retrieves the value and places it on the M-bus. The ALU routes this value to its output, and the \texttt{load} bit for the D-register is asserted. At the tick of the next clock cycle, the D-register stores the value.
+\end{itemize}
+
+\subsection{Detailed HDL Implementation for Hardware Expansion (Exam 2022 Edge Case)}
+\textbf{Core concept:} In 2022, exams explicitly asked students to provide the \textit{exact HDL code} required to modify the \texttt{Memory.hdl} chip to add a new device (like a Network Buffer or a Mouse).
+\begin{itemize}
+    \item \textbf{Routing the Load Bit (Writing):} You cannot simply plug the device in. You must use the most significant bits (MSBs) of the \texttt{address} bus to safely route the global \texttt{load} signal using a \texttt{DMux}.
+    \begin{verbatim}
+    // Example: Stepping down the load signal using address MSBs
+    DMux4Way(in=load, sel=address[13..14], a=loadRam1, b=loadRam2, 
+             c=loadScreen, d=loadPeripheral);
+             
+    // Further routing to the new custom device vs the Keyboard
+    DMux(in=loadPeripheral, sel=address[12], a=loadKbd, b=loadCustomDevice);
+    \end{verbatim}
+    \item \textbf{Routing the Output Bus (Reading):} Similarly, when reading, you must multiplex the outputs of the RAM, Screen, Keyboard, and your new Custom Device back into a single \texttt{out} bus.
+    \begin{verbatim}
+    // Selecting the correct output based on the address
+    Mux4Way16(a=ramOut, b=ramOut, c=screenOut, d=periOut, 
+              sel=address[13..14], out=out);
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Advanced ALU Proofs using De Morgan's Laws}
+\textbf{Core concept:} Proving logical outputs (like AND / OR) using the ALU control bits (\texttt{nx, ny, no}). The ALU only natively has a bitwise AND gate (\texttt{f=0}), so it relies heavily on De Morgan's laws to compute OR.
+\begin{itemize}
+    \item \textbf{Proof of Computing \texttt{x OR y}:} 
+    To compute OR, the ALU sets \texttt{nx=1, ny=1, f=0, no=1}.
+    \begin{itemize}
+        \item Invert inputs: $\overline{x}$ and $\overline{y}$
+        \item Apply AND function (\texttt{f=0}): $(\overline{x} \cdot \overline{y})$
+        \item Negate the output (\texttt{no=1}): $\overline{(\overline{x} \cdot \overline{y})}$
+        \item By De Morgan's Law: $\overline{(\overline{x} \cdot \overline{y})} = \overline{\overline{x}} + \overline{\overline{y}} = x + y$ (which is $x \text{ OR } y$).
+    \end{itemize}
+\end{itemize}
+
+\subsection{The "Hidden" CPU Control Signals}
+\textbf{Core concept:} When explaining how an instruction like \texttt{M=M+1} is executed, you must explicitly name the internal CPU control buses that the C-instruction decoder activates.
+\begin{itemize}
+    \item \texttt{writeM}: Must be set to $1$ if the destination includes $M$.
+    \item \texttt{addressM}: Fed directly from the A-register to tell the RAM which register to modify.
+    \item \texttt{outM}: Fed from the ALU output back to the RAM's input pins.
+    \item \texttt{sel} bit on the ALU Mux: Must be set to $1$ to feed the $M$ value into the ALU's $y$-input, rather than the A-register value.
+\end{itemize}
+
+\newpage
+\section{Fråga 2 på tentan}
+\subsection{The Hack Programmer's Model \& Registers}
+\textbf{Core concept:} To write or trace Hack assembly, you must understand how the CPU handles state using its three primary registers.
+\begin{itemize}
+    \item \textbf{D-Register:} The primary data register. Holds a 16-bit value used for arithmetic and logic.
+    \item \textbf{A-Register:} The address/data register. It holds a 16-bit value that can either act as a constant data value or as a memory address.
+    \item \textbf{M-Register (Memory):} A virtual register representing the currently selected memory word. Specifically, \texttt{M = RAM[A]}. You cannot use \texttt{M} if the A-register does not currently hold a valid address.
+\end{itemize}
+
+\subsection{Instruction Syntax \& Binary Translation}
+\textbf{Core concept:} The exams often require translating between symbolic assembly and 16-bit binary machine code, or tracking how specific bits affect the hardware.
+\begin{itemize}
+    \item \textbf{A-Instruction (\texttt{@value}):} Sets the A-register to a 15-bit value. 
+    \begin{itemize}
+        \item Binary format: \texttt{0 vvvv vvvv vvvv vvvv}. The Most Significant Bit (MSB) is always \texttt{0}.
+        \item Example: \texttt{@21} translates to \texttt{0000 0000 0001 0101}.
+        \item Used to load constants (e.g., \texttt{@5, D=A}) or select RAM addresses (e.g., \texttt{@100, M=D}).
+    \end{itemize}
+    \item \textbf{C-Instruction (\texttt{dest = comp ; jump}):} Performs ALU computations, routes the result, and evaluates jump conditions.
+    \begin{itemize}
+        \item Binary format: \texttt{1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3}
+        \item \textbf{a-bit:} Determines if the ALU uses the A-register (\texttt{a=0}) or the M-register (\texttt{a=1}) for the $y$-input.
+        \item \textbf{c-bits:} 6 control bits for the ALU (\texttt{zx, nx, zy, ny, f, no}).
+        \item \textbf{d-bits:} Destination bits. \texttt{d1} loads A, \texttt{d2} loads D, \texttt{d3} loads M. Multiple can be set simultaneously (e.g., \texttt{MD=D+1}).
+        \item \textbf{j-bits:} Jump conditions based on ALU output (e.g., \texttt{111} = unconditional \texttt{JMP}, \texttt{010} = \texttt{JEQ}).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Control Flow: Branching \& Loops}
+\textbf{Core concept:} Hack assembly has no built-in loops or IF-ELSE statements. Everything is built using conditional jumps (\texttt{JGT, JEQ, JLT}, etc.) and labels.
+\begin{itemize}
+    \item \textbf{Labels:} Declared as \texttt{(LABELNAME)}. They do not consume ROM space or execute. They simply map the label symbol to the address of the \textit{next} instruction.
+    \item \textbf{Standard IF-ELSE Pattern:}
+    \begin{verbatim}
+    // if (D == 0) goto TRUE_BLOCK else goto FALSE_BLOCK
+    @TRUE_BLOCK
+    D;JEQ
+    // --- False Block Code ---
+    @END_IF
+    0;JMP
+    (TRUE_BLOCK)
+    // --- True Block Code ---
+    (END_IF)
+    \end{verbatim}
+    \item \textbf{Program Termination:} A Hack program must never run off the edge of the ROM. It must be terminated with an infinite loop:
+    \begin{verbatim}
+    (END)
+    @END
+    0;JMP
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Variables, Pointers \& Array Manipulation}
+\textbf{Core concept:} Exam Question 2 heavily tests pointers. You must understand the difference between modifying a variable directly and modifying the memory address that the variable points to.
+\begin{itemize}
+    \item \textbf{Direct Variable Access:} \texttt{@sum}, \texttt{M=D} directly alters the value inside the RAM box named \texttt{sum}.
+    \item \textbf{Pointer Access (Dereferencing):} To write a value to an address stored \textit{inside} a variable. This requires a two-step A-register jump:
+    \begin{verbatim}
+    // Equivalent to C code: *ptr = -1
+    @ptr    // 1. Point A to the variable 'ptr'
+    A=M     // 2. Load the address stored in 'ptr' into A
+    M=-1    // 3. Write -1 into that new address
+    \end{verbatim}
+    \item \textbf{Array Iteration Template:} Moving sequentially through a block of memory (e.g., filling an array or copying network packets). This is the most common exam coding task:
+    \begin{verbatim}
+    // Example: Fill an array of size 'n' starting at 'base_addr' with 0
+    @base_addr
+    D=A
+    @ptr       // ptr points to current array index
+    M=D
+    
+    @n
+    D=M
+    @count     // count keeps track of iterations remaining
+    M=D
+    
+    (LOOP)
+    // Check exit condition (count == 0)
+    @count
+    D=M
+    @END
+    D;JEQ
+    
+    // Action: Set RAM[ptr] = 0
+    @ptr
+    A=M        // DEREFERENCE: A now holds the target RAM address
+    M=0
+    
+    // Advance pointer and decrement count
+    @ptr
+    M=M+1      // Move pointer to next memory word
+    @count
+    M=M-1      // count--
+    
+    @LOOP
+    0;JMP      // Repeat
+    
+    (END)
+    @END
+    0;JMP
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Memory-Mapped I/O (Screen \& Keyboard)}
+\textbf{Core concept:} Interacting with external devices requires manipulating specific memory ranges.
+\begin{itemize}
+    \item \textbf{Keyboard (\texttt{@KBD}):} Mapped to \texttt{RAM[24576]}. 
+    \begin{itemize}
+        \item To read: \texttt{@KBD}, \texttt{D=M}.
+        \item If \texttt{D==0}, no key is pressed. If \texttt{D > 0}, a key is being pressed (holds the ASCII or special keycode).
+    \end{itemize}
+    \item \textbf{Screen (\texttt{@SCREEN}):} Mapped to \texttt{RAM[16384]} to \texttt{RAM[24575]}. 
+    \begin{itemize}
+        \item Each RAM word controls 16 horizontal pixels. 
+        \item \texttt{1} = black, \texttt{0} = white. 
+        \item Setting \texttt{M=-1} turns all 16 pixels in that word black (since $-1$ is \texttt{1111111111111111} in binary).
+        \item Setting \texttt{M=0} clears the 16 pixels.
+    \end{itemize}
+\end{itemize}
+
+\newpage
+\section{Fråga 3 på tentan}
+\subsection{Virtual Machine Abstraction \& The Stack}
+\textbf{Core concept:} The VM is a stack machine. It performs all operations by popping values off the stack, computing them, and pushing the result back. 
+\begin{itemize}
+    \item \textbf{Stack Pointer (\texttt{SP}):} Stored in \texttt{RAM[0]}. It always points to the \textit{next available} (empty) memory slot on the stack.
+    \item \textbf{Pushing onto the stack:} Write the value to the address stored in \texttt{SP}, then increment \texttt{SP}.
+    \item \textbf{Popping off the stack:} Decrement \texttt{SP}, then read the value from that new address.
+    \item \textbf{True and False:} In the VM and Hack ecosystem, \texttt{True} is represented as \texttt{-1} (all 1s in binary: \texttt{1111111111111111}) and \texttt{False} is represented as \texttt{0}.
+\end{itemize}
+
+\subsection{Memory Segments \& Pointer Resolution}
+\textbf{Core concept:} The VM abstracts memory into 8 distinct segments. You must know how they map to the physical Hack RAM.
+\begin{itemize}
+    \item \textbf{Dynamic Segments (\texttt{local, argument, this, that}):} These are accessed using base pointers stored in \texttt{RAM[1]} to \texttt{RAM[4]}. To access \texttt{local i}, the hardware address is \texttt{RAM[LCL] + i}.
+    \item \textbf{Fixed Segments (\texttt{pointer, temp}):} 
+    \begin{itemize}
+        \item \texttt{temp i} maps strictly to \texttt{RAM[5 + i]}.
+        \item \texttt{pointer 0} maps to \texttt{RAM[3]} (\texttt{THIS}).
+        \item \texttt{pointer 1} maps to \texttt{RAM[4]} (\texttt{THAT}).
+    \end{itemize}
+    \item \textbf{Virtual Segments (\texttt{constant, static}):}
+    \begin{itemize}
+        \item \texttt{constant i} does not exist in memory. It simply pushes the literal number \texttt{i} onto the stack.
+        \item \texttt{static i} is mapped by the assembler to a unique symbol \texttt{@Filename.i}, starting from \texttt{RAM[16]}.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Translating Stack Commands to Assembly}
+\textbf{Core concept:} Exam questions frequently ask you to provide the exact Hack assembly code for specific VM commands.
+\begin{itemize}
+    \item \textbf{Translating \texttt{push constant i}:}
+    \begin{verbatim}
+    @i
+    D=A      // Load constant i into D
+    @SP
+    A=M      // Go to the address SP points to
+    M=D      // Write D to the top of the stack
+    @SP
+    M=M+1    // Increment SP
+    \end{verbatim}
+    \item \textbf{Translating \texttt{pop local i} (The R13 Trick):} Popping to a dynamic segment requires calculating the destination address \textit{before} popping the stack, so you must temporarily save the target address (usually in \texttt{R13}).
+    \begin{verbatim}
+    @i
+    D=A
+    @LCL
+    D=D+M    // D = base + offset (target address)
+    @R13
+    M=D      // Store target address in general purpose register R13
+    @SP
+    AM=M-1   // Decrement SP and store new SP address in A
+    D=M      // Pop the top value into D
+    @R13
+    A=M      // Go to target address stored in R13
+    M=D      // Save the popped value into local i
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Translating Arithmetic \& Logical Commands}
+\textbf{Core concept:} Arithmetic commands take the top two values, compute them, and place the result on top.
+\begin{itemize}
+    \item \textbf{Binary Operations (e.g., \texttt{add, sub, and, or}):}
+    \begin{verbatim}
+    // Translation of 'add'
+    @SP
+    AM=M-1   // Decrement SP to point to 'y'
+    D=M      // Load 'y' into D
+    @SP
+    AM=M-1   // Decrement SP to point to 'x'
+    M=M+D    // Calculate x + y, store result in 'x's old spot
+    @SP
+    M=M+1    // Increment SP (points just above the new result)
+    \end{verbatim}
+    \item \textbf{Unary Operations (e.g., \texttt{neg, not}):} Only decrement \texttt{SP} once, modify the value, and increment \texttt{SP} back.
+\end{itemize}
+
+\subsection{Translating Conditional Commands (\texttt{eq, gt, lt})}
+\textbf{Core concept:} The Hack ALU does not natively output \texttt{true} (-1) or \texttt{false} (0). It outputs jump conditions. Therefore, logical comparisons require assembly branching.
+\begin{itemize}
+    \item \textbf{The Branching Strategy:} To evaluate \texttt{x == y}, you compute \texttt{x - y} and jump if the result is zero.
+    \item \textbf{Label Uniqueness:} Because a VM program might contain many \texttt{eq} commands, your compiler must generate unique assembly labels for each one (e.g., \texttt{TRUE\_1}, \texttt{FALSE\_1}, \texttt{END\_1}).
+    \item \textbf{Example of \texttt{eq} logic in Assembly:}
+    \begin{verbatim}
+    @SP
+    AM=M-1
+    D=M        // D = y
+    @SP
+    AM=M-1
+    D=M-D      // D = x - y
+    @IS_EQUAL_1
+    D;JEQ      // If x - y == 0, jump to IS_EQUAL
+    
+    // False block
+    @SP
+    A=M
+    M=0        // Push False (0)
+    @END_EQUAL_1
+    0;JMP
+    
+    (IS_EQUAL_1) // True block
+    @SP
+    A=M
+    M=-1       // Push True (-1)
+    
+    (END_EQUAL_1)
+    @SP
+    M=M+1      // Advance SP
+    \end{verbatim}
+\end{itemize}
+
+\newpage
+\section{Fråga 4 på tenta}
+\subsection{Program Flow: Branching Commands}
+\textbf{Core concept:} The VM language includes explicit commands to control the execution flow. The translator must map these to Hack assembly jump logic.
+\begin{itemize}
+    \item \textbf{\texttt{label c}:} Translates directly to a Hack assembly label declaration: \texttt{(c)}.
+    \item \textbf{\texttt{goto c}:} Translates to an unconditional jump: \texttt{@c}, \texttt{0;JMP}.
+    \item \textbf{\texttt{if-goto c}:} Pops the top value off the stack. If the value is non-zero (true), execution jumps to the label.
+    \begin{verbatim}
+    @SP
+    AM=M-1      // Pop the stack
+    D=M
+    @c
+    D;JNE       // Jump to 'c' if Not Equal to 0
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Function Definition (\texttt{function f k})}
+\textbf{Core concept:} When a function is defined, it must declare its entry point and allocate space for its local variables before executing its core logic.
+\begin{itemize}
+    \item \textbf{\texttt{k} Local Variables:} The integer \texttt{k} specifies how many local variables the function uses.
+    \item \textbf{Initialization:} The translator must generate a unique label \texttt{(f)} and then push the value \texttt{0} onto the stack \texttt{k} times to initialize all local variables to zero.
+    \item \textbf{Why?} This ensures the \texttt{LCL} segment is clean and prevents the function from reading garbage data left over by previous stack operations.
+\end{itemize}
+
+\subsection{The Calling Mechanism (\texttt{call f n})}
+\textbf{Core concept:} When a caller invokes a callee, the VM must preserve the caller's entire execution context so it can be restored exactly as it was when the callee finishes.
+\begin{itemize}
+    \item \textbf{Pre-condition:} The caller has already pushed the \texttt{n} arguments onto the stack.
+    \item \textbf{Saving the Frame:} The following values are pushed onto the stack in this exact order:
+    \begin{itemize}
+        \item \texttt{return-address} (A dynamically generated label, e.g., \texttt{f\$ret.1})
+        \item \texttt{LCL} (Caller's \texttt{RAM[1]})
+        \item \texttt{ARG} (Caller's \texttt{RAM[2]})
+        \item \texttt{THIS} (Caller's \texttt{RAM[3]})
+        \item \texttt{THAT} (Caller's \texttt{RAM[4]})
+    \end{itemize}
+    \item \textbf{Repositioning Pointers:}
+    \begin{itemize}
+        \item \texttt{ARG = SP - n - 5}: The new \texttt{ARG} pointer is moved backward by the number of arguments (\texttt{n}) plus the 5 saved frame variables.
+        \item \texttt{LCL = SP}: The \texttt{LCL} pointer is placed at the current top of the stack.
+    \end{itemize}
+    \item \textbf{Jump:} \texttt{@f}, \texttt{0;JMP}.
+    \item \textbf{Return Label Declaration:} The return label \texttt{(f\$ret.1)} is injected here so the program knows where to come back to.
+\end{itemize}
+
+\subsection{The Return Mechanism (\texttt{return})}
+\textbf{Core concept:} Reversing the \texttt{call} process. The callee must place the return value in the caller's space, clean up its working stack, and meticulously restore the caller's memory pointers.
+\begin{itemize}
+    \item \textbf{Frame Setup:} We temporarily store the \texttt{LCL} pointer in a variable (e.g., \texttt{FRAME}) to use as a base anchor.
+    \item \textbf{Retrieving Return Address:} The return address is stored at \texttt{FRAME - 5}. We copy this to a temporary variable (e.g., \texttt{RET}) so it isn't overwritten during stack cleanup.
+    \item \textbf{Returning the Value:} The top value of the stack (the function's result) is popped and copied to \texttt{*ARG} (\texttt{RAM[ARG] = pop()}). This replaces the arguments with the final result.
+    \item \textbf{Restoring SP:} The Stack Pointer is moved to \texttt{ARG + 1}, effectively erasing the callee's entire working stack and frame from memory.
+    \item \textbf{Restoring the Caller's Segments:} Working backward from the \texttt{FRAME} anchor:
+    \begin{itemize}
+        \item \texttt{THAT = *(FRAME - 1)}
+        \item \texttt{THIS = *(FRAME - 2)}
+        \item \texttt{ARG = *(FRAME - 3)}
+        \item \texttt{LCL = *(FRAME - 4)}
+    \end{itemize}
+    \item \textbf{Return Jump:} Finally, execute an unconditional jump to the address stored in \texttt{RET} (\texttt{goto RET}).
+\end{itemize}
+
+\subsection{The Global Stack Frame Layout}
+\textbf{Core concept:} Exams often ask you to visualize or trace the memory of the RAM during a recursive loop (like calculating factorial). You must know what a "Stack Frame" looks like in raw memory.
+\begin{itemize}
+    \item When looking at RAM, a frame consists of:
+    \begin{verbatim}
+    [ Argument 0 ]  <-- ARG pointer
+    [ Argument 1 ]
+    [ return-address ]
+    [ saved LCL  ]
+    [ saved ARG  ]
+    [ saved THIS ]
+    [ saved THAT ]  
+    [ Local 0    ]  <-- LCL pointer
+    [ Local 1    ]
+    [ Working Stk]  <-- SP points to next free space here
+    \end{verbatim}
+    \item \textbf{Stack Overflow Limitations:} Because the stack grows downward (increasing RAM addresses starting from 256), infinitely recursive functions will eventually crash the system by pushing frames into the heap space (starting at RAM 2048).
+\end{itemize}
+
+\subsection{Bootstrapping Code}
+\textbf{Core concept:} What happens the moment the computer turns on, before any VM code runs?
+\begin{itemize}
+    \item The VM Translator must inject setup code at ROM address \texttt{0}.
+    \item \textbf{SP Initialization:} It explicitly sets \texttt{SP = 256}.
+    \item \textbf{System Initiation:} It calls the entry point of the operating system by executing \texttt{call Sys.init 0}.
+\end{itemize}
+
+\newpage
+\section{Fråga 5 på tentan}
+\subsection{Lexical Analysis (Tokenization)}
+\textbf{Core concept:} The first step of compilation is translating a stream of raw text characters into structured tokens while ignoring whitespace and comments.
+\begin{itemize}
+    \item \textbf{The 5 Token Categories:} 
+    \begin{itemize}
+        \item \textbf{keyword:} Reserved language words (e.g., \texttt{class, constructor, int, boolean, let, while}).
+        \item \textbf{symbol:} Structural characters (e.g., \texttt{\{, \}, (, ), [, ], ., ,, ;}). Also operators (e.g., \texttt{+, -, *, /}).
+        \item \textbf{integerConstant:} Numbers from $0$ to $32767$.
+        \item \textbf{stringConstant:} Text enclosed in double quotes (excluding the quotes themselves).
+        \item \textbf{identifier:} Variable names, class names, or subroutine names. Must start with a letter or underscore, never a number.
+    \end{itemize}
+    \item \textbf{XML Output:} In the course, the tokenizer wraps these elements in XML tags (e.g., \texttt{<identifier> sum </identifier>}) to prepare them for the syntax analyzer.
+\end{itemize}
+
+\subsection{Syntax Analysis \& Grammars}
+\textbf{Core concept:} Parsing determines if the sequence of tokens strictly conforms to the language's grammar rules and structures them into a Parse Tree.
+\begin{itemize}
+    \item \textbf{Terminal vs. Non-Terminal Rules:}
+    \begin{itemize}
+        \item \textbf{Terminal:} The final leaves of the tree (e.g., a specific \texttt{keyword} or \texttt{symbol}).
+        \item \textbf{Non-Terminal:} Structural nodes that contain other rules (e.g., a \texttt{whileStatement} contains the keyword \texttt{while}, a symbol \texttt{(}, an \texttt{expression}, a symbol \texttt{)}, etc.).
+    \end{itemize}
+    \item \textbf{Recursive Parsing:} Because Jack allows nested structures (e.g., an \texttt{ifStatement} inside a \texttt{whileStatement}), the compiler uses recursive descent parsing to traverse and build the XML tree.
+\end{itemize}
+
+\subsection{Symbol Tables \& Variable Scoping}
+\textbf{Core concept:} Before variables can be translated into VM memory segments, the compiler must track their properties, scope, and memory offset.
+\begin{itemize}
+    \item \textbf{Variable Properties:} Every variable added to the Symbol Table gets four attributes: \texttt{<Name, Type, Kind, Index>}.
+    \item \textbf{The Two Tables:}
+    \begin{itemize}
+        \item \textbf{Class-level Table:} Tracks variables spanning the whole class. Kinds are \texttt{static} (shared across all instances) and \texttt{field} (unique to each object instance).
+        \item \textbf{Subroutine-level Table:} Tracks variables within a specific method/function. Kinds are \texttt{argument} (passed into the subroutine) and \texttt{var} (local variables, mapped to the \texttt{local} segment).
+    \end{itemize}
+    \item \textbf{Nested Scoping Logic:} When a variable is used, the compiler searches the Subroutine-level table first. If it is not found there, it searches the Class-level table. 
+\end{itemize}
+
+\subsection{Compiling Expressions (Infix to Postfix)}
+\textbf{Core concept:} Jack uses standard \textit{infix} notation (e.g., \texttt{x + y}), but the VM uses a stack-based \textit{postfix} structure (e.g., \texttt{push x, push y, add}).
+\begin{itemize}
+    \item \textbf{Translation Strategy:} To compile an expression \texttt{exp1 op exp2}:
+    \begin{itemize}
+        \item Compile \texttt{exp1} (pushes its result to the stack).
+        \item Compile \texttt{exp2} (pushes its result to the stack).
+        \item Output the VM command for \texttt{op} (e.g., \texttt{add}, \texttt{sub}).
+    \end{itemize}
+    \item \textbf{Function calls inside expressions:} If the expression is \texttt{f(a, b)}, the compiler recursively pushes \texttt{a}, pushes \texttt{b}, and outputs \texttt{call f 2}.
+\end{itemize}
+
+\subsection{Compiling Objects, Constructors \& Methods}
+\textbf{Core concept:} Translating Object-Oriented code into linear VM instructions by heavily manipulating the \texttt{THIS} segment (\texttt{pointer 0}).
+\begin{itemize}
+    \item \textbf{Constructors (\texttt{new}):} 
+    \begin{itemize}
+        \item Count the number of \texttt{field} variables in the class (let's say $n$).
+        \item Output \texttt{push constant n} and \texttt{call Memory.alloc 1} to allocate heap space.
+        \item Output \texttt{pop pointer 0} to set \texttt{THIS} to the newly allocated object's base address.
+        \item At the end, output \texttt{push pointer 0} and \texttt{return} to return the object's reference.
+    \end{itemize}
+    \item \textbf{Methods (The Implicit Argument):} Methods manipulate existing objects. The caller must push the object's reference as the very first argument (\texttt{argument 0}). The method then anchors itself to that object via:
+    \begin{verbatim}
+    push argument 0
+    pop pointer 0    // THIS now points to the operating object
+    \end{verbatim}
+    \item \textbf{Calling a Method:} \texttt{p1.distance(p2)} translates to:
+    \begin{verbatim}
+    push p1          // Push object reference (implicit arg 0)
+    push p2          // Push actual argument (arg 1)
+    call Point.distance 2
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Compiling Array Access}
+\textbf{Core concept:} Array elements are stored sequentially on the heap. They are accessed using the \texttt{THAT} segment (\texttt{pointer 1}).
+\begin{itemize}
+    \item \textbf{Single Array Access (\texttt{arr[i] = 17}):}
+    \begin{verbatim}
+    push arr         // Push array base address
+    push i           // Push index
+    add              // Base + Index = target address
+    pop pointer 1    // Set THAT pointer to target address
+    push constant 17
+    pop that 0       // Write 17 to arr[i]
+    \end{verbatim}
+    \item \textbf{Generalized Array Access (\texttt{a[i] = b[j]}):} You cannot directly evaluate \texttt{b[j]} and immediately assign it to \texttt{a[i]} without overwriting \texttt{pointer 1} in the middle of the operation. You must use the \texttt{temp} segment.
+    \begin{verbatim}
+    // 1. Calculate target address for a[i]
+    push a
+    push i
+    add              // Keep target address of a[i] on the stack
+    
+    // 2. Retrieve value from b[j]
+    push b
+    push j
+    add
+    pop pointer 1    // Set THAT pointer to b[j]
+    push that 0      // Push the value of b[j] onto the stack
+    
+    // 3. Perform the assignment using temp to avoid pointer clash
+    pop temp 0       // Temporarily store the value of b[j]
+    pop pointer 1    // Retrieve a[i] address from stack to THAT
+    push temp 0
+    pop that 0       // Store value into a[i]
+    \end{verbatim}
+\end{itemize}
+
+\newpage
+\section{Fråga 6 på tentan}
+\subsection{Memory Management: The Heap \& FreeList}
+\textbf{Core concept:} The Operating System must dynamically manage the RAM space reserved for the Heap (addresses \texttt{2048} to \texttt{16383}) to allocate memory for objects and arrays.
+\begin{itemize}
+    \item \textbf{The \texttt{freeList}:} A linked list that keeps track of all currently available memory blocks. A global variable points to the first free block.
+    \item \textbf{Block Header Structure:} Every block of memory (both free and allocated) carries overhead metadata (usually 2 words) just before the usable data space:
+    \begin{itemize}
+        \item \texttt{RAM[base]} = The \texttt{next} pointer (points to the base address of the next free block, or $0$ if it's the end of the list).
+        \item \texttt{RAM[base + 1]} = The \texttt{size} of the block (number of available words).
+        \item Usable memory starts at \texttt{RAM[base + 2]}.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Memory Allocation (\texttt{Memory.alloc})}
+\textbf{Core concept:} Finding and carving out a chunk of memory when a program creates a new object or array.
+\begin{itemize}
+    \item \textbf{Search Algorithms:}
+    \begin{itemize}
+        \item \textbf{First-Fit:} Traverse the \texttt{freeList} and pick the very first block that is large enough ($\text{size} \geq \text{requested size} + 2$). Fast, but leaves fragmented holes.
+        \item \textbf{Best-Fit:} Traverse the entire \texttt{freeList} and pick the block whose size is closest to the requested size. Slower, but reduces large gaps.
+    \end{itemize}
+    \item \textbf{Carving the Block:} Once a block is found, the OS subtracts the requested size from the free block's size. It then returns the pointer to the newly carved space. If the block is exactly the requested size, it is entirely removed from the \texttt{freeList} and the previous block's \texttt{next} pointer is updated to skip it.
+\end{itemize}
+
+\subsection{Deallocation, Defragmentation \& Error Handling (\texttt{Memory.deAlloc})}
+\textbf{Core concept:} Reclaiming memory when an object is discarded. Exams frequently ask you to trace the RAM table before and after a \texttt{deAlloc} call, or to fix a broken OS code snippet.
+\begin{itemize}
+    \item \textbf{Basic Deallocation:} The discarded block is simply appended to the front or end of the \texttt{freeList}.
+    \item \textbf{Fragmentation:} Over time, memory becomes divided into tiny chunks. A request for a size of 10 might fail even if there are 20 total free words, because they are split across disconnected blocks.
+    \item \textbf{Defragmentation:} When \texttt{deAlloc} is called, the OS checks the physical addresses of the blocks. If the newly freed block sits exactly next to an existing free block in physical RAM, the OS merges them into one giant block by adding their sizes together and updating the pointers.
+    \item \textbf{Exam Edge Cases (Error Handling):} You are often asked to write or fix security checks in \texttt{deAlloc}. Critical checks include:
+    \begin{itemize}
+        \item Is the block pointer $< 2048$ or $> 16383$? (Attempting to free memory outside the heap bounds).
+        \item Does the block overlap with a known free block? (Double-free vulnerability).
+        \item Is the stated block size valid, or does it push the block past the end of the heap?
+    \end{itemize}
+\end{itemize}
+
+\subsection{Algorithmic Efficiency (The Math Class)}
+\textbf{Core concept:} The Hack hardware only natively supports bitwise operations, addition, and subtraction. The OS must provide efficient multiplication and division. Naive loops ($O(n)$) are not acceptable; you must use $O(\log n)$ algorithms.
+\begin{itemize}
+    \item \textbf{Multiplication ($x \times y$):} Instead of adding $x$ to itself $y$ times, the OS iterates through the 16 bits of $y$. If the $i$-th bit of $y$ is $1$, it adds a shifted version of $x$ to the sum. The shifted $x$ doubles every iteration ($x = x + x$). This guarantees exactly 16 operations instead of up to $32767$.
+    \item \textbf{Division ($x / y$):} Uses recursive binary search. You recursively double the divisor ($2y$) until it exceeds $x$. Then, you construct the quotient by adding $1$s or $0$s as the recursion unwinds.
+    \item \textbf{Custom OS Math Functions (Exam specific):} Recent exams ask you to write functions like \texttt{Math.pow(base, exp)} or \texttt{Math.log(base, x)} with $O(\log n)$ efficiency.
+    \begin{itemize}
+        \item \textbf{Exponentiation (\texttt{pow}):} Instead of multiplying by the base $n$ times, use "exponentiation by squaring" (e.g., $x^4 = (x^2)^2$). 
+        \item \textbf{Logarithms (\texttt{log}):} Repeatedly multiply an accumulator by the base until it exceeds $x$, keeping a count of how many multiplications occurred.
+    \end{itemize}
+\end{itemize}
+
+\subsection{OS Abstraction of Hardware (Screen \& I/O)}
+\textbf{Core concept:} The OS acts as a safe bridge between the programmer and physical hardware mapping.
+\begin{itemize}
+    \item \textbf{\texttt{Screen.drawPixel(x, y)}:} To draw a single pixel, the OS must calculate the exact memory address: $16384 + (y \times 32) + (x / 16)$. 
+    \item \textbf{Bitmasking:} Because memory is accessed 16 bits at a time, the OS cannot simply overwrite the whole word, or it will erase the other 15 pixels on that horizontal line. It must read the current word, apply a bitwise \texttt{OR} mask (where only the $(x \bmod 16)$ bit is $1$), and write the word back to memory.
+\end{itemize}
+
+
+\end{document}
