@@ -1,0 +1,77 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{}
+\usepackage[T1]{fontenc}
+\title{Nek tenta grind}
+\author{Yunshan Luo}
+
+
+\renewcommand{\baselinestretch}{0.2}
+
+\setlength{\hoffset}{-18pt}         
+\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
+\setlength{\evensidemargin}{0pt} % Marge gauche sur pages paires
+\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
+\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
+\setlength{\voffset}{-18pt} % Bon pour DOS
+\setlength{\marginparsep}{7pt} % Séparation de la marge
+\setlength{\topmargin}{0pt} % Pas de marge en haut
+\setlength{\headheight}{13pt} % Haut de page
+\setlength{\headsep}{4pt} % Entre le haut de page et le texte
+\setlength{\footskip}{27pt} % Bas de page + séparation
+\setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath} % Required for the align* environment
+\usepackage{float}
+\usepackage{pgfplots} 
+\usepackage{algorithm}
+\usepackage{algpseudocode} % test comment
+\usepackage[hidelinks]{hyperref}
+\pgfplotsset{compat=1.18}
+
+
+\begin{document}
+\section{Quiz 1}
+\subsection{Produktionsgap}
+\begin{itemize}
+    \item $Y$ = faktisk BNP
+    \item $Y^*$ = potentiell BNP
+\end{itemize}
+$
+\text{Produktionsgap} = Y - Y^*
+$
+
+\subsection{Inflation, nominell och real ränta}
+\begin{itemize}
+    \item $\pi$ = inflation
+    \item $R$ = nominell ränta
+    \item $r$ = real ränta
+    \item $P_t$ = prisnivå vid tidspunkt $t$
+\end{itemize}
+Vid tidspunkt $t$ kan jag köpa $\frac{x}{P_t}$ enheter av BNP. Om jag investerar pengarna med nominell ränta $R$, så kan jag vid tidspunkt $t+1$ köpa $\frac{x(1+R)}{P_{t+1}}$ enheter av BNP.
+
+{\Large 
+\[ 
+r_{t+1} = \frac{\frac{x(1+R_t)}{P_{t+1}} - \frac{x}{P_t}}{\frac{x}{P_t}} =
+\frac{1 + R_t}{1 + \pi_{t+1}}
+\]
+\[
+r_{t+1} = \frac{1 + R_t}{1 + \pi_{t+1}} - 1
+\]
+}
+
+\subsection{Tillväxt takt}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
