@@ -1,0 +1,62 @@
+\documentclass{report}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath,amssymb,amsthm,mathrsfs, derivative}
+\usepackage[swedish]{babel}
+\usepackage[top=0.5cm,left = 1.0cm, right = 1.0cm, bottom= 0.5cm]{geometry}
+\usepackage{enumitem}
+\newcommand{\hidden}[1]{}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+
+\newcommand{\timage}[2]{$\vcenter{\hbox{\includegraphics[width=#1\linewidth]{#2}}}$}
+\title{ME1317 Artiklar}
+\author{Alexander Järvheden}
+\date{April 2026}
+
+\usepackage{tikz}
+\usepackage{eso-pic}
+
+\usetikzlibrary{calc}
+\AddToShipoutPictureBG{%
+\begin{tikzpicture}[remember picture,overlay]
+    \foreach \i in {1,...,8} {
+        \draw[black!100] 
+            ($(current page.south west)+(0,\i*\paperheight/8)$) --
+            ($(current page.south east)+(0,\i*\paperheight/8)$);
+    }
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\maketitle
+\chapter{Kontrollskrivning 1}
+\begin{table}[ht!]
+    \centering
+    \Large
+    \begin{tabular}{c|c}
+        \toprule Artikel & Backtest result \\\midrule
+         Barry et al&  alla fel\\
+         Saragih et al & alla rätt
+    \end{tabular}
+\end{table}
+
+\newpage 
+\section{Barry, M., T. Dundon, A. Wilkinson (2018) -- Employee Voice}
+
+
+\chapter{Kontrollskrivning 2}
+\newpage\section{Thylefors, I. (2019) Samarbete och konflikter}
+Konflikter, motsättningar och samarbetsproblem kommer att existera så länge som människor måste samverka. \textbf{Konflikt} = sammanstötning mellan olika intressen/krafter. \textbf{Mellanmänsklig konflikt} = all oenighet som vi investerar psykisk energi i (motsättningar som vi bryr oss om, som upptar oss). Två kategorier av konflikter: pseudokonflikter, verkliga konflikter. \textbf{Verkliga konflikter} = har substantiellt innehåll, ex oenighet om arbetsmetoder/verksamhetens framtida inriktning (lätt att göra begriplig för utomstående). \textbf{Pseudokonflikter} = skapas ur missnöje, har brett användningsområde (skapa dramatik som flykt undan vardaglig stress, leva ut allmänt missnöje, härska o söndra, skyla över andra mer hotande konflikter), kännetecknas av ovilja att verkligen komma till rätta med dem, funktion är att tangera \textbf{missförståndskonflikterna} (vanliga i arbetsgrupper med bristfällig information/kommunikation). \textbf{Konfliktbearbetning} = utgå från att kontrollera vad det är för missförstånd, få människor att prata så klaras missförstånd och verkliga motsättningar upp. \textbf{Interpersonella konflikter} = mellanmänskliga och de som uppfattas vid arbetsplatsrelationer. \textbf{Intrapersonella konflikter} = inre personliga, ex starka skuldkänslor inför egen aggressivitet, förmedlas mer eller mindre medvetet i form av ironi, pessimism och intriger, infekterar därefter samarbetet i arbetsgruppen - ju större självkännedom desto mindre risk att inre konflikter drabbar en arbetsgrupp. \textbf{Apersonella/systemkonflikter} = konflikter som ligger utanför oss, bottnar i företagets/organisationens struktur, mål, roller, arbetsorganisation, resursfördelning, förs in på den lokala arbetsplatsen genom motstridigheter, oklarheter och rigiditet (icke ändamålsenlig resursfördelning skapar konflikter mellan individer/grupper, otydliga mål tolkas olika mellan individer och grupperingar). Bör se systemet/organisationen som verktyg att förebygga onödiga konflikter i en verksamhet. \textbf{Kalla/dolda konflikter} = missnöje, indirekt aggresivitet, tystnad, negativt skvaller etc, kan diskuteras bakom stängda dörrar men ej med den/de som uppfattas som motparter, kan vara ovetande om konflikt och inga initiativ till en lösning. Existerar för att stärka liten grupp i gemensamt intresse mot en yttre fiende, rädsla för konflikter. \textbf{Öppna/varma konflikter} = lätt att observera konflikter på arbetsplatser med öppen atmosfär (bråk, kritik, argument etc). \textbf{Alturistiska/osjälviska konflikter} = relaterade till målsättning och arbete, omsorg om andras intressen och rättigheter. Större förutsättningar att lösas konstruktivt. \textbf{Egoistiska konflikter} = orsakas av personliga behov och intressen, hantering kräver att någon med legitim makt (chef) går in och avgör tvisten. \textbf{Integrativ/vinna-vinna konflikter} = handlar om ömsesidiga eftergifter/vinster, alla parter ska bli vinnare, svårt att nå dessa lösningar. \textbf{Distributiva/vinna-förlora konflikter} =. \textbf{Värderingskonflikter (etik/moral)} = medvetenhet om etiska konsekvenser av val av teknik/företagsetablering/handelskontakter etc ger upphov till konflikter. Svårhanterliga pga ej går att förhandla/kompromissa om värderingar. Ett problem för den enskilde att ta ställning till. \textbf{Person/sakkonflikter} = olika åsikter, beteenden, handlingar, (sak och person) hänger ihop, svårt att se nyanser och att människor har för- o nackdelar. Mer uttalad tendens under stress att svart/vitmåla för att få en konsekvent bild. I arbetsgrupper bör man behandla alla på ett anständigt sätt oavsett åsikt om dem. \textbf{Konflikthantering} = avgör om konflikter blir konstruktiva/destruktiva för en arbetsenhet. Konflikter förutsättning för kreativitet, utveckling, förändring, uttalade motsättningar $\implies$ nytänkande + förbättring av förslag. \textbf{Homogenitet} = mindre variation i åsikter, färre konfliktanledningar.
+\begin{figure}[ht!]
+    \begin{minipage}{.3\linewidth}
+    \timage{1}{konfliktstilar.png}    
+    \end{minipage}\begin{minipage}{.7\linewidth}
+    \textbf{Konfliktstil} = förhållningssätt i konfliktsituationer. 2-dimensionell modell, omsorg om andras intressen vs omsorg om egna intressen. Konfliktstilar ofta förvärvade under barndomen, används i varje situation: lönsamt att vara snäll $\implies$ anpassande strategi, dialog/ömsesidigt givande $\implies$ gemensam problemlösning, konkurrens/tävlande $\implies$ överlevnadsstrategi. \textbf{Situationsanpassad konflikthantering} = behöver välja olika strategier vid olika situationer. \textbf{Konflikttrappa} = olika faser i upptrappningen av en konflikt, visar att konflikter blir mer energikrävande allt eftersom de trappas upp, samt att konflikter som fångas upp i ett tidigt skede kan hanteras med begränsade insatser medan stora konflikter fordrar stora insatser. Steg 1 - det anas åsiktsskillnader i förhållande till något. Steg 2 - diskussionen börjar. Steg 3 - diskussionen leder till att skillnaderna kvarstår så parterna intar tydligare ståndpunkter och rustar för strid genom allianser. Steg 4 - parterna intar fasta positioner och går in för att vinna/förlora. Steg 5 - från att satsa på att vinna sakfrågan satsar man istället på att vinna över motståndaren.
+\end{minipage}
+\end{figure}
+\textbf{Kollektiva försvar} = används av grupper för att frysa/undvika konflikter, grupper utvecklar försvar för att skydda sig. Kollektiva coping-/anpassningsmekanismer framträder när belastningen ökar och klingar av när den minskar. \textbf{Gruppförsvararen} = vissa grupper förlägger inre konflikter till omvärlden, svetsas ihop gentemot omvärlden. \textbf{Grupptänkande} = massivt grupptryck som sätter det kritiska tänkandet ur spel, var o en ålägger självcensur + håller inne med motstridiga synpunkter. Vanligt i högstatusgrupper. \textbf{Problemlösning} = steg 1 försök ringa in vad motsättningen handlar om (fakta, mål, metoder, värderingar etc) och kan underlätta en lösning, har de inte tillgång på samma information kan mer information vara en lösning. Insikt om rollens betydelse kan avpersonifiera en konflikt och bidra till förståelse för olika perspektiv. Steg 2 - identifiera intressenter i konflikten, använd \textbf{de fyra v-frågorna} (vad,varför,var och vilka). Leta alternativa lösningsförslag, undersöka konsekvenserna av dem, ta fram överenskommelse som följs upp. Systematisk analys av en konflikt ger struktur som fångar upp den del av den osäkerhet och obehag som försvårar en bearbetning (kan kritiseras (Edward de Bono) av uppehålla sig vid hinder och problem istället för möjligheter, rekommendation är att försöka lyfta sig från aktuellt problem genom fokus på vad man vill uppnå). \textbf{Förebygga konflikter} = skapa en tydlig/konsekvent struktur i form av ramar, arbets- och befattningsbeskrivningar och målformuleringar. Finna den optimala graden av likhet för varje verksamhet (likhet minskar konfliktanledningar men ökar risk för stagnation). Arbetsfördelning som separerar antagonister från varandra och normutveckling för att undvika kontroversiella ämnen behåller god stämning.
+
+\end{document}
