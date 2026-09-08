@@ -1,8 +1,6 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{}
 \usepackage[T1]{fontenc}
-\title{EP1200 - Datasys anteckningar}
-\author{Yunshan Luo}
 
 
 \renewcommand{\baselinestretch}{0.2}
@@ -35,6 +33,7 @@
 
 
 \begin{document}
+\author{Yunshan Luo}
 \title{DD2395 -- Computer security}
 \maketitle
 \newpage
@@ -504,6 +503,209 @@ Mac-then-encrypt
     \item We use hash to allow arbitrarily long messages
     \item Digital signatures provide integrity and authenticity
 \end{itemize}
+
+\section{Lecture 4}
+\begin{itemize}
+    \item \textbf{Authentication:} Mechanisms that bind principals to actions
+    \item \textbf{Authorization:} Mechanisms that govern wwhether actions are permitted
+    \item \textbf{Audit:} Mechanisms that record and review actions (not included in this course)
+\end{itemize}
+
+\subsection{Authentication}
+Mechanisms that bind principals to actions
+\begin{itemize}
+    \item Authenticating humans
+    \item Authenticating machines
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Authentication.png}
+\end{figure}
+
+\subsection{Identity}
+\begin{itemize}
+    \item \textbf{Attribute:} Property of a principal (e.g. age, gender, height)
+    \item \textbf{Identity:} A principal may have many identities of use in different scenarios (e.g. work, home, school)
+    \item \textbf{Identifier:} An attribute that uniquely identifies a principal within a given context (e.g. username, email address)
+    \item \textbf{Authentication:} Check if an identity matches a set of attributes
+    \begin{itemize}
+        \item \textbf{Example:} ICE checks if a person is who they say on their passport
+    \end{itemize}
+\end{itemize}
+
+\subsection{Identity enrollement}
+\begin{itemize}
+    \item \textbf{Enrollment:} Establishing identity with a system
+    \begin{itemize}
+        \item Create an account 
+        \item Get an ID card or visa
+        \item Register a machine with a network
+        \item Get a signing key from a provider
+    \end{itemize}
+\end{itemize}
+
+\subsection{Authentication of humans to machines}
+\begin{itemize}
+    \item Something you are
+    \begin{itemize}
+        \item Biometrics: Fingerprint, iris scan, face recognition
+    \end{itemize}
+    \item Something you know
+    \begin{itemize}
+        \item Password, PIN, secret question
+    \end{itemize}
+    \item Something you have
+    \begin{itemize}
+        \item Physical token, smart card, phone
+    \end{itemize}
+\end{itemize}
+
+\subsection{Authentication of humans to machine}
+\begin{itemize}
+    \item Two-factor authentication (2FA)
+    \begin{itemize}
+        \item ATM card + PIN
+        \item Password + SMS code
+    \end{itemize}
+    \item Multi-factor authentication (MFA)
+    \begin{itemize}
+        \item Two or more independent methods of authentication
+    \end{itemize}
+\end{itemize}
+
+\subsection{Passwords}
+All these steps are tricky and subject to compromise
+\begin{enumerate}
+    \item \textbf{Create:} Users chooses password
+    \item \textbf{Store:} System stores password
+    \item \textbf{Use:} User supplies password to authenticate
+    \item \textbf{Change/recover/reset:} User wants or needs to change password
+\end{enumerate}
+
+\subsection{Weak passwords}
+\begin{itemize}
+    \item Users often choose weak passwords that are easy to remember
+    \item The top 20 most common passwords in 2024 are enough to compromise 10\% of accounts 
+\end{itemize}
+
+\subsection{Strong passwords}
+\begin{itemize}
+    \item Difficult to breute force or guess
+    \begin{itemize}
+        \item $2^X$ guesses required, strength is $X$
+    \end{itemize}
+    \item Assume passwords are $L$ characters long and each character is chosen from a set of $N$ characters
+    \item \begin{itemize}
+        \item Then $N^L$ guesses are required to brute force the password
+        \item Strength of the password is $X = L \log_2(N)$
+    \end{itemize}
+    \item $X$ is known as the \textbf{entropy} of the password
+    \item Shannon entropy states that every passwords is equally likely which is not entirely true
+\end{itemize}
+
+\subsection{Entropy of passwords}
+Example A:
+\begin{enumerate}
+    \item 8 character password chosen uniformly at random from 26 character alphabet
+    \item Entropy of $8\log_2(26) \approx 37$ bits
+    \item Assuming that abcdefgh is just as likely inaopas which is not true
+\end{enumerate}
+
+\noindent Example B:
+\begin{itemize}
+    \item 1 word chosen at random from entire vocabulary of 50k words
+    \item Entropy of $\log_2(50000) \approx 16$ bits
+\end{itemize}
+
+\noindent \textbf{Problem:} Shannon enropy not a good measure of how secure a password is
+
+\subsection{Password storage and usage}
+\begin{itemize}
+    \item \textbf{Password:} A secret string that the user types to prove their identity
+    \begin{enumerate}
+        \item \textbf{Account creation:} User creates a passowrd 
+        \item \textbf{Log in:} User types password to prove identity
+    \end{enumerate}
+\end{itemize}
+\noindent How to store password securely?
+\begin{itemize}
+    \item \textbf{Bad idea 1:} Store a file with the password in plaintext
+    \item \textbf{Bad idea 2:} Encrypt the password with a key and store the ciphertext
+\end{itemize}
+\noindent We need a way to store passwords that allows us verify without storing information that allows someone to easily get the original password
+
+\subsection{Password hashing}
+Define a function $f$ such that 
+\begin{enumerate}
+    \item Easy to compute and store $f(p)$ for a password $p$
+    \item Hard to compute $f^{-1}(f(p))$ to get $p$ from $f(p)$
+    \item Hard to trick the system by finding $q \neq p$ such that $f(q) = f(p)$
+\end{enumerate}
+
+\noindent \textbf{Cryptographic hash those properties by:}
+\begin{itemize}
+    \item One-wayness: Hard to compute $f^{-1}(f(p))$ to get $p$ from $f(p)$
+    \item Collision resistance: Hard to find $q \neq p$ such that $f(q) = f(p)$
+\end{itemize}
+
+\noindent The secure process is:
+\begin{itemize}
+    \item Store the hash of user passwords 
+    \item Hash the password submitted by user and compare it to the stored hash
+    \item If they match, the user is authenticated
+\end{itemize}
+
+\subsection{Authentication process}
+Each user has:
+\begin{itemize}
+    \item \textbf{Username:} $uid$
+    \item \textbf{Password:} $p$
+\end{itemize}
+
+\noindent The system stores:
+\begin{itemize}
+    \item \textbf{Username:} $uid$
+    \item \textbf{Password hash:} $h = H(p)$
+\end{itemize}
+
+\subsection{Password hashing attacks}
+\begin{itemize}
+    \item Hashes are deterministic 
+    \item If two users have the same password they'll have the same hash
+\end{itemize}
+
+\noindent Brute force attacks:
+\begin{itemize}
+    \item \textbf{Dictionary attack:} Hash an entire dictionary of common passwords
+    \item It works because passwords chosen by human are from a relatively small set
+    \item \textbf{Rainbow tables:} An algorithm for computing hashes that makes brute force attacks faster by storing precomputed hashes of common passwords
+\end{itemize}
+
+\subsection{Salted hashed passwords}
+Each user has:
+\begin{itemize}
+    \item username $uid$
+    \item password $p$
+    \item unique salt $s$ 
+\end{itemize}
+\noindent System stores: $uid, s, H(s, p)$
+\begin{verbatim}
+    // When a user logs in:
+    let h = stored hashed password for uid
+    let s = stored salt for uid
+    if H(s, p) == h:
+        authentication successful
+    else:
+        authentication failed
+\end{verbatim}
+%% fortsätt på sida 25 föreläsning 4
+
+
+
+
+
+
+
 
 
 
