@@ -698,7 +698,191 @@ Each user has:
     else:
         authentication failed
 \end{verbatim}
-%% fortsätt på sida 25 föreläsning 4
+\begin{itemize}
+    \item The users salts are not secret but they are unique and random
+\end{itemize}
+
+\subsection{How salt makes brute forcing harder?}
+\begin{itemize}
+    \item Suppose there are $M$ possible passwords and $N$ users in the database
+    \item Un-salted hashes: The attacker can compute $M$ hashes and check them against all $N$ users, $O(M+N)$
+    \item Salted hash: Attacker must hash all passwords for each user salt, $O(MN)$
+    \item Furthermore if one user has a unique salt, the attacker cannot use precomputed rainbow tables
+\end{itemize}
+
+\subsection{Defense against Online Attack}
+\begin{itemize}
+    \item Don't leak valid usernames
+    \begin{itemize}
+        \item Prompt for username and password together
+        \item Don't tell which one is wrong
+    \end{itemize}
+    \item Rate limit login attempts
+    \item Lock account after certain number of failed attempts
+\end{itemize}
+
+%% Sida 28 föreläsning 4
+
+\subsection{Rate limiting}
+\begin{itemize}
+    \item Cryptographic hashes are generally designed to be fast to compute  
+    \item By slowing down hashes to barely affects login speed but signficantly slows down brute force attacks
+    \item Such hashes are called password hashes which are designed to be slow
+\end{itemize}
+
+\subsection{How to slow down a fast hash}
+\begin{itemize}
+    \item Given a fast hash $H$
+    \item We can slow it down by computing $H$ multiple times
+    \item For example:
+    \begin{enumerate}
+        \item $z_1 = H(p)$
+        \item $z_2 = H(p, z_1)$
+        \item $z_3 = H(p, z_2)$
+        \item $\vdots$
+        \item $z_k = H(p, z_{k-1})$
+    \end{enumerate}
+    \item The number of iterations can be chosen arbitarily 
+\end{itemize}
+
+\subsection{Slow hashes: PBKDF2}
+\textbf{Password-based key derivation function 2}
+\begin{itemize}
+    \item \textbf{Settings}
+    \begin{enumerate}
+        \item An underlying function that outputs random-looking bits (e.g. HMAC-SHA256)
+        \item The desired length of the output $n$
+        \item Iteration count $c$ (e.g. 100k)
+    \end{enumerate}
+    \item \textbf{Inputs}
+    \begin{enumerate}
+        \item Password $p$
+        \item Salt $s$
+    \end{enumerate}
+    \item \textbf{Output:} n-bit string derived rom $p$ and $s$
+    \item \textbf{Benefits:}
+    \begin{enumerate}
+        \item Derives an abitrarily long string from the user's password
+        \item Output can be used as a key for symmetric encryption
+        \item Algorithm is slow without hogging memory
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Authorization}
+\begin{itemize}
+    \item \textbf{Authentication:} Mechanisms that binds principals to actions
+    \item \textbf{Authorization:} Mechanisms that govern whether actions are permitted
+\end{itemize}
+
+\subsection{Access control policy}
+An \textbf{acess control policy} specifies which of the \textbf{operations} associated with any given \textbf{object} each principal is auhtorized to perform.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{access.png}
+\end{figure}
+
+\subsection{Access control mechanisms}
+\begin{itemize}
+    \item A \textbf{reference monitor} is consulted whenever one of a predefined set operation is invoked
+    \item Can enforce confidentiality and integrity 
+\end{itemize}
+
+\subsection{Discretionary and mandatory access control}
+\begin{itemize}
+    \item \textbf{Discretionary access control (DAC):} The owner of an object can determine who is authorized to access it
+    \item \textbf{Mandatory access control (MAC):} Centralized authority determines authorizations 
+\end{itemize}
+
+\subsection{Discretionary Access Control (DAC)}
+\textbf{Design principles: }
+\begin{itemize}
+    \item \textbf{Principle of Failsafe Defaults:} Defning an access control policy by enumerating privleges rather than prohibitions
+    \item \textbf{Principle of Least Privilege:} Every program and every user of the system should operate using the least set of privileges necessary to complete the job
+\end{itemize}
+\textbf{Protection domains:}
+\begin{itemize}
+    \item Each thread of control is associated with a protection domain
+    \item Each protection domain is associated with a different set of priveleges
+    \item We allow transitions from one protection domain to another as execution of the thread proceeds
+\end{itemize}
+\textbf{Protection domains transitions:}
+\begin{itemize}
+    \item \textbf{Attenuation of priviledge:} Transition into a protected domain that eliminates privileges
+    \item \textbf{Amplification of privelege:} Transition into a protected domain that adds privileges
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{protection.png}
+\end{figure}
+
+\subsection{Implementing DAC}
+\begin{itemize}
+    \item $P$ is a principal
+    \item $O$ is an object
+    \item $op$ is an operation
+\end{itemize}
+
+We need to compute $<P, O, op> \in Auth$ 
+\begin{itemize}
+    \item Instead of illustrating this in a matrix access control lists are used instead
+\end{itemize}
+
+Example of an access control list:
+\begin{verbatim}
+    <musard, {r,w}>
+    <alice, {r}>
+    <student, {r}>
+\end{verbatim}
+
+\noindent \textbf{Adantages and disadvantages}
+Advantages:
+\begin{itemize}
+    \item Efficient review of permission for given object
+    \item Centralized enforcement is simply to deploy and verify 
+    \item Revocation is straightforward
+\end{itemize}
+Disadvantages:
+\begin{itemize}
+    \item Inefficient review of permission for given principal
+    \item Large lists impede performance
+    \item Vulnerable to confused deputy attacks
+\end{itemize}
+
+\subsection{Confused deputy}
+Assume a service that has these 5 steps:
+\begin{enumerate}
+    \item \textbf{Buffer} $\leftarrow$ FileSys.Read(f)
+    \item \textbf{Results} $\leftarrow$ function(buffer)
+    \item \textbf{chrgs} $\leftarrow$ calcBill(results)
+    \item \textbf{FileSys.Write(f, results)}
+    \item \textbf{FileSys.Write(changes, chrgs)}
+\end{enumerate}
+In step 4 if we switch the file $f$ to a different file, the service will write to that file instead of the intended one. The service is confused into writing to a file that it should not have access to.
+
+\subsection{Solution: Confused deputy}
+\begin{enumerate}
+    \item Combining nameing with authorization: Don't allow write to a file it doesn't have access 
+    \item Replace names with unforgable bundles i.e object name + privledges
+    \item Client conveys a bundle for file $f$ which server uses to read and update $f$
+    \item Server already has a bundle for charges.txt
+    \item Client supplied bundle for charges.txt does not have write privlege 
+\end{enumerate}
+
+\subsection{Capability lists}
+A capability list for a principal $P$ can look liek
+\begin{verbatim}
+    <doc1, {r,w}>
+    <doc2, {r}>
+    <doc3, {r}>
+\end{verbatim}
+
+\begin{itemize}
+    \item To perform operation $op$ on object $O$, the system checks if $<O, op> \in Cap(P)$
+\end{itemize}
+
+\subsection{C-lists}
+% lecture 4 sida 50
+
 
 
 
