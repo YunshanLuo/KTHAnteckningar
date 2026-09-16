@@ -212,17 +212,114 @@ E_{\mathcal{D}} \left[ \hat{f}_{\mathcal{D}}(\mathbf{x}) \right] \text{,\hspace{
 \]
 
 Mean squared error for estimating $f(\mathbf{x})$:
-%===============================
-% Fortsätt på sida 25 föreläsning 3
-%===============================
+\[
+E_{\mathcal{D}} \left[ \hat{f}_{\mathcal{D}}(\mathbf{x}) - f(\mathbf{x}) \right]^2 = \underbrace{E_{\mathcal{D}} \left[ \hat{f}_{\mathcal{D}}(\mathbf{x}) - E_{\mathcal{D}} \left[ \hat{f}_{\mathcal{D}}(\mathbf{x}) \right]^2 \right]}_{\text{Variance error}} + \underbrace{\left( E_{\mathcal{D}} \left[ \hat{f}_{\mathcal{D}}(\mathbf{x}) \right] - f(\mathbf{x}) \right)^2}_{\text{Bias error}}
+\]
+\[
+= \text{Variance} + \text{Bias}^2
+\]
+To simplify:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{bias_variance_decomposition.png}
+\end{figure}
 
+\subsection{Bias definition}
+Measures how much the average output differs from gold standard output
+\[
+E[\hat{f}_{\mathcal{D}}(x)] - f(\mathbf{x})
+\]
+\subsection{Variance}
+Measures excepted divergence of the output from the average output
+\[
+E_{\mathcal{D}} \left[ \hat{f}_{\mathcal{D}}(\mathbf{x}) - E_{\mathcal{D}} \left[ \hat{f}_{\mathcal{D}}(\mathbf{x}) \right]^2 \right]
+\]
 
+\section{Lecture 4 -- Regression}
+The goal of regression is to predict target values for any input.
 
+\subsection{Linear Regression}
+The prediciton function is defined as:
+\[
+\hat{f}(\mathbf{x}) = \sum_{i=1}^{d} w_i x_i = \mathbf{w}^T \mathbf{x}
+\]
+We measure how well $\hat{f}(x)$ approximates $f(x)$ by minimizing the mean squared error (MSE):
+\[
+E_{\text{in}}(\hat{f}) = \frac{1}{N} \sum_{i=1}^{N} \left( \hat{f}(\mathbf{x}_i) - y_i \right)^2
+\]
+$E_{in}(w)$ can be expressed as:
+\[
+E_{in}(w) = \frac{1}{N} \sum^{N}_{i=1} \left( \mathbf{w}^T \mathbf{x}_i - y_i \right)^2 = \frac{1}{N} ||\mathbf{Xw} - \mathbf{y}||^2
+\] 
 
+\subsection{Residual sum of squares}
+The sum of squares errors is a convex function of $w$
+\[
+E_{in}(w) = ||Xw - Y||^2
+\]
+The gradient with respect to the weights is:
+\[
+\frac{\partial}{\partial w}E_{in}(w) = 2X^{T}(Xw - Y)
+\]
+The weight vector that sets the gradient to zero is:
+\[
+w = (X^{T}X)^{-1}X^{T}Y
+\]
+\[
+X^T Xw = X^T Y
+\]
+That is the vector that mimimizes the errors 
 
+\subsection{RANSAC: random sampling consensus}
+Repeat $M$ times:
+\begin{enumerate}
+    \item Sample two points to estimate a the line  
+    \item Calculate the number of inliers or posterior likelihood for relation  
+    \item Choose relation to maximize the number of inliers
+\end{enumerate}
+Maximize the number of inliers within a threshold distance
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{ransac.png}
+\end{figure}
 
+RANSAC algorithm:
+\begin{enumerate}
+    \item Randomly select sample of $s$ points to initiate subset 
+    \item Find the data points $S_i$ that are within threshold distance $t$
+    \item If the subset of $S_i$ is greater than threshold $T$, re-estimate the model using all points in $S_i$ and terminate
+    \item If the subset of $S_i$ is less than threshold $T$, select a new subset and repeat
+    \item After $N$ iterations the largest $S_i$ is selected and the model is re-estimated using all the points in the subset $S_i$
+\end{enumerate}
 
+Keep in mind that RANSAC is sensitive to the threshold distance
+\begin{itemize}
+    \item Too large $\implies$ multiple models will be accepted
+    \item Too small $\implies$ unstable fit
+\end{itemize}
 
+\subsection{MLESAC}
+MLESAC (Maximum Likelihood Estimation for Sample Consensus) is an extension of RANSAC that uses a probabilistic approach to estimate the model parameters. It assumes that the data is corrupted by noise and that the noise follows a specific distribution, typically Gaussian. The goal is to find the model that maximizes the likelihood of the observed data.
+
+The MLESAC algorithm works as follows:
+\begin{enumerate}
+    \item Randomly select a sample of $s$ points to initiate the subset.
+    \item Estimate the model parameters using the selected points.
+    \item Calculate the likelihood of each point given the estimated model.
+    \item Select the points with the highest likelihood as inliers.
+    \item If the number of inliers exceeds a threshold, re-estimate the model using all inliers and terminate.
+    \item If not, select a new subset and repeat.
+    \item After $N$ iterations, select the model with the highest overall likelihood.
+\end{enumerate}
+
+MLESAC is more robust than RANSAC in handling noisy data, but it requires more computational resources due to the additional steps involved in calculating likelihoods.
+
+\subsection{Ridge regression}
+Similar to least squares regression
+\[
+RSS + \lambda \sum_{i=1}^{D} w_i^2
+\]
+%% Fortsätt sida 28 föreläsning 4
 
 
 
