@@ -881,15 +881,59 @@ A capability list for a principal $P$ can look liek
 \end{itemize}
 
 \subsection{C-lists}
-% lecture 4 sida 50
+\begin{itemize}
+    \item The OS stores list of capabilities $C_i = <O_i, Privs_i>$ for each principal $P_i$
+\end{itemize}
+\begin{enumerate}
+    \item \textbf{Authorization:} OS mediates access to objects, checks process capabilities
+    \item \textbf{Unforgeability:} Capabilities are stored in protected memory region (kernel memory)
+\end{enumerate}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{kernel.png}
+\end{figure}
 
+\subsection{Summary DAC}
+Discretionary access control (DAC) 
+\begin{itemize}
+    \item \textbf{Philosophy:} Users have the discretion to specify policies themselves
+    \item Access control authorization \textbf{relation}
+    \begin{itemize}
+        \item Set of triplets (subject, object, rights)
+        \item Described as access control "matrix"
+    \end{itemize}
+\end{itemize}
 
+Implementations:
+\begin{itemize}
+    \item \textbf{Access control lists (ACLs):} Each object associated with list of (subject, rights)
+    \item \textbf{Capability lists (Privilege lists):} Each subject associated with list of (object, rights)
+\end{itemize}
 
+\subsection{Multi-level security}
+Principals and objects are assigned security levels
+\begin{enumerate}
+    \item Verified protection: Top secret
+    \item Mandatory protection: Secret
+    \item Discretionary protection: Confidential
+    \item Unclassified: Minimal protection  
+\end{enumerate}
+\begin{itemize}
+    \item \textbf{Need to know principle:} Access should be granted only when necessary to perform assigned duties
+\end{itemize}
+Access control policy 
+\begin{itemize}
+    \item Subject may read an object only if the subject's security level is greater than or equal to the object's security level
+    \item Subject may write to an object only if the subject's security level is less than or equal to the object's security level
+    \item Subject must be within the objects label to read or write to it
+\end{itemize}
 
-
-
-
+\subsection{Writing with MLS}
+\begin{itemize}
+    \item \textbf{Blind write:} Subject may not read high security object yet may write ti 
+    \item \textbf{Trojan horse prevention:} Subject may not write lower security object yet may read it
+\end{itemize}
 
 
 

@@ -315,14 +315,76 @@ The MLESAC algorithm works as follows:
 MLESAC is more robust than RANSAC in handling noisy data, but it requires more computational resources due to the additional steps involved in calculating likelihoods.
 
 \subsection{Ridge regression}
-Similar to least squares regression
+Similar to least squares regression but with shrinkrage penalty 
 \[
 RSS + \lambda \sum_{i=1}^{D} w_i^2
 \]
-%% Fortsätt sida 28 föreläsning 4
+As $\lambda$ increases the model becomes more biased but has lower variance. Two approaches to estimating $\lambda$ is:
+\begin{enumerate}
+    \item Gradient descent
+    \item Coordinate descent
+\end{enumerate}
 
+\subsection{Bias/Variance: Ridge regression}
+Increasing $\lambda$ decreases variance while increasing bias
+\begin{itemize}
+    \item \textbf{Green:} Variance
+    \item \textbf{Black:} Bias
+    \item \textbf{Purple:} MSE
+\end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.70\textwidth]{bias.png}
+\end{figure}
 
+\subsection{The Lasso}
+Similar to ridge regression but with slightly different term:
+\[
+RSS + \lambda \sum_{i=1}^{d} |w_i|
+\]
+Shrinkage penalty is replaced by L1 norm
+\begin{itemize}
+    \item In lasso regression some coefficients can become exactly zero, leading to a sparse model
+    \item Variable selection is performed automatically, which can be useful for high-dimensional datasets
+\end{itemize}
 
+\subsection{Comparing Ridge and Lasso}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{ridge_lasso.png}
+\end{figure}
+Ridge regression minimizes: 
+\[
+RSS + \lambda \sum_{i=1}^{d} w_i^2
+\]
+
+Lasso regression minimizes:
+\[
+RSS + \lambda \sum_{i=1}^{d} |w_i|
+\]
+
+Here are the contrains property for $d=2$:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{contraint.png}
+\end{figure}
+
+\subsection{$k$-NN Regression}
+\begin{itemize}
+    \item Similar to $k$-NN classification, but instead of predicting the class label, we predict the target value by averaging the target values of the $k$ nearest neighbors
+    \item Take the average of $k$ closest points to predit the value
+    \item Larger values of $k$ provides smoother and less variable fit
+\end{itemize}
+\[
+f(x) = \frac{1}{k} \sum_{x_1 \in N_i} y_i
+\]
+Example of how different values of $k$ affects the regression
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{knn_regression.png}
+\end{figure}
+
+%% sida 40 föreläsning 04
 
 \end{document}
