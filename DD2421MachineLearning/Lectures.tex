@@ -387,4 +387,219 @@ Example of how different values of $k$ affects the regression
 
 %% sida 40 föreläsning 04
 
+\subsection{$k$-NN vs linear regression}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{knnlinear.png}
+\end{figure}
+\begin{itemize}
+    \item $k$ = 1 (blue)
+    \item $k$ = 9 (red)
+\end{itemize}
+
+\subsection{Parametric vs non-parametric}
+\begin{itemize}
+    \item Parametric models assume a specific form for the data distribution
+    \item Non-parametric models do not make assumptions about the underlying data distribution
+\end{itemize}
+
+
+\section{Support vector machines}
+\subsection{SVM -- theory}
+Example: weight of men and women seperated by hyperplane
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{svm.png}
+\end{figure}
+\begin{itemize}
+    \item We try to find the hyperplane that maximizes the margin between the two classes
+    \item Margin is the distance between the hyperplane and the closests datapoint
+    \item For training we use sequential minimal optimization (SMO) or coordinate descent
+\end{itemize}
+\subsection{Regression vs classification}
+\begin{itemize}
+    \item \textbf{Classifciation:} SVM finds a hyperplane that seperates the classes with maximum margin
+    \item \textbf{Regression:} SVM finds a hyperplane that fits the data within a certain margin of tolerance 
+\end{itemize}
+
+\subsection{Concept learning}
+\begin{itemize}
+    \item Supervised learning from boolean functions
+    \item Learn positive and negative examples
+\end{itemize}
+
+\subsection{Artificial neuron}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neuron.png}
+\end{figure}
+\begin{itemize}
+    \item $\vec{x}$ input vector
+    \item $\vec{w}$ weight vector
+    \item $b$ threshold
+    \item $y$ output (boolean)
+\end{itemize}
+
+\subsection{Training linear seperator}
+Training means finding the best weights $w_i$ with two good algorithms:
+\begin{itemize}
+    \item \textbf{Perceptron learning algorithm:} Update weights based on misclassified examples
+    \item \textbf{Delta rule:} Update weights based on the error between predicted and actual output
+\end{itemize}
+
+\textbf{Perceptron learning}
+Perceptron learning has binary output
+\begin{itemize}
+    \item \textbf{Incremental learning:} Update weights after each example
+    \item Weights only change when the example is misclassified
+    \item \textbf{Update rule:} $w_i \leftarrow + \nabla (t - o)x_i$
+    \item \textbf{Convergence:} If the data is linearly separable the algorithm always converges 
+\end{itemize}
+
+\textbf{Delta rule (LMS-rule)}
+Delta rule has continuous output
+\begin{itemize}
+    \item \textbf{Incremental learning:} Update weights after each example
+    \item Weights always change after each example
+    \item $w_i \leftarrow + \nabla (t - o)x_i$
+    \item Will find the optimal solution even if the data is not linearly separable
+    \item \textbf{Convergance} only in the mean
+\end{itemize}
+
+\subsection{Linear seperation}
+Hyperplane with margins
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{hm.png}
+\end{figure}
+\begin{itemize}
+    \item Wide margins make hyperplane more generalizable
+    \item Narrow margins could be overfitting the data
+\end{itemize}
+
+Mathematical formulation
+\[
+\vec{w}^T \vec{x} + b = 0
+\]
+\[
+\begin{cases}
+    \vec{w}^T \vec{x} \geq 1, \hspace{10pt} t = 1 \hspace{10pt} \text{(positive target)}\\
+    \vec{w}^T \vec{x} \leq -1, \hspace{10pt} t = -1 \hspace{10pt} \text{(negative target)}
+\end{cases}
+\]
+
+\subsection{Margin width determination}
+given two ppoint $\vec{p}$ and $\vec{q}$ on the margin, the distance between them along $\vec{w}$ is:
+\[
+2d = \frac{\vec{w}^T}{||w^T||}(\vec{p} - \vec{q}) = \frac{2}{||\vec{w}||}
+\]
+maximal margin depends on the minimal length of $\vec{w}$
+\vspace{10pt}
+
+
+\textbf{Finding} best hyperplane
+\begin{itemize}
+    \item Minimize $||\vec{w}||$ 
+    \item Contraints: $t_i \vec{w}^T \vec{x_i} \geq 1,$ \hspace{5pt}$\forall i$
+\end{itemize}
+
+\subsection{Support vector machines}
+Transforming low dimensional data to higher dimensional space to make it linearly separable
+\begin{itemize}
+    \item Advantages:
+    \begin{itemize}
+        \item Very good generalization 
+        \item Works well with few training examples
+        \item Fast classfication
+    \end{itemize}
+    \item Disadvantages:
+    \begin{itemize}
+        \item Non-local weight calculation  
+        \item Hard to implement efficiently
+    \end{itemize}
+\end{itemize}
+
+\subsection{Kernels}
+Ultilizing high dimensional space advantage without actually representing anything high dimensional example:
+
+
+\[
+\text{Points in 2D:}
+\hspace{15pt}
+\vec{x} = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
+\]
+
+\[
+\text{Transformation to 5D}
+\hspace{15pt}
+\Phi(\vec{x}) = \begin{bmatrix} x_1^3 \\ x_2^2 \\ \sqrt{2}x_1x_2 \\ \sqrt{2}x_1 \\ \sqrt{2}x_2 \\ 1 \end{bmatrix}
+\]
+
+Generally expressed as:
+\[
+\Phi(\vec{x})^T \Phi(\vec{y}) = \kappa(\vec{x}, \vec{y})
+\]
+Common kernels:
+\begin{itemize}
+    \item Linear kernel: $\kappa(\vec{x}, \vec{y}) = \vec{x}^T \vec{y}$
+    \item Polynomial kernel: $\kappa(\vec{x}, \vec{y}) = (\vec{x}^T \vec{y} + 1)^p$
+    \item Radial basis function (RBF) kernel: $\kappa(\vec{x}, \vec{y}) = e^{-\frac{1}{2 \rho^2} ||\vec{x} - \vec{y}||^2}$
+\end{itemize}
+
+\subsection{Structural risk minimization}
+Lagranges multiplier method
+\[
+L = \frac{1}{2} \vec{w}^T \vec{w} - \sum_{i=1}^n \alpha_i (t_i \vec{w}^T \vec{x_i} - 1)
+\]
+\begin{itemize}
+    \item Minimize $L$ with respect to $\vec{w}$
+    \item Maximize $L$ with respect to $\alpha_i$
+\end{itemize}
+
+\[
+\frac{\partial L}{\partial \vec{w}} = 0 
+\]
+\[
+\implies \vec{w} = \sum_i \alpha_i t_i \Phi(\vec{x_i})
+\]
+\[
+\implies L = \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j t_i t_j \Phi(\vec{x}_i)^T \Phi(\vec{x}_j)
+\]
+Therefore maximize 
+\[\implies L = \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j t_i t_j \Phi(\vec{x}_i)^T \Phi(\vec{x}_j)
+\]
+Under constraints:
+\[
+\alpha_i \geq 0, \hspace{10pt} \forall i
+\]
+
+\subsection{Support vector machine step by step}
+\begin{enumerate}
+    \item Choose a kernel function  
+    \item Compute $\alpha_i$ by solving the dual optimization problem
+    \item $\vec{x_i}$ corresponding to $\alpha_i \neq 0$ are the support vectors
+    \item Classify new datapoints according to $\sum_i \alpha_i t_i K(\vec{x}, \vec{x}_i)$
+\end{enumerate}
+
+\subsection{Slack}
+In SVM, slack variables are introduced to allow some data points to be on the wrong side of the margin or even the hyperplane. This is useful when the data is not perfectly linearly separable.
+\vspace{10pt}
+
+With that we can reformulate the optimization problem to this:
+\[
+\sum_i \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j t_i t_j \Phi(\vec{x}_i)^T \Phi(\vec{x}_j)
+\]
+With the constraints:
+\[
+0 \leq \alpha_i \leq C, \hspace{10pt} \forall i
+\]
+
+
+
+
+
+
+
+
+
 \end{document}
