@@ -37,12 +37,8 @@
 \title{DD2395 -- Computer security}
 \maketitle
 \newpage
-\section{Lecture 1}
-\subsection{Examination and grading}
-\begin{itemize}
-    \item LAB assignments: P/F bonus for the final grade at least 2 marks for A
-    \item Exam: 100\% of the grade
-\end{itemize}
+\section*{Exam analysis}
+Do the exam analysis here when needed 
 
 \section{Lecture 2}
 \subsection{Alice, Bob, Eve and Mallory}
@@ -935,9 +931,112 @@ Access control policy
     \item \textbf{Trojan horse prevention:} Subject may not write lower security object yet may read it
 \end{itemize}
 
+\section{Cryptography}
+Mode of operation for block ciphers:
+\begin{itemize}
+    \item \textbf{Electronic Codebook (ECB):} Each block is encrypted independently
+    \item \textbf{Cipher Block Chaining (CBC):} Each block is XORed with the previous block's ciphertext
+    \item \textbf{Counter (CTR):} Each block is XORed with a counter
+\end{itemize}
+\begin{itemize}
+    \item \textbf{Assymmetric cyrptography:} 
+    \begin{itemize}
+        \item Diffie-Hellman key exchange
+        \item RSA
+    \end{itemize}
+\end{itemize}
+
+\subsection{Block ciphers}
+\begin{itemize}
+    \item \textbf{Encryption:} 
+    \begin{itemize}
+        \item \textbf{Input:} $k$-bit key $K$ and $n$-bit plaintext $P$
+        \item \textbf{Output:} $n$-bit ciphertext $C$
+    \end{itemize}
+    \item \textbf{Decryption:}
+    \begin{itemize}
+        \item \textbf{Input:} $k$-bit key $K$ and $n$-bit ciphertext $C$
+        \item \textbf{Output:} $n$-bit plaintext $P$
+    \end{itemize}
+    \item $E(K,M)$ should be bijective and efficient
+\end{itemize}
+
+\subsection{ECB mode of operation}
+How to encrypt message of arbitrary length using AES, given a key and that stanard AES only encrypts 128-bit blocks:
+\begin{enumerate}
+    \item Pad the message such that the length divides evenly into 128-bit blocks
+    \item Split the message into 128-bit blocks
+    \item Encrypt each block independently using the same key 
+    \item Concatenate the encrypted blocks 
+\end{enumerate}
+This process is called \textbf{Electronic Codebook (ECB)} mode of operation
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{ecb.png}
+\end{figure}
+Note that ECB mode is not IND-CPA secure because it's deterministic 
+
+\subsection{CBC mode of operation}
+We use an initialization vector (IV) to compute the first block's ciphertext given the encryption function $E(K, M)$
+\begin{enumerate}
+    \item $C_1 = E(K, M_1 \oplus IV)$
+    \item $C_2 = E(K, M_2 \oplus C_1)$
+    \item $C_3 = E(K, M_3 \oplus C_2)$
+    \item $\vdots$
+    \item $C_n = E(K, M_n \oplus C_{n-1})$
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{cbc.png}
+\end{figure}
+\newpage
+\noindent \textbf{CBC decryption:} Given $K, IV, C_1, C_2, \ldots, C_n$ we can compute $M_1, M_2, \ldots, M_n$ as follows:
+
+\begin{enumerate}
+    \item $D(K, C_1) \oplus IV = M_1$
+    \item $D(K, C_2) \oplus C_1 = M_2$
+    \item $D(K, C_3) \oplus C_2 = M_3$
+    \item $\vdots$
+    \item $D(K, C_n) \oplus C_{n-1} = M_n$
+\end{enumerate}
+
+\subsection{Padding}
+Padding schemes:
+\begin{itemize}
+    \item We cannot padd with only 0's or only 1's because we cannot distinguish between padding and actual data
+    \item We can pad with a 1 followed by 0's
+\end{itemize}
+PKCS \#7 padding:
+\begin{itemize}
+    \item If we need to pad $k$ bytes, we pad with $k$ bytes of value $k$
+    \item For example, if we need to pad 3 bytes, we pad with 0x03 0x03 0x03
+\end{itemize}
+
+\noindent \textbf{CBC security:} AES-CBC is IND-CPA secure if IV is randomly chosen and never reused
+
+\subsection{CBC: IV Reuse}
+Assume we have these two 3-block messages
+\begin{itemize}
+    \item $M = P_1 || P_2 || P_3$
+    \item $M' = P_1' || P_2' || P_4$
+\end{itemize}
+If $IV$ is reused for both messages in CBC mode the two first blocks for the second message can be revealed
+
+\subsection{Counter Mode (CTR)}
+%% continue lecture 5 page 33
 
 
 
 
 
-\end{document}
+
+
+
+
+
+
+
+
+
+
+\end{document}§
