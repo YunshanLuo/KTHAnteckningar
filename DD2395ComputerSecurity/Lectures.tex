@@ -1023,10 +1023,65 @@ Assume we have these two 3-block messages
 If $IV$ is reused for both messages in CBC mode the two first blocks for the second message can be revealed
 
 \subsection{Counter Mode (CTR)}
-%% continue lecture 5 page 33
+\begin{itemize}
+    \item \textbf{Encryption:} $E(K, M) = P_i \oplus E(K, Nonce_i) = C_i$
+    \begin{itemize}
+        \item $C = C_1 || C_2 || \ldots || C_n$
+    \end{itemize} 
+    \item \textbf{Decryption:} $D(K, C_i) = C_i \oplus E(K, Nonce_i) = P_i$
+    \begin{itemize}
+        \item $P = P_1 || P_2 || \ldots || P_n$
+    \end{itemize}
+\end{itemize} 
+Nonce is a unique value for each block e.g. a counter and it should never be reused
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ctrdec.png}\hfill
+    \includegraphics[width=0.5\textwidth]{ctrenc.png}
+\end{figure}
+\begin{itemize}
+    \item Both encryption and decryption can be done in parallel because each block is independent of the others
+    \item Padding is not needed because we can just XOR the last block with the first $k$ bits of the keystream
+\end{itemize}
 
+\subsection{CTR mode security}
+\begin{itemize}
+    \item AES-CTR is IND-CPA secure if nonce is never reused
+    \item If nonce is reused it would be equivalent to key reuse in a one-time pad which is not secure
+\end{itemize}
 
+\subsection{CTR vs CBC}
+\begin{itemize}
+    \item Both AES-CBC and AES-CTR are IND-CPA secure are equally secure if used correctly 
+    \item AES-CTR is more efficient because of parallelization 
+    \item AES-CBC is safer because only partial information is revealed if IV is reused
+    \item AES-CTR reveals everything if nonce is reused once
+\end{itemize}
+\subsection{Block cipher: integrity and authenticity}
+\textbf{CTR:}
+\begin{itemize}
+    \item Mallory can tamper with the ciphertext and the decrypted plaintext will be different
+    \item The receiver will not know that the message has been tampered with
+\end{itemize}
 
+\noindent \textbf{CBC}:
+\begin{itemize}
+    \item If Mallory tampers with the ciphertext the decrypted plaintext will be jibberish
+    \item The receiver will know that the message has been tampered with
+\end{itemize}
+
+\subsection{Public key cryptography}
+A scheme where each person has two keys:
+\begin{itemize}
+    \item \textbf{Public key:} Known to everyone
+    \item \textbf{Private key:} Only known to the owner
+    \item Uses number theory to create one way functions 
+    \item Alice and Bob no longer need to share a secret key
+    \item \textbf{Drawback:} Public key cryptography is much slower than symmetric key cryptography
+\end{itemize}
+
+\subsection{Diffie-Hellman Key Exchange}
+%% Contninue Lecture 5 page 53
 
 
 
