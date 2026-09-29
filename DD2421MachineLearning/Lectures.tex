@@ -594,8 +594,99 @@ With the constraints:
 0 \leq \alpha_i \leq C, \hspace{10pt} \forall i
 \]
 
+\section{Artificial Neural Networks}
+Artificial neural networks (ANNs) are a class of machine learning models inspired by the structure and function of the human brain. They consist of interconnected layers of nodes (neurons) that process input data and learn to make predictions or classifications.
+\subsection{Single neuron illustration}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{single_neuron.png}
+\end{figure}
 
+\textbf{Net input} of a neuron is given by:
+\[
+net = \sum_{i=1}^{n} p_i w_i = p_1 w_1 + p_2 w_2 + \ldots + p_n w_n
+\]
+\textbf{Ouput} of the neuron is given by:
+\[
+output = f(net - \theta)
+\]
+\begin{itemize}
+    \item $f$ is the activation function
+    \item $\theta$ is the threshold
+\end{itemize}
 
+\subsection{Common activation functions}
+\begin{enumerate}
+    \item Linear function: $f(x) = x$
+    \item Step function: $f(x) = 1$ if $x \ge 0$, else $f(x) = 0$
+    \item Ramp function: $f(x) = 0$ if $x < 0$, else $f(x) = x$
+    \item Sigmoid function: $f(x) = \frac{1}{1 + e^{-x}}$
+    \item Hyperbolic tangent function: $f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+    \item Gaussian function: $f(x) = e^{-x^2}$
+\end{enumerate}
+
+\subsection{Training Neural Networks}
+\textbf{Supervised learning} uses labeled training data. The training uses error produced by a neuron to adjust its weights. 
+\newline
+\vspace{10pt}
+
+\textbf{The Error metric:}
+\begin{itemize}
+    \item $t_p(t)$ is the target output
+    \item $out_p(t)$ is the actual output
+\end{itemize}
+\[
+E(t) = \sum_{p=1}^{P_{\tau}} (t_p(t) - out_p(t))^2
+\]
+
+\textbf{Weight update for a neuron:}
+\begin{itemize}
+    \item $\eta$ is the learning rate   
+    \item $\Delta w_i(t)$ is the weight change for weight $w_i$
+    \item $\Delta w_i(t)$ is proportional to the negative gradient of the error with respect to the weight $w_i$
+\end{itemize}
+\[
+w_i(t) = w_i(t - 1) + \Delta w_i (t)
+\]
+\[
+\Delta w_i(t) = \eta (\frac{- \partial E(t)}{\partial w_i(t)})
+\]
+
+\subsection{Types of neural networks}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{types_of_neural_networks.png}
+\end{figure}
+Different types of neural networks are suited for different tasks.
+
+\subsection{How to train neural networks}
+We use \textbf{back propagation} to determine the error and update the weights with \textbf{gradient descent}
+\[
+\Delta w_{ik}(t) = f'(net(t)) \cdot \sum_{j \in P} \delta (t) \cdot w_{kj}(t) \cdot f(net_{k}(t))
+\]
+\[
+\delta_i (t) = f'(net_i (t)) \cdot \sum_{j \in P} \delta (t) \cdot w_{ji}(t)
+\]
+Step by step:
+\begin{enumerate}
+    \item \textbf{Weight initialization:} Initialize all the weights to small random numbers
+    \item \textbf{Input/Output normalization:} Normalize the input and output data to a range of [0, 1] or [-1, 1]
+    \item \textbf{Learning rate:} Use a small weight update $\eta$
+    \item Avoid local minima in weight space by doing multiple runs
+    \item \textbf{Network size:} fan-in and fan-out of the network should be chosen based on the complexity of the problem
+    \item \textbf{Vanishing gradient:} Multiple layers significantly reduces the available gradient
+    \item \textbf{Overfitting/overtraining:} Overfitting to training data can cause poor generalization
+\end{enumerate}
+Good pratices
+\begin{itemize}
+    \item Split given data into two sets:
+    \begin{itemize}
+        \item 70\% training set
+        \item 30\% validation set
+    \end{itemize}
+    \item Train on training data only 
+    \item Stop training when the error on the validation set starts to increase
+\end{itemize}
 
 
 
