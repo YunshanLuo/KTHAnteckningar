@@ -37,7 +37,7 @@
 \title{DD2395 -- Computer security}
 \maketitle
 \newpage
-\section*{Exam analysis}
+\section{Exam analysis}
 Do the exam analysis here when needed 
 
 \section{Lecture 2}
@@ -1089,14 +1089,82 @@ Issues:
 \end{itemize}
 
 \subsection{RSA encryption}
+$KeyGen()$:
+\begin{itemize}
+    \item Random large primes $p$ and $q$
+    \begin{enumerate}
+        \item First pick random number 
+        \item Test if number is probably prime
+    \end{enumerate}
+    \item Compute $N = p \cdot q$
+    \item Choose $e$
+    \begin{itemize}
+        \item $e$ is a coprime of $(p-1)(q-1)$
+        \item $2 < e < (p-1)(q-1)$
+        \item Compute d = $e^{-1} \mod (p-1)(q-1)$
+    \end{itemize}
+    \item \textbf{Public key:} $N$ and $e$
+    \item \textbf{Private key:} $d$
+\end{itemize}
+Definition of RSA encryption and decryption:
+\begin{itemize}
+    \item $Enc(e, N, M)$
+    \item $Dec(d, C)$
+\end{itemize}
+
+RSA security:
+\begin{itemize}
+    \item Given large $N$ and $C$ it is hard to find $M$
+    \item Factoring $N$ is the best way which is computationally expensive
+\end{itemize}
+
+\subsection{Hybrid encryption}
+Issues with public key cryptography:
+\begin{itemize}
+    \item We can only encrypt small messages because of the modulus operator $M < N$
+    \item Lot of computation which is slow
+    \item Therefore we use hybrid schemes
+\end{itemize}
+Hybrid encryption:
+\begin{enumerate}
+    \item Encrypt data with a symmetric key
+    \item Encrypt the symmetric key with a public key
+    \item Send both the encrypted data and the encrypted symmetric key
+\end{enumerate}
+
+\section{Web Application Security}
+\subsection{URLs}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{url.png}
+\end{figure}
+\subsection{HTTp protocol}
+\begin{itemize}
+    \item \textbf{Request:} Client sends a request to the server
+    \item \textbf{Response:} Server sends a response to the client
+\end{itemize}
+
+Request:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{http.png}
+\end{figure}
+
+Response:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{http2.png}
+\end{figure}
+
+HTTP methods:
+\begin{itemize}
+    \item \textbf{GET:} Retrieve a resource at the URL
+    \item \textbf{POST:} Create new resource at the URL with payload
+\end{itemize}
+%% Fortsätt sida 19 föreläsning 6
 
 
 
 
 
-
-
-
-
-
-\end{document}§
+\end{document}
