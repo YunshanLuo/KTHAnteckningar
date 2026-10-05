@@ -689,6 +689,104 @@ Good pratices
     \item Stop training when the error on the validation set starts to increase
 \end{itemize}
 
+\section{Probalistic reasoning}
+\subsection{Kolmegorov's Axiom}
+\begin{enumerate}
+    \item $P(E) \geq 0$ for any event $E in \Omega$
+    \item $P(\Omega) = 1$
+    \item For any sequence of mutually exclusive events $E_1, E_2, \ldots$, we have $P(\cup_{i=1}^{\infty} E_i) = \sum_{i=1}^{\infty} P(E_i)$
+\end{enumerate}
+
+\subsection{Probablity rules}
+\begin{enumerate}
+    \item $P(A) \leq P(B) if A \subseteq B$
+    \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+    \item $P(\neg A) = 1 - P(A)$
+\end{enumerate}
+
+\subsection{Joint probability}
+\begin{itemize}
+    \item Joint probability is the probability of two events occurring together
+    \item For two events $A$ and $B$, the joint probability is denoted as $P(A \cap B)$ or $P(A, B)$
+\end{itemize}
+\[
+P(A, B) = P(A)P(B|A)
+\]
+\[
+P(A, B) = P(B)P(A|B)
+\]
+
+\subsection{Marginalization}
+\[
+p(x) = \sum_{y} P(x,y)
+\]
+\[
+p(x) = \int_{y \in \Omega_y}^{} P(x,y) dy
+\]
+
+\subsection{Conditional probabilities}
+The probability of an event $A$ given that another event $B$ has occurred 
+\[
+P(A|B)
+\]
+
+\subsection{Bayes theorem}
+Derivation important for the exam
+\[
+P(A|B) = \frac{P(A \cap B)}{P(B)} = \frac{P(AP(B|A))}{P(B)}
+\]
+With random variables $x$ and $y$:
+\[
+P(x|y) = \frac{p(x, y)}{p(y)} = \frac{p(x,y)}{\int_{\forall x}^{} p(x,y) dx}
+\]
+Indenpendent events:
+\[
+P(A|B) = \frac{P(A)P(B)}{P(B)} = P(A)
+\]
+
+\subsection{Bernoulli distribution}
+\begin{itemize}
+    \item \textbf{Binary domain variables:} $x \in \{0, 1\}, \text{binary variables}$
+    \item \textbf{Parameters:} $\lambda = P(x = 1), 0 \leq \lambda \leq 1$
+\end{itemize}
+
+\[
+p(x) = \lambda^x(1 - \lambda)^{1 - x} = \begin{cases}
+    \lambda, if x = 1 \\
+    1 - \lambda, if x = 0
+\end{cases}
+\]
+
+\subsection{Gaussian distribution}
+\[
+X \sim \mathcal{N}(\mu, \sigma^2)
+\]
+\[
+p(x | \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2} \cdot exp(-\frac{(x - \mu)^2}{2 \sigma^2})}
+\]
+
+\subsection{Central limit theorem}
+If each observation is:
+\begin{enumerate}
+    \item Independent
+    \item Identically distributed
+    \item Finite variance $\implies$ finite mean
+\end{enumerate}
+When the number of observations $n \rightarrow \infty$ is large the distribution of the sample mean approaches a normal distribution with mean $\mu$ and variance $\sigma^2/n$.
+
+\subsection{Expected value}
+In the continuous case:
+\[
+\mathbb{E}[\mathbf{X}] = \mu = \int_{-\infty}^{\infty} x p(x) dx
+\]
+In the discrete case:
+
+
+
+
+
+
+
 
 
 
