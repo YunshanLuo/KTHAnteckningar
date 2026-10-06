@@ -780,6 +780,155 @@ In the continuous case:
 \mathbb{E}[\mathbf{X}] = \mu = \int_{-\infty}^{\infty} x p(x) dx
 \]
 In the discrete case:
+\[
+\bar{x} = \frac{1}{N} \sum_{i=1}^{N}x_i \approx \mu
+\]
+
+\subsection{Variance}
+Varience describes the spread of a distritubution   
+\[
+Var(x) = \sigma^2 = \mathbb{E}[(x - \mu)^2]
+\]
+
+In the discrete case:
+\[
+Var(x) = \frac{1}{N} \sum_{i=1}^{N} (x_i - \bar{x})^2
+\]
+
+\subsection{Covariance}
+Shows how two variables change together 
+\[
+\sigma_{X,Y} = \mathbb{E}[(X - \mu_X)(Y - \mu_Y)]
+\]
+Vectorized covariance matrix:
+\[
+\Sigma = \begin{bmatrix}
+    \sigma_{X_1, X_1} & \sigma_{X_1
+, X_2} & \ldots & \sigma_{X_1, X_n} \\
+    \sigma_{X_2, X_1} & \sigma_{X_2, X_2} & \ldots & \sigma_{X_2, X_n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \sigma_{X_n, X_1} & \sigma_{X_n, X_2} & \ldots & \sigma_{X_n, X_n}
+\end{bmatrix}
+\]
+
+% Continue at page 68 do next lecture for now
+
+\section{Learning as inference}
+Simple terminology:
+\begin{itemize}
+    \item Data: $\mathcal{D} = \{(x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n)\}$
+    \item Prior: $p(y, \mathcal{D})$
+    \item Evidence: $p(x.\mathcal{D})$
+    \item Likelihood: $p(x|y, \mathcal{D})$
+    \item Posterior: $p(y|x, \mathcal{D})$
+\end{itemize}
+
+Discriminative model:
+\begin{itemize}
+    \item Models $p(y|x. \mathcal{D})$ directly 
+    \item Examples: Logistic regression, SVM, neural networks
+\end{itemize}
+
+Generative model:
+\begin{itemize}
+    \item Models $p(x|y, \mathcal{D})$ and $p(y|\mathcal{D})$ separately
+    \item Examples: Naive Bayes, Gaussian mixture models, hidden Markov models
+\end{itemize}
+
+\subsection{Parametric inference}
+\[
+p(y|x) = p(y|x, \theta)
+\]
+\begin{enumerate}
+    \item $\theta$ is a learned parameter
+    \item $\theta$ is learned from $\mathcal{D}$
+\end{enumerate}
+
+\subsection{Point estimates vs Bayesian Inferene}
+Point estimates:
+\begin{itemize}
+    \item Estimate $\theta$ using $\mathcal{D}$
+    \item Compute $p(y|x, \hat{\theta})$ to make inference 
+    \item Learning means to estimate $\hat{\theta}$ from $\mathcal{D}$
+\end{itemize}
+
+Distributional bayesian inference:
+\begin{itemize}
+    \item Estimate $p(\theta|mathcal{D})$ 
+    \item Compute $p(y|x, \mathcal{D}) = \int p(y|x, \theta)p(\theta|\mathcal{D}) d\theta$ to make inference
+    \item We learn a distribution over $\theta$ from $\mathcal{D}$ instead of a point estimate
+\end{itemize}
+
+\subsection{Parameter learning methods}
+\begin{itemize}
+    \item Maximum likelihood estimation (MLE): Find the parameter $\theta$ that maximizes the likelihood of the observed data $\mathcal{D}$
+    \item Maximum a posteriori estimation (MAP): Find the parameter $\theta$ that maximizes the posterior distribution $p(\theta|\mathcal{D})$
+    \item Bayesian inference: Compute the posterior distribution $p(\theta|\mathcal{D})$ and use it to make predictions
+\end{itemize}
+
+\subsection{Maximum likelihood}
+Find the parameter $\theta$ that maximizes the likelihood of the observed data $\mathcal{D}$:
+\[
+\hat{\theta}_{MLE} = \arg \max_{\theta} p(\mathcal{D}|\theta)
+\]
+\subsection{Probabilistic linear regression}
+Assume a linear model with gaussian noise:
+\[
+y = \mathbf{w}^T x + \epsilon, \hspace{10pt} \epsilon \sim \mathcal{N}(0, \sigma^2)
+\]
+Therefore, 
+\[
+Y|X = x \sim \mathcal{N}(\mathbf{w}^T x, \sigma^2)
+\]
+The goal is to find $\mathbf{\tilde{w}}$ that maximizes:
+\[
+P(\mathcal{D} | \mathbf{w}, \sigma^2)
+\]
+We use log maximum likelihood method to find the optimal $\mathbf{w}$:
+\[
+log p(y|x,w,\sigma^2) = \sum_{i}^{} log(p(y_i), x_i, w, \sigma^2)
+\]
+\[
+= \sum_{i}^{} \log \left( \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left( -\frac{(y_i - \mathbf{w}^T x_i)^2}{2\sigma^2} \right) \right) 
+\]
+\[
+\implies arg min_{w} \sum_{i}^{} (y_i - \mathbf{w}^T x_i)^2
+\]
+
+\subsection{Bayes classifer: MAP and ML decision rules}
+Given features $\mathbf{x}$ and $\mathscr{y} = $ \{$y_1, y_2, \ldots, y_k$ \} we want to find the class $y_i$ that maximizes the posterior probability $p(y_i|\mathbf{x})$. Using Bayes theorem:
+
+\[
+\tilde{y}_{MAP} = arg max_{y_k} p(y_k|\mathbf{x}) = arg max_{y_k} \frac{p(\mathbf{x}|y_k)p(y_k)}{p(\mathbf{x})} = arg max_{y_k} p(\mathbf{x}|y_k)p(y_k)
+\]
+
+Because $p(\mathbf{x})$ is constant for all classes
+
+\subsection{ML estimation of Gaussian mean}
+\[
+p(x|\theta) = \mathcal{N}(x|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left( -\frac{(x - \mu)^2}{2\sigma^2} \right)
+\]
+\[
+log(p(x|\theta)) = \sum_{n=1}^{N} log(\mathcal{N}(x_n|\mu, \sigma^2)) = -\frac{N}{2} log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{n=1}^{N} (x_n - \mu)^2
+\]
+\[
+\frac{\partial}{\partial \mu} = log(p(x|\theta)) = \frac{1}{\sigma^2} \sum_{n=1}^{N} (x_n - \mu) = 0
+\]
+\[
+\implies \frac{1}{N} \sum_{n=1}^{N} x_n
+\]
+
+Sample mean:
+\[
+\bar{\mu} = \frac{1}{N} \sum_{n=1}^{N} x_n
+\]
+
+Average variance:
+\[
+\bar{\sigma}^2 = \frac{1}{N} \sum_{n=1}^{N} (x_n - \bar{\mu})^2
+\]
+
+\subsection{Maximum likelihood with discrete variables}
 
 
 
