@@ -1077,8 +1077,93 @@ p(y | \mathbf{x}, \mathbf{w}, b) = \prod_{i=1}^{N} \lambda(\mathbf{x_i})^{y_i}(1
 \frac{\partial}{\partial \mathbf{w}} log(1 - \sigma(\mathbf{w}^T\mathbf{x} + b)) = -\sigma(\mathbf{w}^T\mathbf{x} + b)\mathbf{x}
 \]
 
+\section{Priors and Latent Variables}
+\subsection{Maximum a posteriori estimation}
+\[
+\theta_{MAP} = \text{arg max}_{\theta} \hspace{5pt} p(\theta | \mathcal{D})
+\]
+\[
+= \text{arg max}_{\theta} \hspace{5pt} \frac{p(\mathcal{D} | \theta)p(\theta)}{p(\mathcal{D})}
+\]
+\[
+\text{arg max}_{\theta} p(\theta) p(\mathcal{D} | \theta)
+\]
+\[
+\text{arg max}_{\theta} \left[ p(\theta) \prod_{i=1}^{N} p(x_i | \theta)\right]
+\]
+\[
+\text{arg max}_{theta} \left[ \log p(\theta) + \sum_{i=1}^{N} \log p(x_i | \theta)\right]
+\]
+Log prior is a regularization term that penalizes unlikely parameter values
+
+\subsection{Maximum a posteriori for linear regression}
+Assume a determinstic model:
+$$y = \mathbf{w}^T \mathbf{x} + \epsilon$$
+Where $\epsilon \sim \mathcal{N}(0, \sigma^2)$ is Gaussian noise therefore
 
 
+\[
+Y|X \sim \mathcal{N}(\mathbf{w}^T \mathbf{x}, \sigma^2)
+\]
+
+\subsection{D-dimensional zero-mean spherical gaussian prior}
+Assume that $\mathbf{w} \sim \mathcal{N}(0, \sigma_p^2 I)$ is a D-dimensional zero-mean spherical Gaussian prior. The prior distribution is given by:
+\[
+p(\mathbf{w}|0, \sigma_p^2) = \frac{1}{(2\pi\sigma_p^2)^{D/2}} \exp\left(-\frac{||\mathbf{w}||^2}{2\sigma_p^2}\right)
+\]
+We optimize the log posterior $log(\mathbf{w} | y, x)$
+\[
+w_{MAP} = \text{arg max}_{\mathbf{w}}log(p(\mathbf{w}|y, x)) = \text{arg max}_{\mathbf{w}} \left[ log(p(\mathbf{w})) + log(p(y|x, \mathbf{w})) \right]
+\]
+\[
+= \text{arg min}_{\mathbf{w}} \left[ \underbrace{\frac{1}{2\sigma^2_y} \sum_{n=1}^{N}(y_n - \mathbf{w}^ x_n)^2}_{\text{data fit}} + \overbrace{\frac{1}{2\sigma_p^2} ||\mathbf{w}||^2}^{\text{ridge regression term}} \right]
+\]
+Ridge regression is a regularization technique that adds a penalty term to the loss function to prevent overfitting.
+
+\subsection{IID (independent and identically distributed) zero-mean laplace for each dimension}
+Occurs when $p(\mathbf{w} | b_w) = \prod_{d}^{} \frac{1}{2b_w} exp(-\frac{|w_d|}{b_w})$
+where $b_w$ is the scale parameter and $w_d$ is the d-th dimension of $\mathbf{w}$. $w_{MAP}$ is given by:
+\[
+w_{MAP} = \text{arg max}_{w} log(p(\mathbf{w}|y, x)) = \text{arg max}_{\mathbf{w}} \left[ log(p(\mathbf{w})) + log(p(y|x, \mathbf{w})) \right]
+\]
+
+\[
+\text{arg min}_{w} \left[ \underbrace{\frac{1}{2\sigma^2_y} \sum_{n=1}^{N}(y_n - \mathbf{w}^T x_n)^2}_{\text{data fit}} + \overbrace{\frac{1}{b_w} \sum_{d=1}^{D} \mathbf|{w_d}|}^{\text{lasso regression term}} \right]
+\]
+Lasso is a penalization technique that adds a penalty term to the loss function to encourage sparsity in the model parameters.
+
+\subsection{Impact of different priors}
+MAP estimation of $\mathbf{w}$ will perform differenlty considering the denepding on the priors
+\begin{itemize}
+    \item $\lambda = 0$: No regularization, equivalent to MLE
+    \item $\lambda > 0$: Regularization, equivalent to ridge regression
+    \item $\lambda \rightarrow \infty$: Strong regularization, equivalent to lasso 
+\end{itemize}
+
+\subsection{Limitations}
+\begin{itemize}
+    \item ML and MAP produces point estimates instead of function
+    \item With MAP estimation defining a prior is not always easy
+    \item Choosing bewteen ridge and lasso regression is not always easy
+    \item $p(y|x, \hat{w}_{MAP})$ models uncertainty i $y$ bu tignores uncertainty in $\mathbf{w}$
+    \item For bayesian prediction we want $p(y|x, \mathcal{D})$ not just $p(y|x, \hat{w}_{MAP})$
+\end{itemize}
+
+\subsection{Summary ML, MAP and Bayes}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{summary.png}
+\end{figure}
+
+\subsection{Bayesian parameter inference}
+\begin{itemize}
+    \item Assume $\theta$ is a random variable 
+    \item Characterize $\theta$ with psterior distribution $p(\theta|\mathcal{D})$
+    \item Compute new predicting psterior $p(y|x, \mathcal{D}) = \int p(y|x, \theta)p(\theta|\mathcal{D}) d\theta$
+\end{itemize}
+\[
+p(y | x, \mathcal{D}) = \int_{\theta \in \Theta}^{} p(y | x, \theta)p(\theta | \mathcal{D}) d\theta
+\]
 
 
 
