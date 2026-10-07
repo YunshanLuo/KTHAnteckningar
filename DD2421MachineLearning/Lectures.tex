@@ -24,6 +24,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{amsmath} % Required for the align* environment
+\usepackage{mathtools}
 \usepackage{float}
 \usepackage{pgfplots} 
 \usepackage{algorithm}
@@ -1159,11 +1160,144 @@ MAP estimation of $\mathbf{w}$ will perform differenlty considering the denepdin
 \begin{itemize}
     \item Assume $\theta$ is a random variable 
     \item Characterize $\theta$ with psterior distribution $p(\theta|\mathcal{D})$
-    \item Compute new predicting psterior $p(y|x, \mathcal{D}) = \int p(y|x, \theta)p(\theta|\mathcal{D}) d\theta$
+    \item Compute new predicting posterior by marginalizing over $\theta$:
 \end{itemize}
 \[
 p(y | x, \mathcal{D}) = \int_{\theta \in \Theta}^{} p(y | x, \theta)p(\theta | \mathcal{D}) d\theta
 \]
+
+\subsection{Bayesian Linear Regression}
+Given $\mathcal{D} = \{(\mathbf{x_1}, y_1), (\mathbf{x_2}, y_2), \ldots, (\mathbf{x_N}, y_N)\}$
+\begin{itemize}
+    \item $Y1,.., Y_N$ are conditionally independent given $\mathbf{w}$
+    \item $Y|X \sim \mathcal{N}(\mathbf{w}^T \mathbf{x}, \sigma^2)$
+    \item $\mathbf{w} \sim \mathcal{N}(\mathbf{\mu}_\mathbf{w}, \mathbf{\Sigma}_{\mathbf{w}}), \hspace{10pt} \mathbf{w} \in \mathbb{R}^\mathcal{D}$
+    \item We assume values for $\sigma^2, \mathbf{\mu}_\mathbf{w}, \mathbf{\Sigma}_{\mathbf{w}}$ and assume $\theta \equiv \mathbf{w}$
+    \item The goal is to estimate $P(y|x, \mathcal{D})$
+\end{itemize}
+
+\[
+P(y, \mathbf{x}, \mathcal{D}) = \int_{\mathbf{w} \in \mathbb{R}^\mathcal{D}}^{} P(y, \mathbf{x}, \mathcal{D} | \mathbf{w}) P(\mathbf{w}) d\mathbf{w}
+\]
+\begin{itemize}
+    \item $P(y, \mathbf{x}, \mathbf{w})$ is Gaussian therefore $P(y, \mathbf{x}, \mathcal{D})$ must be Gaussian as well
+\end{itemize}
+
+Step by step guide:
+\begin{itemize}
+    \item \textbf{Define:} 
+    \begin{itemize}
+        \item $\Phi^T = [\mathbf{x_1}, \mathbf{x_2}, \ldots, \mathbf{x_N}]$
+        \item $\mathbf{y}^T = [y_1, y_2, \ldots, y_N]$
+        \item $W|D \sim \mathcal{N}(\mathbf{\mu}_{\mathbf{w}|\mathcal{D}}, \mathbf{\Sigma}_{\mathbf{w}|\mathcal{D}})$
+    \end{itemize}
+\end{itemize}
+
+\[
+\implies \Sigma_{\mathbf{w}|\mathcal{D}} = \left[ \frac{1}{\Sigma_{\mathbf{w}}} + \frac{\Phi^T \Phi}{\sigma_{y}^2}\right]^{-1}
+\]
+\[
+\implies \mu_{\mathbf{w}|\mathcal{D}}= \Sigma_{\mathbf{w}|\mathcal{D}} \left[\frac{1}{\Sigma_{\mathbf{w}}} \mathbf{\mu}_{\mathbf{w}} + \frac{\Phi^T \mathbf{y}}{\sigma_{y}^2}\right]
+\]
+
+The predictive posterior distribution is given by:
+\[
+p(y|x, \mathcal{D}) = \mathcal{N}(\mu_{y|x, \mathcal{D}}\mathbf{x}, \sigma^2_{y} + \mathbf{x}^T \Sigma_{\mathbf{w}|\mathcal{D}} \mathbf{x})
+\]
+The uncertainty over the choice of $\mathbf{w}$ and $\sigma_Y^2$ prevents overfitting and allows for better generalization to unseen data.
+
+\subsection{Occam's Razor}
+\begin{itemize}
+    \item When faced with multiple explanations for the same phenomenon, the simplest explanation is preferred
+    \item In machine learning, this means that simpler models are preferred over more complex models,
+    \item This is because simpler models are less likely to overfit the training data and are more likely to generalize well to unseen data.
+\end{itemize}
+
+\subsection{Overfitting and Maximum Likelihood}
+More flexible models can achieve higher maximum likelihood however, they are more likely to overfit the training data and perform poorly on unseen data. This is because flexible models can fit the noise in the training data rather than the underlying pattern.
+
+\subsection{Limitations of bayesian inference}
+A flexible model may fit the data extremely well, but only for a small range of parameter values. A good fit over many values implies high evidence
+\[
+P(y|\mathbf{x},\mathcal{D}) = \int_{\mathbb{R^\mathcal{D}}}^{} P(y|\mathbf{x},\mathbf{w})P(\mathbf{w}|\mathcal{D}) d\mathbf{w}
+\]
+\begin{itemize}
+    \item A closed form posterior $P(\mathbf{w}|\mathcal{D})$ is not always available
+    \item We can use approximation such as sampling methods like MCMC or complex solutoins
+    \item A non-informative prior provides little prior guidance but bayesian inference still represents parameter uncertainty
+\end{itemize}
+
+\subsection{K-means}
+\begin{itemize}
+    \item Describes each cluster with a centroid i.e. the mean of the points in the cluster
+    \item A point belongs to a cluster of the closest centroid
+    \item Iteratively update the centroids and cluster assignments until convergence
+    \item Will converge but not guaranteed to find the optimal solution
+\end{itemize}
+\newpage
+\subsection{K-means algorithm:}
+
+\begin{algorithmic}[1]
+    \State \textbf{Data:} No.\ of desired clusters $K$, data set
+    $\mathcal{D}=\{\boldsymbol{x}_i\in\mathbb{R}^d\}$,
+    \Statex \hspace{3.2em} distance function
+    $f(\mathbf{x},\boldsymbol{\mu})=\lVert\mathbf{x}-\boldsymbol{\mu}\rVert_2^2$
+    \State \textbf{initialization:} sample $K$ centroids
+    $\boldsymbol{\mu}_k^{(0)}\in\mathbb{R}^d$ at random; $t\gets 0$;
+    \Repeat
+        \State assign each point $x_i$ to closest centroid:
+        \[
+        \mathcal{C}_k \coloneqq \{\mathbf{x}\in\mathcal{D}:\,
+        k = \arg\min_{k'} f\!\left(\mathbf{x},\,\boldsymbol{\mu}_{k'}^{(t)}\right)\}
+        \]
+        \State update centroids as mean of each cluster of points:
+        \[
+        \boldsymbol{\mu}_k^{(t+1)} = \frac{1}{|\mathcal{C}_k|}
+        \sum_{\mathbf{x}\in\mathcal{C}_k}\mathbf{x}
+        \]
+        \State iterate $t \gets t+1$
+    \Until{$\displaystyle\max_k f\!\left(\boldsymbol{\mu}_k^{(t-1)},\,
+    \boldsymbol{\mu}_k^{(t)}\right) < \epsilon$;}
+    \State \textbf{return} $K$ clusters and their centroids
+\end{algorithmic}
+
+K-means limitations:
+\begin{itemize}
+    \item All distances are equally weighted
+    \item Favors spherical clusters
+    \item Cluster boundraies are determined by distances to the centroids
+\end{itemize}
+
+\subsection{Fitting complex distributions to K-means}
+We can fit a mixture of $K$ distributions:
+\[
+p(\mathbf{x}|\theta) = \sum_{k=1}^{K} \pi_k p(\mathbf{x}|\theta_k)
+\]
+with $\theta = \{\pi_1,...,\pi_k,\theta_1,...,\theta_k\}$
+\begin{itemize}
+    \item $\pi_k$ is the mixing coefficient for the k-th distribution
+    \item $\theta_k$ is the parameter for the k-th distribution
+    \item $p(\mathbf{x}|\theta_k)$ is the probability density function for the k-th distribution
+\end{itemize}
+
+\subsection{Expectation Maximization (EM)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
