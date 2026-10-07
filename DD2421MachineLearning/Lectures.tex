@@ -929,10 +929,153 @@ Average variance:
 \]
 
 \subsection{Maximum likelihood with discrete variables}
+Categorical distribution:
+\begin{itemize}
+    \item Basically a hardcoded distribution for likelihood for each class
+\end{itemize}
+In this case
+\[
+X \sim Cat(\lambda)
+\]
+\[
+Y \sim Bernoulli(\pi)
+\]
+\[
+X | Y = y \sim Cat(\pi)
+\]
+\[
+Y | X = x \sim Bernoulli(\pi)
+\]
 
+\subsection{MLE: Bernoulli}
+In other distribution for $p(x)$ and $p(x*)$
+\[
+p(y) = \begin{cases}
+    \lambda, \hspace{10pt} y = 1 \\
+    1 - \lambda, \hspace{10pt} y = 0
+\end{cases}
+\]
 
+Formula for MLE:
+\[
+p(\mathcal{D}, \lambda) = \prod_{i=1}^{N} p(y_i|\lambda) = \prod_{i=1}^{N} \lambda^{y_i}(1 - \lambda)^{1 - y_i}
+\]
+\[
+= \prod_{\text{number of yes}}^{} \lambda \prod_{\text{number of no}}^{} (1 - \lambda)
+\]
+\[
+\implies log(p(\mathcal{D}|\lambda)) = n\cdot log(\lambda) + (N - n) \cdot log(1 - \lambda)
+\]
+Solve the derivative for $log(p(\mathcal{D}|\lambda))$ to find the maximum $\lambda$:
+\[
+\frac{\partial}{\partial \lambda} log(p(\mathcal{D}|\lambda)) = \frac{n}{\lambda} - \frac{N - n}{1 - \lambda} = 0
+\]
+\[
+\implies \frac{n - N \lambda}{\lambda (1-\lambda)} = 0
+\]
+\[
+\implies n - N \lambda = 0 
+\]
+\[
+\implies {\lambda_{ML}} = \frac{n}{N}
+\]
 
+Example: Will i take a walk today?
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{walk.png}
+\end{figure}
+\[
+X \sim Cat(\lambda_{sunny},\lambda_{overcast},\lambda_{rainy})
+\]
+\begin{itemize}
+    \item N: number of total data points
+    \item n: number of data points for given class
+\end{itemize}
 
+\[
+\lambda_{k,ML} = \{\frac{5}{14}, \frac{4}{14 \text{}}, \frac{5}{14} \}
+\]
+\[
+\lambda_{ML} (yes) = \{\frac{2}{9}, \frac{4}{9}, \frac{3}{9}\}
+\]
+\[
+\lambda_{ML} (no) = \{\frac{3}{5}, \frac{0}{5}\, \frac{2}{5}\} 
+\]
+
+Reverse Bayes theorem:
+Will i take a walk today given that it is sunny?
+\[
+p(y = yes|x = sunny) = \frac{p(y = yes)p(x = sunny|y = yes)}{p(x = sunny)} = \frac{\frac{9}{14} \cdot \frac{2}{9}}{\frac{5}{14}} = \frac{2}{5}
+\]
+\[
+arg max_{y}P(y|x = sunny) = yes
+\]
+
+\subsection{Curse of Dimensionality}
+\begin{itemize}
+    \item More dimensions $\implies$ more data needed to cover the space
+    \item More dimensions $\implies$ more complex models $\implies$ more data needed
+\end{itemize}
+
+\subsection{Naive Bayes Classifier}
+\begin{itemize}
+    \item All features are regarded as conditionally indepedent given the class label
+    \item $P(x_1, x_2, \ldots, x_n | y) = \prod_{i=1}^n P(x_i | y)$
+\end{itemize}
+
+Since we assume,
+\[
+P(x_1, x_2, \ldots, x_n | y) = \prod_{i=1}^n P(x_i | y)
+\]
+Therefore,
+\[
+y_{MAP} = arg max_y P(y) \prod_{d=1}^{D} P(x_d | y)
+\]
+
+\subsection{Logistic regression}
+Sigmoid function is used to model the probability of a binary outcome:
+\[
+\sigma(z) = \frac{e^{z}}{1 + e^{z}} = \frac{1}{1 + e^{-z}}
+\]
+Model $P(Y = 1 | x)$ as a function o $x$:
+\[
+Y | \mathbf{X} \sim Bernoulli(\lambda(\mathbf{x}))
+\]
+\[
+p(y|\mathbf{x}) = \lambda(\mathbf{x})^{y}(1 - \lambda(\mathbf{x}))^{(1 - y)}
+\]
+\[
+\lambda(\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}) = \frac{1}{1 + e^{-\mathbf{w}^T \mathbf{x}}}
+\]
+
+How to find maximum of $w$ that maximizes $p(y|\mathbf{x})$ using the log method?
+\[
+p(y | \mathbf{x}, \mathbf{w}, b) = \prod_{i=1}^{N} \lambda(\mathbf{x_i})^{y_i}(1 - \lambda(\mathbf{x_i}))^{(1 - y_i)}
+\]
+\[
+\implies \log(p(y | \mathbf{x}, \mathbf{w}, b)) = \sum_{i=1}^{N} y_i \log(\lambda(\mathbf{x_i})) + (1 - y_i) \log(1 - \lambda(\mathbf{x_i}))
+\]
+\[
+\implies \sum_{i=1}^{N} y_i log(\sigma(\mathbf{w}^T \mathbf{x_i})) + (1 - y_i) \log(1 - \sigma(\mathbf{w}^T \mathbf{x_i}))
+\]
+\[
+\frac{\partial}{\partial \mathbf{w}}log(p(y | \mathbf{x}, \mathbf{w}, b)) = \sum_{i=1}^{N} (y_i - \sigma(\mathbf{w}^T \mathbf{x_i}))\mathbf{x_i} = 0
+\]
+
+\subsection{Sigmoid derivatives}
+\[
+\sigma(\mathbf{w}^T\mathbf{x} + b) = \frac{1}{1 + e^{-(\mathbf{w}^T\mathbf{x} + b)}}
+\]
+\[
+\frac{\partial}{\partial \mathbf{w}} \sigma(\mathbf{w}^T\mathbf{x} + b) = \sigma(\mathbf{w}^T\mathbf{x} + b)(1 - \sigma(\mathbf{w}^T\mathbf{x} + b))\mathbf{x}
+\]
+\[
+\frac{\partial}{\partial \mathbf{w}} log(\sigma(\mathbf{w}^T\mathbf{x} + b)) = (1 - \sigma(\mathbf{w}^T\mathbf{x} + b))\mathbf{x}
+\]
+\[
+\frac{\partial}{\partial \mathbf{w}} log(1 - \sigma(\mathbf{w}^T\mathbf{x} + b)) = -\sigma(\mathbf{w}^T\mathbf{x} + b)\mathbf{x}
+\]
 
 
 
