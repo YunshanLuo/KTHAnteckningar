@@ -1385,5 +1385,80 @@ More flexible than K-means:
     \item Can include prior $p(\theta)$ to obtain MAP estimates of the parameters
 \end{itemize}
 
+\section{Ensemble learning}
+How to combine multiple models to improve performance:
+\begin{itemize}
+    \item Bagging: Static structure, parallel training
+    \item Forests: Multiple trees, randomization
+    \item Boosting: Sequential training, serial training
+\end{itemize}
+
+\textbf{Wisdome of crowds philosophy:} The average of multiple models is better than a single model
+
+\subsection{Bagging (Bootstrap Aggregating)}
+We train 6 detectors on the same dataset with random subsets of the data (resampled dataset)
+
+\textbf{High bias, Low bias classifiers e.g. decision trees}:
+\begin{itemize}
+    \item \textbf{High variance:} Classifiers produce decision boundaries highly sensitive to training data. 
+    \item \textbf{Low bias:} classifiers produce decision boudaries which on average don't differ much from gold output
+\end{itemize}
+
+\subsection{Bagging input/ouput}
+\textbf{Input:} Training data
+\[
+\mathcal{S} = \left\{(\mathbf{x_1}, y_1), (\mathbf{x_2}, y_2), \ldots, (\mathbf{x_N}, y_N)\right\}
+\]
+$\mathbf{x}_j$ are feature vectors, $y_j$ are labels
+\vspace{10pt}
+
+\textbf{Iterate:} For b = 1, 2, ..., B
+\begin{enumerate}
+    \item Sample training examples, with replacement, $m'$ times from $\mathcal{S}$ to create $S_b(m' \leq m)$
+    \item Use this bootstrap sample $\mathcal{S}$ to estimate the regression or classification function $f_b$
+\end{enumerate}
+
+\textbf{Output:} The bagging estimate for
+\vspace{10pt}
+
+\textbf{Classification:}
+\[
+f_{bag}(\mathbf{x}) = \arg \max_{1 \leq k \leq K} \sum_{b=1}^{B} Ind(f_b(\mathbf{x}) = k)
+\]
+
+\textbf{Regression:}
+\[
+f_{bag}(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^{B} f_b(\mathbf{x})
+\]
+
+\textbf{Indicator function:}
+\[
+Ind(x) = \begin{cases}
+    1, \hspace{10pt} x = 1 \\
+    0, \hspace{10pt} \text{otherwise}
+\end{cases}
+\]
+
+Bagging is a \textbf{reduces variance} of the classifier especially when labelled data is limited. Bagging should only be used for \textbf{high variance, low bias} classfiers. Example illustration
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{bagging.png}
+\end{figure}
+
+If we bag a \textbf{high bias, low variance classifier} we get shit
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{bagging2.png}
+\end{figure}
+
+\subsection{Forests}
+
+
+
+
+
+
+
+
 \end{document}
 
