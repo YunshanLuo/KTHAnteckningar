@@ -1649,14 +1649,27 @@ Classification methods:
 \end{itemize}
 
 \subsection{Discriminant function}
-Define a class by a few representative patterns
+Formulate one prototype for each class
 \begin{itemize}
     \item K classes: $C^{(1)},...,C^{(K)}$
     \item K prototypes: $a^{(1)},...,a^{(K)}$
 \end{itemize}
 % Continue on page 20
+Considered the \textbf{euclidean distance} between input $x$ and the prototypes:
+\[
+||x - a^{(i)}||^2 = ||x||^2 - 2a^{(i)^T} + ||a^{(i)}||^2
+\]
 
+The discriminant function is given by:
+\[
+g^{(i)}(x) \equiv a^{(i)^T}x - \frac{1}{2}||a^{(i)}||^2
+\]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{discriminant.png}
+\end{figure}
 
+%% Continue on page 21 Lecture 11
 
 
 
