@@ -1452,11 +1452,86 @@ If we bag a \textbf{high bias, low variance classifier} we get shit
 \end{figure}
 
 \subsection{Forests}
+Two kinds of randomness:
+\begin{itemize}
+    \item Sampling training data (the same as bagging)
+    \item Feature selection at each node
+\end{itemize}
 
+Trees shold be less correlated with each other and not make the same mistakes. Random forests are a collection of decision trees trained on different subsets of the data and features. The final prediction is made by aggregating the predictions of all the trees in the forest.
 
+\subsection{Boosting}
+Using a set of weak learners to create a strong classifier
 
+\vspace{10pt}
+\textbf{Example}
+\begin{itemize}
+    \item A set of high bias classifiers combined can produce a low bias classifier
+    \item We do this by voting
+\end{itemize}
 
+Assume $\mathcal{H} = \{h_1, h_2, \ldots, h_T\}$ are weak classifiers \textbf{voting is:}
+\[
+sign \left(\sum_{t=1}^{T}h_t(\mathbf{x})\right)
+\]
 
+\subsection{Boosting input output}
+\textbf{Input:} Training data $\mathcal{S} = \left\{(\mathbf{x_1},y_1),...,(x_m,y_m)\right\}$, $\mathbf{x_i}$ are feature vectors, $y_i$ are labels, $y_i \in \{-1, 1\}$  
+\newline
+
+\vspace{10pt}
+\textbf{Output: A strong classifier/regression function:}
+\[
+f_T(\mathbf{x}) = sign\left(\sum_{t=1}^{T} \alpha_t h_t(\mathbf{x})\right)
+\]
+or
+\[
+f_T(\mathbf{x}) = \sum_{t=1}^{T} \alpha_t h_t(\mathbf{x})
+\]
+This is the weighted sum of weak classifiers where $\alpha_t$ is called confidence/reliability 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{boosting.png}
+\end{figure}
+
+Summary boosting:
+\begin{itemize}
+    \item A set of classifiers are combined to produce a strong classifier
+    \item Maintain \textbf{weight} $w_i^{(t)}$ for each training example in $\mathcal{S}$
+    \item Large $w_i^{(t)}$ means that $\mathbf{x_i}$ has greater influence on choice of $h_t$ 
+    \item Iteration: $w_i^{(t+1)}$ is updated based on whether $h_t$ correctly classified $\mathbf{x_i}$
+\end{itemize}
+
+\subsection{Adaboost algorithm}
+Given label training data $\mathcal{S} = \left\{(\mathbf{x_1},y_1),...,(x_m,y_m)\right\}$, $\mathbf{x_i} \in \mathbb{R}^d$ are feature vectors, $y_i$ are labels, $y_i \in \{-1, 1\}$
+\newline
+\vspace{10pt}
+
+A set of potentially weak classifiers $\mathcal{H} = \{h_1, h_2, \ldots, h_T\}$
+\vspace{10pt}
+
+\textbf{Initializaiton:}
+Introduce a weight $w_i^1$ for each training sample $\mathbf{w} \in \mathbb{R}^m$, set $w_i^1 = \frac{1}{m}$ for $i = 1, 2, \ldots, m$
+\vspace{10pt}
+\newpage
+\textbf{The algorithm: }
+\newline
+\textbf{Iterate:} For $t = 1,...,T$
+\begin{enumerate}
+    \item Train weak classifier $h_t \in \mathcal{H}$ using $\mathcal{S}$ with weights $w_i^{(t)},...,w_m^{(t)};$ select the one that minimizes the training error:
+    \[
+    \epsilon_t = \sum_{j=1}^{m} w_j^{(t)} Ind(y_j \neq h_t(\mathbf{x_j}))
+    \]
+    \item Compute the \textbf{reliability coefficient:}
+    \[
+    \alpha = log \left(\frac{1-\epsilon}{\epsilon_t}\right) 
+    \]
+    $\epsilon$ must be less than $0.5$ break out of loop if $\epsilon_t \approx 0.5$
+    \item Update the weights by using: $w_j^{(t+1)} = w_j^{(t)} \exp(-\alpha_t y_j h_t(\mathbf{x_j}))$ 
+    \item Normalize the weights such that $\sum_{j=1}^{m} w_j^{(t+1)} = 1$
+\end{enumerate}
+
+\subsection{Dropout}
 
 
 
