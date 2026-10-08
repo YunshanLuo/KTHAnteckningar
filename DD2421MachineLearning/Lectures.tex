@@ -1538,5 +1538,127 @@ Introduce a weight $w_i^1$ for each training sample $\mathbf{w} \in \mathbb{R}^m
     \includegraphics[width=0.6\textwidth]{dropout.png}
 \end{figure}
 
+\section{Dimensionality reduction and subpspace methods}
+\begin{itemize}
+    \item Dimensionality reduction
+    \begin{itemize}
+        \item Principal Component Analysis (PCA)
+    \end{itemize}
+    \item Discriminative function
+    \begin{itemize}
+        \item Similarity measures: angle, projection length
+    \end{itemize}
+    \item Subspace methods
+\end{itemize}
+
+\subsection{Principal Component Analysis (PCA)}
+Maximizing variance:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pca.png}
+\end{figure}
+
+Mean vector of $x$:
+\[
+E(x) = \frac{1}{\underbrace{r}_{\text{number of samples}}} \sum_{i=1}^r x_i
+\]
+
+Covariance matrix of $x$:
+\[
+\Sigma = E((x-E(x))(x-E(x))^T)
+\]
+
+\subsection{Maximum variance criterion}
+
+Reduce the effectie number of variables:
+\[
+E((x^T u_i - E(x^T u_i))^2) \rightarrow \text{Maximize for: }(i = 1, 2, \ldots, p), \hspace{10pt}\text{Condition: } u_i^T u_j = \delta_{ij} 
+\]
+\[
+= u_i^T \underbrace{E((x - E(x))(x - E(x))^T)}_{Covariance matrix} u_i = u_i^T \Sigma u_i
+\]
+\[
+max[tr(U^T \Sigma U)]
+\]
+The transformation matrix $U$ is a $d \times p$ matrix with columns $u_1, u_2, \ldots, u_p$ and $p < d$. The columns of $U$ are the eigenvectors of the covariance matrix $\Sigma$ corresponding to the $p$ largest eigenvalues. Example of dimensionality reduction:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pca2.png}
+\end{figure}
+
+Autocorrelation matrix of $x$, recall least squares regression:
+\[
+Q = E(xx^T)
+\]
+
+\subsection{Minimum squared distance criterion}
+Average squared error between $x$ and its approximation to be minimized by a set $\left\{u_1,...,u_p\right\}$
+\[
+E(||x - x'||^2) \rightarrow \text{minimize} (i = 1,...,p)
+\]
+Approximated $x'$ is given by:
+\[
+x' = \sum_{p}^{i=1} (x^Tu_i)u_i
+\]
+Maximize:
+\[
+||x'||^2 = ||x||^2 - ||\tilde{x}||^2
+\]
+
+The basis consists of $p$ eigenvectors of the autocorrelation matrix $Q$ corresponding to its $p$ largst eigenvalues
+
+\subsection{Subspace}
+Subspace $L$ is a collection of span of linearly independent vectors
+
+\[
+L(b_1,...,b_p) = \left\{z|z = \sum_{i=1}^{p} \xi b_i \right\}, \hspace{10pt} (\xi \in \mathbb{R}, b_i \in \mathbb{R}^n)
+\]
+Dimension of a subspace:
+\[
+p = dim(L) << n
+\]
+Usually represented of orthonormal basis where the basis vectors are pairswise orthogonal
+
+\subsection{Classification scheme}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{subspace.png}
+\end{figure}
+
+\textbf{Training phase:}
+\begin{itemize}
+    \item Given a limited number of labeled data
+    \item The dimensionality often too high for limited number of samples
+\end{itemize}
+A good approach is to find redundant variables and discard them without significant information loss
+
+\textbf{Testing phase:}
+
+Ways to measure distance
+\begin{itemize}
+    \item Euclidean/Mahalanobis distance
+    \item Angle between vectors
+    \item Projection length on subspaces
+\end{itemize}
+
+Classification methods:
+\begin{itemize}
+    \item Discriminant function 
+    \item Subspace methods
+\end{itemize}
+
+\subsection{Discriminant function}
+Define a class by a few representative patterns
+\begin{itemize}
+    \item K classes: $C^{(1)},...,C^{(K)}$
+    \item K prototypes: $a^{(1)},...,a^{(K)}$
+\end{itemize}
+% Continue on page 20
+
+
+
+
+
 \end{document}
 
