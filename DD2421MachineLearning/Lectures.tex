@@ -1731,9 +1731,98 @@ The projection length of the subspace is made uniform
 
 \subsection{How to find good dimension for classification given labels}
 %% Fortsätt på sida 28
+\begin{itemize}
+    \item Patterns from identical classes should be close
+    \item Patterns from different classes should be far apart
+\end{itemize}
 
+Within class variance:
+\[
+\sigma_{w}^2 = \frac{1}{r} \sum_{i=1}^{K} \sum_{x \in w^{(i)}} (x - E^{(i)}(x))^T (x - \underbrace{E^{(i)}(x)}_{\text{in class}})
+\]
 
+Between class variance:
+\[
+\sigma_{B}^2 = \frac{1}{r} \sum_{i=1}^{K} r^{(i)} (E^{(i)}(x) - E(x))^T (E^{(i)}(x) - \underbrace{E(x)}_{\text{Overall}})
+\]
+Within class, between class variance ratio:
+\[
+J_{\sigma} = \frac{\sigma_{B}^2}{\sigma_{w}^2}
+\]
+The higher the ratio the better the segregation 
 
+\subsection{Fisher's method (Not important for exam)}
+How to find a subspace most suitable to classification
+\begin{enumerate}
+    \item Given pattern distributions in 2 classes
+    \item The \textbf{optimal axis} direction is where $J_{\sigma}$ is maximized
+    \item The scatter matrix represents variation within class 
+\end{enumerate}
+
+Scatter matrix:
+\[
+S_i \equiv \sum_{x \in w^{(i)}} (x - E^{(i)}(x))(x - E^{(i)})^T
+\]
+
+Within class scatter matrix:
+\[
+S_w = S_1 + S_2
+\]
+Between class scatter matrix:
+\[
+S_B \equiv \sum_{i=1,2} r^{(i)} (E^{(i)}(x) - E(x))(E^{(i)}(x) - E(x))^T 
+\]
+\[
+= \frac{r^{(1)}r^{(2)}}{r} (E^{(1)}(x) - E^{(2)}(x))(E^{(1)}(x) - E^{(2)}(x))^T
+\]
+
+From n-d feature space to 1-d space by matrix $A$:
+\begin{itemize}
+    \item $A$ is an $n \times 1$ matrix $\rightarrow$ n-dim vector $a$
+    \item The pattern becomes a scalar by $y = a^T x$
+\end{itemize}
+
+Scatter matrix in space after the transformation:
+\[
+\hat{S}_i \equiv \sum_{x \in w^{(i)}} (y - E^{(i)}(y))(y - E^{(i)}(y))^T
+\]
+\[
+= \sum_{y \in w^{(i)}} A^T (x - E^{(i)}(x))(x - E^{(i)}(x))^T A = A^T S_i A
+\]
+Within class:
+\[
+\hat{S_W} \equiv \hat{S_1} + \hat{S_2} = A^T S_1 A + A^T S_2 A = A^T S_W A
+\]
+Between class:
+\[
+\hat{S_B} \equiv \sum_{i=1,2} r^{(i)} (E^{(i)}(y) - E(y))(E^{(i)}(y) - E(y))^T
+\]
+\[
+= \frac{r^{(1)}r^{(2)}}{r} A^T (E^{(1)}(y) - E^{(2)}(y))(E^{(1)}(y) - E^{(2)}(y))^TA
+\]
+\[
+= A^T S_B A
+\]
+Fisher criterion:
+\[
+J_s(A) = \frac{\hat{S_B}}{\hat{S_W}} = \frac{A^T S_B A}{A^T S_W A}
+\]
+Maximize:
+\[
+J(a) \equiv a^T S_B a - \lambda (a^T S_W a - 1)
+\]
+Where $\lambda$ is lagrange multiplier
+\[
+S_B a = \lambda S_w a \implies S_{w}^{-1} S_B a = \lambda A
+\]
+\[
+max{J_s(a)} = \lambda_{max}
+\]
+$\lambda_{max}$ is the largest eigenvalue of $S_w^{-1} S_B$ and the corresponding eigenvector is the optimal axis direction
+\newline
+\vspace{10pt}
+
+The eigenvector corresponding to the largest eigenvalue of $S_w^{-1} S_B$ is the direction that maximizes the separation between the two classes in the projected space.
 
 \end{document}
 
