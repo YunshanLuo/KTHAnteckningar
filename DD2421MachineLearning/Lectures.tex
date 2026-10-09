@@ -1660,16 +1660,78 @@ Considered the \textbf{euclidean distance} between input $x$ and the prototypes:
 ||x - a^{(i)}||^2 = ||x||^2 - 2a^{(i)^T} + ||a^{(i)}||^2
 \]
 
+We chose the class that minimizes the distance
+
+
 The discriminant function is given by:
 \[
 g^{(i)}(x) \equiv a^{(i)^T}x - \frac{1}{2}||a^{(i)}||^2
 \]
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{discriminant.png}
 \end{figure}
 
 %% Continue on page 21 Lecture 11
+
+\subsection{Cosine similarity}
+Instead of measuring euclidean distance we can measure the angle between vectors
+\[
+g^{(i)}(x) = \frac{(x^T a^{(i)})}{||x|| ||a^{(i)}||} = cos(A)
+\]
+
+The closer $cos(A)$ is closer to 1 the more similar are the vectors 
+
+\subsection{Subspace methods}
+\textbf{CLASFIC:} Class featuring information compression  
+\begin{itemize}
+    \item Given a set of training samples $\mathcal{S} = \left\{x_1, x_2, \ldots, x_N\right\}$ with $x_i \in \mathbb{R}^d$ and $N << d$
+    \item For each class $C^{(i)}$ we have a set of training samples $\mathcal{S}^{(i)} = \left\{x_1^{(i)}, x_2^{(i)}, \ldots, x_{N_i}^{(i)}\right\}$ with $x_j^{(i)} \in \mathbb{R}^d$ and $N_i << d$
+    \item We want to find a subspace $L^{(i)}$ of dimension $p_i << d$ that captures the most important features of the class $C^{(i)}$
+\end{itemize} 
+
+\textbf{Subpspace method framework:}
+\begin{enumerate}
+    \item \textbf{Training:} For each class compute a low-dimensional subspace that's represenatative for the distribution of the class ${w}^{(1)}, \hdots,{w}^{(K)}$
+    \item \textbf{Testing:} Determin the class for new unknown input by comparing which subspace approximates the input the best
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{subspace2.png}
+\end{figure}
+
+\textbf{Projection length to subspace method}
+\begin{itemize}
+    \item $\mathbf{p}:$ Dimension of subspace
+    \item $\mathbf{u_i}:$ Reference vector (Orthonormal basis)
+\end{itemize}
+\[
+S = \sum_{i=1}^{p} (x, u_i)^2
+\]
+
+\subsection{Dimensionality of class subspace}
+The eigenvalues of the autocorrelation matrix captures how much information is retained after the reduction
+\begin{itemize}
+    \item Too low $\implies$ Low capability to represent the class
+    \item Too high $\implies$ Issues of overlapping across classes and computional costs
+\end{itemize}
+
+\textbf{Cumulative contribution:}
+Cumulative contribution function:
+\[
+a(p^{(i)}) = \frac{\sum_{j=1}^{p^{(i)} \lambda_j}}{\sum_{j=1}^{p} \lambda_j}
+\]
+
+Choose dimension $p^{(i)}$ for each class $w^{(i)}$ compute:
+\[
+a(p^{(i)}) \leq \kappa \leq a(p^{(i)} + 1)
+\]
+The projection length of the subspace is made uniform
+
+\subsection{How to find good dimension for classification given labels}
+%% Fortsätt på sida 28
+
 
 
 
