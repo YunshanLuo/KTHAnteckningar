@@ -65,7 +65,7 @@ One final exam signal: when the problem remarks that a block cipher's encryption
 
 ### How to Identify
 
-Use this scheme when the problem **provides** a concrete hash *H* built from a stated secure primitive (SHA256/SHA-2, sometimes AES with the remark that encrypt/decrypt are mutual inverses) plus a combiner: bitwise xor of input blocks, weighted sums $\bmod\, 2^n$, dropping/duplicating blocks, or concatenating input bits (e.g. $LSB_{128}(x)$) to the primitive's output. The construction is often given as short pseudocode like `def hash(x): H = SHA256(x); H = H ++ LSB128(x); return H` or as a formula $H(x) = \mathrm{SHA}(x_1 \oplus \cdots \oplus x_n)$ over blocks of 256 bits. The problem **asks you to**, for EACH of the three requirements of a cryptographically secure hash function — one-wayness (preimage resistance), weak collision resistance (second-preimage resistance), strong collision resistance — (1) state the formal definition and (2) either disprove it by exhibiting an explicit preimage/collision or argue it holds, usually by a reduction showing an attack on *H* implies an attack on the underlying primitive. Look for keywords like: *"hash function", "one-way", "preimage resistance", "weak collision resistance", "strong collision resistance", "for each requirement", "define the requirement", "disprove the requirement or argue why the requirement is met", "xor", "bit concatenation", "SHA256", "secure hash function"*.
+Use this scheme when the problem **provides** a concrete hash *H* built from a stated secure primitive (SHA256/SHA-2, sometimes AES with the remark that encrypt/decrypt are mutual inverses) plus a combiner: bitwise xor of input blocks, weighted sums $\bmod\, 2^n$, dropping/duplicating blocks, or concatenating input bits — e.g. $LSB_{128}(x)$ — to the primitive's output. The construction is often given as short pseudocode like `def hash(x): H = SHA256(x); H = H ++ LSB128(x); return H` or as a formula $H(x) = \mathrm{SHA}(x_1 \oplus \cdots \oplus x_n)$ over blocks of 256 bits. The problem **asks you to**, for EACH of the three requirements of a cryptographically secure hash function — one-wayness (preimage resistance), weak collision resistance (second-preimage resistance), strong collision resistance — (1) state the formal definition and (2) either disprove it by exhibiting an explicit preimage/collision or argue it holds, usually by a reduction showing an attack on *H* implies an attack on the underlying primitive. Look for keywords like: *"hash function", "one-way", "preimage resistance", "weak collision resistance", "strong collision resistance", "for each requirement", "define the requirement", "disprove the requirement or argue why the requirement is met", "xor", "bit concatenation", "SHA256", "secure hash function"*.
 
 ---
 
@@ -92,8 +92,8 @@ Use this scheme when the problem **provides** a concrete hash *H* built from a s
 5. **Attack or reduce one-wayness:** Check three cases:
    - No secure primitive / pure combiner: solve the linear equation directly (e.g. for $H = \sum_i i \cdot x_i \bmod 2^{128}$, the single block $x_1 = h$ gives $H(x) = h$) — BROKEN.
    - Block cipher with known key: apply $D_K$ to *h* and build a preimage via the combiner — BROKEN.
-   - Secure one-way primitive *P* present: give the reduction. Any *x* with $H(x)=h$ yields a preimage of *P* on some point (e.g. on $C(x)$), so one-wayness of *P* implies one-wayness of *H* — HOLDS. Mention explicitly if leaked input bits (appended $LSB_{128}(x)$) do NOT by themselves invert the primitive.
-6. **Argue the surviving properties and grade the strength:** For each property that holds, state the reduction cleanly: an adversary breaking the property for *H* produces a collision/preimage for *P* (e.g. $H(x)=H(y)$ with the combiner outside forces $\mathrm{SHA256}(x)=\mathrm{SHA256}(y)$). Close with a strength note if applicable: **a construction is never stronger than its primitive part** — e.g. only 256 of 384 output bits come from SHA256, so the effective security is that of the 256-bit part.
+   - Secure one-way primitive *P* present: give the reduction. Any *x* with $H(x)=h$ yields a preimage of *P* on some point — e.g. on $C(x)$ — so one-wayness of *P* implies one-wayness of *H* — HOLDS. Mention explicitly if leaked input bits (appended $LSB_{128}(x)$) do NOT by themselves invert the primitive.
+6. **Argue the surviving properties and grade the strength:** For each property that holds, state the reduction cleanly: an adversary breaking the property for *H* produces a collision/preimage for *P* — e.g. $H(x)=H(y)$ with the combiner outside forces $\mathrm{SHA256}(x)=\mathrm{SHA256}(y)$. Close with a strength note if applicable: **a construction is never stronger than its primitive part** — e.g. only 256 of 384 output bits come from SHA256, so the effective security is that of the 256-bit part.
 
 ---
 
@@ -614,7 +614,7 @@ When a problem asks you to ***draw the partial order*** (Hasse diagram) of the l
 
 ### How to Identify
 
-Use this scheme when the problem **provides** a BLP system stated as: an ordered (or partially ordered) set of sensitivity levels (e.g. $U < C < S < TS$), optionally a set of compartments, the label form $L = (SL, C)$ with dominance $L_1 \sqsubseteq L_2$ iff $SL_1 \leq SL_2$ and $C_1 \subseteq C_2$, and concrete subject clearances $f_s$/$f_c$ and object classifications $f_o$ (tables or bullet lists). Access modes read, write (may imply read), append (write-only). The problem **asks you to** formally define no-read-up (ss-property) and no-write-down (*-property); decide grant/deny for each listed (subject, object, mode) request with justification naming the violated rule; possibly draw the label partial order or invent example labels achieving a specified allowed/denied read/write combination. Look for keywords like: *"Bell-LaPadula", "no read up", "no write down", "clearance", "classification", "compartments", "dominance", "partial order", "lattice", "granted", "denied", "append", "ss-property", "*-property"*.
+Use this scheme when the problem **provides** a BLP system stated as: an ordered (or partially ordered) set of sensitivity levels (e.g. $U < C < S < TS$), optionally a set of compartments, the label form $L = (SL, C)$ with dominance $L_1 \sqsubseteq L_2$ iff $SL_1 \leq SL_2$ and $C_1 \subseteq C_2$, and concrete subject clearances $f_s$/ $f_c$ and object classifications $f_o$ (tables or bullet lists). Access modes read, write (may imply read), append (write-only). The problem **asks you to** formally define no-read-up (ss-property) and no-write-down (*-property); decide grant/deny for each listed (subject, object, mode) request with justification naming the violated rule; possibly draw the label partial order or invent example labels achieving a specified allowed/denied read/write combination. Look for keywords like: *"Bell-LaPadula", "no read up", "no write down", "clearance", "classification", "compartments", "dominance", "partial order", "lattice", "granted", "denied", "append", "ss-property", "*-property"*.
 
 ---
 
@@ -733,7 +733,7 @@ About ***non-repudiation***: a MAC under a shared key authenticates a message *b
 
 - Signature/MAC covers only what is inside it: unsigned fields are attacker-controlled.
 - No signed nonce/timestamp ⇒ replay; fix = signed freshness + receiver rejects old/duplicate values.
-- Missing field in the signed blob (recipient, amount, $H(File)$) ⇒ substitution / cross-context reuse; fix = move the field (or the hash) inside.
+- Missing field in the signed blob — recipient, amount, $H(File)$ — ⇒ substitution / cross-context reuse; fix = move the field (or the hash) inside.
 - Unsigned first message ⇒ impersonation + DoS (server burns expensive work); fix = authenticate message 1, cheap checks first.
 - Bare DH values $Y_A, Y_B$ ⇒ MitM with two separate keys; fix = sign the public values or use certificates.
 - MAC = authentication between the two key holders only; signature = third-party non-repudiation. Always answer "possible / not possible" first, then name the mechanism.
@@ -907,7 +907,7 @@ Use this scheme when the problem **provides** a battery of short standalone stat
 **Exam Variations & Traps**
 
 - **Variation 1 (Single T/F battery with reasoning (2022 style)):** Six independent statements, each classified and justified; grading accepts any one of several listed correct points. Trap: some statements are false because of the ***mechanism or principle named***, not because the intuition is wrong — so always check the justification clause, not just the headline claim.
-- **Variation 2 (Canvas quiz T/F with feedback (dasak20/dasak21 style)):** The same statements appear as an online quiz with True/False radio buttons; official feedback explains the verdict. The style is identical to the written battery: e.g. threat-to-CIA mapping ("disclosure and disruption are threats against integrity" — False), base-rate fallacy ("$0.01\%$ false positives, yet overwhelmed by false alarms, so the vendor lied" — False). Prepare by memorizing the distinguishing correction for each classic trap.
+- **Variation 2 (Canvas quiz T/F with feedback (dasak20/dasak21 style)):** The same statements appear as an online quiz with True/False radio buttons; official feedback explains the verdict. The style is identical to the written battery: e.g. threat-to-CIA mapping ("disclosure and disruption are threats against integrity" — False), base-rate fallacy (" $0.01\%$ false positives, yet overwhelmed by false alarms, so the vendor lied" — False). Prepare by memorizing the distinguishing correction for each classic trap.
 - **Variation 3 (Multiple-true club format (dasak19 Part I)):** Options A–D under a topic header (Concepts/CIA, Authentication, Cryptography, Memory safety, Malware, IDS/Firewalls) are graded ***independently***; zero, one or several may be true. E.g. on IDS/firewalls all of these are true: signature IDS detects only known intrusions, firewalls do not stop internal threats, detection necessarily has false positives/negatives. "None of these answers are correct" exists to separate "all false" from "unanswered".
 - **Variation 4 (Wrong-principle pairing / synonym-quantifier trap):** The statement describes a genuine security mistake but attributes it to the wrong Saltzer–Schroeder principle (economy of mechanism instead of least privilege, or vice versa) — or invokes a principle that is not in the canonical eight at all. Similarly, words like "synonym", "only", "necessarily", "never" make a roughly-true statement false: privacy is broader than confidentiality; message authentication does *not* require encrypting the content; a MAC gives integrity and **no confidentiality**. Verify the named principle's definition against the exact list and test edge cases against the quantifier.
 
@@ -1041,7 +1041,7 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 
 **Algorithm: Invert-Isolate-Trace: algebraically invert the recurrence, then read dependencies and error paths off the decryption formula**
 
-1. **Map the recurrence structure:** Write out the given encryption equations and mark, for each $C_i$, which terms enter the block cipher input (***inside*** $E_K(\cdot)$) and which are only XORed ***outside***. E.g. AES-MIX: $C_1 = E_K(IV_1 \oplus P_1), C_2 = E_K(IV_2 \oplus P_2) \oplus C_1, C_i = E_K(C_{i-2} \oplus P_i)$ for $i > 2$. This inside/outside split drives both inversion and error tracing.
+1. **Map the recurrence structure:** Write out the given encryption equations and mark, for each $C_i$, which terms enter the block cipher input, ***inside*** $E_K(\cdot)$, and which are only XORed ***outside***. E.g. AES-MIX: $C_1 = E_K(IV_1 \oplus P_1), C_2 = E_K(IV_2 \oplus P_2) \oplus C_1, C_i = E_K(C_{i-2} \oplus P_i)$ for $i > 2$. This inside/outside split drives both inversion and error tracing.
 2. **Isolate the $E_K$ term:** XOR both sides of each equation with every term sitting outside $E_K$, so that $E_K(\text{input})$ stands alone on one side. For the AES-MIX equation for $C_2$: $C_2 \oplus C_1 = E_K(IV_2 \oplus P_2)$. Equations with nothing outside the cipher are already isolated.
 3. **Apply $D_K$ and solve for $P_i$:** Apply $D_K$ to both sides to expose the cipher input, then XOR the remaining mask over to isolate $P_i$. AES-MIX:
    - $D_K(C_2 \oplus C_1) = IV_2 \oplus P_2$, so $P_2 = D_K(C_2 \oplus C_1) \oplus IV_2$;
@@ -1080,8 +1080,8 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 **Solution (every step explained, including WHY):**
 
 - *Applying Step 1: Map the recurrence structure:* Before any algebra, mark what sits inside and outside the cipher. In $C_1 = E_K(IV_1 \oplus P_1) \oplus IV_2$ the term $IV_2$ is XORed *after* the cipher ran, so it is outside; $IV_1 \oplus P_1$ is the cipher's input. In $C_i = E_K(IV_2 \oplus C_{i-1} \oplus P_i)$ everything is inside $E_K$. ***Why this step:*** beginners jump straight to formulas and misplace a term; the inside/outside split tells you exactly which XORs you must "move across" and predicts the error-propagation answer later. ***Mistake to avoid:*** treating $C_{i-1}$ as an outside term — it is fed into $E_K$, not XORed onto the result.
-- *Applying Step 2: Isolate the $E_K$ term:* Goal: get $E_K(\text{something})$ alone on one side. For the first equation, XOR $IV_2$ onto both sides (legal because if $a = b$ then $a \oplus x = b \oplus x$): $C_1 \oplus IV_2 = E_K(IV_1 \oplus P_1) \oplus IV_2 \oplus IV_2 = E_K(IV_1 \oplus P_1)$, using $IV_2 \oplus IV_2 = 0$. The general recurrence $C_i = E_K(IV_2 \oplus C_{i-1} \oplus P_i)$ is already isolated. ***Why:*** you can only apply $D_K$ to something of the form $E_K(\cdot)$, so isolation must come first. ***Mistake to avoid:*** applying $D_K$ to $C_1$ directly without removing the outside $IV_2$ first — $D_K(C_1) \neq IV_1 \oplus P_1 \oplus$ (something simple), because $D_K$ does not distribute over XOR.
-- *Applying Step 3: Apply $D_K$ and solve for $P_i$:* Apply $D_K$ to both isolated sides, using $D_K(E_K(x)) = x$: from Step 2, $D_K(C_1 \oplus IV_2) = IV_1 \oplus P_1$, and XORing $IV_1$ over gives
+- *Applying Step 2:* Isolate the $E_K$ term: Goal: get $E_K(\text{something})$ alone on one side. For the first equation, XOR $IV_2$ onto both sides (legal because if $a = b$ then $a \oplus x = b \oplus x$): $C_1 \oplus IV_2 = E_K(IV_1 \oplus P_1) \oplus IV_2 \oplus IV_2 = E_K(IV_1 \oplus P_1)$, using $IV_2 \oplus IV_2 = 0$. The general recurrence $C_i = E_K(IV_2 \oplus C_{i-1} \oplus P_i)$ is already isolated. ***Why:*** you can only apply $D_K$ to something of the form $E_K(\cdot)$, so isolation must come first. ***Mistake to avoid:*** applying $D_K$ to $C_1$ directly without removing the outside $IV_2$ first — $D_K(C_1) \neq IV_1 \oplus P_1 \oplus$ (something simple), because $D_K$ does not distribute over XOR.
+- *Applying Step 3:* Apply $D_K$ and solve for $P_i$: Apply $D_K$ to both isolated sides, using $D_K(E_K(x)) = x$: from Step 2, $D_K(C_1 \oplus IV_2) = IV_1 \oplus P_1$, and XORing $IV_1$ over gives
 
   $$P_1 = D_K(C_1 \oplus IV_2) \oplus IV_1.$$
 
@@ -1110,7 +1110,7 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 **Solution:**
 
 - *Applying Step 1: Map the recurrence structure:* In $C_i = E_K(P_i \oplus C_{i-1}) \oplus P_{i-1}$, the term $P_{i-1}$ is XORed outside the cipher while $P_i \oplus C_{i-1}$ is the cipher input. Note the ***plaintext feedback***: a plaintext block appears in the output mask, which will matter in Step 4.
-- *Applying Steps 2–3: Isolate $E_K$, apply $D_K$, solve for $P_i$:* XOR $P_{i-1}$ onto both sides to isolate the cipher term, then apply $D_K$ and move the remaining mask:
+- *Applying Steps 2–3:* Isolate $E_K$, apply $D_K$, solve for $P_i$: XOR $P_{i-1}$ onto both sides to isolate the cipher term, then apply $D_K$ and move the remaining mask:
 
   $$C_i = E_K(P_i \oplus C_{i-1}) \oplus P_{i-1}$$
   $$C_i \oplus P_{i-1} = E_K(P_i \oplus C_{i-1})$$
@@ -1132,13 +1132,13 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 **Solution:**
 
 - *Applying Step 1: Map the recurrence structure:* $C_1$ has no outside term; in $C_2 = E_K(IV_2 \oplus P_2) \oplus C_1$ the previous ciphertext $C_1$ is XORed outside the cipher; in $C_i = E_K(C_{i-2} \oplus P_i)$ the block from *two positions back* is fed inside $E_K$ together with $P_i$.
-- *Applying Steps 2–3: Isolate $E_K$, apply $D_K$, solve for $P_2$:* XOR $C_1$ onto both sides, then decrypt, then move $IV_2$:
+- *Applying Steps 2–3:* Isolate $E_K$, apply $D_K$, solve for $P_2$: XOR $C_1$ onto both sides, then decrypt, then move $IV_2$:
 
   $$C_2 = E_K(IV_2 \oplus P_2) \oplus C_1$$
   $$C_2 \oplus C_1 = E_K(IV_2 \oplus P_2)$$
   $$D_K(C_2 \oplus C_1) = IV_2 \oplus P_2$$
   $$P_2 = D_K(C_2 \oplus C_1) \oplus IV_2.$$
-- *Applying Steps 2–3: Solve for $P_i, i > 2$:* The general recurrence has $E_K$ already isolated, so apply $D_K$ and move $C_{i-2}$:
+- *Applying Steps 2–3:* Solve for $P_i, i > 2$: The general recurrence has $E_K$ already isolated, so apply $D_K$ and move $C_{i-2}$:
 
   $$C_i = E_K(C_{i-2} \oplus P_i)$$
   $$D_K(C_i) = C_{i-2} \oplus P_i$$
@@ -1146,7 +1146,7 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 
   (Also $P_1 = D_K(C_1) \oplus IV_1$ from the first equation, useful in part (c).)
 - *Applying Step 4: Read off parallelizability:* Encryption ***cannot be parallelized***: the computation of $C_i$ requires knowing $C_{i-2}$, an earlier ciphertext block. Decryption ***can be parallelized***: the computation of $P_i$ does not require knowing any of $P_1, \dots, P_{i-1}$ — it uses only ciphertext blocks and the IVs, which Bob holds in full.
-- *Applying Step 5: Trace the flip in $C_1$ block by block:* Bob decrypts $C' = (IV_1, IV_2, C_1 \oplus 1, C_2, C_3)$.
+- *Applying Step 5:* Trace the flip in $C_1$ block by block: Bob decrypts $C' = (IV_1, IV_2, C_1 \oplus 1, C_2, C_3)$.
   - $P_1' = D_K(C_1') \oplus IV_1 = D_K(C_1 \oplus 1) \oplus IV_1 = \text{Garbage}$: the corrupted block goes inside $D_K$, and avalanche makes the output unpredictable.
   - $P_2' = D_K(C_2 \oplus C_1') \oplus IV_2 = D_K(C_2 \oplus C_1 \oplus 1) \oplus IV_2 = \text{Garbage}$: the corrupted block again enters inside $D_K$ (combined with $C_2$), so this block is also unpredictable.
   - $P_3' = D_K(C_3) \oplus C_1' = D_K(C_3) \oplus C_1 \oplus 1 = P_3 \oplus 1$: here $C_1'$ appears only as an outside XOR term, so exactly the flipped bit propagates.
@@ -1162,7 +1162,7 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 **Solution:**
 
 - *Applying Step 1: Map the recurrence structure:* Every term — $P_i, IV_1, IV_2$, and the running XOR of all previous ciphertext blocks $C_1 \oplus \cdots \oplus C_{i-1}$ — sits *inside* $E_K$; nothing is XORed outside the cipher. This makes inversion easy but makes encryption depend on the entire ciphertext history.
-- *Applying Steps 2–3: Apply $D_K$ and solve for $P_i$:* The cipher term is already isolated, so apply $D_K$ and XOR the remaining mask over (shown for $C_i$):
+- *Applying Steps 2–3:* Apply $D_K$ and solve for $P_i$: The cipher term is already isolated, so apply $D_K$ and XOR the remaining mask over (shown for $C_i$):
 
   $$C_i = E_K(P_i \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1})$$
   $$D_K(C_i) = P_i \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1}$$
@@ -1170,7 +1170,7 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 
   The special case is $P_1 = D_K(C_1) \oplus IV_1 \oplus IV_2$.
 - *Applying Step 4: Read off parallelizability:* Encryption ***cannot be parallelized***: computing $C_i$ requires knowing all of $C_1, \dots, C_{i-1}$. Decryption ***can be parallelized***: computing $P_i$ does not require knowing any of $P_1, \dots, P_{i-1}$, and the ciphertexts of all previous blocks are already known to Bob.
-- *Applying Step 5: Trace the flip in $C_2$ block by block:* Bob decrypts $(IV_1, IV_2, C_1, C_2 \oplus 1, C_3, C_4)$.
+- *Applying Step 5:* Trace the flip in $C_2$ block by block: Bob decrypts $(IV_1, IV_2, C_1, C_2 \oplus 1, C_3, C_4)$.
   - $P_1' = D_K(C_1) \oplus IV_1 \oplus IV_2 = P_1$: the formula never references $C_2$, so block 1 is unchanged.
   - $P_2' = D_K(C_2 \oplus 1) \oplus IV_1 \oplus IV_2 \oplus C_1 = \text{Garbage}$: the tampered block enters inside $D_K$, so avalanche makes this block unpredictable.
   - $P_3' = D_K(C_3) \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus C_2' = P_3 \oplus 1$: $C_2'$ is only an XOR term here, so exactly one bit flips.
@@ -1411,19 +1411,19 @@ The classic defense is a ***salt***: a random, per-user value that is PUBLIC (st
 
 Every cost-accounting sub-question is solved by one principle: ***factor the stored-value formula*** into two kinds of subexpressions.
 
-- ***User-independent subexpressions*** — anything built only from the password, e.g.$H(password)$: precompute once for all *L* candidates and reuse the result for every user.
-- ***Per-user subexpressions*** — anything the username or a per-user salt touches, e.g.$H(username \, \| \, password)$: must be recomputed from scratch for each of the *U* users.
+- ***User-independent subexpressions*** — anything built only from the password, e.g. $H(password)$: precompute once for all *L* candidates and reuse the result for every user.
+- ***Per-user subexpressions*** — anything the username or a per-user salt touches, e.g. $H(username \, \| \, password)$: must be recomputed from scratch for each of the *U* users.
 
 The PLACEMENT of *H* decides everything: an *H* wrapped around the whole expression (username included) forces $U \cdot L$ fresh evaluations, while $H(password)$ sitting as an inner term can be precomputed into a dictionary costing only *L* once. The four canonical shapes, for recovering all passwords:
 
--$H(password)$:*L* hashes (one dictionary serves all users).
--$H(username \, \| \, password)$:$U \cdot L$ hashes (no reuse possible).
--$H(H(username) \, \| \, password)$:$U + U \cdot L$ hashes (precompute $H(username)$ once per user).
--$H(username \, \| \, H(password))$:$L + U \cdot L$ hashes (precompute the *L* hashed passwords).
+- $H(password)$:*L* hashes (one dictionary serves all users).
+- $H(username \, \| \, password)$: $U \cdot L$ hashes (no reuse possible).
+- $H(H(username) \, \| \, password)$: $U + U \cdot L$ hashes (precompute $H(username)$ once per user).
+- $H(username \, \| \, H(password))$: $L + U \cdot L$ hashes (precompute the *L* hashed passwords).
 
 For the replacement attack (set every password to pwned) the same factoring applies, but remember the classic trap: **pwned is not in the candidate list**, so its inner hash can never come from the precomputed dictionary — it costs one extra evaluation.
 
-The second scheme family is the ***Lamport hash chain*** (one-time passwords). At registration the client computes $H^{N}(pwd \, \| \, salt)$ — apply *H* a total of *N* times, where $H^{0}(x) = x$ and $H^{3}(x) = H(H(H(x)))$ — and the server stores it in a variable *stored*. At login number *i* the client sends $H^{N-i}(pwd \, \| \, salt)$; the server checks $H(\text{received}) = stored$ and, on success, updates $stored := \text{received}$. Think of the chain as a rope with exponent marks: registration hangs the top value $H^{N}(pwd \, \| \, salt)$ on the server as *stored*, and each login uses a mark one LOWER than the last ($H^{N-i}$, then $H^{N-i-1}$, and so on). Hashing moves you UP the rope, from exponent *k* to $k+1$, toward the registered top value — that is exactly what the server does to verify: it hashes the received token once and compares with *stored*. One-wayness means nobody can step DOWN the rope: going from the token just sent,$H^{N-i}(pwd \, \| \, salt)$, to the next login's token,$H^{N-i-1}(pwd \, \| \, salt)$, would require inverting *H*, which is infeasible. Consequences, all of which have appeared on exams:
+The second scheme family is the ***Lamport hash chain*** (one-time passwords). At registration the client computes $H^{N}(pwd \, \| \, salt)$ — apply *H* a total of *N* times, where $H^{0}(x) = x$ and $H^{3}(x) = H(H(H(x)))$ — and the server stores it in a variable *stored*. At login number *i* the client sends $H^{N-i}(pwd \, \| \, salt)$; the server checks $H(\text{received}) = stored$ and, on success, updates $stored := \text{received}$. Think of the chain as a rope with exponent marks: registration hangs the top value $H^{N}(pwd \, \| \, salt)$ on the server as *stored*, and each login uses a mark one LOWER than the last ($H^{N-i}$, then $H^{N-i-1}$, and so on). Hashing moves you UP the rope, from exponent *k* to $k+1$, toward the registered top value — that is exactly what the server does to verify: it hashes the received token once and compares with *stored*. One-wayness means nobody can step DOWN the rope: going from the token just sent, $H^{N-i}(pwd \, \| \, salt)$, to the next login's token, $H^{N-i-1}(pwd \, \| \, salt)$, would require inverting *H*, which is infeasible. Consequences, all of which have appeared on exams:
 
 - The server needs to know NEITHER *pwd* NOR *salt* — it only hashes the received token once and compares; the client built the whole chain at registration.
 - The next token $H^{N-i-1}(pwd \, \| \, salt)$ CANNOT be derived from the token just sent — that would mean inverting *H* once. The client must recompute it from $pwd \, \| \, salt$ at a cost of $N-i-1$ hash evaluations.
@@ -1446,15 +1446,15 @@ Design-critique questions (the third exam family) reuse four terms you must defi
 - Cost model: only hash evaluations count; comparisons, concatenation and DB operations are free.
 - Unsalted $H(password)$: recover all *U* passwords costs *L* hashes; set all to pwned costs $1$ hash.
 - Username/salt inside the OUTER hash kills reuse: recovery $U \cdot L$, replacement *U*.
--$H(password)$ as an INNER term: precompute the dictionary once: recovery $L + U \cdot L$; replacement $1 + U$ (pwned is NOT in the list, so its inner hash costs 1 extra).
--$H(username)$ as an inner term: precomputable once per user, adding a flat $+U$ term.
+- $H(password)$ as an INNER term: precompute the dictionary once: recovery $L + U \cdot L$; replacement $1 + U$ (pwned is NOT in the list, so its inner hash costs 1 extra).
+- $H(username)$ as an inner term: precomputable once per user, adding a flat $+U$ term.
 - Lamport chain: login *i* sends $H^{N-i}(pwd \, \| \, salt)$; server checks $H(\text{received}) = stored$; the next token cannot be derived from the current one (one-wayness); login *N* leaks *pwd* in plaintext; a DB-writer sets $stored := H(v)$ and logs in with *v*.
 
 ---
 
 ### How to Identify
 
-Use this scheme when the problem **provides** a password database with *U* users whose passwords come from a known list of *L* candidates, a concrete storage formula built from a secure hash *H* and concatenation (e.g.$H(password)$,$H(username \, \| \, password)$,$H(H(username) \, \| \, password)$,$H(username \, \| \, H(password))$), and an attacker Mallory who can read and modify the database; or a Lamport-style hash-chain scheme using $H^{k}(pwd \, \| \, salt)$ with a server-side "stored" variable and a network- or server-compromising attacker; or a list of organizational password measures to critique. Only hash computations count as cost; comparisons and database operations are free. The problem **asks you to**, for each storage scheme, describe the attack and compute the exact number of hash evaluations needed (a) to recover every user's password and (b) to change every password to a fixed new value such as "pwned"; or, for hash-chain schemes, justify what the server must know, compute the chain index/cost of the next login, state at which login an eavesdropper learns the password, and show how a server-compromising attacker logs in without *pwd*,*salt*, or the login index; or, for design critiques, map each measure to the threats it counters, the vulnerabilities it leaves or introduces, and better countermeasures. Look for keywords like: *"password storage", "how many hashes", "salt", "username++password", "secure cryptographic hash function", "password list", "dictionary", "hash chain", "H^k", "login", "stored", "pwned", "rainbow table", "concatenation"*.
+Use this scheme when the problem **provides** a password database with *U* users whose passwords come from a known list of *L* candidates, a concrete storage formula built from a secure hash *H* and concatenation (e.g. $H(password)$, $H(username \, \| \, password)$, $H(H(username) \, \| \, password)$, $H(username \, \| \, H(password))$), and an attacker Mallory who can read and modify the database; or a Lamport-style hash-chain scheme using $H^{k}(pwd \, \| \, salt)$ with a server-side "stored" variable and a network- or server-compromising attacker; or a list of organizational password measures to critique. Only hash computations count as cost; comparisons and database operations are free. The problem **asks you to**, for each storage scheme, describe the attack and compute the exact number of hash evaluations needed (a) to recover every user's password and (b) to change every password to a fixed new value such as "pwned"; or, for hash-chain schemes, justify what the server must know, compute the chain index/cost of the next login, state at which login an eavesdropper learns the password, and show how a server-compromising attacker logs in without *pwd*,*salt*, or the login index; or, for design critiques, map each measure to the threats it counters, the vulnerabilities it leaves or introduces, and better countermeasures. Look for keywords like: *"password storage", "how many hashes", "salt", "username++password", "secure cryptographic hash function", "password list", "dictionary", "hash chain", "H^k", "login", "stored", "pwned", "rainbow table", "concatenation"*.
 
 ---
 
@@ -1466,28 +1466,28 @@ Use this scheme when the problem **provides** a password database with *U* users
 
    Recall the cost model: **only hash evaluations count**.
 2. **Factor the formula:** Split the hash expression into
-   - ***user-independent subexpressions*** — precompute once, reuse for all users. E.g.$H(password)$ is the same for every user: a dictionary of all *L* values costs *L* hashes total.
+   - ***user-independent subexpressions*** — precompute once, reuse for all users. E.g. $H(password)$ is the same for every user: a dictionary of all *L* values costs *L* hashes total.
    - ***per-user subexpressions*** — anything concatenated with the username or a per-user salt must be recomputed for each user.
 
    This factoring decides the entire answer.
-3. **Count the recovery cost:** For each of the *U* users, test all *L* candidates against the stored value; total = (one-time precomputation)$+\; U \times L \times$ (hashes per candidate after reuse). The four canonical shapes:
-   -$H(pwd)$:*L* (one dictionary serves all users).
-   -$H(user \, \| \, pwd)$:$U \cdot L$ (salt kills reuse).
-   -$H(H(user) \, \| \, pwd)$:$U + U \cdot L$ (precompute $H(user)$ per user).
-   -$H(user \, \| \, H(pwd))$:$L + U \cdot L$ (precompute the *L* hashed passwords).
+3. **Count the recovery cost:** For each of the *U* users, test all *L* candidates against the stored value; total = (one-time precomputation) $+\; U \times L \times$ (hashes per candidate after reuse). The four canonical shapes:
+   - $H(pwd)$:*L* (one dictionary serves all users).
+   - $H(user \, \| \, pwd)$: $U \cdot L$ (salt kills reuse).
+   - $H(H(user) \, \| \, pwd)$: $U + U \cdot L$ (precompute $H(user)$ per user).
+   - $H(user \, \| \, H(pwd))$: $L + U \cdot L$ (precompute the *L* hashed passwords).
 4. **Count the replacement cost:** Apply the same factoring to the new password pwned: compute its user-independent inner hash once if the formula needs it, then one outer hash per user:
-   -$H(pwned)$:$1$ hash, written everywhere.
-   -$H(user \, \| \, pwned)$:*U* hashes.
-   -$H(H(user) \, \| \, pwned)$:$U + U = 2U$.
-   -$H(user \, \| \, H(pwned))$:$1 + U$.
+   - $H(pwned)$: $1$ hash, written everywhere.
+   - $H(user \, \| \, pwned)$:*U* hashes.
+   - $H(H(user) \, \| \, pwned)$: $U + U = 2U$.
+   - $H(user \, \| \, H(pwned))$: $1 + U$.
 
    Trap: **pwned is not in the candidate list**, so its inner hash can never come from the dictionary precomputation — it costs one extra evaluation.
 5. **Justify impossibility where asked:** If a goal requires inverting *H* (recovering a password outside the candidate list, or walking a hash chain backwards), state that it is ***infeasible because *H* is one-way***. Likewise state that the server only needs to know the values it actually compares — it never needs *pwd* or *salt* themselves.
 6. **Handle hash chains:** For Lamport-style schemes where login *i* sends $H^{N-i}(pwd \, \| \, salt)$ and the server checks $H(\text{received}) = stored$ then updates *stored*:
-   - The next login needs exponent $N-i-1$; it CANNOT be derived from the sent value (one-wayness) and costs full recomputation from $pwd \, \| \, salt$, i.e.$N-i-1$ hashes.
+   - The next login needs exponent $N-i-1$; it CANNOT be derived from the sent value (one-wayness) and costs full recomputation from $pwd \, \| \, salt$, i.e. $N-i-1$ hashes.
    - At login *N* the client sends $H^{0}(pwd \, \| \, salt) = pwd \, \| \, salt$ in plaintext — an eavesdropper learns the password here.
    - An attacker who can write *stored* sets $stored := H(v)$ for a chosen *v* and logs in with *v* — no knowledge of *pwd*,*salt*, or *i* required.
-7. **State exact totals:** Give the final count per scheme and per goal as a closed formula in *U* and *L* (e.g.*L* and $1$;$U \cdot L$ and *U*;$U + U \cdot L$ and $2U$;$L + U \cdot L$ and $U + 1$), each with one line of justification naming what was precomputed and what is per-user.
+7. **State exact totals:** Give the final count per scheme and per goal as a closed formula in *U* and *L* (e.g.*L* and $1$; $U \cdot L$ and *U*; $U + U \cdot L$ and $2U$; $L + U \cdot L$ and $U + 1$), each with one line of justification naming what was precomputed and what is per-user.
 8. **Critique each measure:** For design-critique questions, process the listed measures ONE AT A TIME, and for each measure answer the four required axes in order:
    - ***Threats countered***: name the concrete attack the measure defends against (e.g. hashing protects the stolen file; a salt counters rainbow tables; composition rules counter dictionary attacks; lockout counters ONLINE guessing).
    - ***Remaining vulnerabilities***: state what still breaks. Recurring findings: a single global salt is not a salt (rainbow tables still work); a secret proprietary hash violates ***Kerckhoffs' principle***; extra servers/admins enlarge the ***trusted computing base***; harsh rules push users to write passwords down; lockout enables user-targeted ***denial of service***; a reset channel with no authentication lets anyone take over an account.
@@ -1500,7 +1500,7 @@ Use this scheme when the problem **provides** a password database with *U* users
 
 **Exam Variations & Traps**
 
-- **Variation 1 (Hash placement / nesting):** The professor permutes where *H* and the username sit:$H(password)$,$H(username \, \| \, password)$,$H(H(username) \, \| \, password)$,$H(username \, \| \, H(password))$. Where the inner hash sits decides what is reusable: a dictionary of $H(pwd)$ is reusable across users only when $H(pwd)$ appears as an INNER term (giving $L + U \cdot L$ instead of $U \cdot L$);$H(username)$ is precomputable once per user (adding a flat *U*). Trap: forgetting that pwned is not in the *L*-list, so its inner hash costs one extra evaluation in the replacement attack ($U + 1$, not *U*).
+- **Variation 1 (Hash placement / nesting):** The professor permutes where *H* and the username sit: $H(password)$, $H(username \, \| \, password)$, $H(H(username) \, \| \, password)$, $H(username \, \| \, H(password))$. Where the inner hash sits decides what is reusable: a dictionary of $H(pwd)$ is reusable across users only when $H(pwd)$ appears as an INNER term (giving $L + U \cdot L$ instead of $U \cdot L$); $H(username)$ is precomputable once per user (adding a flat *U*). Trap: forgetting that pwned is not in the *L*-list, so its inner hash costs one extra evaluation in the replacement attack ($U + 1$, not *U*).
 - **Variation 2 (Lamport hash-chain login):** Instead of a static database, the scheme sends $H^{N-i}(pwd \, \| \, salt)$ at login *i* and the server verifies $H(\text{received}) = stored$. Sub-questions ask whether the server needs *pwd*/*salt* (no — it only compares hashes), the cost of the next login (full recomputation; the chain cannot be walked backwards), when an eavesdropper learns *pwd* (at $i = N$, since $H^{0}(x) = x$ is sent in plaintext), and the server-compromise attack (set $stored := H(v)$, log in with *v*). Trap: thinking the next token can be derived from the current one — one-wayness forbids it.
 - **Variation 3 (Role reversal: attacker writes the database):** The second goal always flips the attacker from reader to writer: instead of cracking, Mallory replaces stored hashes so every user has password pwned. The cost structure mirrors recovery but with *L* replaced by the single value pwned. Traps: reusing the dictionary of *L* password hashes for pwned (impossible — pwned is not in the list), or forgetting that the per-user salt forces *U* separate outer hashes.
 - **Variation 4 (Design-critique checklist):** Other sittings list organizational measures (secret proprietary hash, one global "salt", strict composition rules, forced rotation, lockout, phone recovery) and ask which attack each counters. Map each measure: a proprietary hash violates ***Kerckhoffs' principle***; a global salt is not a salt and does not stop rainbow tables — only per-user salts do; lockout/rate limiting stops ONLINE guessing but enables user-targeted DoS; a ***slow KDF*** (bcrypt/scrypt/Argon2/PBKDF2) raises OFFLINE cracking cost. Adapt by naming the attack each measure does and does not address.
