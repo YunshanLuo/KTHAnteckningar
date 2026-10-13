@@ -112,7 +112,7 @@ Use this scheme when the problem **provides** a concrete hash $H$ built from a s
 
 **Problem:** A software vendor fingerprints download files as follows. The file $x$ is split into 256-bit blocks $x_1, \dots, x_n$ (the last block is zero-padded), interpreted as integers, and the fingerprint is computed as
 
-$$ H(x) \;=\; \mathrm{SHA256}\Big( \big(x_1 + x_2 + \cdots + x_n\big) \bmod 2^{256} \Big), $$
+$$H(x) \;=\; \mathrm{SHA256}\Big( \big(x_1 + x_2 + \cdots + x_n\big) \bmod 2^{256} \Big),$$
 
 where SHA256 is the (assumed secure) SHA-2 hash with 256-bit output. For each of the three requirements of a cryptographically secure hash function (one-wayness, weak collision resistance, strong collision resistance): define the requirement, and either disprove the requirement or argue why the requirement is met.
 
@@ -122,7 +122,7 @@ where SHA256 is the (assumed secure) SHA-2 hash with 256-bit output. For each of
 - *Applying Step 2:* Decompose before attacking. Here $H = P \circ C$ with primitive $P = \mathrm{SHA256}$ and combiner $C(x) = \big(\sum_i x_i\big) \bmod 2^{256}$ sitting INSIDE the primitive's input. Why this matters: you never attack SHA256; you attack what gets FED into it. Addition mod $2^{256}$ is linear and commutative, so many different block arrangements share the same sum — and everything with the same sum gets the same digest. Prediction (which you now confirm): collision properties broken, one-wayness probably intact. Beginners often skip this prediction step and then waste time trying to "break SHA256" — you never need to.
 - *Applying Step 3:* Strong collision resistance — BROKEN. You control both inputs, so pick the simplest possible pair that keeps the sum fixed. Take $a = 1$ and $b = 2$ (as 256-bit integers) and set $x = a \| b$ (two blocks) and $y = b \| a$. Addition is commutative, so $C(x) = (1+2) \bmod 2^{256} = 3 = C(y)$, hence
 
-  $$ H(x) = \mathrm{SHA256}(3) = H(y), $$
+  $$H(x) = \mathrm{SHA256}(3) = H(y),$$
 
   an explicit collision with $x \neq y$. An even simpler pair: the one-block input $x = 5$ versus the two-block input $y = 2 \| 3$, both with sum $5$. Mistake to avoid: it is not enough to SAY "sums collide"; you must write down a concrete pair and verify both sides evaluate to the same digest.
 - *Applying Step 4:* Weak collision resistance — BROKEN. Now $x = x_1 \| \cdots \| x_n$ is handed to you, fixed. The trick from Step 3 must be adapted so that it works for THIS $x$: compute the target sum $S = \big(\sum_i x_i\big) \bmod 2^{256}$ and build any $y$ with the same sum. Take $y = y_1 \| y_2$ with $y_1$ arbitrary and $y_2 = (S - y_1) \bmod 2^{256}$; then $C(y) = (y_1 + y_2) \bmod 2^{256} = S = C(x)$, so $H(y) = H(x)$. Concrete numbers: if $x = 7 \| 9$ then $S = 16$; choose $y_1 = 4$, $y_2 = (16 - 4) \bmod 2^{256} = 12$; check: $H(y) = \mathrm{SHA256}(16) = H(x)$. Edge case a careful answer mentions: with negligible probability $2^{-256}$ your $y$ equals $x$ — then just pick another $y_1$. The subtraction always works because every integer $v$ has an ***additive inverse*** mod $2^{256}$: the value $(2^{256} - v) \bmod 2^{256}$, which added to $v$ gives $0$ — so $y_2 = (S - y_1) \bmod 2^{256}$ exists for every $y_1$, unlike the multiplicative case where an inverse exists only for odd coefficients.
@@ -137,7 +137,7 @@ where SHA256 is the (assumed secure) SHA-2 hash with 256-bit output. For each of
 
 **Problem:** Let $x$ be an input of $n$ bits. Let $\mathrm{hash}(x)$ be the following function:
 
-$$ \text{def } \mathrm{hash}(x):\quad H = \mathrm{SHA256}(x);\quad H = H \mathbin{++} LSB_{128}(x);\quad \text{return } H $$
+$$\text{def } \mathrm{hash}(x):\quad H = \mathrm{SHA256}(x);\quad H = H \mathbin{++} LSB_{128}(x);\quad \text{return } H$$
 
 Here, SHA256 is SHA-2 with 256-bit output, $LSB_{128}$ returns the last 128 bits of $x$, and $\mathbin{++}$ is bit concatenation. For each requirement of a cryptographically secure hash function, define the requirement, and either disprove the requirement or argue why the requirement is met.
 
@@ -163,13 +163,13 @@ Here, SHA256 is SHA-2 with 256-bit output, $LSB_{128}$ returns the last 128 bits
 - *Applying Step 2:* Decompose: primitive $P = \mathrm{SHA\text{-}2}$, combiner $C(x) = x_1 \oplus \cdots \oplus x_n$ INSIDE the primitive. Xor is commutative, associative and self-cancelling ($b \oplus b = 0$), so different block arrangements collapse to the same 256-bit value — expect both collision properties to fail and one-wayness to survive.
 - *Applying Step 3:* Strong collision resistance — BROKEN (official solution). Take any two distinct 256-bit blocks $x_1 \neq x_2$ and compare the two-block inputs $x = x_1 \| x_2$ and $y = x_2 \| x_1$. Since xor is commutative, $x_1 \oplus x_2 = x_2 \oplus x_1$, hence
 
-  $$ H(x) = \mathrm{SHA}(x_1 \oplus x_2) = \mathrm{SHA}(x_2 \oplus x_1) = H(y), $$
+  $$H(x) = \mathrm{SHA}(x_1 \oplus x_2) = \mathrm{SHA}(x_2 \oplus x_1) = H(y),$$
 
   an explicit collision.
 - *Applying Step 4:* Weak collision resistance — BROKEN. Now $x = x_1 \| \cdots \| x_n$ is fixed. Append any block $b$ TWICE: $y = x_1 \| \cdots \| x_n \| b \| b$. Because $b \oplus b = 0$, the xor is unchanged: $C(y) = x_1 \oplus \cdots \oplus x_n \oplus b \oplus b = C(x)$, so $H(y) = H(x)$ with $y \neq x$. (Alternatively, swap any two blocks of the fixed $x$, as in Step 3.)
 - *Applying Step 5:* One-wayness — HOLDS (official solution, by reduction). Suppose $H$ were NOT one-way, i.e. there is an efficient function $g$ with $H(g(h)) = h$ for every digest $h$. Define $f(h) = \bigoplus \text{(the 256-bit blocks of } g(h) \text{)}$. Then by definition of $H$,
 
-  $$ \mathrm{SHA}(f(h)) = H(g(h)) = h \quad \text{for every } h, $$
+  $$\mathrm{SHA}(f(h)) = H(g(h)) = h \quad \text{for every } h,$$
 
   so $f$ inverts SHA-2 on every output — contradicting the assumed one-wayness of SHA. Hence $H$ is one-way.
 
@@ -187,12 +187,12 @@ Here, SHA256 is SHA-2 with 256-bit output, $LSB_{128}$ returns the last 128 bits
 - *Applying Step 2:* Decompose: there is NO secure primitive here at all — $H$ is a pure linear combiner over 128-bit blocks. So no reduction to a secure primitive is available; expect to break all three properties by direct algebra on the weighted sum. Useful handles: the coefficient of block 1 is $1$ (odd, hence invertible), and a block with value $0$ contributes nothing no matter its index.
 - *Applying Step 3:* One-wayness — BROKEN (official solution: "just use $x := h$"). Given any target digest $h$ (a 128-bit value), take the SINGLE-block input $x = (x_1)$ with $x_1 = h$. Then
 
-  $$ H(x) = 1 \cdot x_1 \bmod 2^{128} = h, $$
+  $$H(x) = 1 \cdot x_1 \bmod 2^{128} = h,$$
 
   a preimage produced with zero effort. The coefficient $1$ of the first block is what makes this trivial: block 1 passes straight through to the digest.
 - *Applying Step 4:* Weak collision resistance — BROKEN (official solution). Given a fixed $x = (x_1, \dots, x_n)$, append one all-zero block: $y = (x_1, \dots, x_n, 0)$. The new block contributes $(n+1) \cdot 0 = 0$ to the sum, so
 
-  $$ H(y) = \sum_{i=1}^{n} i \cdot x_i + (n+1) \cdot 0 \;\bmod\, 2^{128} = H(x), $$
+  $$H(y) = \sum_{i=1}^{n} i \cdot x_i + (n+1) \cdot 0 \;\bmod\, 2^{128} = H(x),$$
 
   and $y \neq x$ since it has one more block.
 - *Applying Step 5:* Strong collision resistance — BROKEN. The same zero-block trick already exhibits a colliding pair with both inputs chosen freely (pick any $x$, append a zero block), which by definition also wins the strong game. Equivalently, reorder-and-compensate: $x = (a, b)$ and $y = (b', a')$ with $a + 2b \equiv b' + 2a' \pmod{2^{128}}$ — e.g. $x = (1, 1)$ gives sum $3$, and $y = (3)$ gives $1 \cdot 3 = 3$, so $H(1 \| 1) = H(3)$.
@@ -663,7 +663,7 @@ Use this scheme when the problem **provides** a BLP system stated as: an ordered
 
 **Exam Practice: Exam HT2018 (dasak18, 2019-01-14), Part II, Problem 6**
 
-**Problem:** Bell–LaPadula. The system state is $(b, f, H)$, where $b$ is the set of active accesses (triples (subject, object, access mode), modes: read, write (implies read), execute, append (write-only)); $f_s(s)$ is the max security clearance of subject $s$, $f_c(s)$ the current clearance, $f_o(o)$ the classification of object $o$; $H$ is the hierarchy of levels. There is no discretionary access control and no compartments. Level hierarchy: $H$: top secret $>$ secret $>$ confidential $>$ unclassified. Subjects: Alice: $f_s = f_c = $ top secret; Bob: $f_s = $ secret, $f_c = $ confidential; Carol: $f_s = f_c = $ confidential. Objects (files): plan: top secret; budget: secret; rumors: confidential; official: unclassified. Currently active accesses: $b = \{$(Alice, plan, write), (Bob, rumors, read)$\}$. Decide for each access request whether it should be granted, and formally state which BLP rule is violated in case access is denied: (1) Alice, rumors, read; (2) Alice, official, write; (3) Bob, budget, write; (4) Carol, budget, append.
+**Problem:** Bell–LaPadula. The system state is $(b, f, H)$, where $b$ is the set of active accesses (triples (subject, object, access mode), modes: read, write (implies read), execute, append (write-only)); $f_s(s)$ is the max security clearance of subject $s$, $f_c(s)$ the current clearance, $f_o(o)$ the classification of object $o$; $H$ is the hierarchy of levels. There is no discretionary access control and no compartments. Level hierarchy: $H$: top secret $>$ secret $>$ confidential $>$ unclassified. Subjects: Alice: $f_s = f_c =$ top secret; Bob: $f_s =$ secret, $f_c =$ confidential; Carol: $f_s = f_c =$ confidential. Objects (files): plan: top secret; budget: secret; rumors: confidential; official: unclassified. Currently active accesses: $b = \{$(Alice, plan, write), (Bob, rumors, read)$\}$. Decide for each access request whether it should be granted, and formally state which BLP rule is violated in case access is denied: (1) Alice, rumors, read; (2) Alice, official, write; (3) Bob, budget, write; (4) Carol, budget, append.
 
 **Solution:**
 
@@ -671,7 +671,7 @@ Use this scheme when the problem **provides** a BLP system stated as: an ordered
 - *Applying Step 3 (instantiate):* Note the trap: Bob has *max* clearance secret but *current* clearance confidential. Writes are checked against $f_c$, reads against $f_s$.
 - *Applying Steps 4–5 (request 1):* Alice, rumors, read: test $f_o(\text{rumors}) \sqsubseteq f_s(\text{Alice})$, i.e. confidential $\leq$ top secret — true. **Allow** (ss-property satisfied).
 - *Applying Steps 4–5 (request 2):* Alice, official, write: test $f_c(\text{Alice}) \sqsubseteq f_o(\text{official})$, i.e. top secret $\leq$ unclassified — false. **Deny**; the violated rule is the $*$-property (no write down): a top-secret subject may not write an unclassified file.
-- *Applying Steps 4–5 (request 3):* Bob, budget, write: test $f_c(\text{Bob}) \sqsubseteq f_o(\text{budget})$, i.e. confidential $\leq$ secret — false (the official solution states $f_c(\text{Bob}) \neq f_o(\text{budget})$). **Deny** by the $*$-property. Had we wrongly used Bob's max clearance $f_s(\text{Bob}) = $ secret, we would have allowed it — that is the intended trap.
+- *Applying Steps 4–5 (request 3):* Bob, budget, write: test $f_c(\text{Bob}) \sqsubseteq f_o(\text{budget})$, i.e. confidential $\leq$ secret — false (the official solution states $f_c(\text{Bob}) \neq f_o(\text{budget})$). **Deny** by the $*$-property. Had we wrongly used Bob's max clearance $f_s(\text{Bob}) =$ secret, we would have allowed it — that is the intended trap.
 - *Applying Steps 4–5 (request 4):* Carol, budget, append: append is write-only, so only the $*$-property applies: $f_c(\text{Carol}) \sqsubseteq f_o(\text{budget})$, i.e. confidential $\leq$ secret — true. **Allow**: a blind write-up, even though Carol could not read budget.
 
 **Answer:** 1 allow (ss-property); 2 deny (*-property, no write down); 3 deny (*-property, current clearance confidential below secret); 4 allow (*-property, blind append-up).
@@ -1083,11 +1083,11 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 - *Applying Step 2: Isolate the $E_K$ term:* Goal: get $E_K(\text{something})$ alone on one side. For the first equation, XOR $IV_2$ onto both sides (legal because if $a = b$ then $a \oplus x = b \oplus x$): $C_1 \oplus IV_2 = E_K(IV_1 \oplus P_1) \oplus IV_2 \oplus IV_2 = E_K(IV_1 \oplus P_1)$, using $IV_2 \oplus IV_2 = 0$. The general recurrence $C_i = E_K(IV_2 \oplus C_{i-1} \oplus P_i)$ is already isolated. ***Why:*** you can only apply $D_K$ to something of the form $E_K(\cdot)$, so isolation must come first. ***Mistake to avoid:*** applying $D_K$ to $C_1$ directly without removing the outside $IV_2$ first — $D_K(C_1) \neq IV_1 \oplus P_1 \oplus$ (something simple), because $D_K$ does not distribute over XOR.
 - *Applying Step 3: Apply $D_K$ and solve for $P_i$:* Apply $D_K$ to both isolated sides, using $D_K(E_K(x)) = x$: from Step 2, $D_K(C_1 \oplus IV_2) = IV_1 \oplus P_1$, and XORing $IV_1$ over gives
 
-  $$ P_1 = D_K(C_1 \oplus IV_2) \oplus IV_1. $$
+  $$P_1 = D_K(C_1 \oplus IV_2) \oplus IV_1.$$
 
   For $i > 1$: $D_K(C_i) = IV_2 \oplus C_{i-1} \oplus P_i$, and XORing $IV_2 \oplus C_{i-1}$ over gives
 
-  $$ P_i = D_K(C_i) \oplus IV_2 \oplus C_{i-1}. $$
+  $$P_i = D_K(C_i) \oplus IV_2 \oplus C_{i-1}.$$
 
   ***Check (always do this):*** substitute encryption back in — $D_K(C_1 \oplus IV_2) \oplus IV_1 = D_K(E_K(IV_1 \oplus P_1)) \oplus IV_1 = IV_1 \oplus P_1 \oplus IV_1 = P_1$. ***Why:*** the check costs one line and catches sign errors the grader will catch otherwise.
 - *Applying Step 4: Read off parallelizability:* ***Encryption:*** the recurrence $C_i = E_K(IV_2 \oplus C_{i-1} \oplus P_i)$ requires $C_{i-1}$, so block $i$ cannot start before block $i - 1$ is finished — encryption is ***sequential***, not parallelizable. ***Decryption:*** $P_1 = D_K(C_1 \oplus IV_2) \oplus IV_1$ and $P_i = D_K(C_i) \oplus IV_2 \oplus C_{i-1}$ use only ciphertext blocks and the public IVs; Bob holds the entire ciphertext before he starts, so every block can be decrypted independently — decryption ***can be parallelized***. ***Mistake to avoid:*** answering "encryption is parallel because each $C_i$ formula looks self-contained" — the $C_{i-1}$ inside is a ciphertext dependency, and only plaintext/IV inputs are available up front.
@@ -1112,10 +1112,10 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 - *Applying Step 1: Map the recurrence structure:* In $C_i = E_K(P_i \oplus C_{i-1}) \oplus P_{i-1}$, the term $P_{i-1}$ is XORed outside the cipher while $P_i \oplus C_{i-1}$ is the cipher input. Note the ***plaintext feedback***: a plaintext block appears in the output mask, which will matter in Step 4.
 - *Applying Steps 2–3: Isolate $E_K$, apply $D_K$, solve for $P_i$:* XOR $P_{i-1}$ onto both sides to isolate the cipher term, then apply $D_K$ and move the remaining mask:
 
-  $$ C_i = E_K(P_i \oplus C_{i-1}) \oplus P_{i-1} $$
-  $$ C_i \oplus P_{i-1} = E_K(P_i \oplus C_{i-1}) $$
-  $$ D_K(C_i \oplus P_{i-1}) = P_i \oplus C_{i-1} $$
-  $$ P_i = D_K(C_i \oplus P_{i-1}) \oplus C_{i-1}. $$
+  $$C_i = E_K(P_i \oplus C_{i-1}) \oplus P_{i-1}$$
+  $$C_i \oplus P_{i-1} = E_K(P_i \oplus C_{i-1})$$
+  $$D_K(C_i \oplus P_{i-1}) = P_i \oplus C_{i-1}$$
+  $$P_i = D_K(C_i \oplus P_{i-1}) \oplus C_{i-1}.$$
 
   Each line uses only the XOR-cancellation facts ($x \oplus x = 0$) and $D_K(E_K(x)) = x$.
 - *Applying Step 4: Read off parallelizability:* Encryption ***cannot be parallelized***: computing $C_i$ requires knowing $C_{i-1}$ (an earlier ciphertext block), so blocks must be produced in order. Decryption also ***cannot be parallelized***: the formula $P_i = D_K(C_i \oplus P_{i-1}) \oplus C_{i-1}$ requires knowing the *previous plaintext* $P_{i-1}$, so blocks must be recovered in order. This is the plaintext-feedback trap — unlike CBC, both directions are sequential here.
@@ -1134,15 +1134,15 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 - *Applying Step 1: Map the recurrence structure:* $C_1$ has no outside term; in $C_2 = E_K(IV_2 \oplus P_2) \oplus C_1$ the previous ciphertext $C_1$ is XORed outside the cipher; in $C_i = E_K(C_{i-2} \oplus P_i)$ the block from *two positions back* is fed inside $E_K$ together with $P_i$.
 - *Applying Steps 2–3: Isolate $E_K$, apply $D_K$, solve for $P_2$:* XOR $C_1$ onto both sides, then decrypt, then move $IV_2$:
 
-  $$ C_2 = E_K(IV_2 \oplus P_2) \oplus C_1 $$
-  $$ C_2 \oplus C_1 = E_K(IV_2 \oplus P_2) $$
-  $$ D_K(C_2 \oplus C_1) = IV_2 \oplus P_2 $$
-  $$ P_2 = D_K(C_2 \oplus C_1) \oplus IV_2. $$
+  $$C_2 = E_K(IV_2 \oplus P_2) \oplus C_1$$
+  $$C_2 \oplus C_1 = E_K(IV_2 \oplus P_2)$$
+  $$D_K(C_2 \oplus C_1) = IV_2 \oplus P_2$$
+  $$P_2 = D_K(C_2 \oplus C_1) \oplus IV_2.$$
 - *Applying Steps 2–3: Solve for $P_i$, $i > 2$:* The general recurrence has $E_K$ already isolated, so apply $D_K$ and move $C_{i-2}$:
 
-  $$ C_i = E_K(C_{i-2} \oplus P_i) $$
-  $$ D_K(C_i) = C_{i-2} \oplus P_i $$
-  $$ P_i = D_K(C_i) \oplus C_{i-2}. $$
+  $$C_i = E_K(C_{i-2} \oplus P_i)$$
+  $$D_K(C_i) = C_{i-2} \oplus P_i$$
+  $$P_i = D_K(C_i) \oplus C_{i-2}.$$
 
   (Also $P_1 = D_K(C_1) \oplus IV_1$ from the first equation, useful in part (c).)
 - *Applying Step 4: Read off parallelizability:* Encryption ***cannot be parallelized***: the computation of $C_i$ requires knowing $C_{i-2}$, an earlier ciphertext block. Decryption ***can be parallelized***: the computation of $P_i$ does not require knowing any of $P_1, \dots, P_{i-1}$ — it uses only ciphertext blocks and the IVs, which Bob holds in full.
@@ -1164,9 +1164,9 @@ Use this scheme when the problem **provides** a made-up mode of operation (AES-S
 - *Applying Step 1: Map the recurrence structure:* Every term — $P_i$, $IV_1$, $IV_2$, and the running XOR of all previous ciphertext blocks $C_1 \oplus \cdots \oplus C_{i-1}$ — sits *inside* $E_K$; nothing is XORed outside the cipher. This makes inversion easy but makes encryption depend on the entire ciphertext history.
 - *Applying Steps 2–3: Apply $D_K$ and solve for $P_i$:* The cipher term is already isolated, so apply $D_K$ and XOR the remaining mask over (shown for $C_i$):
 
-  $$ C_i = E_K(P_i \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1}) $$
-  $$ D_K(C_i) = P_i \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1} $$
-  $$ P_i = D_K(C_i) \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1}. $$
+  $$C_i = E_K(P_i \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1})$$
+  $$D_K(C_i) = P_i \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1}$$
+  $$P_i = D_K(C_i) \oplus IV_1 \oplus IV_2 \oplus C_1 \oplus \cdots \oplus C_{i-1}.$$
 
   The special case is $P_1 = D_K(C_1) \oplus IV_1 \oplus IV_2$.
 - *Applying Step 4: Read off parallelizability:* Encryption ***cannot be parallelized***: computing $C_i$ requires knowing all of $C_1, \dots, C_{i-1}$. Decryption ***can be parallelized***: computing $P_i$ does not require knowing any of $P_1, \dots, P_{i-1}$, and the ciphertexts of all previous blocks are already known to Bob.
@@ -1379,7 +1379,7 @@ Use this scheme when the problem **provides** a small web application described 
   SELECT customerName FROM tickets WHERE operaName = 'Carmen' AND customerName = 'Bob' AND SLEEP(10) = 1
   ```
 
-  If Bob has a ticket for Carmen, a row satisfies the first two conditions, so the database evaluates `SLEEP(10)=1` and pauses 10 seconds: the page answers in about 10 seconds instead of under 2. If Bob has no such ticket, no row survives the first two conditions, the sleep is never reached, and the page answers as fast as before. The timing gap (10 s vs $<$ 2 s) encodes the boolean.
+  If Bob has a ticket for Carmen, a row satisfies the first two conditions, so the database evaluates `SLEEP(10)=1` and pauses 10 seconds: the page answers in about 10 seconds instead of under 2. If Bob has no such ticket, no row survives the first two conditions, the sleep is never reached, and the page answers as fast as before. The timing gap (10 s vs$<$ 2 s) encodes the boolean.
 - *Applying Step 5 (state the assumption and justify):* The required additional assumption: the database uses ***short-circuit evaluation*** for `AND` — `SLEEP(10)=1` is NOT evaluated when a left-hand conjunct is already false. Without short-circuiting, the sleep would run on every query and timing would carry no information. The injection works because the concatenated input becomes part of the query TEXT the database parses: Mallory's quote ends the intended string literal and her `--` neutralizes the trailing one. The fix (not asked, but know it): parameterized queries, so input can never become query logic.
 
 **Answer:** Input `Carmen' AND customerName = 'Bob' AND SLEEP(10) = 1 -- `: a roughly 10-second response means Bob has a ticket for Carmen, a fast (under 2 s) response means he does not — assuming short-circuit evaluation of `AND`.
@@ -1394,41 +1394,41 @@ Use this scheme when the problem **provides** a small web application described 
 
 ### Theory Background (Start Here if You Know Nothing)
 
-Start from zero: a ***cryptographic hash function*** $H$ is a publicly known algorithm that takes an input of ANY length (a password, a file, a string) and produces a fixed-length output called a ***digest*** (for example 256 bits). Three properties matter for this exam topic:
+Start from zero: a ***cryptographic hash function***$H$ is a publicly known algorithm that takes an input of ANY length (a password, a file, a string) and produces a fixed-length output called a ***digest*** (for example 256 bits). Three properties matter for this exam topic:
 
 - ***Deterministic***: the same input always gives the same digest, so the server can re-hash what you type and compare it with what it stored.
-- ***One-way*** (also called ***preimage resistant***): given a digest $y$, it is computationally infeasible to find ANY input $x$ with $H(x) = y$. The only known generic strategy is to guess candidates and hash them.
+- ***One-way*** (also called ***preimage resistant***): given a digest$y$, it is computationally infeasible to find ANY input$x$ with$H(x) = y$. The only known generic strategy is to guess candidates and hash them.
 - ***Collision resistant***: it is infeasible to find two different inputs with the same digest.
 
-Why store hashes at all? If the server kept passwords in plaintext and an attacker stole the database, every account would be compromised instantly. If instead the server stores $H(password)$, the thief only gets digests, and one-wayness forces her into ***guessing***: pick a candidate password, hash it, compare with the stored digest. This guessing game is the whole topic.
+Why store hashes at all? If the server kept passwords in plaintext and an attacker stole the database, every account would be compromised instantly. If instead the server stores$H(password)$, the thief only gets digests, and one-wayness forces her into ***guessing***: pick a candidate password, hash it, compare with the stored digest. This guessing game is the whole topic.
 
-The threat model in these problems is the ***offline attack***: the attacker (usually called Mallory) has already stolen a copy of the password database and hashes candidates on her own machine at her own speed — there is no server to rate-limit her and no lockout to slow her down. The reason guessing works in practice is that humans pick terrible passwords: the exam models this by saying every password comes from a publicly known list of $L$ candidates (a ***dictionary***). Guessing all $L$ candidates against one stored digest therefore costs at most $L$ hash evaluations. A ***rainbow table*** pushes this further: an attacker precomputes the digest of every candidate ONCE, stores the (digest, password) pairs, and then cracks any unsalted digest with a pure table lookup — zero new hashes. Exam cost model: **only hash evaluations count** — comparisons, concatenations, and database reads/writes are free.
+The threat model in these problems is the ***offline attack***: the attacker (usually called Mallory) has already stolen a copy of the password database and hashes candidates on her own machine at her own speed — there is no server to rate-limit her and no lockout to slow her down. The reason guessing works in practice is that humans pick terrible passwords: the exam models this by saying every password comes from a publicly known list of$L$ candidates (a ***dictionary***). Guessing all$L$ candidates against one stored digest therefore costs at most$L$ hash evaluations. A ***rainbow table*** pushes this further: an attacker precomputes the digest of every candidate ONCE, stores the (digest, password) pairs, and then cracks any unsalted digest with a pure table lookup — zero new hashes. Exam cost model: **only hash evaluations count** — comparisons, concatenations, and database reads/writes are free.
 
-The classic defense is a ***salt***: a random, per-user value that is PUBLIC (stored in cleartext next to the digest). The server stores $(username,\; s,\; H(s \, \| \, password))$. Because the salt differs per user, the digest function differs per user, so one precomputed dictionary no longer fits all users — rainbow tables die. The salt is not meant to be secret; its entire job is to destroy reuse across users. Two facts to memorize:
+The classic defense is a ***salt***: a random, per-user value that is PUBLIC (stored in cleartext next to the digest). The server stores$(username,\; s,\; H(s \, \| \, password))$. Because the salt differs per user, the digest function differs per user, so one precomputed dictionary no longer fits all users — rainbow tables die. The salt is not meant to be secret; its entire job is to destroy reuse across users. Two facts to memorize:
 
 - **a single global salt is not a salt** — if every user shares the same salt, all digests still share one function and rainbow tables work again.
-- A ***slow hash / KDF*** (bcrypt, scrypt, Argon2, PBKDF2 — essentially $H$ iterated tens of thousands of times) multiplies the cost of EVERY guess by a huge constant; a legitimate user logs in once and barely notices, but an attacker making billions of guesses cannot afford it.
+- A ***slow hash / KDF*** (bcrypt, scrypt, Argon2, PBKDF2 — essentially$H$ iterated tens of thousands of times) multiplies the cost of EVERY guess by a huge constant; a legitimate user logs in once and barely notices, but an attacker making billions of guesses cannot afford it.
 
 Every cost-accounting sub-question is solved by one principle: ***factor the stored-value formula*** into two kinds of subexpressions.
 
-- ***User-independent subexpressions*** — anything built only from the password, e.g. $H(password)$: precompute once for all $L$ candidates and reuse the result for every user.
-- ***Per-user subexpressions*** — anything the username or a per-user salt touches, e.g. $H(username \, \| \, password)$: must be recomputed from scratch for each of the $U$ users.
+- ***User-independent subexpressions*** — anything built only from the password, e.g.$H(password)$: precompute once for all$L$ candidates and reuse the result for every user.
+- ***Per-user subexpressions*** — anything the username or a per-user salt touches, e.g.$H(username \, \| \, password)$: must be recomputed from scratch for each of the$U$ users.
 
-The PLACEMENT of $H$ decides everything: an $H$ wrapped around the whole expression (username included) forces $U \cdot L$ fresh evaluations, while $H(password)$ sitting as an inner term can be precomputed into a dictionary costing only $L$ once. The four canonical shapes, for recovering all passwords:
+The PLACEMENT of$H$ decides everything: an$H$ wrapped around the whole expression (username included) forces$U \cdot L$ fresh evaluations, while$H(password)$ sitting as an inner term can be precomputed into a dictionary costing only$L$ once. The four canonical shapes, for recovering all passwords:
 
-- $H(password)$: $L$ hashes (one dictionary serves all users).
-- $H(username \, \| \, password)$: $U \cdot L$ hashes (no reuse possible).
-- $H(H(username) \, \| \, password)$: $U + U \cdot L$ hashes (precompute $H(username)$ once per user).
-- $H(username \, \| \, H(password))$: $L + U \cdot L$ hashes (precompute the $L$ hashed passwords).
+-$H(password)$:$L$ hashes (one dictionary serves all users).
+-$H(username \, \| \, password)$:$U \cdot L$ hashes (no reuse possible).
+-$H(H(username) \, \| \, password)$:$U + U \cdot L$ hashes (precompute$H(username)$ once per user).
+-$H(username \, \| \, H(password))$:$L + U \cdot L$ hashes (precompute the$L$ hashed passwords).
 
 For the replacement attack (set every password to pwned) the same factoring applies, but remember the classic trap: **pwned is not in the candidate list**, so its inner hash can never come from the precomputed dictionary — it costs one extra evaluation.
 
-The second scheme family is the ***Lamport hash chain*** (one-time passwords). At registration the client computes $H^{N}(pwd \, \| \, salt)$ — apply $H$ a total of $N$ times, where $H^{0}(x) = x$ and $H^{3}(x) = H(H(H(x)))$ — and the server stores it in a variable $stored$. At login number $i$ the client sends $H^{N-i}(pwd \, \| \, salt)$; the server checks $H(\text{received}) = stored$ and, on success, updates $stored := \text{received}$. Think of the chain as a rope with exponent marks: registration hangs the top value $H^{N}(pwd \, \| \, salt)$ on the server as $stored$, and each login uses a mark one LOWER than the last ($H^{N-i}$, then $H^{N-i-1}$, and so on). Hashing moves you UP the rope, from exponent $k$ to $k+1$, toward the registered top value — that is exactly what the server does to verify: it hashes the received token once and compares with $stored$. One-wayness means nobody can step DOWN the rope: going from the token just sent, $H^{N-i}(pwd \, \| \, salt)$, to the next login's token, $H^{N-i-1}(pwd \, \| \, salt)$, would require inverting $H$, which is infeasible. Consequences, all of which have appeared on exams:
+The second scheme family is the ***Lamport hash chain*** (one-time passwords). At registration the client computes$H^{N}(pwd \, \| \, salt)$ — apply$H$ a total of$N$ times, where$H^{0}(x) = x$ and$H^{3}(x) = H(H(H(x)))$ — and the server stores it in a variable$stored$. At login number$i$ the client sends$H^{N-i}(pwd \, \| \, salt)$; the server checks$H(\text{received}) = stored$ and, on success, updates$stored := \text{received}$. Think of the chain as a rope with exponent marks: registration hangs the top value$H^{N}(pwd \, \| \, salt)$ on the server as$stored$, and each login uses a mark one LOWER than the last ($H^{N-i}$, then$H^{N-i-1}$, and so on). Hashing moves you UP the rope, from exponent$k$ to$k+1$, toward the registered top value — that is exactly what the server does to verify: it hashes the received token once and compares with$stored$. One-wayness means nobody can step DOWN the rope: going from the token just sent,$H^{N-i}(pwd \, \| \, salt)$, to the next login's token,$H^{N-i-1}(pwd \, \| \, salt)$, would require inverting$H$, which is infeasible. Consequences, all of which have appeared on exams:
 
-- The server needs to know NEITHER $pwd$ NOR $salt$ — it only hashes the received token once and compares; the client built the whole chain at registration.
-- The next token $H^{N-i-1}(pwd \, \| \, salt)$ CANNOT be derived from the token just sent — that would mean inverting $H$ once. The client must recompute it from $pwd \, \| \, salt$ at a cost of $N-i-1$ hash evaluations.
-- At login $i = N$ the client sends $H^{0}(pwd \, \| \, salt) = pwd \, \| \, salt$ in plaintext, so a network eavesdropper learns the password exactly there.
-- An attacker who can WRITE $stored$ picks any value $v$, sets $stored := H(v)$, and logs in by sending $v$ — no knowledge of $pwd$, $salt$, or $i$ required.
+- The server needs to know NEITHER$pwd$ NOR$salt$ — it only hashes the received token once and compares; the client built the whole chain at registration.
+- The next token$H^{N-i-1}(pwd \, \| \, salt)$ CANNOT be derived from the token just sent — that would mean inverting$H$ once. The client must recompute it from$pwd \, \| \, salt$ at a cost of$N-i-1$ hash evaluations.
+- At login$i = N$ the client sends$H^{0}(pwd \, \| \, salt) = pwd \, \| \, salt$ in plaintext, so a network eavesdropper learns the password exactly there.
+- An attacker who can WRITE$stored$ picks any value$v$, sets$stored := H(v)$, and logs in by sending$v$ — no knowledge of$pwd$,$salt$, or$i$ required.
 
 Design-critique questions (the third exam family) reuse four terms you must define before you can argue with them.
 
@@ -1444,17 +1444,17 @@ Design-critique questions (the third exam family) reuse four terms you must defi
 **Theory Cheat-Sheet**
 
 - Cost model: only hash evaluations count; comparisons, concatenation and DB operations are free.
-- Unsalted $H(password)$: recover all $U$ passwords costs $L$ hashes; set all to pwned costs $1$ hash.
-- Username/salt inside the OUTER hash kills reuse: recovery $U \cdot L$, replacement $U$.
-- $H(password)$ as an INNER term: precompute the dictionary once: recovery $L + U \cdot L$; replacement $1 + U$ (pwned is NOT in the list, so its inner hash costs 1 extra).
-- $H(username)$ as an inner term: precomputable once per user, adding a flat $+U$ term.
-- Lamport chain: login $i$ sends $H^{N-i}(pwd \, \| \, salt)$; server checks $H(\text{received}) = stored$; the next token cannot be derived from the current one (one-wayness); login $N$ leaks $pwd$ in plaintext; a DB-writer sets $stored := H(v)$ and logs in with $v$.
+- Unsalted$H(password)$: recover all$U$ passwords costs$L$ hashes; set all to pwned costs$1$ hash.
+- Username/salt inside the OUTER hash kills reuse: recovery$U \cdot L$, replacement$U$.
+-$H(password)$ as an INNER term: precompute the dictionary once: recovery$L + U \cdot L$; replacement$1 + U$ (pwned is NOT in the list, so its inner hash costs 1 extra).
+-$H(username)$ as an inner term: precomputable once per user, adding a flat$+U$ term.
+- Lamport chain: login$i$ sends$H^{N-i}(pwd \, \| \, salt)$; server checks$H(\text{received}) = stored$; the next token cannot be derived from the current one (one-wayness); login$N$ leaks$pwd$ in plaintext; a DB-writer sets$stored := H(v)$ and logs in with$v$.
 
 ---
 
 ### How to Identify
 
-Use this scheme when the problem **provides** a password database with $U$ users whose passwords come from a known list of $L$ candidates, a concrete storage formula built from a secure hash $H$ and concatenation (e.g. $H(password)$, $H(username \, \| \, password)$, $H(H(username) \, \| \, password)$, $H(username \, \| \, H(password))$), and an attacker Mallory who can read and modify the database; or a Lamport-style hash-chain scheme using $H^{k}(pwd \, \| \, salt)$ with a server-side "stored" variable and a network- or server-compromising attacker; or a list of organizational password measures to critique. Only hash computations count as cost; comparisons and database operations are free. The problem **asks you to**, for each storage scheme, describe the attack and compute the exact number of hash evaluations needed (a) to recover every user's password and (b) to change every password to a fixed new value such as "pwned"; or, for hash-chain schemes, justify what the server must know, compute the chain index/cost of the next login, state at which login an eavesdropper learns the password, and show how a server-compromising attacker logs in without $pwd$, $salt$, or the login index; or, for design critiques, map each measure to the threats it counters, the vulnerabilities it leaves or introduces, and better countermeasures. Look for keywords like: *"password storage", "how many hashes", "salt", "username++password", "secure cryptographic hash function", "password list", "dictionary", "hash chain", "H^k", "login", "stored", "pwned", "rainbow table", "concatenation"*.
+Use this scheme when the problem **provides** a password database with$U$ users whose passwords come from a known list of$L$ candidates, a concrete storage formula built from a secure hash$H$ and concatenation (e.g.$H(password)$,$H(username \, \| \, password)$,$H(H(username) \, \| \, password)$,$H(username \, \| \, H(password))$), and an attacker Mallory who can read and modify the database; or a Lamport-style hash-chain scheme using$H^{k}(pwd \, \| \, salt)$ with a server-side "stored" variable and a network- or server-compromising attacker; or a list of organizational password measures to critique. Only hash computations count as cost; comparisons and database operations are free. The problem **asks you to**, for each storage scheme, describe the attack and compute the exact number of hash evaluations needed (a) to recover every user's password and (b) to change every password to a fixed new value such as "pwned"; or, for hash-chain schemes, justify what the server must know, compute the chain index/cost of the next login, state at which login an eavesdropper learns the password, and show how a server-compromising attacker logs in without$pwd$,$salt$, or the login index; or, for design critiques, map each measure to the threats it counters, the vulnerabilities it leaves or introduces, and better countermeasures. Look for keywords like: *"password storage", "how many hashes", "salt", "username++password", "secure cryptographic hash function", "password list", "dictionary", "hash chain", "H^k", "login", "stored", "pwned", "rainbow table", "concatenation"*.
 
 ---
 
@@ -1466,28 +1466,28 @@ Use this scheme when the problem **provides** a password database with $U$ users
 
    Recall the cost model: **only hash evaluations count**.
 2. **Factor the formula:** Split the hash expression into
-   - ***user-independent subexpressions*** — precompute once, reuse for all users. E.g. $H(password)$ is the same for every user: a dictionary of all $L$ values costs $L$ hashes total.
+   - ***user-independent subexpressions*** — precompute once, reuse for all users. E.g.$H(password)$ is the same for every user: a dictionary of all$L$ values costs$L$ hashes total.
    - ***per-user subexpressions*** — anything concatenated with the username or a per-user salt must be recomputed for each user.
 
    This factoring decides the entire answer.
-3. **Count the recovery cost:** For each of the $U$ users, test all $L$ candidates against the stored value; total = (one-time precomputation) $+\; U \times L \times$ (hashes per candidate after reuse). The four canonical shapes:
-   - $H(pwd)$: $L$ (one dictionary serves all users).
-   - $H(user \, \| \, pwd)$: $U \cdot L$ (salt kills reuse).
-   - $H(H(user) \, \| \, pwd)$: $U + U \cdot L$ (precompute $H(user)$ per user).
-   - $H(user \, \| \, H(pwd))$: $L + U \cdot L$ (precompute the $L$ hashed passwords).
+3. **Count the recovery cost:** For each of the$U$ users, test all$L$ candidates against the stored value; total = (one-time precomputation)$+\; U \times L \times$ (hashes per candidate after reuse). The four canonical shapes:
+   -$H(pwd)$:$L$ (one dictionary serves all users).
+   -$H(user \, \| \, pwd)$:$U \cdot L$ (salt kills reuse).
+   -$H(H(user) \, \| \, pwd)$:$U + U \cdot L$ (precompute$H(user)$ per user).
+   -$H(user \, \| \, H(pwd))$:$L + U \cdot L$ (precompute the$L$ hashed passwords).
 4. **Count the replacement cost:** Apply the same factoring to the new password pwned: compute its user-independent inner hash once if the formula needs it, then one outer hash per user:
-   - $H(pwned)$: $1$ hash, written everywhere.
-   - $H(user \, \| \, pwned)$: $U$ hashes.
-   - $H(H(user) \, \| \, pwned)$: $U + U = 2U$.
-   - $H(user \, \| \, H(pwned))$: $1 + U$.
+   -$H(pwned)$:$1$ hash, written everywhere.
+   -$H(user \, \| \, pwned)$:$U$ hashes.
+   -$H(H(user) \, \| \, pwned)$:$U + U = 2U$.
+   -$H(user \, \| \, H(pwned))$:$1 + U$.
 
    Trap: **pwned is not in the candidate list**, so its inner hash can never come from the dictionary precomputation — it costs one extra evaluation.
-5. **Justify impossibility where asked:** If a goal requires inverting $H$ (recovering a password outside the candidate list, or walking a hash chain backwards), state that it is ***infeasible because $H$ is one-way***. Likewise state that the server only needs to know the values it actually compares — it never needs $pwd$ or $salt$ themselves.
-6. **Handle hash chains:** For Lamport-style schemes where login $i$ sends $H^{N-i}(pwd \, \| \, salt)$ and the server checks $H(\text{received}) = stored$ then updates $stored$:
-   - The next login needs exponent $N-i-1$; it CANNOT be derived from the sent value (one-wayness) and costs full recomputation from $pwd \, \| \, salt$, i.e. $N-i-1$ hashes.
-   - At login $N$ the client sends $H^{0}(pwd \, \| \, salt) = pwd \, \| \, salt$ in plaintext — an eavesdropper learns the password here.
-   - An attacker who can write $stored$ sets $stored := H(v)$ for a chosen $v$ and logs in with $v$ — no knowledge of $pwd$, $salt$, or $i$ required.
-7. **State exact totals:** Give the final count per scheme and per goal as a closed formula in $U$ and $L$ (e.g. $L$ and $1$; $U \cdot L$ and $U$; $U + U \cdot L$ and $2U$; $L + U \cdot L$ and $U + 1$), each with one line of justification naming what was precomputed and what is per-user.
+5. **Justify impossibility where asked:** If a goal requires inverting$H$ (recovering a password outside the candidate list, or walking a hash chain backwards), state that it is ***infeasible because$H$ is one-way***. Likewise state that the server only needs to know the values it actually compares — it never needs$pwd$ or$salt$ themselves.
+6. **Handle hash chains:** For Lamport-style schemes where login$i$ sends$H^{N-i}(pwd \, \| \, salt)$ and the server checks$H(\text{received}) = stored$ then updates$stored$:
+   - The next login needs exponent$N-i-1$; it CANNOT be derived from the sent value (one-wayness) and costs full recomputation from$pwd \, \| \, salt$, i.e.$N-i-1$ hashes.
+   - At login$N$ the client sends$H^{0}(pwd \, \| \, salt) = pwd \, \| \, salt$ in plaintext — an eavesdropper learns the password here.
+   - An attacker who can write$stored$ sets$stored := H(v)$ for a chosen$v$ and logs in with$v$ — no knowledge of$pwd$,$salt$, or$i$ required.
+7. **State exact totals:** Give the final count per scheme and per goal as a closed formula in$U$ and$L$ (e.g.$L$ and$1$;$U \cdot L$ and$U$;$U + U \cdot L$ and$2U$;$L + U \cdot L$ and$U + 1$), each with one line of justification naming what was precomputed and what is per-user.
 8. **Critique each measure:** For design-critique questions, process the listed measures ONE AT A TIME, and for each measure answer the four required axes in order:
    - ***Threats countered***: name the concrete attack the measure defends against (e.g. hashing protects the stolen file; a salt counters rainbow tables; composition rules counter dictionary attacks; lockout counters ONLINE guessing).
    - ***Remaining vulnerabilities***: state what still breaks. Recurring findings: a single global salt is not a salt (rainbow tables still work); a secret proprietary hash violates ***Kerckhoffs' principle***; extra servers/admins enlarge the ***trusted computing base***; harsh rules push users to write passwords down; lockout enables user-targeted ***denial of service***; a reset channel with no authentication lets anyone take over an account.
@@ -1500,58 +1500,58 @@ Use this scheme when the problem **provides** a password database with $U$ users
 
 **Exam Variations & Traps**
 
-- **Variation 1 (Hash placement / nesting):** The professor permutes where $H$ and the username sit: $H(password)$, $H(username \, \| \, password)$, $H(H(username) \, \| \, password)$, $H(username \, \| \, H(password))$. Where the inner hash sits decides what is reusable: a dictionary of $H(pwd)$ is reusable across users only when $H(pwd)$ appears as an INNER term (giving $L + U \cdot L$ instead of $U \cdot L$); $H(username)$ is precomputable once per user (adding a flat $U$). Trap: forgetting that pwned is not in the $L$-list, so its inner hash costs one extra evaluation in the replacement attack ($U + 1$, not $U$).
-- **Variation 2 (Lamport hash-chain login):** Instead of a static database, the scheme sends $H^{N-i}(pwd \, \| \, salt)$ at login $i$ and the server verifies $H(\text{received}) = stored$. Sub-questions ask whether the server needs $pwd$/$salt$ (no — it only compares hashes), the cost of the next login (full recomputation; the chain cannot be walked backwards), when an eavesdropper learns $pwd$ (at $i = N$, since $H^{0}(x) = x$ is sent in plaintext), and the server-compromise attack (set $stored := H(v)$, log in with $v$). Trap: thinking the next token can be derived from the current one — one-wayness forbids it.
-- **Variation 3 (Role reversal: attacker writes the database):** The second goal always flips the attacker from reader to writer: instead of cracking, Mallory replaces stored hashes so every user has password pwned. The cost structure mirrors recovery but with $L$ replaced by the single value pwned. Traps: reusing the dictionary of $L$ password hashes for pwned (impossible — pwned is not in the list), or forgetting that the per-user salt forces $U$ separate outer hashes.
+- **Variation 1 (Hash placement / nesting):** The professor permutes where$H$ and the username sit:$H(password)$,$H(username \, \| \, password)$,$H(H(username) \, \| \, password)$,$H(username \, \| \, H(password))$. Where the inner hash sits decides what is reusable: a dictionary of$H(pwd)$ is reusable across users only when$H(pwd)$ appears as an INNER term (giving$L + U \cdot L$ instead of$U \cdot L$);$H(username)$ is precomputable once per user (adding a flat$U$). Trap: forgetting that pwned is not in the$L$-list, so its inner hash costs one extra evaluation in the replacement attack ($U + 1$, not$U$).
+- **Variation 2 (Lamport hash-chain login):** Instead of a static database, the scheme sends$H^{N-i}(pwd \, \| \, salt)$ at login$i$ and the server verifies$H(\text{received}) = stored$. Sub-questions ask whether the server needs$pwd$/$salt$ (no — it only compares hashes), the cost of the next login (full recomputation; the chain cannot be walked backwards), when an eavesdropper learns$pwd$ (at$i = N$, since$H^{0}(x) = x$ is sent in plaintext), and the server-compromise attack (set$stored := H(v)$, log in with$v$). Trap: thinking the next token can be derived from the current one — one-wayness forbids it.
+- **Variation 3 (Role reversal: attacker writes the database):** The second goal always flips the attacker from reader to writer: instead of cracking, Mallory replaces stored hashes so every user has password pwned. The cost structure mirrors recovery but with$L$ replaced by the single value pwned. Traps: reusing the dictionary of$L$ password hashes for pwned (impossible — pwned is not in the list), or forgetting that the per-user salt forces$U$ separate outer hashes.
 - **Variation 4 (Design-critique checklist):** Other sittings list organizational measures (secret proprietary hash, one global "salt", strict composition rules, forced rotation, lockout, phone recovery) and ask which attack each counters. Map each measure: a proprietary hash violates ***Kerckhoffs' principle***; a global salt is not a salt and does not stop rainbow tables — only per-user salts do; lockout/rate limiting stops ONLINE guessing but enables user-targeted DoS; a ***slow KDF*** (bcrypt/scrypt/Argon2/PBKDF2) raises OFFLINE cracking cost. Adapt by naming the attack each measure does and does not address.
 
 ---
 
 ### Guided Walkthrough (Learn the Method on One Question)
 
-**Problem:** Carol runs the user database of the music-streaming service TuneVault. The service has $U$ users, each with a unique username, and every user picked a password from a publicly known list of $L$ candidate passwords. $H$ is a secure cryptographic hash function; concatenation is denoted $\, \| \,$. The attacker Trudy can read and modify the database, and her goals are (1) to compute every user's password and (2) to change every user's password to "letmein" (which is NOT in the candidate list). Only hash computations count as work; comparisons and database operations are free. For each of the following storage schemes, describe both attacks and give the exact number of hash evaluations Trudy needs:
+**Problem:** Carol runs the user database of the music-streaming service TuneVault. The service has$U$ users, each with a unique username, and every user picked a password from a publicly known list of$L$ candidate passwords.$H$ is a secure cryptographic hash function; concatenation is denoted$\, \| \,$. The attacker Trudy can read and modify the database, and her goals are (1) to compute every user's password and (2) to change every user's password to "letmein" (which is NOT in the candidate list). Only hash computations count as work; comparisons and database operations are free. For each of the following storage schemes, describe both attacks and give the exact number of hash evaluations Trudy needs:
 
-- (a) store $(username,\; H(password))$;
-- (b) store $(username,\; H(password \, \| \, username))$;
-- (c) store $(username,\; H(H(password) \, \| \, username))$;
-- (d) store $(username,\; H(password \, \| \, H(username)))$.
+- (a) store$(username,\; H(password))$;
+- (b) store$(username,\; H(password \, \| \, username))$;
+- (c) store$(username,\; H(H(password) \, \| \, username))$;
+- (d) store$(username,\; H(password \, \| \, H(username)))$.
 
-TuneVault also prototypes a Lamport-style one-time-password login: at registration the server sets $stored := H^{500}(pwd \, \| \, salt)$; at login $i$ the client sends $H^{500-i}(pwd \, \| \, salt)$, and the server checks $H(\text{received}) = stored$ and then updates $stored := \text{received}$. (i) Does the server need to know $pwd$ or $salt$? (ii) After a successful login $i$, what must the client send at login $i+1$, can it derive that value from the token it sent at login $i$, and what does it cost? (iii) At which login does an eavesdropper learn $pwd \, \| \, salt$? (iv) Trudy compromises the server and may overwrite $stored$; show how she logs in as Carol without knowing $pwd$, $salt$, or $i$.
+TuneVault also prototypes a Lamport-style one-time-password login: at registration the server sets$stored := H^{500}(pwd \, \| \, salt)$; at login$i$ the client sends$H^{500-i}(pwd \, \| \, salt)$, and the server checks$H(\text{received}) = stored$ and then updates$stored := \text{received}$. (i) Does the server need to know$pwd$ or$salt$? (ii) After a successful login$i$, what must the client send at login$i+1$, can it derive that value from the token it sent at login$i$, and what does it cost? (iii) At which login does an eavesdropper learn$pwd \, \| \, salt$? (iv) Trudy compromises the server and may overwrite$stored$; show how she logs in as Carol without knowing$pwd$,$salt$, or$i$.
 
 **Solution (every step explained, including WHY):**
 
-- *Applying Step 1 (Parse the scheme):* First write down what is being asked before touching any formula. Goal (1) is ***recovery***: Trudy wants every user's actual password. Goal (2) is ***replacement***: she wants to overwrite the database so every password becomes letmein. The cost model says **only hash evaluations count** — so when we count, we ignore comparisons and database writes entirely. Beginner mistake to avoid: do not count the $U \times L$ comparisons; only the hashes. For the prototype login, Trudy additionally eavesdrops the network (part iii) and can write $stored$ (part iv).
-- *Applying Step 2 (Factor the formula):* Now do the factoring step — this decides everything, so spend your time here. In (a) the whole stored value is $H(password)$: no username anywhere, so it is fully ***user-independent***. In (b) and (d) the username is concatenated with the password INSIDE the outer hash, so nothing about the password can be reused across users. In (c) the inner term $H(password)$ is user-independent (one dictionary of $L$ values works for everyone) but the OUTER hash mixes in the username, forcing per-user work. In (d) the inner $H(username)$ is constant per user, so it is precomputable once per user. Why this matters: every candidate you test against user 1's digest in scheme (b) is useless for user 2, because the username changed the input to $H$. For the replacement attack, note the trap now: letmein is not in the candidate list, so $H(letmein)$ can never come from the precomputed dictionary — it costs one fresh hash wherever an inner $H(pwd)$ is needed.
-- *Applying Step 3 (Count recovery costs):* (a) Compute $H(candidate)$ for each of the $L$ candidates once, then compare this dictionary against all $U$ stored digests:
+- *Applying Step 1 (Parse the scheme):* First write down what is being asked before touching any formula. Goal (1) is ***recovery***: Trudy wants every user's actual password. Goal (2) is ***replacement***: she wants to overwrite the database so every password becomes letmein. The cost model says **only hash evaluations count** — so when we count, we ignore comparisons and database writes entirely. Beginner mistake to avoid: do not count the$U \times L$ comparisons; only the hashes. For the prototype login, Trudy additionally eavesdrops the network (part iii) and can write$stored$ (part iv).
+- *Applying Step 2 (Factor the formula):* Now do the factoring step — this decides everything, so spend your time here. In (a) the whole stored value is$H(password)$: no username anywhere, so it is fully ***user-independent***. In (b) and (d) the username is concatenated with the password INSIDE the outer hash, so nothing about the password can be reused across users. In (c) the inner term$H(password)$ is user-independent (one dictionary of$L$ values works for everyone) but the OUTER hash mixes in the username, forcing per-user work. In (d) the inner$H(username)$ is constant per user, so it is precomputable once per user. Why this matters: every candidate you test against user 1's digest in scheme (b) is useless for user 2, because the username changed the input to$H$. For the replacement attack, note the trap now: letmein is not in the candidate list, so$H(letmein)$ can never come from the precomputed dictionary — it costs one fresh hash wherever an inner$H(pwd)$ is needed.
+- *Applying Step 3 (Count recovery costs):* (a) Compute$H(candidate)$ for each of the$L$ candidates once, then compare this dictionary against all$U$ stored digests:
 
-  $$ L \text{ hashes.} $$
+  $$L \text{ hashes.}$$
 
   The comparisons are free, so the $U$ digests cost nothing extra. (b) The username sits inside the outer hash, so the dictionary idea fails: for EACH user, hash all $L$ candidates concatenated with that user's name, giving
 
-  $$ U \cdot L \text{ hashes.} $$
+  $$U \cdot L \text{ hashes.}$$
 
   (c) Precompute the dictionary $H(candidate)$ for all $L$ candidates ($L$ hashes, reused for every user), then per user compute the outer hash $H(H(candidate) \, \| \, username)$ for all $L$ candidates ($U \cdot L$ hashes):
 
-  $$ L + U \cdot L \text{ hashes.} $$
+  $$L + U \cdot L \text{ hashes.}$$
 
   (d) Precompute $H(username)$ once per user ($U$ hashes total), then per user compute $H(candidate \, \| \, H(username))$ for all $L$ candidates ($U \cdot L$ hashes):
 
-  $$ U + U \cdot L \text{ hashes.} $$
+  $$U + U \cdot L \text{ hashes.}$$
 
   Sanity check for beginners: the total is always (one-time precomputation) plus $U \cdot L$ times the per-candidate work that remains after reuse.
 - *Applying Step 4 (Count replacement costs):* Now Trudy flips from reader to writer; the factoring from Step 2 still applies. (a) Compute $H(letmein)$ once and write it into all $U$ entries: $1$ hash (writes are free). (b) Per user compute $H(letmein \, \| \, username)$: $U$ hashes. (c) Compute $H(letmein)$ once — **letmein is not in the candidate list**, so the dictionary from Step 3 does NOT contain it — then per user compute $H(H(letmein) \, \| \, username)$:
 
-  $$ 1 + U \text{ hashes.} $$
+  $$1 + U \text{ hashes.}$$
 
   (d) Per user compute $H(username)$ ($U$ hashes, counted fresh here; if you already did the recovery phase you may note the reuse) and per user compute $H(letmein \, \| \, H(username))$ ($U$ hashes):
 
-  $$ 2U \text{ hashes.} $$
+  $$2U \text{ hashes.}$$
 
   Common beginner error: writing $U$ for (c) by assuming the dictionary covers letmein — it does not, because letmein is not among the $L$ candidates.
 - *Applying Step 5 (Justify impossibility where asked):* Part (i): the server needs NEITHER $pwd$ NOR $salt$. Look at what the server actually does: it computes ONE hash of the received token and compares it with $stored$. The chain was created by the client at registration; the server only ever sees digests. This is the standard exam justification: name the exact operations the server performs (one hash, one comparison, one update) and observe that $pwd$ and $salt$ appear in none of them. Part (ii), first half: deriving the next token $H^{499-i}(pwd \, \| \, salt)$ from the token $H^{500-i}(pwd \, \| \, salt)$ just sent would require inverting $H$ exactly once, which is infeasible because $H$ is ***one-way***. Whenever a question asks "can X be derived from Y", check whether it requires reversing a hash — if yes, the answer is no, citing one-wayness.
 - *Applying Step 6 (Handle the hash chain):* Part (ii), second half: at login $i+1$ the client must send $H^{500-(i+1)}(pwd \, \| \, salt) = H^{499-i}(pwd \, \| \, salt)$. Since it cannot be derived from the previous token, the client recomputes it from $pwd \, \| \, salt$ by applying $H$ exactly $499 - i$ times, costing
 
-  $$ 499 - i \text{ hash evaluations.} $$
+  $$499 - i \text{ hash evaluations.}$$
 
   Part (iii): at login $i = 500$ the client sends $H^{0}(pwd \, \| \, salt)$, and by definition $H^{0}(x) = x$, so the wire literally carries $pwd \, \| \, salt$ in plaintext. An eavesdropper therefore learns the password at the 500th login (and at no earlier login, because all earlier tokens are digests and $H$ is one-way). Part (iv): Trudy picks ANY value $v$ of her choice, overwrites $stored := H(v)$, and sends $v$ as her login token. The server computes $H(v)$, finds it equal to $stored$, accepts, and updates $stored := v$. She never needed $pwd$, $salt$, or $i$ — the server-side check only compares one hash, so whoever controls $stored$ controls login.
 - *Applying Step 7 (State exact totals):* Collect the answers as closed formulas with one-line justifications. (a) recovery $L$, replacement $1$ (fully user-independent); (b) recovery $U \cdot L$, replacement $U$ (username inside the outer hash kills all reuse); (c) recovery $L + U \cdot L$, replacement $U + 1$ (dictionary of $H(candidate)$ reused; letmein costs one extra hash); (d) recovery $U + U \cdot L$, replacement $2U$ ($H(username)$ precomputed once per user). Prototype login: the server needs neither $pwd$ nor $salt$; login $i+1$ requires a fresh $H^{499-i}(pwd \, \| \, salt)$ costing $499 - i$ hashes; $pwd \, \| \, salt$ leaks in plaintext at login $500$; a DB-writing attacker logs in by setting $stored := H(v)$ and sending $v$.
@@ -1575,34 +1575,34 @@ TuneVault also prototypes a Lamport-style one-time-password login: at registrati
 - *Applying Step 2 (Factor):* (a) $H(password)$ is fully user-independent: one dictionary of all $L$ candidate hashes is reusable for every user. (b) the username is inside the (only) hash, so nothing is reusable — the username acts as a per-user salt. (c) the inner term $H(username)$ is constant per user and precomputable once per user; the outer hash still mixes in that per-user value, so the password part needs $U \cdot L$ work. (d) the inner term $H(password)$ is user-independent (dictionary of $L$ reusable), but the outer hash concatenates the username, forcing per-user work. For the replacement attack, note: pwned is not in the list of $L$ passwords, so $H(pwned)$ must be computed fresh wherever an inner password hash is needed.
 - *Applying Step 3 (Recovery costs):* (a) Mallory computes the hash of each of the $L$ possible passwords and compares with the list of hashes from the database:
 
-  $$ L \text{ hashes.} $$
+  $$L \text{ hashes.}$$
 
   (b) The hashes are effectively salted by the username, so Mallory must hash the entire list of $L$ passwords once for every user:
 
-  $$ U \times L \text{ hashes.} $$
+  $$U \times L \text{ hashes.}$$
 
   (c) First compute the hash of each username, a list of $U$ hashed usernames ($U$ hashes); then, for each user, combine their hashed username with all $L$ passwords ($U \times L$ outer hashes):
 
-  $$ U + U \times L \text{ hashes.} $$
+  $$U + U \times L \text{ hashes.}$$
 
   (d) First compute the hash of the entire list of $L$ possible passwords ($L$ hashes, reused for all users); then, for each username, compute the hash of the username concatenated with each of the $L$ hashed passwords ($U \times L$ outer hashes):
 
-  $$ L + U \times L \text{ hashes.} $$
+  $$L + U \times L \text{ hashes.}$$
 - *Applying Step 4 (Replacement costs):* (a) Compute the hash of pwned once and replace every user's stored hash with it:
 
-  $$ 1 \text{ hash.} $$
+  $$1 \text{ hash.}$$
 
   (b) Because the hash is salted with the username, compute $H(username \mathbin{++} pwned)$ separately for every user and replace the database with the matching $(username, H(username \mathbin{++} pwned))$ pairs:
 
-  $$ U \text{ hashes.} $$
+  $$U \text{ hashes.}$$
 
   (c) First hash each username ($U$ hashes), then compute the outer hash of each hashed username concatenated with pwned (another $U$ hashes):
 
-  $$ 2 \times U \text{ hashes.} $$
+  $$2 \times U \text{ hashes.}$$
 
   (d) Compute $H(pwned)$ once — pwned is not in the list, so the precomputed dictionary does not help — then hash it together with each of the $U$ usernames:
 
-  $$ U + 1 \text{ hashes.} $$
+  $$U + 1 \text{ hashes.}$$
 - *Applying Step 7 (Totals):* (a) $L$ and $1$; (b) $U \times L$ and $U$; (c) $U + U \times L$ and $2 \times U$; (d) $L + U \times L$ and $U + 1$. Each figure is justified by what could be precomputed once (user-independent terms) versus what had to be recomputed per user (terms the username touches).
 
 **Answer:** (a) $L$ hashes to recover, $1$ to replace; (b) $U \times L$ and $U$; (c) $U + U \times L$ and $2U$; (d) $L + U \times L$ and $U + 1$.
@@ -1623,7 +1623,7 @@ TuneVault also prototypes a Lamport-style one-time-password login: at registrati
 - *Applying Step 5 (Impossibility / what the server needs — part a):* The server does NOT need to know either $pwd$ or $salt$: login consists entirely of comparing hash values. The server computes ONE hash of the received token and compares it with $stored$; $pwd$ and $salt$ appear in neither operation. The whole chain was built by Alice at registration.
 - *Applying Step 6 (Hash chain — part b):* On the next login, $i$ increases by 1, so the exponent $1000 - i$ decreases by 1: it changes from $800$ to $799$. Alice must therefore compute $H^{799}(pwd \, \| \, salt)$. She cannot get it from the $H^{800}(pwd \, \| \, salt)$ she just sent — that would require inverting $H$ once, and $H$ is one-way. Starting from $pwd \, \| \, salt$ and applying $H$ repeatedly, she needs
 
-  $$ 799 \text{ calls to } H. $$
+  $$799 \text{ calls to } H.$$
 - *Applying Step 6 (Hash chain — part c):* The key insight is the 1000th login: Alice sends $H^{1000-1000}(pwd \, \| \, salt) = H^{0}(pwd \, \| \, salt) = pwd \, \| \, salt$, from which Eve reads the password in plaintext. All other logins reveal nothing about $pwd$: they only expose digests, and because $H$ is one-way Eve cannot reverse the chain to reach the original value (the salt additionally provides brute-force resistance).
 - *Applying Step 6 (Hash chain — part d):* Yes, the attacker can log in. The server only checks that $H(\text{received token}) = stored$. The attacker picks ANY value $v$, sets $stored := H(v)$ on the compromised server, and then simply provides $v$ as the login token: the server computes $H(v)$, finds it equal to $stored$, and accepts. No knowledge of $i$, $pwd$, or $salt$ is required.
 
