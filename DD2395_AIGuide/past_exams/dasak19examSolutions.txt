@@ -1,0 +1,40 @@
+
+
+Here’s a quick writeup of solutions for dasak19 Part 2.
+
+
+
+Q1) A simple attack can be done by a man in the middle. The attacker intercepts a message, changes L to a much larger value and retransmit the message.
+To counter the attach we should sign/encrypt the whole message. I.e. E(IP + L, K). When the server decrypt the message, it can check if the IP matches (which
+plays the role of a mac). To also avoid replay attack we should also have a sequence number or expiration time for each message.
+
+Q2) problem is the variable allocated on the stack (u) is always of type user (which is 4 bytes). when usertype <> 1 the function calls init, which will cast &u to a pointer to
+an object of 8 bytes. The line that writes *r.j will therefore write outside u overwriting what is above on the stack. If this is the variable authenticated, this will set the control
+variable to 1. To avoid this problem, we wither use two different variables on the stack (one for type user and one of type root) or we define a new type that is the union of the two.
+
+Q3) H is not collision resistant since H(x1 xor x2) = H (x2 xor x1).
+H is one way. Suppose that H is not one way, then there is an easy function g such that H(g(y)) = y. However, this implies that SHA is not one way, in fact let f(y) = xor (g(y)) (i.e. the xor of blocks of
+256 bits of g). For any y, H(f(y)) = SHA(f(y)) and H(f(y)) = H(g(y)) = y, therefore  SHA(f(y)) = y.
+
+Q4)
+grading: one point each for 1-4 for getting most things right, 5th point for clear and concise explanations throughout. Half points for getting some things right, 0 points for few correct and some wrong answers.
+1) protection:
+reading passwords if getting access to password file (hash), rainbow tables (salt); wider access to file; dictionary attacks (avoiding common, simple passwords), long-term compromise of password (change requirement); online brute force attack (rate limiting)
+2) vulnerabilitis:
+single salt - same password is same hash, hash function might be vulnerable; web attacks could exploit server access; users might write down passwords with these onerous requirements; no authentication for password reset - anyone could call.
+3) countermeasures:
+individual salts, good public hash function, strengthen web security and server configuration, drop password policy (change to recommendation), send link to reset password, use 2-factor-authentication.
+4) what to take into account:
+cost vs. benefit, level of security needed for the service, usability, state of security overall at the company
+
+Q5) yes there is a side channel. If both B and C are less than 16 then the program only accesses the first cache line, if they are both larger than 16 the program only accesses the second cache line,
+ otherwise the program accesses both cache lines. Simple countermeasure is to flush the cache after execution. Or prime the cache, by accessing A[0] and A[16] before the execution of the program.
+
+
+Q6)
+grading: 1 point each for correct answer, 0.5 if almost correct, 0 otherwise
+1) Alice and Bob send each other their public keys, Y_A and Y_B, respectively
+2) public key of the other to the power of own private key mod q
+3)
+A->C: Y_A, C->B: Y_Cb
+A<-C: Y_Ca, C <- B: Y_B

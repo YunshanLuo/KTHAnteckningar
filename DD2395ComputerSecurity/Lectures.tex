@@ -17,6 +17,7 @@
 \setlength{\headsep}{4pt} % Entre le haut de page et le texte
 \setlength{\footskip}{27pt} % Bas de page + séparation
 \setlength{\textheight}{720pt} % Hauteur de la zone de texte (25cm)
+\setlength{\parindent}{0pt}
 
 \usepackage{natbib}
 \usepackage{graphicx}
@@ -1162,6 +1163,151 @@ HTTP methods:
     \item \textbf{POST:} Create new resource at the URL with payload
 \end{itemize}
 %% Fortsätt sida 19 föreläsning 6
+\subsection{Cookies}
+\begin{itemize}
+    \item HTTP is stateless i.e. the server does not remember anything 
+    \item Cookies are used to store state information
+\end{itemize}
+How to set cookies in response:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cookies.png}
+\end{figure}
+Sending cookies with request:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{cookies2.png}
+\end{figure}
+
+\subsection{Browser execution model}
+\begin{enumerate}
+    \item Loads conent of root page
+    \item Parses HTMl and runs JavaScript
+    \item Fetches sub resources (images, CSS, JS)
+    \item Respon to events like onClick, onMouseOver, etc.
+    \item Repeat until the page is done leading 
+\end{enumerate}
+
+\subsection{Nested execution model}
+\begin{itemize}
+    \item Websites can load websites form other domains
+    \item Windows may contain frames from different sources
+    \item For example
+    \begin{itemize}
+        \item \textbf{Frame:} Rigid visible division
+        \item \textbf{iFrame:} Floating inline frame 
+    \end{itemize}
+\end{itemize}
+
+\subsection{DOM: Document Object Model}
+\begin{itemize}
+    \item JavaScript modifies the page by interacting with DOM
+    \item Object oriented interface for reading and writing website content
+\end{itemize}
+
+\subsection{JavaScript}
+JS is \textbf{client-side}
+\begin{itemize}
+    \item Code sent by the server as part of the response
+    \item Runs in the browser not in the web server
+    \item Used to manipulate web pages i.e DOM
+    \item JavaScript can be directly embedded in HTML with <script>
+\end{itemize}
+
+\subsection{Same-origin policy (SOP)}
+\begin{itemize}
+    \item \textbf{Origin:} A triple of (scheme, host, port)
+    \item \textbf{Same-origin policy:} Scripts can only access content from the same origin
+    \item \textbf{Example:} A script from https://evil.com cannot access content from https://bank.com
+    \item \textbf{Confidentiality:} Script contained in evil.com should not be able to read content from bank.com
+    \item \textbf{Integrity:} Script contained in evil.com should not be able to modify content from bank.com
+\end{itemize}
+
+It's only same origin when protocol, domain, port are the same. For example this is not same origin:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{sameorigin.png}
+\end{figure}
+SOP applies to all content:
+\begin{itemize}
+    \item The DOM
+    \item CSS and fonts 
+    \item Cookies
+    \item ... 
+\end{itemize}
+
+\subsection{SOP for DOM}
+\begin{itemize}
+    \item Each window and frame in a window has its own origin 
+    \item Frame can only access data with the same origin
+\end{itemize}
+Cross communication between frames happens through postMessage API:
+\begin{itemize}
+    \item \textbf{Sender:} targetWindow.postMessage(message, targetOrigin)
+    \item \textbf{Receiver:} window.addEventListener("message", (event) => { ... })
+\end{itemize}
+
+\subsection{SOP for HTTP responses}
+\begin{itemize}
+    \item Pages can perform request across origins
+    \item SOP does not prevent a page from leaking data to another origin by encoding it in a request
+    \item SOP prevents JS code from directly inspecting HTTP responses except for documents, can often learn some information about the response
+\end{itemize}
+
+\subsection{Documents}
+\begin{itemize}
+    \item Can cross origin HTML in frames but not inspect or modify the frame content
+\end{itemize}
+
+\subsection{Scripts}
+\begin{itemize}
+    \item Can load scripts rom across origins
+    \item Scripts execute with privileges of the page
+    \item Page can see source of script
+\end{itemize}
+
+\subsection{SOP for images}
+\begin{itemize}
+    \item SOP for images prevents page from inspecting individual pixels
+    \item Can check size and if loaded successfully
+\end{itemize}
+
+\subsection{SOP for cookies}
+\begin{itemize}
+    \item Client sends cookie back to server with every request
+    \item Sending only to the right server is important
+    \item For example sending cookie for bank.com to evil.com would be a security breach
+\end{itemize}
+Settings and receiving cookies scope:
+\begin{itemize}
+    \item A page can set cookies for it's own domain that domain is on the public suffix list 
+    \item Any parent domain 
+\end{itemize}
+A page can receive cookies for:
+\begin{itemize}
+    \item its own domain
+    \item any parent domain for which cookies are set
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{cookies3.png}
+\end{figure}
+
+\subsection{Web attacks and defenses}
+HttpOnly cookies:
+\begin{itemize}
+    \item HttpOnly cookies are not accessible to JavaScript
+    \item HttpOnly cookies are only sent in HTTP requests
+\end{itemize}
+
+\subsection{CSRF -- Cross-site request forgery}
+
+
+
+
+
+
 
 
 
