@@ -92,7 +92,7 @@ Use this scheme when the problem **provides** a concrete hash *H* built from a s
 5. **Attack or reduce one-wayness:** Check three cases:
    - No secure primitive / pure combiner: solve the linear equation directly (e.g. for $H = \sum_i i \cdot x_i \bmod 2^{128}$, the single block $x_1 = h$ gives $H(x) = h$) — BROKEN.
    - Block cipher with known key: apply $D_K$ to *h* and build a preimage via the combiner — BROKEN.
-   - Secure one-way primitive *P* present: give the reduction. Any *x* with $H(x)=h$ yields a preimage of *P* on some point — e.g. on $C(x)$ — so one-wayness of *P* implies one-wayness of *H* — HOLDS. Mention explicitly if leaked input bits (appended $LSB_{128}(x)$) do NOT by themselves invert the primitive.
+   - Secure one-way primitive *P* present: give the reduction. Any *x* with $H(x)=h$ yields a preimage of *P* on some point — e.g. on $C(x)$ — so one-wayness of *P* implies one-wayness of *H* — HOLDS. Mention explicitly if leaked input bits — appended $LSB_{128}(x)$ — do NOT by themselves invert the primitive.
 6. **Argue the surviving properties and grade the strength:** For each property that holds, state the reduction cleanly: an adversary breaking the property for *H* produces a collision/preimage for *P* — e.g. $H(x)=H(y)$ with the combiner outside forces $\mathrm{SHA256}(x)=\mathrm{SHA256}(y)$. Close with a strength note if applicable: **a construction is never stronger than its primitive part** — e.g. only 256 of 384 output bits come from SHA256, so the effective security is that of the 256-bit part.
 
 ---
