@@ -1,0 +1,195 @@
+{
+  "name": "Cache/timing side-channel attack analysis and constant-time fix",
+  "theory_paragraphs": [
+    "\\term{Why caches exist.} The CPU executes instructions much faster than main memory (RAM) can deliver data, so every modern processor keeps a small, fast memory called a \\term{cache} between itself and RAM. When the program reads a memory address, the hardware first checks the cache: if the data is already there (a \\term{cache hit}) the read is fast; otherwise (a \\term{cache miss}) the hardware fetches it from RAM, which takes much longer, and keeps a copy in the cache for next time. Data never moves byte by byte: it moves in fixed-size chunks called \\term{cache lines} (typically 64 bytes), so reading one integer also brings its neighbors along. The crucial security observation: \\imp{a cache miss is much slower than a cache hit}. Therefore an outsider who measures running time (or who inspects the cache afterwards) can tell whether a particular piece of data was recently used --- and that is already information leakage.",
+    "\\term{Cache geometry and the line formula.} Exam questions always state the geometry: total size, number of lines $N$, bytes per line $L$, and \\term{direct-mapped} placement, meaning each memory block maps to exactly one cache line (block $k$ goes to line $k \\bmod N$). Consequence: \\imp{two different blocks that map to the same line can never be cached together} --- loading one evicts (kicks out) the other. To locate an array element, use: entry $i$ of an array with $b$-byte entries sits in line $\\lfloor i \\cdot b / L \\rfloor \\bmod N$. Example: 4-byte integers with 64-byte lines give $64/4 = 16$ entries per line, so \\texttt{M[0..15]} share one line, \\texttt{M[16..31]} the next, and entry $i$ sits in line $\\lfloor i/16 \\rfloor$. Always do this computation first, for every array, and also note which scalar variables share a line.",
+    "\\term{What a side channel is.} A \\term{side-channel attack} learns secrets not by breaking cryptography or reading memory directly, but by observing physical side effects of execution: running time, cache state, power consumption. Classify variables as \\term{high} (secret, e.g. a key bit) or \\term{low} (public, attacker-visible). Ideally a program satisfies \\term{non-interference}: two runs that differ only in secrets should be indistinguishable to the attacker. A cache side channel breaks this: even when the \\emph{outputs} are identical, the \\emph{number of cache misses} or the \\emph{set of touched lines} may differ, and the attacker observes exactly that. The golden rule for spotting leaks: an instruction can only leak if \\imp{a memory index, a branch condition, or a loop bound depends on a secret}. Accesses with constant or public indices never leak --- this is the first thing to check, line by line.",
+    "\\term{The three attacker models}, from weakest to strongest: \\begin{tightitem} \\item \\term{Time-driven}: the attacker only measures total execution time, which the exam equates with the number of cache misses (e.g. ``more than one miss means the secret was non-zero''). \\item \\term{Access-driven}: the attacker flushes (empties) or \\term{primes} (fills with own data) the cache before the victim runs, then checks \\emph{which lines} were touched or evicted; this needs shared memory or co-residency on the same cache. \\item \\term{Trace-driven}: the attacker sees the per-instruction hit/miss sequence. \\end{tightitem} A single execution leaks at most one \\term{predicate} (a yes/no fact, about one bit). But when the attacker also \\emph{chooses an input} (e.g. \\texttt{D}) and may rerun the victim many times, sweeping the input over all its values upgrades the 1-bit leak to the \\imp{exact secret value}: the input acts as a knob that slides the secret-dependent index across the line boundaries, and the runs where the observed line jumps pin down the secret.",
+    "\\term{Countermeasures} (you must propose one that matches the leak you found): \\begin{tightitem} \\item \\term{Constant-time programming}: never branch on a secret and never index memory with a secret. Replace \\texttt{if (b) r += x; else r += y;} by the branchless \\term{select} $r \\mathrel{+}= b \\cdot x + (1-b) \\cdot y$, which always executes the same instructions --- multiplying by $b \\in \\{0,1\\}$ is arithmetic, not a branch. \\item \\term{Cache normalization}: before the secret-dependent code, touch every line the program \\emph{might} use (e.g. read \\texttt{M[0], M[16], M[32], M[48]}), so the cache footprint is identical for every secret; flushing all lines at entry/exit has the same effect. \\item \\term{Reduce the bandwidth}: add noise (dummy accesses), lower timer precision, or partition the cache per process. \\end{tightitem} \\imp{The fix must match the leak}: a branchless select fixes a secret branch but not a secret array index, and preloading fixes index leaks but not a secret-dependent loop bound.",
+    "\\term{Speculative execution.} To go faster, the CPU \\emph{predicts} the outcome of branches and executes the predicted side before knowing it is correct; on a misprediction the results are discarded, but the instructions did run \\term{transiently}, and \\imp{transient loads still pull lines into the cache}. This powers Spectre-style attacks, which need two ingredients: a \\term{reading gadget} (a transient load that reads a value it should not --- an \\emph{overread}, only possible with an unbounded index like \\texttt{M[D]} with $D \\geq 64$; an index guarded by $\\bmod\\, 64$ can never overread) and a \\term{transmitting gadget} (a second access whose \\emph{address depends on} the transiently read value, thereby encoding it into the cache state for the attacker to measure). \\imp{A reading gadget alone discloses nothing}: if no access address depends on the leaked value, speculation adds no information. Defenses: \\texttt{lfence} serialization after the branch, or masking the index with the bounds-check result."
+  ],
+  "theory_cheatsheet": [
+    "Line of entry $i$: $\\lfloor i \\cdot b / L \\rfloor \\bmod N_{lines}$; entries sharing a line evict each other (direct-mapped).",
+    "Only indices, branches, or loop bounds that depend on a \\term{secret} can leak; public/constant indices never leak.",
+    "Time-driven $=$ count misses from execution time; access-driven $=$ flush/prime, then record touched lines.",
+    "One execution leaks at most a predicate (1 bit); sweeping an attacker input over all values upgrades the leak to the exact secret (line boundaries pin the secret's residue).",
+    "Fix must match the leak: branchless select for secret branches, preload/flush all possibly-used lines for secret indices.",
+    "Speculation adds leakage only with \\emph{both} a reading gadget and a transmitting gadget; $\\bmod$-guarded indices cannot overread."
+  ],
+  "identify_givens": "A stated cache geometry (total size, number of lines, bytes per line, direct-mapped, data cache only), an array/table layout saying which entries map to which cache line, a short C-like victim program with secret variables (e.g. A, B, C) and possibly an attacker-controlled public input (e.g. D), and an attacker model: time-driven (execution time depends only on the number of cache misses/hits) or access-driven (attacker observes which cache lines are touched or evicted, possibly over repeated runs with chosen inputs).",
+  "identify_target": "Explain why the program is insecure and name the leaking instructions; show how the attacker correlates multiple executions (varying the public input) to recover a secret value, range, or predicate; propose a concrete fix (constant-time/branchless rewrite or cache preloading/flushing); and sometimes judge whether speculative execution (branch prediction) increases the leakage.",
+  "identify_keywords": ["side channel", "data cache", "directly mapped", "cache line", "time driven attack", "access driven attack", "cache misses", "measuring execution time", "cache lines evicted", "secret variables", "controlled by the attacker", "constant-time", "preload", "flush", "speculative execution", "branch prediction", "correlate"],
+  "strategy_name": "Map lines, flag secret-dependent accesses, correlate runs, then make the footprint secret-independent",
+  "algorithm": [
+    {
+      "action": "Map data to cache lines",
+      "detail": "From the geometry compute the line of every datum: entry $i$ of an array with $b$-byte entries and $L$-byte lines sits in line $\\lfloor i \\cdot b / L \\rfloor \\bmod N_{lines}$ (often $b=4$, $L=64$, so 16 entries per line). Note collisions: \\imp{two regions mapping to the same line evict each other}, so only one can be cached at a time. Also record which line holds the scalar secret/public variables."
+    },
+    {
+      "action": "Flag leaking instructions",
+      "detail": "Mark every instruction whose \\begin{tightitem} \\item memory index, \\item branch condition, or \\item iteration count \\end{tightitem} depends on a secret --- directly (\\texttt{M[A]}) or mixed with attacker input (\\texttt{M[(B+D) mod 64]}). These are the \\imp{only possible leak sources}; accesses with public or constant indices never leak."
+    },
+    {
+      "action": "Model the observation",
+      "detail": "\\term{Time-driven}: count cache misses per execution, simulating the direct-mapped cache line by line (a miss occurs when the needed line differs from the resident one; colliding regions can make the count constant --- check!). \\term{Access-driven}: assume the attacker flushes/primes the cache before each run and records the set of lines touched (or evicted) after it."
+    },
+    {
+      "action": "Tabulate and correlate runs",
+      "detail": "Enumerate the attacker-controlled input values and tabulate the observed line set or miss count for each. Subtract what the attacker already knows (constant lines, lines of public indices like $\\lfloor D/16 \\rfloor$); the residual variation is a function of the secret: e.g. observing line $\\lfloor ((B+D) \\bmod 64)/16 \\rfloor$ while sweeping $D$ pins down $B$ exactly (the run where the observed line jumps reveals $B \\bmod 16$, the line number reveals $\\lfloor B/16 \\rfloor$). State precisely what is recovered: \\imp{exact value, range, or one predicate bit}."
+    },
+    {
+      "action": "Propose a matching fix",
+      "detail": "Match the fix to the flagged instruction from Step 2: \\begin{tightitem} \\item secret-dependent branch / loop bound $\\rightarrow$ \\term{constant-time code}: fixed loop bounds, always execute both sides, select with arithmetic $r = b \\cdot x + (1-b) \\cdot y$; \\item secret-dependent array index $\\rightarrow$ \\term{cache normalization}: preload (or flush) all possibly-used lines first, e.g. read \\texttt{M[0], M[16], M[32], M[48]}, so the cache footprint is identical for every secret. \\end{tightitem}"
+    },
+    {
+      "action": "Assess speculation if asked",
+      "detail": "Under branch prediction, instructions on a mispredicted path may execute transiently and still fetch their lines into the cache --- a \\term{reading gadget} (a speculative overread only if the index is unbounded; a $\\bmod$-guarded index cannot overread). But leakage additionally needs a \\term{transmitting gadget} that encodes the loaded value into the cache state. \\imp{Reading gadget alone discloses nothing}; conclude accordingly."
+    }
+  ],
+  "variations": [
+    {
+      "name": "Time-driven vs access-driven on the same program",
+      "detail": "The professor swaps the attacker model and the answer flips. Under time-driven counting, colliding arrays can make the miss count \\emph{constant} for straight-line code (trap: do not claim leakage there), while a secret-dependent branch still leaks one bit via one extra miss. Under access-driven observation with no shared memory, the same program may leak nothing because the same lines are always evicted; with shared memory the attacker can tell which array is resident. \\imp{Always redo Step 3 for the stated model} instead of reusing conclusions."
+    },
+    {
+      "name": "Single-run boolean leak vs multi-run exact recovery",
+      "detail": "Sometimes there is no attacker input (dasak18: only secrets A, B, C) --- then one execution leaks at most a predicate (e.g. ``B true causes one extra miss''). When the attacker controls an input $D$ and may rerun (exam P8), the secret-dependent index $(B+D) \\bmod 64$ sweeps across the lines as $D$ varies, upgrading the leak from a range to the \\imp{exact value} of $B$. Adapt Step 4: without a knob, tabulate the branch cases; with a knob, sweep all its values."
+    },
+    {
+      "name": "Wrong-fix trap: branchless vs preloading",
+      "detail": "The fix must match the flagged instruction from Step 2. A branchless select $a \\mathrel{+}= B \\cdot A_1 + (1-B) \\cdot A_2$ fixes a secret-dependent \\emph{branch} but does nothing for a secret-dependent \\emph{array index}; preloading all lines fixes index leakage but not a secret-dependent loop bound. Answers proposing the mismatched fix lose points."
+    },
+    {
+      "name": "Speculation sub-question with gadget reasoning",
+      "detail": "A final part asks whether speculative execution leaks more. Expected two-part reasoning: transient loads on a mispredicted path can fill lines (and an unbounded index like \\texttt{M[D]} with $D \\geq 64$ is a speculative \\term{overread}, unlike the $\\bmod\\, 64$-guarded one), but without a \\term{transmitting gadget} no extra information is disclosed. Trap: answering ``Spectre, so yes it leaks'' without separating reading gadget from transmitter. Note the exception: if a later instruction's index depends on a transiently loaded value (re-exam 2024 P7), the transmitter exists and speculation \\emph{does} leak more."
+    }
+  ],
+  "walkthrough_problem": "A system has a direct-mapped data cache (no instruction cache) of 512 bytes: 8 lines of 64 bytes each. Arrays \\texttt{A} and \\texttt{B} each hold 32 public entries of 4 bytes. \\texttt{A[i]} maps to line $\\lfloor i/16 \\rfloor \\in \\{0,1\\}$, and \\texttt{B} is placed so that \\texttt{B[i]} maps to the \\emph{same} line $\\lfloor i/16 \\rfloor$: the two arrays collide on lines 0 and 1, so an \\texttt{A}-block and a \\texttt{B}-block can never be cached simultaneously. The scalars \\texttt{u}, \\texttt{v}, \\texttt{r}, \\texttt{q} share one 64-byte block mapped to line 2. \\texttt{u} is secret with $0 \\leq u < 32$; \\texttt{v} is a secret boolean, $v \\in \\{0,1\\}$; \\texttt{r} is a local variable; \\texttt{q} is public and controlled by the attacker, $0 \\leq q < 32$. The victim program is: (1) \\texttt{r = 0}; (2) \\texttt{r += A[u]}; (3) \\texttt{if (v == 1) \\{} (4) \\texttt{r += B[q]}; \\texttt{\\} else \\{} (5) \\texttt{r += A[q]}; \\texttt{\\}}. The attacker runs a \\emph{time-driven} attack: the cache is empty before each execution, he may rerun the program with the same secrets and any \\texttt{q} of his choice, and he measures total execution time, which grows strictly with the number of cache misses. (a) Explain why the program is not secure and state exactly which instructions leak. (b) Show how the attacker correlates the timings over his chosen \\texttt{q} values, and state precisely what he learns about \\texttt{v} and about \\texttt{u}. (c) Rewrite the program in constant-time style so that the miss count no longer depends on the secrets, and verify that the count is the same for all \\texttt{u}, \\texttt{v}, \\texttt{q}. Explain also why preloading both arrays is impossible here. (d) Suppose the CPU predicts the branch on line 3 and executes the not-taken side speculatively. Can the attacker learn more about the secrets than in (b)? Justify using the notions of reading and transmitting gadgets.",
+  "walkthrough_steps": [
+    {
+      "step_ref": "Step 1 (map data to cache lines)",
+      "work": "Line size 64 B with 4-byte entries gives $64/4 = 16$ entries per line --- always redo this small division, it is the source of the `16' that appears everywhere. Hence \\texttt{A[i]} and \\texttt{B[i]} both sit in line $\\lfloor i/16 \\rfloor \\in \\{0,1\\}$, and because both arrays map to the \\emph{same} lines, the \\texttt{A}-block and the \\texttt{B}-block of a line \\imp{evict each other}: only one can be cached at a time. The scalars share line 2, which collides with nothing the program uses, so every first access to a scalar costs exactly one miss. Beginner note: drawing a tiny table (datum $\\rightarrow$ line) before reading the program prevents almost all later mistakes."
+    },
+    {
+      "step_ref": "Step 2 (flag leaking instructions)",
+      "work": "Apply the golden rule (leak requires a secret-dependent index, branch, or loop bound) to each line. Line 1 (\\texttt{r = 0}) touches only the scalar line --- constant, safe. Line 2 (\\texttt{r += A[u]}) uses the secret \\texttt{u} as an \\emph{array index}: leaking. Line 3 (\\texttt{if (v == 1)}) is a \\emph{branch on the secret} \\texttt{v}: it decides \\emph{whether} line 4 (\\texttt{B[q]}) or line 5 (\\texttt{A[q]}) executes, so the cache footprint of lines 4--5 depends on a secret even though the index \\texttt{q} itself is public. Common mistake: dismissing line 3 because \\texttt{q} is public --- what leaks is \\emph{which block gets loaded}, not the index value."
+    },
+    {
+      "step_ref": "Step 3 (model the observation)",
+      "work": "Time-driven model, cache empty at start: count misses line by line. Every run pays 1 miss for the scalar line (reading \\texttt{r}, \\texttt{u}, \\texttt{v}, \\texttt{q}) and 1 miss for \\texttt{A[u]} (instruction 2), which loads the \\texttt{A}-block of line $\\lfloor u/16 \\rfloor$. Now the branch decides the rest. \\begin{tightitem} \\item Case $v = 1$: \\texttt{B[q]} needs the \\texttt{B}-block of line $\\lfloor q/16 \\rfloor$. That block is \\emph{never} resident --- the line is either cold or holds the (different) \\texttt{A}-block --- so it always misses. Total $= 3$ misses for every $q$. \\item Case $v = 0$: \\texttt{A[q]} hits exactly when the \\texttt{A}-block of line $\\lfloor q/16 \\rfloor$ is the one loaded by instruction 2, i.e. when $\\lfloor q/16 \\rfloor = \\lfloor u/16 \\rfloor$. Total $= 2$ misses if the lines match, else $3$. \\end{tightitem} The key skill is the hit test: a hit requires the \\emph{same block} (not just the same line number) to be resident."
+    },
+    {
+      "step_ref": "Step 4 (tabulate and correlate runs)",
+      "work": "The attacker sweeps all $q \\in \\{0, \\dots, 31\\}$ and records which runs are fast (2 misses). (i) If some value $q^{\\ast}$ is fast, then $v = 0$ (fast runs never occur when $v = 1$) and $\\lfloor u/16 \\rfloor = \\lfloor q^{\\ast}/16 \\rfloor$, pinning \\texttt{u} to the 16 candidates of that line. (ii) If \\emph{every} $q$ gives 3 misses, then $v = 1$: were $v = 0$, the sweep would necessarily include a $q$ in \\texttt{u}'s line (the attacker tries indices in \\emph{both} lines), producing a fast run. Conclusion, stated precisely as the exam demands: $v$ is recovered \\emph{exactly} in all cases; $u$ is narrowed to its line (16 candidates) when $v = 0$ and stays completely unknown (32 candidates) when $v = 1$. Beginner note: direction (ii) is the one students forget --- you must argue why the \\emph{absence} of fast runs also carries information."
+    },
+    {
+      "step_ref": "Step 5 (propose a matching fix)",
+      "work": "The leak is a secret-dependent \\emph{branch}, so the matching fix is constant-time branchless code (not preloading): (1) \\texttt{r = 0}; (2) \\texttt{r += A[u]}; (3) \\texttt{t1 = B[q]}; (4) \\texttt{t2 = A[q]}; (5) \\texttt{r += v*t1 + (1-v)*t2};. Verify the miss count, because the exam asks for it: scalar line 1 miss; \\texttt{A[u]} 1 miss; \\texttt{B[q]} always 1 miss (its block is never resident); \\texttt{A[q]} always 1 miss, because \\texttt{B[q]} has just loaded the \\texttt{B}-block of line $\\lfloor q/16 \\rfloor$ and the colliding \\texttt{A}-block cannot coexist with it. Total $= 4$ misses for \\emph{every} $u, v, q$ --- timing is secret-independent. Multiplying by \\texttt{v} is data-oblivious arithmetic, not a branch. Preloading is impossible here: \\texttt{A} and \\texttt{B} collide on lines 0--1, so \\imp{no cache state can hold both arrays}; that is why the branchless rewrite, not cache normalization, is the correct fix."
+    },
+    {
+      "step_ref": "Step 6 (assess speculation)",
+      "work": "On a misprediction of line 3, the not-taken side executes transiently; its load (\\texttt{B[q]} or \\texttt{A[q]}) may fetch or evict lines but is never committed. Does this leak more? Check the two gadgets. \\begin{tightitem} \\item \\term{Reading gadget} on a secret: absent --- the only transiently executed index is the public \\texttt{q}; the secret-indexed load \\texttt{A[u]} is on the always-executed path and is not amplified by speculation. \\item \\term{Transmitting gadget}: absent --- no access has an address depending on a transiently \\emph{read value}, so nothing encodes a secret into the cache state. \\end{tightitem} Reading gadget plus transmitter are both required, so speculation can at worst perturb timings (a transient fetch costs an extra miss) but discloses nothing beyond part (b). Beginner note: structure the answer as these two explicit checks; ``Spectre exists, so yes'' scores zero."
+    }
+  ],
+  "exam_questions": [
+    {
+      "source": "Exam 2019-01-14 (HT2018), Part II, Problem 5",
+      "file_ref": "dasak18combinedWithSolutions-1.pdf::Part II Problem 5a",
+      "problem": "A system uses a shared data cache (no instruction cache) of 128 bytes: 2 lines, 64 bytes per line, directly mapped. Two arrays \\texttt{M1} and \\texttt{M2} consist of 16 entries of 4 bytes each; the entries of each array are allocated on the first cache line, and all other variables are allocated on the second line. Assume \\texttt{C < 16} and that all variables are secret. The program is: \\texttt{A = M1[C]}; \\texttt{A += M2[C]}; \\texttt{if B \\{ A += M1[C] \\} else \\{ A += M2[C] \\}}. (a) Can a \\emph{time-driven} attack (measuring execution time, assumed to depend only on the number of cache misses/hits) extract information about the variables? If yes, explain the attack and how to fix the program; if not, motivate why it is secure. (b) Same question for an \\emph{access-driven} attack (measuring which cache lines are evicted by the victim).",
+      "solution_steps": [
+        {
+          "step_ref": "Step 1 (map lines)",
+          "work": "Each array has $16 \\times 4 = 64$ bytes $=$ exactly one cache line, so all of \\texttt{M1} and all of \\texttt{M2} live on line 1: \\imp{they collide and evict each other} --- only one array can be cached at a time. All scalars (\\texttt{A}, \\texttt{B}, \\texttt{C}) sit together on line 2."
+        },
+        {
+          "step_ref": "Step 2 (flag leaks)",
+          "work": "\\texttt{A = M1[C]} and \\texttt{A += M2[C]} use the secret \\texttt{C} as an array index; \\texttt{if B} is a branch on the secret \\texttt{B}, deciding whether \\texttt{M1[C]} or \\texttt{M2[C]} is touched next. These are the candidate leak sources."
+        },
+        {
+          "step_ref": "Step 3 (time-driven simulation)",
+          "work": "Cache empty, count misses. Reading \\texttt{C}: 1 miss (scalar line 2). \\texttt{A = M1[C]}: 1 miss (loads the \\texttt{M1} block into line 1) --- note this misses for \\emph{every} \\texttt{C}, because the whole array is a single block. \\texttt{A += M2[C]}: 1 miss (the \\texttt{M2} block replaces \\texttt{M1}). So far 3 misses, constant, as the sample solution stresses. Branch: if \\texttt{B} is true, \\texttt{A += M1[C]} needs the \\texttt{M1} block again --- it was evicted, so 1 extra miss (total 4); if \\texttt{B} is false, \\texttt{A += M2[C]} hits the resident \\texttt{M2} block (total 3)."
+        },
+        {
+          "step_ref": "Step 4 (conclusion for time-driven)",
+          "work": "Execution time corresponds to 4 misses iff \\texttt{B} is true and 3 misses iff \\texttt{B} is false: the attack recovers \\texttt{B} exactly (one bit). It reveals nothing about \\texttt{C}: with one block per array, the miss count does not depend on which entry inside the block is read. Trap avoided: the secret index \\texttt{C} looks dangerous, but here it changes nothing."
+        },
+        {
+          "step_ref": "Step 5 (matching fix)",
+          "work": "The leak is the secret \\emph{branch}, so use the branchless select (the official fix): \\texttt{A1 = M1[C]; A2 = M2[C]; A += B*A1 + (1-B)*A2;}. Both arrays are read unconditionally and multiplication by \\texttt{B} is arithmetic, so every execution performs exactly the same misses (scalar line, \\texttt{M1}, \\texttt{M2}) regardless of \\texttt{B}."
+        },
+        {
+          "step_ref": "Step 6 (access-driven part)",
+          "work": "Access-driven attacker measuring evicted lines: \\emph{without} shared memory, no attack --- the victim always touches lines 1 and 2 and always evicts the same lines, so the observation is secret-independent. \\emph{With} shared memory, the attacker can detect whether line 1 ends up holding \\texttt{M1} or \\texttt{M2} (e.g. by timing a reload of own colliding data), which reveals the branch outcome and hence \\texttt{B}."
+        }
+      ],
+      "answer": "Time-driven: yes --- one extra cache miss iff B is true, so B leaks; fix with A += B*M1[C] + (1-B)*M2[C] (branchless). Access-driven: no without shared memory (same lines always evicted); yes with shared memory (attacker sees whether M1 or M2 is cached, hence B)."
+    },
+    {
+      "source": "Exam 2025-10-20, Problem 8 (Side channels)",
+      "file_ref": "exam-problems-with-solutions.pdf::8b",
+      "problem": "A system uses a data cache (no instruction cache) of 512 bytes: 8 lines, 64 bytes per line, directly mapped. Array \\texttt{M} has 64 entries of 4 bytes: entries 0--15 map to cache line 1, 16--31 to line 2, 32--47 to line 3, 48--63 to line 4. \\texttt{M} is public and \\texttt{M[i] = i}. The initial values of \\texttt{A}, \\texttt{B}, \\texttt{C} are secret; \\texttt{D} is public and controlled by the attacker. All four variables are unsigned integers allocated in the same 64-byte block, mapped to cache line 5, and \\texttt{A < 64}. Program: (1) \\texttt{C = 0}; (2) \\texttt{C += M[A]}; (3) \\texttt{if (D < 64) \\{} (4) \\texttt{C += M[D]}; (5) \\texttt{C += M[(B + D) mod 64]}; \\texttt{\\}}. The attacker can measure \\emph{which cache lines are accessed at least once} by a complete execution (access-driven), over multiple executions with the same \\texttt{A}, \\texttt{B}, \\texttt{C}, \\texttt{M} and all possible \\texttt{D}. (8a) Explain why the program is insecure and which instructions leak. (8b) Explain why information leaks and how the attacker correlates executions to learn the initial values. (8c) Describe a fix. (8d) Does speculative execution (branch prediction) leak more?",
+      "solution_steps": [
+        {
+          "step_ref": "Step 1 (map lines)",
+          "work": "4-byte entries and 64-byte lines give 16 entries per line, so \\texttt{M[i]} sits in line $\\lfloor i/16 \\rfloor \\in \\{1,2,3,4\\}$; the scalars \\texttt{A}, \\texttt{B}, \\texttt{C}, \\texttt{D} share one block on line 5; lines 6--8 are unused."
+        },
+        {
+          "step_ref": "Step 2 (flag leaks, part 8a)",
+          "work": "Line 2, \\texttt{C += M[A]}, has an index depending directly on the secret \\texttt{A}. Line 5, \\texttt{C += M[(B + D) mod 64]}, has an index depending on the secret \\texttt{B} mixed with the attacker input \\texttt{D}. Line 4 uses only the public \\texttt{D} and cannot leak. So lines 2 and 5 leak information about \\texttt{A} and \\texttt{B} respectively."
+        },
+        {
+          "step_ref": "Step 3 (model the observation, part 8b)",
+          "work": "Access-driven: the attacker flushes the cache before each run and records which lines are filled after execution. For \\texttt{D < 64} the program touches line 5 (scalars, always) and the array lines $\\lfloor A/16 \\rfloor$, $\\lfloor D/16 \\rfloor$, $\\lfloor ((B + D) \\bmod 64)/16 \\rfloor$. The sample solution's examples: $A = B = D = 0$ touches only line 1; $A = B = 16$, $D = 0$ touches only line 2."
+        },
+        {
+          "step_ref": "Step 4 (correlate runs)",
+          "work": "The attacker knows $\\lfloor D/16 \\rfloor$ (own input) and ignores constant line 5. At $D = 0$ the third observed line equals $\\lfloor B/16 \\rfloor$: the line of the secret, i.e. its high bits. Increasing $D$ slides $(B + D) \\bmod 64$ across the entries, and the run where the observed line \\emph{jumps} reveals $B \\bmod 16$, because the jump happens exactly when $B + D$ crosses a multiple of 16. Line number plus jump position together give the exact value of $B$ (more precisely of $B \\bmod 64$) --- the official conclusion: ``by variating \\texttt{D}, the attacker can identify the exact value of \\texttt{B}''. The constant extra line $\\lfloor A/16 \\rfloor$ additionally reveals which line \\texttt{A} lives in (16 candidates)."
+        },
+        {
+          "step_ref": "Step 5 (fix, part 8c)",
+          "work": "Cache normalization: preload (or flush) all array lines before the secret-dependent code, e.g. read \\texttt{M[0], M[16], M[32], M[48]} at the beginning. Then all four lines are touched on every run, so the observed line set --- and the timing --- no longer depend on \\texttt{A} or \\texttt{B}."
+        },
+        {
+          "step_ref": "Step 6 (speculation, part 8d)",
+          "work": "With branch prediction, when $D \\geq 64$ the CPU may transiently execute the branch body, performing the loads \\texttt{M[D]} and \\texttt{M[(B + D) mod 64]} and filling their lines. Only the first is a speculative \\term{overread}: its index is unbounded, while the second is guarded by $\\bmod\\, 64$ and stays inside \\texttt{M}. But neither creates a \\term{transmitting gadget}: no memory address depends on a transiently \\emph{loaded} value. A reading gadget without a transmitter means \\imp{no additional information is disclosed}."
+        }
+      ],
+      "answer": "Lines 2 and 5 leak; flushing before each run exposes lines floor(A/16) and floor((B+D) mod 64 / 16), and sweeping D recovers B exactly (and A's line). Fix: preload M[0], M[16], M[32], M[48]. Speculation adds nothing: reading gadget (unbounded M[D] can over-read) but no transmitting gadget."
+    },
+    {
+      "source": "Re-exam 2024-12-17, Problem 7 (Side channels)",
+      "file_ref": "reexam-with-solutions.pdf::7b",
+      "problem": "A system uses a \\emph{non-shared} data cache (no instruction cache) of 512 bytes: 8 lines, 64 bytes per line, directly mapped. Array \\texttt{M} has 64 entries of 4 bytes: entries 0--15 map to cache line 1, 16--31 to line 2, 32--47 to line 3, 48--63 to line 4. \\texttt{M} is public and \\texttt{M[i] = i}. \\texttt{A} and \\texttt{B} are secret; \\texttt{D} is public and controlled by the attacker. \\texttt{A}, \\texttt{B}, \\texttt{C}, \\texttt{D} are unsigned integers in the same 64-byte block mapped to cache line 5, and \\texttt{A < 64}. Program: (1) \\texttt{int C = 0}; (2) \\texttt{if (D < 64) \\{} (4) \\texttt{C += M[(D + A)/2]}; (5) \\texttt{C += M[C] + B}; \\texttt{\\}}. The attacker can measure \\emph{which cache lines are accessed} by each execution (access-driven), over multiple executions with the same \\texttt{A}, \\texttt{B}, \\texttt{M} and all possible \\texttt{D}. (7a) Why is the program insecure and which instructions leak? (7b) How does the attacker correlate executions to learn the initial values? (7c) Describe a fix. (7d) Does speculative execution leak more?",
+      "solution_steps": [
+        {
+          "step_ref": "Step 1 (map lines)",
+          "work": "As usual, 16 entries per line: \\texttt{M[i]} sits in line $\\lfloor i/16 \\rfloor \\in \\{1,2,3,4\\}$, and the scalars share line 5. The cache is non-shared (so the attacker cannot place own data in it) and \\texttt{M[i] = i} is public knowledge --- both facts matter below."
+        },
+        {
+          "step_ref": "Step 2 (flag leaks, part 7a)",
+          "work": "Instruction 4, \\texttt{C += M[(D + A)/2]}, has an index depending on the secret \\texttt{A}. Because \\texttt{M[i] = i}, after instruction 4 we have \\texttt{C = (D + A)/2}, so instruction 5, \\texttt{C += M[C] + B}, \\emph{also} has a secret-dependent index --- even though \\texttt{C} looks like an innocent local variable. This indirect dependence (a secret flowing through a variable into a later index) is the trap of this problem."
+        },
+        {
+          "step_ref": "Step 3 (model the observation)",
+          "work": "Access-driven: flush the cache, record touched lines per run. Line 5 (scalars) is always touched. Instructions 4 and 5 touch the \\emph{same} array line: $\\lfloor ((D + A)/2)/16 \\rfloor = \\lfloor (D + A)/32 \\rfloor$; call it $l_D$. So each run with \\texttt{D < 64} reveals exactly one array line, $l_D$."
+        },
+        {
+          "step_ref": "Step 4 (correlate runs, part 7b)",
+          "work": "At $D = 0$ the attacker immediately reads off $l_0 = \\lfloor A/32 \\rfloor$: since $A < 64$, this is the top bit of the 6-bit secret \\texttt{A}. Then increase \\texttt{D}: $l_D$ stays equal to $l_0$ until $D + A$ crosses the next multiple of 32, and the first \\texttt{D} with $l_D \\neq l_0$ marks the exact position of \\texttt{A} inside its 32-wide interval, so \\texttt{A} is recovered \\emph{exactly} (the sample solution states the attacker learns $l_0 = \\lfloor A/32 \\rfloor$ and then finds $A$ from the \\texttt{D} where the line changes). Beginner note: the leak works because the attacker-controlled \\texttt{D} shifts the secret-dependent index across a line boundary --- the same `knob' idea as in the walkthrough."
+        },
+        {
+          "step_ref": "Step 5 (fix, part 7c)",
+          "work": "Prime the cache so everything is loaded before the secret-dependent access (official fix): \\texttt{C = M[0]; C = M[16]; C = M[32]; C = M[48]; C = 0;} followed by the original code. Every run then touches all four array lines, so the observed line set is secret-independent."
+        },
+        {
+          "step_ref": "Step 6 (speculation, part 7d)",
+          "work": "Yes --- more leakage, unlike the previous exam instance. The attacker first learns \\texttt{A} as above, then supplies a \\texttt{D} equal to the offset between the base address of \\texttt{M} and the variable \\texttt{B}. If the branch is speculatively taken although $D \\geq 64$, instruction 4 transiently computes an index $(D + A)/2$ pointing \\emph{at \\texttt{B}}: a speculative \\term{overread} (reading gadget) that loads \\texttt{B} into \\texttt{C}. Instruction 5 then accesses \\texttt{M[C]} with \\texttt{C} holding the secret \\texttt{B}: a \\term{transmitting gadget} encoding \\texttt{B} into the cache state. Reading gadget \\emph{plus} transmitter, so \\texttt{B} leaks."
+        }
+      ],
+      "answer": "Instructions 4 and 5 leak via l_D = floor((D+A)/32): D = 0 gives floor(A/32) and the first D with l_D different from l_0 pins A exactly. Fix: prime the cache by reading M[0], M[16], M[32], M[48] first. Speculation leaks more: a crafted D lets instruction 4 over-read B and instruction 5 transmits it."
+    }
+  ],
+  "practice_refs": [
+    "re-exam-problems-with-sample-solutions.pdf::7b"
+  ]
+}

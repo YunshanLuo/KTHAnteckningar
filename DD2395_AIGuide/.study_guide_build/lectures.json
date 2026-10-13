@@ -1,0 +1,372 @@
+[
+ {
+  "file": "Lecture4.pdf",
+  "topics": [
+   {
+    "name": "Authentication & Identity Basics",
+    "key_points": "Authentication binds principals to actions; authorization governs permitted actions; audit records actions. Principal classes: humans/machines authenticating each other (passwords, biometrics, tokens, CAs). Attribute = property of a principal; identity = set of attributes; identifier = attribute unique within a population. Authentication checks an identity against known attributes (vs. identification = finding someone in a crowd). Enrollment: establishing identity with a system; verification of claimed attributes varies (websites rarely, governments often)."
+   },
+   {
+    "name": "Human-to-Machine Authentication Factors",
+    "key_points": "Three categories: something you are (biometrics: fingerprint, retinal scan), something you know (password, PIN, security questions), something you have (key, ATM card, token). Two-factor authentication = two independent methods (ATM card + PIN); multi-factor = 2+. Combine separate categories; two passwords are not independent factors."
+   },
+   {
+    "name": "Passwords: Creation and Strength",
+    "key_points": "Password lifecycle: create, store, use, change/reset. User-chosen passwords are often guessable (top 20 passwords compromise ~10% of accounts); system-generated ones are unmemorable. Strength: if 2^X guesses needed, strength is X bits. For length L over alphabet N: entropy X = L\u00b7log2(N). Shannon entropy poorly predicts real crackability since humans pick non-uniformly (random word from 50k vocabulary \u2248 16 bits)."
+   },
+   {
+    "name": "Password Storage, Hashing, and Salts",
+    "key_points": "Threat model: offline attack (attacker reads disk/memory). Store uid, H(p) \u2014 need deterministic, one-way, collision-resistant hash. Attacks: identical passwords yield identical hashes; dictionary attacks precompute common hashes; rainbow tables. Defense: per-user random public salt; store uid, s, H(s,p). Unsalted brute force over M passwords and N users is O(M+N); salted is O(MN). Pepper is an alternative (see reading)."
+   },
+   {
+    "name": "Online Attacks, Rate Limiting, and Slow Hashes",
+    "key_points": "Online attack: adversary interacts as a user. Don't leak valid usernames (ask both in parallel, don't reveal which failed \u2014 Failsafe Default); log failures (Defense in Depth); lock accounts, rate limit. Slow hashes (bcrypt, scrypt, Argon2, PBKDF2) add large constant factor hurting attackers, not users. PBKDF2: iterate HMAC ~10,000s of times with password+salt; output usable as symmetric key. Slow down fast hashes by iterating and XOR-combining."
+   },
+   {
+    "name": "Access Control Model and Protection Domains",
+    "key_points": "Access control policy: relation Auth over principals \u00d7 objects \u00d7 operations (matrix). Reference monitor mediates every operation \u27e8P,O,op\u27e9; assumptions: predefined operations are sole info channels and all can be monitored (complete mediation). DAC: owner defines authorizations; MAC: central authority. Principles: Failsafe Defaults (enumerate privileges, not prohibitions), Least Privilege (fine-grained). Protection domains: threads carry privilege sets, transition via system calls; attenuation = losing, amplification = gaining privileges."
+   },
+   {
+    "name": "ACLs, Capabilities, and Confused Deputy",
+    "key_points": "ACL encodes matrix column (per object: list of \u27e8principal, privs\u27e9): easy per-object review, simple revocation, but slow per-principal review and vulnerable to confused deputy. Confused deputy: server tricked into using its own privileges on client's behalf (writing results to charges.txt passed as f). Fix: capabilities \u2014 unforgeable (name+privilege) bundles combining naming with authorization. Capability list encodes row (per principal). C-lists stored in kernel memory; Unix file descriptor table is an example. Capabilities: no confused deputy, but review/delegation/revocation are hard."
+   },
+   {
+    "name": "Mandatory Access Control: MLS, Bell-LaPadula, Biba",
+    "key_points": "MLS: labels L = (sensitivity, compartments); sensitivity Unclassified \u2264 Confidential \u2264 Secret \u2264 Top Secret; compartments enforce Need-to-Know. L1 \u2291 L2 iff S1 \u2264 S2 and C1 \u2286 C2 (partial order; some labels incomparable). BLP (1973): no read up (simple security: S reads O iff L(O) \u2291 L(S)); no write down (*-property: S writes O iff L(S) \u2291 L(O)) \u2014 provably prevents laundering/Trojan horses. Issues: blind writes, attenuated logins, declassification via trusted subjects. Biba (1977): same rules for integrity (Trusted \u2291 Untrusted). SELinux implements MAC/MLS. Other MAC: Brewer-Nash, Clark-Wilson, RBAC."
+   }
+  ]
+ },
+ {
+  "file": "Lecture5.pdf",
+  "topics": [
+   {
+    "name": "Block Cipher Recap & ECB Mode",
+    "key_points": "Block cipher: k-bit key, n-bit block, E(K,M) bijective and indistinguishable from random permutation without key (AES standard). Raw block ciphers are deterministic so not IND-CPA and only encrypt n bits. ECB mode: split M into blocks, encrypt each independently with same key; deterministic => not IND-CPA (penguin image leaks structure)."
+   },
+   {
+    "name": "CBC Mode",
+    "key_points": "Cipher Block Chaining: Ci = EK(Mi \u2295 Ci-1), C0 = random IV; ciphertext is (IV, C1...Cm). Decryption: Mi = DK(Ci) \u2295 Ci-1. IND-CPA secure if IV is random and never reused. Encryption sequential, decryption parallelizable. Needs padding to block multiple (PKCS #7: pad with number of padding bytes, full dummy block if already aligned). IV reuse leaks common prefix blocks."
+   },
+   {
+    "name": "CTR (Counter) Mode",
+    "key_points": "Simulates one-time pad: compute pad = EK(nonce || counter) per block, XOR with plaintext; only uses block-cipher encryption. Ciphertext (nonce, C1...Cm). Both encryption and decryption parallelizable; no padding needed. IND-CPA if nonce never reused; nonce reuse is catastrophic like OTP key reuse (leaks plaintext). Best for high performance."
+   },
+   {
+    "name": "IVs, Nonces & Mode Comparison",
+    "key_points": "IV: random, public, one-use value adding randomness; in CTR called nonce (number used once) \u2014 must be unique, not necessarily random; terms used interchangeably. Never reuse: CBC reuse leaks partial info (equal prefix blocks), CTR reuse is catastrophic. Theory: CBC and CTR equally secure if used properly; CTR for performance, CBC if paranoid about misuse."
+   },
+   {
+    "name": "Lack of Integrity/Authenticity in Block Ciphers",
+    "key_points": "Block cipher modes give confidentiality (IND-CPA) only; tampering isn't detected. CTR bit-flipping attack: knowing M, Mallory computes pad byte Padi = Mi \u2295 Ci, then sets C'i = M'i \u2295 Padi to change 'Pay Mal $100' to '$900' without the key. In CBC, flipped bits turn a block into gibberish but receiver can't tell it wasn't sent \u2014 still no integrity/authenticity."
+   },
+   {
+    "name": "Public-Key Cryptography Overview",
+    "key_points": "Each person has a key pair: public key known to everyone, private key secret. Based on number theory (modular arithmetic, factoring, discrete log) vs symmetric XORs/bit-shifts; messages are numbers, not bit strings. Benefit: no pre-shared secret needed between Alice and Bob. Drawback: much slower than symmetric crypto."
+   },
+   {
+    "name": "Diffie-Hellman Key Exchange",
+    "key_points": "Public: large prime p (2048-bit), generator g. Discrete log problem: given g, p, g^a mod p, finding a is hard. DH assumption: can't distinguish g^ab mod p from random given g^a, g^b. Protocol: Alice sends g^a mod p, Bob sends g^b mod p; shared key K = g^ab mod p. Weaknesses: vulnerable to MITM (Mallory substitutes g^m), needs both parties online, no authentication (fixable with digital signatures; ElGamal addresses some issues)."
+   },
+   {
+    "name": "RSA Encryption & Hybrid Encryption",
+    "key_points": "KeyGen: pick large primes p,q; N = pq (2048\u20134096 bits); choose e relatively prime to (p-1)(q-1) with 2 < e < (p-1)(q-1); d = e^{-1} mod (p-1)(q-1) via Extended Euclid. Public key (N,e), private key d. Enc: C = M^e mod N; Dec: M = C^d mod N. Security: RSA problem no harder than factoring N (assumed hard). Hybrid encryption: encrypt random symmetric key K with asymmetric crypto, data with symmetric \u2014 fast for large messages; used in almost all systems."
+   }
+  ]
+ },
+ {
+  "file": "Side channels.pdf",
+  "topics": [
+   {
+    "name": "Side channels among implementation weaknesses",
+    "key_points": "Implementation is often the weak link. Threat taxonomy: bugs (buffer overflows); fault injection = active, partially invasive (e.g. Row-hammer); side channels = passive, non-invasive attacks that observe byproducts (time, power, EM, sound, temperature, accelerometer) rather than breaking the algorithm."
+   },
+   {
+    "name": "Information flow security & non-interference",
+    "key_points": "High (secret) vs low (public) variables; explicit flows (public=secret+1) and implicit flows (if secret>0 then public=1) violate security. Non-interference: s1~s2 (same low values) implies program(s1)~program(s2). Declassification (=declass) relaxes it, e.g. PIN check reveals only (input==pin). IND-CPA game formalizes this: attacker picks two low-equivalent states, one is run with p=1/2, any poly-time attacker wins with prob at most 1/2+negligible."
+   },
+   {
+    "name": "Timing side channels",
+    "key_points": "Formally: even if program(s1)~program(s2), executions remain distinguishable via observation channels. PIN check with early-exit loop leaks correct prefix: brute force needs avg 5K of 10K combos (3 guesses ~3/10000), timing reduces to 10 worst-case per digit, avg 5 (3 guesses ~1/1000). Non-time channels exist too: auto-increment DB ids leak row counts (register/bid examples)."
+   },
+   {
+    "name": "Cache architecture & cache attack types",
+    "key_points": "Caches are transparent, shared, have collisions; misses cost more time; 64-byte lines, eviction with write-back if dirty. Attack types: time-driven (measure victim exec time to estimate hits/misses, e.g. >1 miss implies Secret!=0); access-driven (probe shared memory, or prime+probe all 64 lines and time reloads); trace-driven (profile cache activity per operation, e.g. Miss-Miss-Hit vs Miss-Hit-Miss reveals branch); instruction-cache attacks. Practical problems: noise from other processes, multiple accesses per line."
+   },
+   {
+    "name": "Access-driven attack on AES",
+    "key_points": "AES: symmetric cipher, 128-bit key brute force infeasible (264 billion years at 1 decryption/us). Last round: C[j] = T(B[i]) XOR K[j], SBox T is a 256-entry lookup table. Attacker model: controls plaintext, observes ciphertext, knows T, shares cache; goal is finding SBox index i to get K = C XOR T[i]. SBox = 1KB = 16 lines of 16 entries; ~1000 encryptions suffice. Small example C = M[P]+K demonstrates candidate-set narrowing from observed cache lines."
+   },
+   {
+    "name": "Non-elimination key recovery method",
+    "key_points": "L = log of (ciphertext c, accessed lines e). L(j,v) = entries with c[j]=v; since c[j]=K[j] XOR T[i] with T a permutation, all elements of L(j,v) share a line. E(j,v) = intersection of their line sets; P(j,v) = T{E(j,v)} = candidate SBox values. Shrink with v1 XOR v2 = T[i1] XOR T[i2] across two values. When |P(j,v)|=1, K[j] = v XOR P(j,v)[0]. Repeat per byte, no new logs; ~850 encryptions, under 1 second."
+   },
+   {
+    "name": "Countermeasures",
+    "key_points": "Eliminate: disable caches (huge perf cost); flush cache at entry/exit; cache partitioning/coloring via MMU (even/odd pages per process - under-utilizes cache); victim actively evicts/normalizes SBox lines, or waits to Worst Case Execution Time. Reduce bandwidth: add noise (random data accesses/computations), reduce timer precision. Randomize data position (&M'= &M+r), layout (M[pi(i)]), and code order. Detection: spot priming (suspicious lines at context switch) and probing (frequent time syscalls). Constant-time programming: never branch on secret, secret-independent memory accesses (e.g. branchless modular exponentiation for RSA)."
+   },
+   {
+    "name": "Other side channels",
+    "key_points": "Browser fingerprinting: passive/active collection of User-Agent, screen, fonts, plugins, audioContext etc.; >80% of 4M+ fingerprints unique, ~90% attributes stable over months; enables cross-site tracking without cookies. Mitigations: Brave/anti-fingerprinting, common defaults, VMs. Network analysis: DASH video identification from chunk sizes/timing (BPS/BPP features + CNN), up to ~0.985 accuracy even sniffing LTE radio. SSH: inter-keystroke packet timings reveal typing patterns and passwords; defenses: buffering/coalescing keystrokes, traffic shaping."
+   }
+  ]
+ },
+ {
+  "file": "Lecture1.pdf",
+  "topics": [
+   {
+    "name": "Course Overview & Organization",
+    "key_points": "DD2395/DD2391/DD2394; lecturers twice weekly, in-person. Labs: GPG secure email (Lab G), web attacks (Lab W), buffer overflow (Lab O), optional zip bomb (Lab Z). Merit points can raise exam grade B/A. Written exam Oct 19, re-exam Dec 16. Soft vs hard deadlines; code of honor and AI policy; breaking into others' systems is criminal."
+   },
+   {
+    "name": "Defining Security",
+    "key_points": "Computer security = how systems behave in presence of an adversary (intelligence actively causing misbehavior). System is secure when it 'does what it should and nothing more'. Security policy stipulates what should/shouldn't be done, specifies what not how (e.g. 'prevent theft of money'). Principal = entity that can take actions (person, program, system), distinct from principle."
+   },
+   {
+    "name": "Security Properties: CIA Triad",
+    "key_points": "Confidentiality: protection of assets from unauthorized disclosure (privacy concerns info about individuals). Integrity: protection from unauthorized modification; output correct per specification. Availability: protection from loss of use; DoS affects availability. Examples: copying homework violates confidentiality; freezing a system violates availability."
+   },
+   {
+    "name": "Attacker's vs Defender's Mindset",
+    "key_points": "Attacker: find ways security can break, weakest links, question assumptions security depends on, think outside the designer's worldview. Defender: know what you defend and against whom; risk analysis; benefits vs costs (no system is completely secure); 'rational paranoia'. Common mistake: convincing yourself the system is secure \u2014 instead identify and fix weaknesses."
+   },
+   {
+    "name": "Security Model Components",
+    "key_points": "System model (how system behaves; trace models, PL-semantics models), security policies (CIA + privacy, accountability), threat/attacker model (what attacker can observe \u2014 output, timing, power \u2014 and influence; attacker may supply code or be co-resident), trust, mechanisms, assurance. Bear-race parable: 'good enough' defense suffices to redirect attackers elsewhere."
+   },
+   {
+    "name": "Trust, TCB, and Assurance",
+    "key_points": "Trust = expected behavior of a principal (an assumption). Trusted Computing Base (TCB): components whose failure compromises security (e.g., SSH daemon, OS, CPU; not a video app). Trustworthy = evidence it satisfies policy. Assurance asks whether mechanisms enforce policies \u2014 reduce system security to TCB security; keep TCB small (KISS: Keep It Simple, Stupid); formal reasoning and testing."
+   },
+   {
+    "name": "Security Mechanisms & Strategies",
+    "key_points": "Countermeasures neutralize threat or vulnerability. Strategies: Prevent (block attack), Deter (make harder), Deflect (make other targets attractive), Mitigate (lessen harm), Detect (during/after), Recover (undo harm). Mechanisms: cryptography, authentication, access control, isolation, sandboxing, monitoring, information flow control, security testing, fuzzing, dynamic/static analysis, verification."
+   },
+   {
+    "name": "Security Principles",
+    "key_points": "Accountability (authentication, authorization, audit = 'Gold Standard'); Complete Mediation (reference monitor intercepts every operation, part of TCB); Least Privilege (minimum privileges needed); Failsafe Defaults (default 'no', allowlists > denylists); Separation of Privilege/Duty (require collusion); Defense in Depth (overlapping mechanisms, Theodosian Walls); Economy of Mechanism (small TCB); Open Design (no security through obscurity, assume attacker knows all); Psychological Acceptability (unusable security gets bypassed; warning dialogs signal failure; social engineering)."
+   }
+  ]
+ },
+ {
+  "file": "Lecture2.pdf",
+  "topics": [
+   {
+    "name": "What is Cryptography",
+    "key_points": "Older def: secure communication over insecure channels. Newer def: rigorous guarantees about data and computation in presence of an attacker \u2014 not just confidentiality but also integrity and authenticity. Never write your own crypto; use well-vetted libraries. Goal: become a good consumer of cryptography."
+   },
+   {
+    "name": "Cast of Characters & Three Goals",
+    "key_points": "Alice/Bob communicate over insecure channel; Eve = eavesdropper (honest-but-curious, passive); Mallory = manipulator (malicious, can read and modify). Three goals: Confidentiality (adversary can't read messages), Integrity (adversary can't change messages undetected), Authenticity (prove message origin). Integrity is prerequisite for authenticity."
+   },
+   {
+    "name": "Keys, Encryption & Integrity Mechanisms",
+    "key_points": "Attacker knows all algorithms (principle of open design); only the key is secret. Symmetric model: shared secret key. Asymmetric: public + secret key pair. Confidentiality via encryption: plaintext + key -> ciphertext -> decrypt. Integrity via tag/signature (seal analogy): tampering invalidates the tag; Bob verifies it."
+   },
+   {
+    "name": "Threat Models",
+    "key_points": "Models classified by Eve's power: ciphertext-only (no trickery), chosen-plaintext (can get encryptions of chosen messages), chosen-ciphertext (can get decryptions), chosen plaintext-ciphertext (both \u2014 strongest and defensible in practice). Lecture focuses on the chosen-plaintext (CPA) model."
+   },
+   {
+    "name": "Symmetric-Key Encryption Definition",
+    "key_points": "Three algorithms: KeyGen() -> K; Enc(K, M) -> C; Dec(K, C) -> M. Messages are bitstrings. Required properties: correctness Dec(K, Enc(K, M)) = M; efficiency (fast on standard computers); security = confidentiality. Encryption alone does not provide integrity or authenticity."
+   },
+   {
+    "name": "IND-CPA Security Definition",
+    "key_points": "Game-based definition: Eve queries encryptions of chosen plaintexts, submits equal-length M0/M1, challenger encrypts Mb for random b, Eve queries more, then guesses b. Scheme is IND-CPA secure if every polynomial-time Eve wins with probability <= 1/2 + negligible epsilon. Insecurity = some strategy wins with probability > 1/2."
+   },
+   {
+    "name": "Edge Cases: Length, Runtime, Negligibility",
+    "key_points": "Schemes may leak message length (hiding it is impractical; apps can pad); hence M0/M1 must be same length. Eve limited to polynomial runtime. Negligible advantage ~ O(1/2^k) for k-bit key: 1/2^128 negligible, 1/2^20 not; ~2^80 a reasonable current threshold but changes over time \u2014 know your threat model."
+   },
+   {
+    "name": "One-Time Pad",
+    "key_points": "XOR review: x\u22950=x, x\u2295x=0, commutative/associative. OTP: KeyGen = random n-bit key (n = message length, fresh per message); Enc(K,M)=K\u2295M; Dec(K,C)=K\u2295C. Correctness: K\u2295(K\u2295M)=M. Perfectly secure (win probability exactly 1/2) since random K makes both plaintext hypotheses equally likely. NOT IND-CPA secure: key reuse lets attacker query Enc(K,M0) and compare."
+   }
+  ]
+ },
+ {
+  "file": "Protocols Upsated.pdf",
+  "topics": [
+   {
+    "name": "Security Protocols: Purpose & Threat Model",
+    "key_points": "Protocols embed crypto primitives in structured message sets to remove trust in the channel (voting, signatures, auth email, blockchains). Threats: address spoofing, eavesdropping (Eve), malicious principals (Bob). Protocol design is subject to subtle errors."
+   },
+   {
+    "name": "Secure Bank Transfer Case Study",
+    "key_points": "Build up iteratively: digital signatures prevent spoofing; replay attacks countered by nonces (bank checks Log/DB) or timestamps (accept 1 tx per 5s, reject older). Include recipient in message (else reusable for other receivers/banks) and acknowledgements (else sender can't detect dropped/altered messages)."
+   },
+   {
+    "name": "Common Attacks & Desired Properties",
+    "key_points": "Attacks: known-key, replay, impersonation (person-in-the-middle), reflection (replay to original sender, typical with shared keys). Properties: confidentiality, authentication, integrity, freshness (this run, not replay), explicitness (this protocol, not copied from another), forward secrecy (key leak must not compromise past messages)."
+   },
+   {
+    "name": "Protocol Design Guidelines",
+    "key_points": "Every message contains a nonce; replies include the nonce replied to plus a fresh one. Messages explicitly name sender and intended recipient. Messages specify the protocol, its version number, and the message number within the protocol instance."
+   },
+   {
+    "name": "Digital Certificates & Trust Models",
+    "key_points": "Certificates bind a public key to a subject, signed by a CA (may include validity, authorization, timestamps). Chain of trust: CA2 certifies CA1, etc.; root certs are self-signed and blindly trusted (e.g. Chrome root chain). Web of Trust: decentralized; users hold key rings and sign keys of trusted users; deferred trust via signature verification."
+   },
+   {
+    "name": "Session Key Exchange & Denning-Sacco Flaws",
+    "key_points": "Public-key crypto is expensive, so parties negotiate a symmetric session key via a trusted CA. Denning-Sacco [DS81] flaws (Abadi & Needham 1994): message reuse lets Bob impersonate Alice; reflection attacks; key derivation attack (Bob infers K+1 used with Eve); compromised forward secrecy \u2014 one leaked key exposes all previous messages."
+   },
+   {
+    "name": "TLS: Handshake & Key Derivation",
+    "key_points": "TLS gives confidentiality, integrity, server authenticity over in-order TCP; used in HTTPS, SMTP (STARTTLS), VPN. Handshake: client sends 256-bit RB + cipher list; server sends RS, chosen algorithms, certificate; client sends premaster secret PS encrypted with server public key (proves private-key ownership). Both derive keys CB, CS (encryption) and IB, IS (MACs) from RB, RS, PS; MACs over handshake detect tampering; fresh RB/RS per connection prevents replay."
+   },
+   {
+    "name": "TLS Attacks, Bugs & Formal Verification",
+    "key_points": "Downgrade/P(M)ITM: force export-grade ciphers (e.g. 512-bit RSA from 1990s US export rules), solve DLP/RSA problem, recover plaintext \u2014 8.5% of top 1M sites vulnerable (2015). OpenSSL Heartbleed (memory safety). Apple 'goto fail' bug skipped certificate checks enabling impersonation. Verification: Tamarin symbolic models (abstracted crypto, attacker capabilities; can miss unstated assumptions like nonce reuse) vs EasyCrypt computational model (probabilistic reductions to hardness assumptions)."
+   }
+  ]
+ },
+ {
+  "file": "Lecture6.pdf",
+  "topics": [
+   {
+    "name": "Web Application Security Landscape",
+    "key_points": "Modern web apps are complex: page code, ad code, 3rd-party libs, frames, extensions. They handle sensitive data (financial, health, personal) wanted by hackers, insurers, ad companies, governments. Many acting parties: page/library developers, service/data/ad providers, CDNs, network providers. Goal: build flexible, secure apps from untrusted components."
+   },
+   {
+    "name": "HTTP Protocol, URLs and Cookies",
+    "key_points": "HTTP is an application-layer protocol for fetching resources via URL (scheme://domain:port/path?query#fragment). Request/response messages; methods: GET (no state change), POST (creates/updates), PUT, PATCH, DELETE. HTTP is stateless; cookies are server-sent data the browser stores and echoes back, used for session management, personalization, and tracking (Set-Cookie header)."
+   },
+   {
+    "name": "Browser Execution Model, DOM and JavaScript",
+    "key_points": "Browser loads root page, parses HTML, runs JS, fetches subresources, responds to events (onClick, onLoad, setTimeout). Pages can nest frames/iFrames from different sources; browser provides frame-based isolation. DOM is an OO interface letting JS read/modify page content; JavaScript is client-side, embedded via <script>, runs in the browser with the page's privileges."
+   },
+   {
+    "name": "Same Origin Policy (SOP)",
+    "key_points": "Attacker models: network attacker and web attacker (evil.com). Origin = (scheme, domain, port) triple; SOP isolates origins for confidentiality and integrity. Separate SOPs exist for DOM, CSS/fonts, cookies. Frames access only same-origin data; postMessage/CORS relax SOP with explicit mediation (check event.origin). Scripts/images can load cross-origin but run with the page's privileges."
+   },
+   {
+    "name": "Cookie Scope and Cookie Security Flags",
+    "key_points": "Cookie SOP uses (scheme, domain, path), not port. A page can set cookies for its own or parent domains (not public suffixes); without Domain attribute the cookie is host-only. Browser sends cookies whose domain is a suffix of URL domain and path a prefix of URL path. Flags: HttpOnly hides cookie from JS (document.cookie); Secure = HTTPS only; SameSite=Strict = sent only for same-site requests."
+   },
+   {
+    "name": "Cross-Site Request Forgery (CSRF)",
+    "key_points": "Attacker page triggers requests (e.g. <img src=bank.ch/transfer?...> or auto-submitted form) that carry the victim's auth cookies; attacker can't read the response but state changes happen anyway \u2014 cookie-based auth is insufficient for side-effecting requests. Defenses: secret per-session validation tokens in forms, Referer/Origin header validation, SameSite cookies."
+   },
+   {
+    "name": "SQL Injection (SQLi)",
+    "key_points": "Occurs when SQL queries are built by string-concatenating user input, e.g. \"SELECT id FROM users WHERE username = '$login'\". Attacks: alice' (syntax error), '--' (comment), ' or 1=1 -- (bypass login, matches all users), '; drop table users -- (damage). Defense: never build SQL yourself \u2014 use parameterized/prepared queries where values are sent separately from the command (also faster via cached query plans)."
+   },
+   {
+    "name": "Cross-Site Scripting (XSS) and CSP",
+    "key_points": "XSS: untrusted data sent to browser without validation/sanitization; attacker's code runs in victim's browser (vs SQLi on server). Types: reflected (script reflected in page, e.g. search?q=<script>...), stored (saved in DB; Samy worm on MySpace via CSS javascript: URL), client-side/DOM XSS (insecure default browser APIs like document.write on location.href). Blacklist filtering is hard (~105 event handlers, encodings, <scr<scriptipt evasion). Defenses: proper escaping, frameworks, and Content Security Policy (e.g. default-src 'self'; script-src allowlist, blocks inline scripts)."
+   }
+  ]
+ },
+ {
+  "file": "SystemSec.pdf",
+  "topics": [
+   {
+    "name": "Memory bugs & Rowhammer",
+    "key_points": "Memory bugs enable: secret data access, data corruption, unexpected control transfer, access violations, attacker-chosen code execution. Rowhammer: DRAM cells interact electrically; repeatedly reading (hammering) one line can flip bits in another \u2014 usable from JavaScript to flip JIT code/pointers. Defenses: ECC memory, physical separation on DRAM."
+   },
+   {
+    "name": "Compile-time prevention: safe languages & coding",
+    "key_points": "Strongly-typed high-level languages block untyped memory access; Rust uses ownership/borrowing to enforce lifetime rules without GC. Costs: performance, memory, timing predictability; guarantees rely on correctness of unsafe components. Safe C coding: check buffer capacity, validate lengths (integer overflow), handle allocation failures, define ownership/lifetime, mind null terminators; strncpy() may leave buffer unterminated."
+   },
+   {
+    "name": "Static analysis, formal verification & testing",
+    "key_points": "Static analysis finds defects without executing code; formal verification proves properties mathematically \u2014 a proof is a guarantee under explicit assumptions (cost ~$2000/LOC 2010, ~$500 2020). Verified platforms: seL4 separation kernels, ARMor software fault isolation, Frama-C. Testing: fuzzing, symbolic execution (solve path constraints), Memcheck tracks addressability and definedness; passing tests never proves absence of defects."
+   },
+   {
+    "name": "Runtime memory protection: guard pages, fat pointers, MTE",
+    "key_points": "MMU: page tables map virtual\u2192physical + permissions; MPU maps physical regions to permissions. Guard pages: MMU-illegal pages placed between stack frames/heap buffers/critical regions; any access aborts. Fat pointers carry key+base+bound; allocation generates random key, dereference checks key match, free rotates key. ARM MTE: 4-bit tag per 16-byte granule, pointer tag in bits 59\u201356, HW checks tag on access."
+   },
+   {
+    "name": "Control-flow integrity defenses",
+    "key_points": "Goal: prevent/detect altered control flow (return pointer or function pointer modification). Stack canaries: random per-execution value between locals and saved FP/return addr; abort if changed (GCC -fstack-protector). Shadow stack: return addresses in separate guard-page-protected stack, compared on return; protects returns only, not other pointers/data. Target address encryption (XOR keyed pointers; XOR noted as weak). Control-flow attestation: log PC updates via trampoline invoke(), hash in isolated memory for verifier."
+   },
+   {
+    "name": "Code integrity: W\u2295X, signatures, ISR",
+    "key_points": "Prevent code injection/overwriting. W\u2295X (NX): stack/heap/global data non-executable via MMU; needs JIT provisions (mprotect) \u2014 attacker can corrupt control flow to call mprotect then execute (see ROP). Code signatures: check SHA(program) in DB or verify DecMSpu(signature)=SHA(program) via certificate chain; runtime variant checks pages as they become executable; also malware-fragment DB. Instruction Set Randomization: encrypt code in memory, decrypt on fetch; injected code decrypts unpredictably. Requires cheap tweakable encryption preserving length, random access, no OFB/MAC."
+   },
+   {
+    "name": "Disk encryption",
+    "key_points": "Use symmetric encryption (not asymmetric) for disks. AES-ECB is insecure (leaks patterns); CBC unsuitable due to random-access needs. Use tweakable encryption (per-sector tweak); add a MAC if integrity is required."
+   },
+   {
+    "name": "Defense guarantees & remaining attacks",
+    "key_points": "Memory-safe languages: prevent invalid access in safe code; remain vulnerable to logic errors, side channels, unsafe bugs. Stack canary: detects canary change; fails on disclosure/bypass writes. W\u2295X: blocks W+X mappings; ROP/data-only attacks remain. ASLR: unpredictability; fails on leaks/guessing. CFI/shadow stack: restricts indirect targets; abuse of allowed targets remains. Isolation/sandbox: limits compromised components; interface bugs and escapes remain."
+   }
+  ]
+ },
+ {
+  "file": "Lecture3.pdf",
+  "topics": [
+   {
+    "name": "Block Ciphers & AES",
+    "key_points": "Block cipher: E(K,M)->C maps k-bit key + n-bit plaintext to n-bit ciphertext; D is inverse. Correctness: E_K must be a permutation (bijective). Security: E behaves like a random permutation, formalized via a distinguishing game (Eve can't tell E_K from random permutation with prob >1/2). Brute-forcing 128-bit key ~2^128\u224810^39 keys \u2248 30 trillion years at 10^18 keys/s. AES: block 128 bits, keys 128/192/256 bits; 10/12/14 rounds (SubBytes, ShiftRows, MixColumns, AddRoundKey)."
+   },
+   {
+    "name": "Limitations of Block Ciphers",
+    "key_points": "Block ciphers are NOT IND-CPA secure because deterministic: Eve submits M0,M1, re-requests Enc(K,M0) and compares \u2014 wins with probability 1. No deterministic scheme can be IND-CPA secure. Also, they only encrypt fixed n-bit blocks (AES: 128 bits); longer messages need modes of operation (covered in Lecture 5)."
+   },
+   {
+    "name": "Cryptographic Hash Functions",
+    "key_points": "H: {0,1}* -> {0,1}^n; fixed-length 'fingerprint'. Properties: deterministic, efficient, one-way (preimage resistance: given y, infeasible to find x with H(x)=y), collision resistance. Strong collision resistance (find any x\u2260x' with H(x)=H(x')) implies second preimage (weak) resistance (given x, find x'\u2260x colliding). Collisions must exist by pigeonhole; goal is computational infeasibility. Random oracle: 1-bit input change fully changes output."
+   },
+   {
+    "name": "Hash Standards & Length Extension",
+    "key_points": "MD5 (128-bit, completely broken), SHA-1 (160-bit, broken 2017), SHA-2 (256/384/512, current standard but some variants vulnerable to length extension), SHA-3 (256/384/512, different construction, not vulnerable). Length extension: given H(x) and len(x) but not x, attacker can compute H(x||m) for chosen m."
+   },
+   {
+    "name": "Hashes and Integrity (Threat Models)",
+    "key_points": "Hashes give integrity only if attacker can't modify the hash (e.g. Mozilla publishes hash on website; Alice compares). Over an insecure channel where Mallory can alter both message and hash, no integrity: hashes are unkeyed, anyone can compute them. Fix: keyed schemes (MACs) in symmetric setting."
+   },
+   {
+    "name": "MACs, EU-CPA, NMAC & HMAC",
+    "key_points": "MAC(K,M)->T: key + arbitrary message to fixed tag. Security: EU-CPA (existential unforgeability under chosen-plaintext attack): even querying tags for chosen messages, Mallory can't forge a valid tag for a new M'. NMAC: H(K1||H(K2||M)), needs two n-bit keys; double hashing blocks length extension. HMAC: H((K'\u2295opad)||H((K'\u2295ipad)||M)); K' padded/hashed to n bits; opad=0x5c..., ipad=0x36... MACs give integrity/authenticity but NO confidentiality (deterministic, may leak info)."
+   },
+   {
+    "name": "Authenticated Encryption",
+    "key_points": "AE = confidentiality + integrity (+authenticity) simultaneously. Built by combining IND-CPA encryption with unforgeable MAC. Options: MAC-then-encrypt Enc(K1, M||MAC(K2,M)) vs encrypt-then-MAC Enc(K1,M) with MAC(K2, Enc(K1,M)). Both secure in theory, but always use encrypt-then-MAC: tampering detected before decryption, avoids feeding attacker-chosen input to decryption (side-channel leaks)."
+   },
+   {
+    "name": "Public-Key Encryption & Digital Signatures",
+    "key_points": "PKE: KeyGen()->PK,SK; Enc(PK,M)->C; Dec(SK,C)->M. Anyone encrypts with PK, only SK holder decrypts. Security: semantic security (IND-CPA variant where adversary gets PK). Examples: RSA, ElGamal (hardness of factorization/discrete log). Digital signatures: asymmetric integrity/authenticity, no shared key needed. Sign(SK,M)->sig; Verify(PK,M,sig)->{0,1}; only SK holder signs, anyone verifies. Security: EU-CPA as for MACs. In practice sign H(M) to handle long messages."
+   }
+  ]
+ },
+ {
+  "file": "dasak26soceng-1.pdf",
+  "topics": [
+   {
+    "name": "What is social engineering & why it matters",
+    "key_points": "Attacks exploiting human behavior, not system vulnerabilities. Many/most attacks start via social engineering or human error (entry point). Goals: industrial spying, direct/indirect access to resources (trend: ransomware), data theft, identity theft. Everyone is susceptible. Reference: Kevin Mitnick, The Art of Deception / The Art of Intrusion."
+   },
+   {
+    "name": "Why we fall for it",
+    "key_points": "Manipulation strategies exploit human traits, habits, cultural expectations. Unrealistic assumptions: 'I'm not important enough to be a target' (but you can be a stepping stone), 'this info isn't harmful if leaked' (but it can be combined), 'saying no creates problems', 'getting phished reflects on my intelligence' (it reflects on humanity and attacker manipulativeness). Tech advances make fake hard to distinguish from real."
+   },
+   {
+    "name": "Attack phases",
+    "key_points": "1) Research. 2) Pretexting \u2014 develop rapport and trust. 3) Get data (exploit trust). 4) Keep connections. 5) Combine data. 6) Use it. Small pieces from different sources are aggregated into a complete picture."
+   },
+   {
+    "name": "Social engineering techniques",
+    "key_points": "Trappings of role; building credibility; altercasting (forcing the target into a role); distracting from systematic thinking; momentum of compliance; bury questions; get pieces from different sources. Also: read victim's openness, test with personal information, back off (don't burn the source), create then fix a problem to build gratitude/trust."
+   },
+   {
+    "name": "Psychological exploits",
+    "key_points": "Levers the social engineer exploits: the desire to help, attribution, liking, fear, reactance (resistance to perceived loss of freedom), reciprocity, and the dynamics of doing a favor. Same persuasive techniques used in everyday life, applied manipulatively and deceptively (Brad Sagan quote)."
+   },
+   {
+    "name": "Example scenarios (Mitnick)",
+    "key_points": "Vishing (crying-baby call). 'Flying out': fake travel agency extracts employee number via friendly pretext. 'Just testing': fake tech support has victim change password to 'test123' during a bogus keystroke test. 'Network outage': multi-call attack \u2014 rapport with victim, trick NOC into disabling victim's port, victim calls attacker back for 'help', then is walked through downloading malware."
+   },
+   {
+    "name": "Technical methods aiding SE",
+    "key_points": "Browser-in-the-Browser popups (Steam example); look-alike subdomains (www.microsoft.com.<junk>.reallybaddomain.com); deepfakes; HTML canvas + JavaScript + images to fake websites \u2014 last-mile reassembly attack for social engineering. Technology makes fake increasingly indistinguishable from real."
+   },
+   {
+    "name": "Countermeasures",
+    "key_points": "Organizational: clear concise enforced protocols; awareness training dispelling myths; simple rules defining sensitive info; ID required for restricted actions; data classification policy; resistance training; security assessment testing (without setting traps); culture change \u2014 politeness where 'NO' is OK. Technical: filter phishing before it reaches users, 2FA, least privilege, isolation, separation of duty, complete mediation, patching."
+   }
+  ]
+ }
+]

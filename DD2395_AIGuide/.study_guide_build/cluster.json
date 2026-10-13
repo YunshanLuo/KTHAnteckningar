@@ -1,0 +1,158 @@
+{
+  "question_types": [
+    {
+      "name": "Security analysis of a custom hash-function construction",
+      "description": "Given a concrete hash built from a secure primitive (SHA-2/SHA256, AES) combined with linear or structural operations (xor of blocks, weighted sums mod 2^n, dropping even blocks, concatenating input bits, polynomial rolling hash), the student must: (1) formally define the three security requirements — preimage/one-way resistance, second-preimage (weak collision) resistance, strong collision resistance — and (2) for each property either disprove it with an explicit preimage/collision or argue it holds, usually by reduction to the underlying primitive. General attack scheme: exploit linearity and cancellation of the combiner (duplicate blocks cancel under xor, permuted blocks give equal xor, appended zero blocks add nothing, solve the linear equation mod 2^n directly) to construct collisions; for preimages, invert the combiner around the primitive or reduce inverting H to inverting the secure primitive.",
+      "frequency": 8,
+      "typical_given": "A hash construction H over fixed-size blocks that combines a secure primitive (SHA256/AES) with xor, modular arithmetic, block selection or concatenation; sometimes a remark that encrypt/decrypt are mutual inverses.",
+      "typical_target": "Define one-wayness, weak and strong collision resistance; for each property disprove it with a concrete counterexample or argue why it holds; sometimes also consequences of using the broken hash in an application.",
+      "keywords": ["hash function", "one-way", "preimage resistance", "weak collision resistance", "strong collision resistance", "define the requirement", "disprove", "xor", "SHA256", "AES"],
+      "supporting_refs": [
+        "reexam-problems.-with-solutions.pdf::4a",
+        "dasak19combined.pdf::Part II P3",
+        "dasak18combinedWithSolutions-1.pdf::Part II Problem 2",
+        "2022exam.pdf::Part 2, Problem 1 (C level) — breaking the given hash construction"
+      ]
+    },
+    {
+      "name": "Cache/timing side-channel attack analysis and constant-time fix",
+      "description": "Given a direct-mapped data cache (stated size, line size, mapping), an array layout, and a short victim program with secret variables and attacker-chosen input, the student must: (1) identify which instructions leak because their memory accesses or iteration counts depend on secrets; (2) show the attack methodology for a time-driven or access-driven (prime-and-probe/flush) attacker — count cache misses per case, observe which lines are touched, correlate multiple runs over all attacker inputs to pin down the secret's value or range; (3) propose a fix: constant-time/branchless programming (fixed loop bounds, conditional assignment, secret-independent indices) or cache priming/preloading so the cache footprint is secret-independent; (4) reason whether speculative execution leaks more (Spectre-style transient loads).",
+      "frequency": 7,
+      "typical_given": "Direct-mapped cache geometry, an array M with stated line mapping, secret variables (A, B) and an attacker-controlled input (C or D), a short C-like victim program, and an attacker model (execution-time measurement or observed cache lines, repeated runs with chosen inputs).",
+      "typical_target": "Explain why the program is insecure and which instructions leak; explain how the attacker correlates executions to recover the secret; describe how to fix the program; assess whether speculative execution increases leakage.",
+      "keywords": ["cache side channel", "time-driven attack", "access-driven attack", "cache misses", "secret-dependent memory access", "constant-time", "prime the cache", "speculative execution", "correlate executions"],
+      "supporting_refs": [
+        "dasak18combinedWithSolutions-1.pdf::Part II Problem 5a",
+        "exam-problems-with-solutions.pdf::8b",
+        "reexam-with-solutions.pdf::7b",
+        "re-exam-problems-with-sample-solutions.pdf::7b"
+      ]
+    },
+    {
+      "name": "Memory-safety vulnerability identification and exploit construction",
+      "description": "Given a small C program with an unsafe construct (gets/strcpy/strcat/fscanf %s/memcpy into a fixed buffer, unsafe cast/type confusion, use-after-free), the student must: (1) locate the vulnerable lines and explain why they are unsafe; (2) construct a concrete exploit input — overwrite an adjacent local (e.g. an authenticated flag), a saved return address to jump to an existing function or injected shellcode, or a data pointer so a later write retargets a function pointer; (3) evaluate defenses: stack canaries, NX/W^X, ASLR (stack base vs full), guard pages, safe APIs — stating which attack each counters and why/why not (e.g. canaries miss hijacks before return, stack-only ASLR preserves relative offsets and code addresses).",
+      "frequency": 7,
+      "typical_given": "C source with an attacker-controlled input (argv, file, string), a stated stack/heap layout and pointer size, and sometimes a function pointer or an existing target function in the binary.",
+      "typical_target": "Identify vulnerable lines; give a concrete input/payload that hijacks control flow or injects code with stated layout assumptions; judge whether canaries/NX/ASLR/guard pages stop each attack and propose a countermeasure for the surviving one.",
+      "keywords": ["buffer overflow", "stack", "return address", "control flow hijack", "shellcode", "stack canary", "NX", "ASLR", "use after free", "type confusion", "exploit input"],
+      "supporting_refs": [
+        "dasak18combinedWithSolutions-1.pdf::Part II Problem 3b",
+        "reexam-problems.-with-solutions.pdf::6c",
+        "exam-with-solutions.pdf::7b",
+        "re-exam-problems-with-sample-solutions.pdf::6c"
+      ]
+    },
+    {
+      "name": "Bell-LaPadula access-control decisions and label lattice",
+      "description": "Given a BLP system with sensitivity levels and compartments, the student must: (1) formally define no-read-up (ss-property: read iff object label is dominated by subject label) and no-write-down (*-property: write iff subject label is dominated by object label) using the dominance relation (level order plus compartment subset); (2) draw the label partial order/Hasse diagram for the given levels x compartment powerset; (3) grant/deny concrete read/write/append requests with justification, especially for incomparable labels; (4) construct example label pairs for allowed read, denied read, allowed write (write-up), denied write, or write-only access (append).",
+      "frequency": 6,
+      "typical_given": "Sensitivity levels (e.g. Public/Confidential/Secret/TopSecret, sometimes with incomparable levels), a set of compartments, the dominance rule, and concrete subject/object labels or access requests.",
+      "typical_target": "Define no read up / no write down; draw the partial order; justify read/write decisions for given labels; provide example labels achieving specific allowed/denied combinations.",
+      "keywords": ["Bell-LaPadula", "no read up", "no write down", "clearance", "classification", "compartments", "partial order", "lattice", "dominance", "granted", "denied"],
+      "supporting_refs": [
+        "dasak18combinedWithSolutions-1.pdf::Part II Problem 6",
+        "exam-with-solutions.pdf::3b",
+        "reexam-problems.-with-solutions.pdf::2b.1",
+        "re-exam-problems-with-sample-solutions.pdf::2b.1"
+      ]
+    },
+    {
+      "name": "Security protocol flaw analysis and repair",
+      "description": "Given a message-level protocol (payment authorization, file sharing with malware scan, submission/acknowledgement, pub/sub registration, DH key exchange), the student must find the flaw and propose a minimal fix. Recurring flaws: replay (no nonce/timestamp inside the signature), missing authentication of an early message enabling impersonation or DoS, signatures not binding the full context (amount, recipient, file hash, exercise id, producer name) enabling substitution or cross-instance replay, unauthenticated DH enabling man-in-the-middle key substitution, missing encryption on a distribution leg breaking confidentiality, and non-repudiation gaps (shared-key MACs, self-issued certificates, storing only a hash). Fix pattern: add signed nonce/timestamp, include the missing field or hash inside the signed portion, authenticate/encrypt the relevant leg, or anchor trust in a CA.",
+      "frequency": 6,
+      "typical_given": "A sequence of protocol messages with signatures/encryption/MACs and stated keys, plus an attacker model (network attacker, malicious participant, compromised server).",
+      "typical_target": "Explain how a specified attack (replay, impersonation, tampering, MitM, DoS, repudiation dispute) is possible, or why it is prevented; propose a protocol change that fixes it.",
+      "keywords": ["replay", "nonce", "timestamp", "signature", "man in the middle", "impersonation", "propose a change", "bind", "non-repudiation", "authentication"],
+      "supporting_refs": [
+        "dasak19combined.pdf::Part II P6.3",
+        "exam-problems-with-solutions.pdf::6a",
+        "exam-with-solutions.pdf::6b",
+        "reexam-problems.-with-solutions.pdf::5a"
+      ]
+    },
+    {
+      "name": "Concept true/false (or multiple-choice) with one-to-three-sentence justification",
+      "description": "A battery of short conceptual statements spanning the whole course — CIA mapping, threat classes, Kerckhoffs' principle, authentication factors, salt purpose, DAC/ACL/capabilities, packet-filter vs DPI firewall limits, signature-IDS limits and the base-rate fallacy, SYN flood/ICMP flood mechanics, worm vs virus vs polymorphic malware, stack vs heap/canaries/W^X/ASLR/guard pages, side channels vs fault injection, GDPR/privacy vs confidentiality, social engineering traits. Solution scheme: judge true/false (or mark all true statements), name the correct concept, and give the distinguishing counterexample or correction (e.g. read violates confidentiality not integrity; salts are non-secret and defeat rainbow tables, not weak passwords; signature IDS misses unknown attacks; SYN flood exhausts the connection table, not bandwidth; victim-side dropping fails because the upstream link is already congested).",
+      "frequency": 5,
+      "typical_given": "A single statement (or 3-5 candidate statements) about a security concept, mechanism or attack.",
+      "typical_target": "Decide true/false (or select all true statements) and justify the verdict by naming the correct property/definition and the key distinction or counterexample.",
+      "keywords": ["true or false", "explain your reasoning", "CIA", "least privilege", "salt", "firewall", "IDS", "false positives", "SYN flood", "buffer overflow", "side channel", "GDPR", "social engineering"],
+      "supporting_refs": [
+        "dasak20Part1ReasoningScreenshots.pdf::Q11",
+        "dasak21examPart1solutions.pdf::Question 2",
+        "2022exam.pdf::Part 1, T/F statement 5",
+        "dasak19combined.pdf::Part I Q9"
+      ]
+    },
+    {
+      "name": "Custom block-cipher mode analysis: decryption, parallelizability, bit-flip propagation, IND-CPA",
+      "description": "Given a made-up mode of operation defined by encryption recurrences (CBC-like chains with extra xor terms, one or two IVs), the student must: (1) algebraically invert the recurrence to derive an efficient decryption formula (xor both sides, apply D_K where needed); (2) decide parallelizability from data dependencies — encryption is sequential when C_i depends on earlier ciphertext; decryption is parallel when P_i depends only on ciphertext blocks; (3) trace a single-bit ciphertext flip: a corrupted block entering the block cipher yields garbage (avalanche), while a corrupted block that is only xored propagates the same single-bit flip; (4) judge IND-CPA security — deterministic modes (constant/reused IV) are broken via equality of first ciphertext blocks, fresh random IVs restore security.",
+      "frequency": 5,
+      "typical_given": "Encryption formulas for C1 and Ci in terms of E_K, IVs, plaintext and previous ciphertext blocks; block size n; message a multiple of n; D_K available.",
+      "typical_target": "Derive the decryption formula; explain whether encryption and decryption can be parallelized; show what Bob decrypts after a single-bit flip in one ciphertext block; justify or break IND-CPA security (IV reuse/constant IV).",
+      "keywords": ["mode of operation", "derive decryption formula", "parallelized", "single bit flip", "error propagation", "garbage", "IND-CPA", "IV", "initialization vector"],
+      "supporting_refs": [
+        "exam-with-solutions.pdf::1a",
+        "reexam-problems.-with-solutions.pdf::1c",
+        "exam-problems-with-solutions.pdf::1c",
+        "re-exam-problems-with-sample-solutions.pdf::8c"
+      ]
+    },
+    {
+      "name": "Web attack construction: XSS, CSRF, SQLi with origin/cookie reasoning",
+      "description": "Given a small web app description (endpoints, cookie flags Secure/HttpOnly/SameSite, HTTP vs HTTPS, reflection or storage of user input), the student must construct concrete attacks and reason about defenses. Sub-patterns: (a) stored/reflected XSS — craft a script payload that runs in the victim site's origin to steal document.cookie (only if HttpOnly=false) or force actions; distinguish stored vs reflected vs DOM-based; (b) CSRF — forge a state-changing GET/POST via img/script/form tags from an attacker page, explaining that SOP blocks reading responses, not sending requests with cookies; token-based CSRF defense fails only when the token is readable (subdomain cookie scope or XSS); (c) SQL injection — tautology payloads (' OR 1=1 --), boolean inference via row counts, and time-based blind extraction with SLEEP under a stated short-circuit assumption. Defense scheme: output encoding/CSP, CSRF tokens/SameSite, parameterized queries.",
+      "frequency": 5,
+      "typical_given": "A site with login/session cookies, a message/post/comment feature that stores or reflects input, attacker-controlled site or network position, cookie attribute settings, or a string-concatenated SQL query.",
+      "typical_target": "Give the event sequence or payload that achieves a stated goal (steal session token, run script in a given origin, make victim follow/log in/change data, extract a boolean from the database) and justify why it works or which defense blocks it.",
+      "keywords": ["stored XSS", "reflected XSS", "CSRF", "SQL injection", "same-origin policy", "HttpOnly", "document.cookie", "OR 1=1", "SLEEP", "parameterized queries", "payload"],
+      "supporting_refs": [
+        "exam-problems-with-solutions.pdf::4d",
+        "exam-with-solutions.pdf::4b",
+        "reexam-problems.-with-solutions.pdf::3c",
+        "re-exam-problems-with-sample-solutions.pdf::3b"
+      ]
+    },
+    {
+      "name": "Password storage and authentication-scheme analysis",
+      "description": "Two recurring variants. (a) Attack-cost accounting: given a user database (U users, password list of size L) and a storage scheme (plain hash, username-salted hash, H(H(username)++password), H(username++H(password))), compute exactly how many hash evaluations Mallory needs to recover all passwords or to set every password to 'pwned' — exploiting what can be precomputed and reused across users. (b) Design critique/hash-chain schemes: evaluate a password setup (secret proprietary hash, single global 'salt', strict composition rules, forced rotation, lockout and phone recovery) or a Lamport-style decreasing hash chain (H^(1000-i)) — identifying that the server needs neither pwd nor salt, that the chain cannot be reversed so the next login costs full recomputation, that the final login reveals pwd in plaintext, and that a compromised server can set stored=H(v); and mapping each design choice to the attack it counters (per-user salt vs rainbow tables, slow KDF vs offline cracking, rate limiting vs online guessing, Kerckhoffs' principle, lockout vs user DoS).",
+      "frequency": 4,
+      "typical_given": "A password storage/authentication scheme with concrete hash formulas and attacker capabilities (read/modify the database, eavesdrop logins, compromise the server), or a list of organizational password measures.",
+      "typical_target": "State how many hash computations each attack requires; justify what the server must store/know; identify weaknesses and propose preferred countermeasures for each measure.",
+      "keywords": ["password hashing", "salt", "rainbow table", "hash chain", "how many hashes", "dictionary attack", "offline attack", "rate limiting", "Kerckhoffs", "stored"],
+      "supporting_refs": [
+        "exam-with-solutions.pdf::2d",
+        "exam-problems-with-solutions.pdf::2c",
+        "dasak19combined.pdf::Part II P4",
+        "dasak18combinedWithSolutions-1.pdf::Part II Problem 4"
+      ]
+    },
+    {
+      "name": "DoS attack construction and countermeasure/responsibility analysis",
+      "description": "Given a service/protocol or a threat scenario, the student must either construct a DoS attack or select and justify countermeasures. Attack pattern: abuse UDP's spoofable source addresses and a stateless service to get reflection/amplification (one small spoofed request triggers large outbound traffic to the victim) or state exhaustion (mass fake subscriptions fill memory/connection tables; SYN flood fills the half-open backlog); replay of unauthenticated messages to force expensive server work (malware scans, 60 hash comparisons). Countermeasure pattern: ingress/egress (BCP 38) filtering deployed by the attacker's ISP — not the victim or cloud provider; TCP handshake or challenge-response cookies to verify source before committing resources; authentication/nonces inside signed messages; redundancy across providers/gateways; rate limiting; and the reasoning that victim-side dropping fails because the upstream link is already congested.",
+      "frequency": 4,
+      "typical_given": "A UDP-based or request-response protocol with weak source authentication and an attacker with less bandwidth than the victim, or a named flood threat (ICMP/SYN) against a service.",
+      "typical_target": "Describe how the attacker achieves DoS despite less bandwidth; propose countermeasures and state who is responsible for deploying them (ISP vs service vs cloud provider).",
+      "keywords": ["denial of service", "amplification", "reflection", "IP spoofing", "ingress filtering", "ISP", "SYN flood", "resource exhaustion", "replay", "rate limiting", "countermeasure"],
+      "supporting_refs": [
+        "dasak19combined.pdf::Part II P1.1",
+        "dasak18combinedWithSolutions-1.pdf::Part II Problem 1",
+        "2022exam.pdf::Part 2, Problem 2c — Denial of Service (NEN)",
+        "re-exam-problems-with-sample-solutions.pdf::5a"
+      ]
+    },
+    {
+      "name": "Social-engineering scenario analysis",
+      "description": "Given a narrative scam scenario (vishing/callback phishing combining public data sources, pretexting as a company/authority, rapport-building, urgency, peer pressure, fear, malicious attachment or lookalike domain, BankID/PayPal confirmation), the student must: (1) identify about three manipulation strategies, name the human trait each exploits (trust/attribution, liking/rapport, reciprocity, social proof, reduced cognition under time pressure/fear, altercasting/helper role), and quote the supporting lines from the scenario; (2) state concretely what the attacker obtained (credentials, personnummer/PII, authorized transfer, malware execution); (3) enumerate realistic follow-on attacks (ransomware, credential reuse, identity theft where a single factor suffices, account takeover without 2FA).",
+      "frequency": 2,
+      "typical_given": "A detailed phishing/vishing transcript or story with attacker messages, victim actions, and the final state of what was clicked, entered or confirmed.",
+      "typical_target": "Identify strategies used, the human trait exploited by each, with quotes from the scenario; state what the attacker got; give examples of what the attacker can do now.",
+      "keywords": ["social engineering", "pretext", "urgency", "rapport", "peer pressure", "human trait", "phishing", "BankID", "credentials", "quote", "what did the attacker get"],
+      "supporting_refs": [
+        "reexam-problems.-with-solutions.pdf::8a",
+        "reexam-with-solutions.pdf::8a",
+        "reexam-problems.-with-solutions.pdf::8c",
+        "reexam-with-solutions.pdf::8c"
+      ]
+    }
+  ]
+}

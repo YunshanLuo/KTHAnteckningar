@@ -1,0 +1,79 @@
+{
+  "name": "Cache/timing side-channel attack analysis and constant-time fix",
+  "identify_givens": "A stated cache geometry (total size, number of lines, bytes per line, direct-mapped, data cache only), an array/table layout saying which entries map to which cache line, a short C-like victim program with secret variables (e.g. A, B, C) and possibly an attacker-controlled public input (e.g. D), and an attacker model: time-driven (execution time depends only on number of cache misses/hits) or access-driven (attacker observes which cache lines are touched/evicted, possibly over repeated runs with chosen inputs).",
+  "identify_target": "Explain why the program is insecure and name the leaking instructions; show how the attacker correlates multiple executions (varying the public input) to recover a secret value, range, or predicate; propose a concrete fix (constant-time/branchless rewrite or cache preloading/flushing); and sometimes judge whether speculative execution (branch prediction) increases the leakage.",
+  "identify_keywords": ["side channel", "data cache", "directly mapped", "cache line", "time driven attack", "access driven attack", "cache misses", "measuring execution time", "cache lines evicted", "secret variables", "controlled by the attacker", "constant-time", "preload", "flush", "speculative execution", "branch prediction", "correlate"],
+  "strategy_name": "Map lines, flag secret-dependent accesses, correlate runs, then make the footprint secret-independent",
+  "algorithm": [
+    {
+      "action": "Map data to cache lines",
+      "detail": "From the geometry compute the line of every datum: entry $i$ of an array with 4-byte entries and $L$-byte lines sits in line $\\lfloor i \\cdot 4 / L \\rfloor \\bmod N_{lines}$. Note collisions: two arrays (or two regions) mapping to the same line evict each other, so only one can be cached at a time."
+    },
+    {
+      "action": "Flag leaking instructions",
+      "detail": "Mark every instruction whose memory index, branch condition, or iteration count depends on a secret (directly, or mixed with attacker input, e.g. $M[(B+D) \\bmod 64]$). These are the only possible leak sources; accesses with public/constant indices never leak."
+    },
+    {
+      "action": "Model the observation",
+      "detail": "Time-driven: count cache misses per execution, simulating the direct-mapped cache line by line (a miss occurs when the needed line differs from the currently resident one). Access-driven: assume the attacker flushes/primes the cache before the run and records the set of lines touched (or evicted) after it."
+    },
+    {
+      "action": "Tabulate and correlate runs",
+      "detail": "Enumerate the attacker-controlled input values and tabulate the observed line set or miss count for each. Subtract the parts the attacker already knows (constant lines, lines of public indices like $\\lfloor D/16 \\rfloor$); the remaining variation is a function of the secret, e.g. observing line $((B+D) \\bmod 64)/16$ while sweeping $D$ pins down $B$. State precisely what is recovered: exact value, a range, or one bit (predicate true/false)."
+    },
+    {
+      "action": "Propose a matching fix",
+      "detail": "Match the fix to the leak source: for secret-dependent branches/indices use constant-time code — fixed loop bounds, always execute both sides, select with arithmetic $r = b \\cdot x + (1-b) \\cdot y$, secret-independent indices; for secret-dependent array indices use cache priming — preload (or flush) all possibly-used lines first, e.g. read $M[0], M[16], M[32], M[48]$, so the cache footprint is identical for every secret."
+    },
+    {
+      "action": "Assess speculation if asked",
+      "detail": "Under branch prediction, instructions on a mispredicted path may execute transiently and still fetch their lines into the cache (a speculative reading gadget, possibly an overread if the index is unbounded). But leakage additionally needs a transmitter (a way to encode the loaded value into the cache state); a reading gadget alone discloses nothing extra. Conclude whether speculation adds leakage."
+    }
+  ],
+  "variations": [
+    {
+      "name": "Time-driven vs access-driven on the same program",
+      "detail": "The professor swaps the attacker model and the answer flips. Under time-driven counting, colliding arrays can make the miss count constant for straight-line code (trap: do not claim leakage there), while a secret-dependent branch still leaks one bit via one extra miss. Under access-driven observation with no shared memory, the same program may leak nothing because the same lines are always evicted; with shared memory the attacker can tell which array is resident. Always redo Step 3 for the stated model instead of reusing conclusions."
+    },
+    {
+      "name": "Single-run boolean leak vs multi-run exact recovery",
+      "detail": "Sometimes there is no attacker input (dasak18: only secrets A, B, C) — then one execution leaks at most a predicate (e.g. B true causes one extra miss). When the attacker controls an input D and may rerun (exam P8), the secret-dependent index $(B+D) \\bmod 64$ sweeps across lines as D varies, upgrading the leak from a range to the exact value of B. Adapt Step 4: without a knob, tabulate the two branch cases; with a knob, sweep all its values."
+    },
+    {
+      "name": "Wrong-fix trap: branchless vs preloading",
+      "detail": "The fix must match the flagged instruction from Step 2. A branchless select $a \\mathrel{+}= B \\cdot A_1 + (1-B) \\cdot A_2$ fixes a secret-dependent branch but does nothing for a secret-dependent array index; preloading all lines $M[0], M[16], M[32], M[48]$ fixes index leakage but not a secret-dependent loop bound. Answers proposing the mismatched fix lose points."
+    },
+    {
+      "name": "Speculation sub-question with gadget reasoning",
+      "detail": "A final part asks whether speculative execution leaks more. The expected reasoning is two-part: transient loads on a mispredicted path can fill lines (and an unbounded index like $M[D]$ with $D \\geq 64$ is a speculative overread, unlike the $\\bmod\\,64$-guarded one), but without a speculative transmitter no extra information is disclosed. Trap: answering 'Spectre, so yes it leaks' without identifying reading gadget vs transmitter."
+    }
+  ],
+  "example_problem": "A system has a direct-mapped data cache (no instruction cache) of 512 bytes, 8 lines, 64 bytes per line. Array M has 64 entries of 4 bytes; entries 0-15 map to line 0, 16-31 to line 1, 32-47 to line 2, 48-63 to line 3. M is public with M[i] = i. A, B, C are secret (A < 64); D is public and attacker-controlled; A, B, C, D share one 64-byte block on line 4 (fifth line). Victim program: (1) C = 0; (2) C += M[A]; (3) if (D < 64) { (4) C += M[D]; (5) C += M[(B + D) mod 64]; }. The attacker runs an access-driven attack: he observes which cache lines are accessed at least once per execution, over multiple executions with the same A, B, C and all values of D. (8a) Explain why the program is not secure and which instructions leak. (8b) Explain how the attacker correlates executions to learn the initial secret values.",
+  "example_steps": [
+    {
+      "step_ref": "Step 1",
+      "work": "Line size 64 B and 4-byte entries give 16 entries per line, so $M[i]$ sits in line $\\lfloor i/16 \\rfloor$ for $i < 64$; A, B, C, D all sit together on line 4. No array-internal collisions beyond this partitioning."
+    },
+    {
+      "step_ref": "Step 2",
+      "work": "Line 2 ($C \\mathrel{+}= M[A]$) has an index depending directly on secret A, and line 5 ($C \\mathrel{+}= M[(B+D) \\bmod 64]$) has an index depending on secret B and attacker input D. Per the official solution, lines 2 and 5 are exactly the leaking instructions; line 4 uses only public D."
+    },
+    {
+      "step_ref": "Step 3",
+      "work": "Access-driven model: before each run the attacker flushes the data cache and records which lines are filled after execution. When $D < 64$ the program accesses lines $\\lfloor A/16 \\rfloor$, $\\lfloor D/16 \\rfloor$, and $\\lfloor ((D+B) \\bmod 64)/16 \\rfloor$ (plus the constant line 4 of the scalar variables)."
+    },
+    {
+      "step_ref": "Step 4",
+      "work": "Correlate over runs: with $A = B = D = 0$ only the first cache line is accessed; with $A = B = 16,\\ D = 0$ only the second cache line is accessed. Since $\\lfloor A/16 \\rfloor$ is constant across runs and $\\lfloor D/16 \\rfloor$ is known to the attacker, the varying third line reveals $(B+D) \\bmod 64$; by varying $D$ over all values the attacker sweeps this index across the lines and, per the official solution, identifies the exact value of B (while A is narrowed to its line, 16 candidates)."
+    },
+    {
+      "step_ref": "Step 5 (fix)",
+      "work": "Official fix (8c): cache flush or prefetch — preload or flush all cache lines before use so timing/footprint does not reveal which one was actually needed; concretely, read $M[0], M[16], M[32], M[48]$ at the beginning of the program so every line of M is resident regardless of A and B."
+    },
+    {
+      "step_ref": "Step 6 (speculation)",
+      "work": "Official answer (8d): with branch prediction the loads $M[D]$ and $M[(B+D) \\bmod 64]$ may execute speculatively even when $D \\geq 64$; only the first is a speculative overread since the second is guarded by mod. Both give a speculative reading gadget but there is no speculative transmitter, so no additional information is disclosed."
+    }
+  ],
+  "example_source": "exam-problems-with-solutions.pdf::8b"
+}

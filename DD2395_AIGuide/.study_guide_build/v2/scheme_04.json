@@ -1,0 +1,106 @@
+{
+  "name": "Security protocol flaw analysis and repair",
+  "theory_paragraphs": [
+    "A \\term{security protocol} embeds cryptographic primitives (signatures, MACs, encryption, hashes, Diffie--Hellman) into a structured sequence of messages so that parties do not need to trust the \\term{channel}. The attacker model matters: \\term{Eve} is a passive eavesdropper, a \\term{network attacker} can intercept, modify, drop and inject messages, and a \\term{malicious principal} (one of the participants) can deviate from the protocol. The desired properties are \\term{confidentiality} (only intended parties read the data), \\term{authentication} (the sender is who they claim), \\term{integrity} (messages are not modified), \\term{freshness} (this run of the protocol, not a replay), \\term{explicitness} (this protocol and instance, not copied from another), and \\term{non-repudiation} (a party cannot later deny having agreed).",
+    "Notation: $A \\to B : M, Sig_{sk_A}(M)$ means $A$ sends message $M$ together with her signature on it; the signature primitive is often defined as $sign(k, m) = m, Enc_k(Hash(m))$, and verification recomputes the hash of the received $m$ and compares it with the decrypted signature using the sender's public key. A signature proves authenticity and integrity \\imp{only for the fields inside the signed blob}: any field transmitted outside the signature can be replaced by an attacker without detection. Likewise a shared-key \\term{MAC} authenticates a message between the two key holders but gives a third party no non-repudiation, since either holder could have produced it.",
+    "\\term{Freshness} is provided by \\term{nonces} (random challenges whose reuse the receiver rejects, e.g. checked against a log/database) or \\term{timestamps} (receiver accepts only recent values). Crucially, the nonce or timestamp must lie \\imp{inside the signed portion} --- an unsigned nonce can simply be swapped by the attacker together with the replayed signature. \\term{Context binding} follows the same logic: identities of sender and recipient, amounts, file hashes and similar context must be signed, otherwise a valid signature can be lifted and reused in a different context (a different payee, a different file, a different protocol run).",
+    "Typical attacks to test for: \\term{replay} (resend a captured valid message; a \\term{rollback} is replay of an older genuine version), \\term{impersonation} / person-in-the-middle (forge or substitute an unauthenticated message), \\term{reflection} (replay a message back to its original sender, typical with shared keys), \\term{man-in-the-middle} on unauthenticated Diffie--Hellman ($Y_A = \\alpha^{X_A} \\bmod q$ exchanged bare: Carol substitutes her own values and establishes separate keys $K_{AC}$, $K_{BC}$), and \\term{DoS} (an unauthenticated request forces expensive server work such as virus scans or signature verifications). Design guidelines from the lectures: every message contains a nonce; replies include the nonce replied to plus a fresh one; every message names sender and intended recipient, and identifies the protocol, its version, and the message number."
+  ],
+  "theory_cheatsheet": [
+    "Signature covers only what is inside it: unsigned fields are attacker-controlled.",
+    "No signed nonce/timestamp $\\Rightarrow$ replay; fix = signed freshness + receiver rejects old/duplicate.",
+    "Missing field in the signed blob (recipient, amount, hash) $\\Rightarrow$ substitution / cross-context reuse.",
+    "Unsigned first message $\\Rightarrow$ impersonation and DoS (server burns resources on forged requests).",
+    "Bare DH values $\\Rightarrow$ MitM with two keys $K_{AC}, K_{BC}$; fix = sign the DH public values or use CA certificates.",
+    "MAC gives authentication, never third-party non-repudiation; signature does. Always answer 'possible / not possible' and name the mechanism."
+  ],
+  "identify_givens": "A message-level protocol narrated step by step (payment authorization, file sharing with malware scan, firmware/software distribution, submission/ack, DH key exchange), with explicit message formulas such as $M = (PayGate, Alice, Amount)$ and $PayGate \\to Alice : M, Sig_{sk_{PayGate}}(M)$, stated long-term public/private or shared keys, a definition of the signature/MAC primitive (often $sign(k, m) = m, Enc_k(Hash(m))$), the protocol's intended guarantees, and an attacker model (network attacker, malicious participant, or Carol doing MitM).",
+  "identify_target": "For each named attack or property (replay/rollback, tampering/integrity, signature binding, verification of origin, DoS, MitM, repudiation dispute), decide whether the attack is possible; if possible, show exactly which missing element enables it and propose a minimal protocol change that prevents it; if not possible, state which aspect of the protocol (signature verification, hash binding, freshness check) prevents it.",
+  "identify_keywords": ["Security Protocols", "replay", "nonce", "timestamp", "signature", "propose a change to the protocol", "what aspect of the protocol prevents", "man in the middle", "impersonate", "bind", "verify", "multiple payments", "bypass the scan", "integrity violation", "non-repudiation"],
+  "strategy_name": "Checklist audit: freshness, binding, per-leg authentication, then minimal patch",
+  "algorithm": [
+    {
+      "action": "Map messages and goals",
+      "detail": "Tabulate every message $A \\to B : \\text{fields}, Sig_{sk_A}(\\text{fields})$:\n\\begin{tightitem}\n\\item who sends what, and which key protects it;\n\\item exactly which fields are inside the signature/MAC versus sent bare;\n\\item the stated goals (only Alice authorizes, the verifier checks the originator requested it, \\ldots);\n\\item the attacker model (outsider vs malicious participant vs MitM).\n\\end{tightitem}"
+    },
+    {
+      "action": "Check freshness (replay)",
+      "detail": "For each protected message, ask: is there a nonce or timestamp \\emph{inside} the signed portion, and does the receiver reject old/duplicate values? If not, anyone holding a copy (malicious party or eavesdropper) can resend it to repeat the effect (multiple payments, repeated unlocks, reinstalling an old genuine firmware version = \\term{rollback}). \\imp{Fix: signed nonce or timestamp, receiver rejects stale/reused values.} An unsigned nonce is useless --- it can be swapped with the replayed signature."
+    },
+    {
+      "action": "Check context binding",
+      "detail": "Verify every security-relevant field lies inside the signed/MAC'd blob:\n\\begin{tightitem}\n\\item identities of sender and recipient;\n\\item amounts, exercise ids, producer names;\n\\item $Hash(File)$ for any bulk data.\n\\end{tightitem}\nAny field left outside can be substituted: signing only $Amount$ lets an attacker reuse $Sig_{sk_{Alice}}(Amount)$ to pay a different merchant; a release signature without $Hash(File)$ lets the attacker swap the bulk content after signing. Fix: move the missing field (or the hash of the bulk data) inside the signed portion."
+    },
+    {
+      "action": "Check each leg's authentication",
+      "detail": "For every message, ask what happens if anyone can forge it. An unsigned first message lets strangers impersonate a legitimate user and force expensive server work (virus scans, hash comparisons, signature verifications) --- a \\term{DoS}. Fix: authenticate the first message (signature plus nonce) so the server rejects unauthorized or duplicate requests before committing resources, or at least run cheap sanity checks and rate limiting before any expensive verification."
+    },
+    {
+      "action": "Check key establishment",
+      "detail": "If the protocol uses unauthenticated Diffie--Hellman ($Y_A = \\alpha^{X_A} \\bmod q$ exchanged bare), an active MitM Carol substitutes her own public values, establishing separate keys $K_{AC}$ with Alice and $K_{BC}$ with Bob, and relays/decrypts all traffic. Fix: sign the DH public values with long-term private keys (authenticated DH) or anchor them in CA certificates. If keys are pre-provisioned (no in-protocol establishment), state that this check passes and why."
+    },
+    {
+      "action": "Check non-repudiation and intent",
+      "detail": "Ask whether the final verifier can prove each party actually agreed to \\emph{this} instance. If Alice can produce the final signed message without any input from the originator, the verifier cannot confirm the originator requested it. Fix: forward the originator's signature along the chain (and add a nonce to that origin message to stop replay by the forwarder). Shared-key MACs authenticate but give \\imp{no non-repudiation to a third party} --- flag this if repudiation disputes are asked."
+    },
+    {
+      "action": "Answer both directions explicitly",
+      "detail": "For each sub-question, answer 'possible' or 'not possible' first.\n\\begin{tightitem}\n\\item Not possible $\\Rightarrow$ name the blocking mechanism (e.g. the Bank verifies $Sig_{sk_{Alice}}(M)$ against $M$ and $pk_{Alice}$, so modifying $Amount$ breaks verification).\n\\item Possible $\\Rightarrow$ give the concrete attack sequence, then a minimal fix, stating which goal the fix restores.\n\\end{tightitem}\n\\imp{Never propose a fix without naming the flaw it addresses.}"
+    }
+  ],
+  "variations": [
+    {
+      "name": "Replay via missing freshness",
+      "detail": "Payment/authorization protocols where the decisive signed message contains no nonce or timestamp ($Alice \\to Bank : M, Sig_{sk_{Alice}}(M)$). Attack: resend the captured message for multiple payments, or resend an old genuine firmware release to roll a device back to a vulnerable version (rollback). Step 2 fires; fix is a signed nonce/timestamp (or monotonic version counter) plus receiver-side rejection of old messages. Trap: the nonce must be inside the signature --- an unsigned nonce can be swapped."
+    },
+    {
+      "name": "Role reversal: attack is NOT possible",
+      "detail": "Some sub-questions ask 'can the originator modify the amount after the user signed?' and the correct answer is NO: the verifier checks the signature over the full message $M$, so any tampering breaks verification. Trap: assuming every sub-question hides a flaw --- you must argue which aspect of the protocol prevents the attack instead of inventing one."
+    },
+    {
+      "name": "Missing hash binding lets content be swapped",
+      "detail": "Bulk-data variant: the signed or MAC'd proof (e.g. $(Server, Alice, OK, Time3)$ or $Sig_{sk_{Dev}}(FwID, Version)$) omits $Hash(File)$, so the sender or a MitM attaches the valid proof to different, unchecked content. Step 3 fires with bulk data; fix is to include the file hash in the protected portion and have the receiver reject mismatches, or have the originator sign the final message herself."
+    },
+    {
+      "name": "Unauthenticated first message / unauthenticated DH",
+      "detail": "Two guises of the same gap: (a) an unsigned upload request lets non-clients spam the server into expensive work --- malware scans or signature verifications (DoS) --- fix with a signature plus nonce on message 1 or cheap pre-filtering; (b) bare DH values $Y_A, Y_B$ let Carol run two parallel exchanges as man in the middle --- fix by signing the public keys. Trap: attacker capabilities are limited (cannot break the primitive), so the attack must exploit protocol structure, not cryptography."
+    }
+  ],
+  "original_problem": "A security-camera vendor distributes firmware in three hops. Dev (the development team) holds a long-term public/private key pair, and every other party knows $pk_{Dev}$. Dist (a regional distribution server) and Cam (each installed camera) share a long-term symmetric key $K_{DC}$ provisioned at installation. $Sign_k(m)$ is defined as the encryption of the hash of $m$ with $k$, and $MAC_K(m)$ is a message authentication code under shared key $K$. The protocol: Step 1: $Dev \\to Dist : FwID, Version, Firmware, Sig_{sk_{Dev}}(FwID, Version)$. Step 2: Dist verifies Dev's signature and, if valid, stores the release. Step 3: $Dist \\to Cam : FwID, Version, Firmware, MAC_{K_{DC}}(FwID, Version, Hash(Firmware))$. Step 4: Cam verifies the MAC and installs $Firmware$. Intended goals: Cam installs only authentic firmware published by Dev; Dist stores only genuine Dev releases; devices must not be rolled back to old vulnerable versions. Attacker model: a network attacker who can intercept, modify, record and inject arbitrary messages (but cannot break the primitives); part (b) additionally concerns a dispute between the insiders. (a) Can the network attacker make Dist store, and later distribute, a modified (trojaned) firmware, even though Dist verifies Dev's signature on every received step-1 message? If possible, give the attack and a minimal fix; if not, state what prevents it. (b) After a trojaned firmware bricks cameras, Dev and Dist blame each other. From Cam's stored step-3 message alone, can Cam prove to an independent auditor who is responsible for the firmware it installed? Answer for each hop separately. (c) Can the network attacker make Cam reinstall an old, genuine, but vulnerable firmware release that Dev really signed and Dist really distributed earlier? If possible, propose a fix. (d) Can the attacker impersonate Dev towards Dist, and can the attacker exhaust Dist's resources with forged step-1 messages? Answer both parts separately.",
+  "original_steps": [
+    {
+      "step_ref": "Step 1",
+      "work": "Map: four messages over three hops. Leg 1 (Dev $\\to$ Dist) carries $FwID, Version$ \\emph{inside} $Sig_{sk_{Dev}}$ but the bulk $Firmware$ travels \\emph{outside} any protection. Leg 2 (Dist $\\to$ Cam) protects $FwID, Version, Hash(Firmware)$ with a MAC under the shared key $K_{DC}$. Keys: asymmetric pair for Dev; symmetric $K_{DC}$ pre-provisioned between Dist and Cam; no key establishment inside the protocol. Goals: authentic firmware on Cam, genuine releases on Dist, no rollback. Attacker: full network attacker; (b) is an insider dispute. Red flags already visible: unsigned bulk data on leg 1, MAC-only leg 2, no nonce/timestamp anywhere."
+    },
+    {
+      "step_ref": "Step 2",
+      "work": "(c) Freshness check fails on leg 2: the step-3 message contains no nonce or timestamp, and $Version$ --- although inside the MAC --- is never checked for recency by Cam. The attacker records an old genuine step-3 message and replays it at any later time; the MAC verifies, so Cam reinstalls the old vulnerable firmware (a \\term{rollback}). Attack: possible. Fix: Cam keeps a monotonic counter and rejects any $Version$ not greater than the installed one, or Dist includes a timestamp inside the MAC and Cam rejects stale values. The freshness/version value must stay inside the MAC'd portion, otherwise it is swapped along with the replay. (The same check on leg 1 stops Dist from re-storing an old release.)"
+    },
+    {
+      "step_ref": "Step 3",
+      "work": "(a) Binding check fails on leg 1: Dev's signature covers only $(FwID, Version)$, not $Hash(Firmware)$. The attacker intercepts a step-1 message, replaces $Firmware$ with a trojaned build, and forwards $(FwID, Version, Firmware', Sig_{sk_{Dev}}(FwID, Version))$; Dist's verification succeeds because the signed part is untouched, so Dist stores and later distributes $Firmware'$. Attack: possible. Fix: sign the hash of the bulk data, i.e. $Dev \\to Dist : FwID, Version, Firmware, Sig_{sk_{Dev}}(FwID, Version, Hash(Firmware))$, and have Dist reject on hash mismatch. Note the leg-2 MAC does \\emph{not} save us: it is computed honestly by Dist over the already-trojaned firmware. Also observe identities are outside the signature --- binding the intended recipient (Dist) would additionally block cross-region reuse of a release."
+    },
+    {
+      "step_ref": "Step 4",
+      "work": "(d) Per-leg authentication on leg 1 is present but weak: impersonation of Dev is \\emph{not possible} --- the attacker cannot forge $Sig_{sk_{Dev}}$, and Dist rejects any message whose signature does not verify, so no forged release is ever stored. However, resource exhaustion \\emph{is} possible: every garbage message forces an expensive public-key signature verification before Dist can reject it, so flooding Dist with random step-1 messages is a \\term{DoS}. Fix: cheap pre-filtering before verification (well-formed fields, known $FwID$, expected $Version$ range, per-source rate limiting). Leg 2 is MAC-protected: only the two holders of $K_{DC}$ can produce a valid tag, so an outsider cannot inject a step-3 message to Cam at all --- that leg passes the outsider check."
+    },
+    {
+      "step_ref": "Step 5",
+      "work": "Key establishment: checked --- not applicable. The protocol contains no Diffie--Hellman exchange and no in-protocol key setup at all: $pk_{Dev}$ is assumed known to all parties and $K_{DC}$ is provisioned at installation time. Hence there are no bare $Y_A = \\alpha^{X_A} \\bmod q$ values for a MitM to substitute, and this checklist item passes by construction. (Had the keys been negotiated in-band with unsigned DH values, the fix would be to sign the public values or anchor them in certificates.)"
+    },
+    {
+      "step_ref": "Step 6",
+      "work": "(b) Non-repudiation fails on both hops. Hop Dist $\\to$ Cam: the step-3 message is protected by a MAC under the shared key $K_{DC}$, and either holder could have produced it --- Cam could have fabricated the entry in its own log --- so Cam \\emph{cannot} prove to an auditor that Dist sent it. Hop Dev $\\to$ Dist: Dev did produce a signature, but only over $(FwID, Version)$; since the trojaned $Firmware'$ is not bound by that signature, Dev can truthfully deny having signed the firmware that was installed, so responsibility cannot be pinned on Dev either. Conclusion: from Cam's log alone, no one can be held accountable. Fix: the (a)-fix already makes Dev accountable for the exact firmware (signed hash); for Dist accountability, replace the MAC with a signature from Dist's own key pair, $Sig_{sk_{Dist}}(FwID, Version, Hash(Firmware))$, which a third party can verify."
+    },
+    {
+      "step_ref": "Step 7",
+      "work": "Verdicts, both directions answered: (a) \\emph{Possible} --- bulk data outside the signed blob; fix by signing $Hash(Firmware)$. (b) \\emph{Not provable} --- MAC gives no third-party non-repudiation and Dev's signature excludes the firmware; fix with per-hop signatures. (c) \\emph{Possible} --- no freshness inside the MAC and no recency check; fix with a monotonic version counter or MAC'd timestamp. (d) Impersonation \\emph{not possible} (Dist verifies $Sig_{sk_{Dev}}$ and forgeries are rejected); DoS \\emph{possible} (verification precedes rejection); fix with cheap pre-checks and rate limiting. Each fix names the flaw it addresses and the goal it restores."
+    }
+  ],
+  "practice_refs": [
+    "dasak19combined.pdf::Part II P6.3",
+    "exam-problems-with-solutions.pdf::6a",
+    "exam-with-solutions.pdf::6b",
+    "reexam-problems.-with-solutions.pdf::5a"
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "name": "Custom block-cipher mode analysis: decryption, parallelizability, bit-flip propagation, IND-CPA",
+  "theory_paragraphs": [
+    "\\term{Starting from zero: bits, blocks, and XOR.} All data in this problem is chopped into \\term{blocks}: fixed-length strings of $n$ bits (for AES, $n = 128$). A \\term{bit} is just a 0 or a 1. The only operation you need is \\term{XOR} (written $\\oplus$), which adds bits without carry: $0 \\oplus 0 = 0$, $0 \\oplus 1 = 1$, $1 \\oplus 1 = 0$. Three facts make XOR the Swiss army knife of every exam problem here: \\begin{tightitem} \\item $x \\oplus x = 0$ (anything XOR itself cancels), \\item $x \\oplus 0 = x$ (XOR with zero does nothing), \\item if $a \\oplus b = c$ then $a = c \\oplus b$ (you can move any term across the equals sign by XORing it onto the other side). \\end{tightitem} Every `derive the decryption formula' step is nothing more than the third fact applied once or twice.",
+    "A \\term{block cipher} is a keyed scrambling machine for single blocks: given a secret key $K$, the function $E_K$ maps every $n$-bit block to another $n$-bit block, and it is a \\term{permutation} --- a one-to-one shuffling --- so it can be undone. The undo function is written $D_K$ and satisfies \\imp{$D_K(E_K(x)) = x$ for every block $x$}. `Secure' means that without the key, $E_K$ is indistinguishable from a random permutation. Crucially, $E_K$ is \\term{deterministic}: same key plus same input always gives the same output. That is exactly why a raw block cipher alone is a bad encryption scheme --- if Alice sends `yes' twice, Eve sees the same ciphertext twice and learns the two messages are equal.",
+    "A \\term{mode of operation} is a recipe for using a block cipher on a long message. The message is split into blocks $P = (P_1, \\dots, P_m)$ and \\term{encryption recurrences} (formulas) say how to compute each ciphertext block $C_i$ from plaintext blocks, the key, and one or two \\term{initialization vectors} (IVs). An IV is a random value, generated fresh for every message and \\imp{sent in the clear} together with the ciphertext as $(IV_1, IV_2, C_1, \\dots, C_m)$. The IV is not a secret; its only job is to inject fresh randomness so that encrypting the same message twice produces different ciphertexts. The exam invents a new mode by writing down a formula for $C_1$ and a recurrence for $C_i$ that mix $P_i$, the IVs, and earlier ciphertext blocks with XOR inside and outside $E_K$.",
+    "\\term{IND-CPA} (indistinguishability under chosen-plaintext attack) is the standard security definition, phrased as a game: \\begin{tightitem} \\item Eve picks two messages $M_0$ and $M_1$ and gives them to the challenger. \\item The challenger secretly flips a coin $b \\in \\{0, 1\\}$ and returns $C^* = Enc(K, M_b)$. \\item Eve may additionally ask for encryptions of any messages she likes (that is the `chosen-plaintext' part). \\item Eve wins if she guesses $b$ better than a coin toss. \\end{tightitem} The one fact to internalize: \\imp{no deterministic encryption scheme can be IND-CPA secure}. If encryption involves no fresh randomness, Eve just encrypts $M_0$ herself and compares the result with $C^*$; a match means $b = 0$. Consequently, a mode whose IVs are \\term{constant or reused} across messages is broken: two messages that share a first block $P_1$ produce the same first ciphertext block, and comparing first blocks wins the game with probability $1$.",
+    "\\term{Parallelizability} asks: can a multi-core machine compute all blocks at once, or must block $i$ wait for block $i - 1$? You answer it purely by reading the dependencies in the formulas. \\begin{tightitem} \\item \\term{Encryption} is sequential as soon as the formula for $C_i$ mentions any earlier ciphertext block ($C_{i-1}$, $C_{i-2}$, or a running XOR $C_1 \\oplus \\cdots \\oplus C_{i-1}$), because $C_i$ literally cannot be computed before those blocks exist. \\item \\term{Decryption} is parallelizable exactly when every $P_i$ is computed from ciphertext blocks and IVs only --- Bob receives the whole ciphertext at once, so all inputs are available simultaneously. \\item The trap: if the decryption formula for $P_i$ mentions an earlier \\emph{plaintext} $P_{i-1}$ (plaintext feedback), decryption is sequential too. \\end{tightitem}",
+    "\\term{Error propagation} asks what Bob recovers after a single-bit flip in one ciphertext block $C_j' = C_j \\oplus 1$. Trace each decryption formula with two rules: \\begin{tightitem} \\item If $C_j'$ enters \\emph{inside} $D_K(\\cdot)$, that plaintext block is \\term{garbage}: secure block ciphers have the \\term{avalanche effect}, so a one-bit change at the input flips every output bit with probability $1/2$, making the whole output block unpredictable. Never claim you know anything about a garbage block. \\item If $C_j'$ appears only as an XOR term \\emph{outside} the cipher, the error passes through exactly: $P_i' = P_i \\oplus 1$, i.e.\\ the same single bit flips and nothing else changes (XOR is linear). \\item Blocks whose formula never mentions $C_j$ are decrypted perfectly. \\end{tightitem} Also remember: modes give \\term{confidentiality only} --- \\imp{modes provide no integrity protection}, so Bob has no way to detect that tampering happened."
+  ],
+  "theory_cheatsheet": [
+    "$E_K$ is a permutation, $D_K(E_K(x)) = x$. To invert a mode: XOR every term outside $E_K$ to the other side, apply $D_K$, then XOR off the remaining mask to isolate $P_i$.",
+    "\\imp{Deterministic implies broken}: constant or reused IV means not IND-CPA; attack = two messages with the same first block, compare first ciphertext blocks. Fresh random IV per message restores IND-CPA.",
+    "Corrupted block inside $D_K$ $\\Rightarrow$ garbage output block (avalanche); corrupted block appearing only as an XOR term $\\Rightarrow$ exactly the same single-bit flip in that plaintext block.",
+    "Encryption sequential iff $C_i$ uses an earlier ciphertext block; decryption sequential iff $P_i$ uses an earlier plaintext block; otherwise that direction is parallelizable.",
+    "CBC-like chained modes: encryption sequential, decryption parallel. Plaintext-feedback modes (AES-SEC style): both directions sequential.",
+    "Modes give confidentiality only, never integrity --- the receiver cannot detect a flipped bit."
+  ],
+  "identify_givens": "A made-up mode of operation (AES-SEC, AES-MIX, AES-MOD, or a `novel mode') defined by encryption recurrences: a special formula for $C_1$ (sometimes also $C_2$) plus a general recurrence $C_i = E_K(\\cdots)$ mixing $P_i$, IVs, and earlier ciphertext or plaintext blocks via XOR. Block size $n$ is given; the message $P = (P_1, \\dots, P_m)$ is a multiple of $n$ so no padding is needed. $E_K$ is a secure block cipher (e.g.\\ AES) under a key $K$ shared by Alice and Bob; $D_K$ may be used in answers. One or two IVs $IV_1, IV_2$ are chosen and sent in the clear as $(IV_1, IV_2, C_1, \\dots, C_m)$; they may be stated as fresh random/independent or as constant/reused.",
+  "identify_target": "(1) Derive an efficient decryption formula for $P_i$ (sometimes specifically $P_1$, $P_2$, or $i > 2$) using $D_K$; (2) state whether encryption and decryption can be parallelized, justified from data dependencies; (3) compute what Bob decrypts after a single-bit flip in one ciphertext block, marking garbage blocks and exact bit-flip propagation; (4) justify or break IND-CPA security (explicit counterexample messages if IVs are constant/reused, informal argument if fresh random IVs).",
+  "identify_keywords": [
+    "mode of operation",
+    "derive decryption formula",
+    "efficient decryption",
+    "parallelized",
+    "single bit flip",
+    "error propagation",
+    "garbage",
+    "unpredictable output",
+    "IND-CPA",
+    "IV",
+    "initialization vector",
+    "self-correcting"
+  ],
+  "strategy_name": "Invert-Isolate-Trace: algebraically invert the recurrence, then read dependencies and error paths off the decryption formula",
+  "algorithm": [
+    {
+      "action": "Map the recurrence structure",
+      "detail": "Write out the given encryption equations and mark, for each $C_i$, which terms enter the block cipher input (\\term{inside} $E_K(\\cdot)$) and which are only XORed \\term{outside}. E.g.\\ AES-MIX: $C_1 = E_K(IV_1 \\oplus P_1)$, $C_2 = E_K(IV_2 \\oplus P_2) \\oplus C_1$, $C_i = E_K(C_{i-2} \\oplus P_i)$ for $i > 2$. This inside/outside split drives both inversion and error tracing."
+    },
+    {
+      "action": "Isolate the $E_K$ term",
+      "detail": "XOR both sides of each equation with every term sitting outside $E_K$, so that $E_K(\\text{input})$ stands alone on one side. For the AES-MIX equation for $C_2$: $C_2 \\oplus C_1 = E_K(IV_2 \\oplus P_2)$. Equations with nothing outside the cipher are already isolated."
+    },
+    {
+      "action": "Apply $D_K$ and solve for $P_i$",
+      "detail": "Apply $D_K$ to both sides to expose the cipher input, then XOR the remaining mask over to isolate $P_i$. AES-MIX: \\begin{tightitem} \\item $D_K(C_2 \\oplus C_1) = IV_2 \\oplus P_2$, so $P_2 = D_K(C_2 \\oplus C_1) \\oplus IV_2$; \\item $D_K(C_i) = C_{i-2} \\oplus P_i$, so $P_i = D_K(C_i) \\oplus C_{i-2}$ for $i > 2$. \\end{tightitem} Handle each special case ($P_1$, $P_2$) separately and double-check by substituting the encryption formula back in."
+    },
+    {
+      "action": "Read off parallelizability",
+      "detail": "Inspect the data dependencies of each direction. \\begin{tightitem} \\item \\term{Encryption} is parallelizable only if $C_i$ needs no earlier ciphertext; it is sequential when $C_i$ depends on $C_{i-1}$ (AES-SEC), on $C_{i-2}$ (AES-MIX), or on a cumulative XOR (AES-MOD). \\item \\term{Decryption} is parallelizable only if $P_i$ uses solely ciphertext blocks and IVs (AES-MIX: yes). \\item Watch for \\term{plaintext feedback}: AES-SEC's $P_i = D_K(C_i \\oplus P_{i-1}) \\oplus C_{i-1}$ needs $P_{i-1}$, so decryption is sequential too. \\end{tightitem}"
+    },
+    {
+      "action": "Trace the bit flip block by block",
+      "detail": "For tampered $C_j' = C_j \\oplus 1$, expand every $P_i'$ concretely with the decryption formula. Rules: \\begin{tightitem} \\item $C_j'$ inside $D_K(\\cdot)$ $\\Rightarrow$ that plaintext block is \\term{garbage} (avalanche makes it unpredictable). \\item $C_j'$ only as an XOR term $\\Rightarrow$ the identical single-bit flip passes through: $P_i' = P_i \\oplus 1$. \\item Formulas never referencing $C_j$ give unchanged blocks. \\end{tightitem} State the final tuple Bob recovers, e.g.\\ $(\\text{Garbage}, \\text{Garbage}, P_3 \\oplus 1)$."
+    },
+    {
+      "action": "Judge IND-CPA security",
+      "detail": "Check where the randomness comes from. \\begin{tightitem} \\item \\term{Constant or reused IV} (or no randomness at all): encryption is deterministic $\\Rightarrow$ break it. Submit two messages sharing a first block, $M_0 = (P_1, P_2)$ and $M_1 = (P_1, P_3)$ with $P_2 \\neq P_3$; the first ciphertext blocks coincide, so Eve wins with probability $1$. \\item \\term{Fresh independent random IVs per message}: equal plaintexts encrypt differently and chaining randomizes later blocks; argue IND-CPA security informally. \\end{tightitem}"
+    }
+  ],
+  "variations": [
+    {
+      "name": "Plaintext feedback kills decryption parallelism",
+      "detail": "AES-SEC (exam-with-solutions.pdf::1a) uses $C_i = E_K(P_i \\oplus C_{i-1}) \\oplus P_{i-1}$, giving $P_i = D_K(C_i \\oplus P_{i-1}) \\oplus C_{i-1}$ --- decryption needs the \\term{previous plaintext}, so both encryption and decryption are sequential. Trap: assuming decryption is always parallel as in CBC. In Step 4, check for $P_{i-1}$ terms in the decryption formula, not only ciphertext terms."
+    },
+    {
+      "name": "Bit-flip propagation vs garbage depends on formula shape",
+      "detail": "In AES-MIX a flip in $C_1$ makes $P_1', P_2'$ garbage (both push $C_1'$ through $D_K$) but gives $P_3' = P_3 \\oplus 1$ (XOR-only use). In AES-MOD a flip in $C_2$ makes $P_2'$ garbage while $P_3', P_4'$ each flip exactly one bit and $P_1$ stays intact. \\imp{Expand each block concretely}; never quote CBC intuition (one garbage block plus one flipped block) without checking."
+    },
+    {
+      "name": "Constant IV or hard-coded randomness instead of IV reuse",
+      "detail": "The re-exam `novel mode' (re-exam-problems-with-sample-solutions.pdf::8c) uses a hard-coded constant $c_0$ and the fixed value $E_K(K)$, making encryption deterministic: not IND-CPA even without an explicit reuse assumption; the fix is a fresh random IV whose randomness propagates to all $c_i$. In Step 6, first check whether \\emph{any} per-message randomness exists before discussing reuse."
+    },
+    {
+      "name": "Self-correcting / finite error propagation asked instead of IND-CPA",
+      "detail": "The same re-exam problem asks whether the mode is \\term{self-correcting}: with $m_i = c_i \\oplus E_K(c_{i-2}) \\oplus E_K(c_{i-1})$, an error in $c_4$ corrupts exactly $m_4, m_5, m_6$ (the three decryption equations referencing $c_4$) and nothing else. Adapt Step 5: list every decryption equation containing the corrupted block; exactly those plaintext blocks are wrong; if the set is finite the mode self-corrects."
+    }
+  ],
+  "walkthrough_problem": "Alice and Bob design a new mode of operation called AES-TWIN, defined by the recurrences $C_1 = E_K(IV_1 \\oplus P_1) \\oplus IV_2$ and $C_i = E_K(IV_2 \\oplus C_{i-1} \\oplus P_i)$ for $i > 1$, where $E_K$ is a secure block cipher (e.g.\\ AES) under a key $K$ shared by Alice and Bob. The message $P = (P_1, \\dots, P_m)$ consists of blocks of size $n$ and its length is a multiple of $n$, so no padding is needed. For each message Alice chooses two fresh independent random IVs and sends $(IV_1, IV_2, C_1, \\dots, C_m)$ in the clear. (a) Derive an efficient decryption formula for $P_1$ and for $P_i$, $i > 1$, using $D_K$. (b) State, with justification, whether the encryption and decryption procedures can be parallelized. (c) A network error flips a single bit of the first ciphertext block of a 3-block message, so Bob receives $(IV_1, IV_2, C_1', C_2, C_3)$ with $C_1' = C_1 \\oplus 1$; show exactly what message Bob recovers, marking garbage output and computing exact results where possible. (d) Suppose Alice's implementation is buggy and always uses $IV_1 = IV_2 = 0^n$. Show that AES-TWIN is then not IND-CPA secure.",
+  "walkthrough_steps": [
+    {
+      "step_ref": "Step 1: Map the recurrence structure",
+      "work": "Before any algebra, mark what sits inside and outside the cipher. In $C_1 = E_K(IV_1 \\oplus P_1) \\oplus IV_2$ the term $IV_2$ is XORed \\emph{after} the cipher ran, so it is outside; $IV_1 \\oplus P_1$ is the cipher's input. In $C_i = E_K(IV_2 \\oplus C_{i-1} \\oplus P_i)$ everything is inside $E_K$. \\term{Why this step:} beginners jump straight to formulas and misplace a term; the inside/outside split tells you exactly which XORs you must `move across' and predicts the error-propagation answer later. \\term{Mistake to avoid:} treating $C_{i-1}$ as an outside term --- it is fed into $E_K$, not XORed onto the result."
+    },
+    {
+      "step_ref": "Step 2: Isolate the $E_K$ term",
+      "work": "Goal: get $E_K(\\text{something})$ alone on one side. For the first equation, XOR $IV_2$ onto both sides (legal because if $a = b$ then $a \\oplus x = b \\oplus x$): $C_1 \\oplus IV_2 = E_K(IV_1 \\oplus P_1) \\oplus IV_2 \\oplus IV_2 = E_K(IV_1 \\oplus P_1)$, using $IV_2 \\oplus IV_2 = 0$. The general recurrence $C_i = E_K(IV_2 \\oplus C_{i-1} \\oplus P_i)$ is already isolated. \\term{Why:} you can only apply $D_K$ to something of the form $E_K(\\cdot)$, so isolation must come first. \\term{Mistake to avoid:} applying $D_K$ to $C_1$ directly without removing the outside $IV_2$ first --- $D_K(C_1) \\neq IV_1 \\oplus P_1 \\oplus$ (something simple), because $D_K$ does not distribute over XOR."
+    },
+    {
+      "step_ref": "Step 3: Apply $D_K$ and solve for $P_i$",
+      "work": "Apply $D_K$ to both isolated sides, using $D_K(E_K(x)) = x$: from Step 2, $D_K(C_1 \\oplus IV_2) = IV_1 \\oplus P_1$, and XORing $IV_1$ over gives \\[ P_1 = D_K(C_1 \\oplus IV_2) \\oplus IV_1. \\] For $i > 1$: $D_K(C_i) = IV_2 \\oplus C_{i-1} \\oplus P_i$, and XORing $IV_2 \\oplus C_{i-1}$ over gives \\[ P_i = D_K(C_i) \\oplus IV_2 \\oplus C_{i-1}. \\] \\term{Check (always do this):} substitute encryption back in --- $D_K(C_1 \\oplus IV_2) \\oplus IV_1 = D_K(E_K(IV_1 \\oplus P_1)) \\oplus IV_1 = IV_1 \\oplus P_1 \\oplus IV_1 = P_1$. \\term{Why:} the check costs one line and catches sign errors the grader will catch otherwise."
+    },
+    {
+      "step_ref": "Step 4: Read off parallelizability",
+      "work": "\\term{Encryption:} the recurrence $C_i = E_K(IV_2 \\oplus C_{i-1} \\oplus P_i)$ requires $C_{i-1}$, so block $i$ cannot start before block $i - 1$ is finished --- encryption is \\term{sequential}, not parallelizable. \\term{Decryption:} $P_1 = D_K(C_1 \\oplus IV_2) \\oplus IV_1$ and $P_i = D_K(C_i) \\oplus IV_2 \\oplus C_{i-1}$ use only ciphertext blocks and the public IVs; Bob holds the entire ciphertext before he starts, so every block can be decrypted independently --- decryption \\term{can be parallelized}. \\term{Mistake to avoid:} answering `encryption is parallel because each $C_i$ formula looks self-contained' --- the $C_{i-1}$ inside is a ciphertext dependency, and only plaintext/IV inputs are available up front."
+    },
+    {
+      "step_ref": "Step 5: Trace the bit flip block by block",
+      "work": "Bob holds $(IV_1, IV_2, C_1 \\oplus 1, C_2, C_3)$. Expand each block with Step 3's formulas. \\begin{tightitem} \\item $P_1' = D_K(C_1 \\oplus 1 \\oplus IV_2) \\oplus IV_1$: the corrupted value enters \\emph{inside} $D_K$, and the avalanche effect scrambles the whole output, so $P_1' = \\text{Garbage}$. \\item $P_2' = D_K(C_2) \\oplus IV_2 \\oplus C_1' = D_K(C_2) \\oplus IV_2 \\oplus C_1 \\oplus 1 = P_2 \\oplus 1$: here $C_1'$ is only an XOR term outside the cipher, so the single flipped bit passes through exactly. \\item $P_3' = D_K(C_3) \\oplus IV_2 \\oplus C_2 = P_3$: this formula never mentions $C_1$, so the block is intact. \\end{tightitem} Bob recovers $(\\text{Garbage}, P_2 \\oplus 1, P_3)$. \\term{Mistake to avoid:} writing `the message is garbled' as one blanket statement --- the exam wants a block-by-block verdict, and note the asymmetry: the same corrupted block is garbage in one formula but a clean bit flip in another."
+    },
+    {
+      "step_ref": "Step 6: Judge IND-CPA security (buggy constant IVs)",
+      "work": "With $IV_1 = IV_2 = 0^n$ hard-coded, encryption becomes deterministic: $C_1 = E_K(P_1) \\oplus 0^n = E_K(P_1)$, and each $C_i$ is a fixed function of $(P_1, \\dots, P_i)$. Attack: Eve submits $M_0 = (X, Y_0)$ and $M_1 = (X, Y_1)$ with $Y_0 \\neq Y_1$ and receives the challenge $C^* = (C_1^*, C_2^*)$. Using her chosen-plaintext access she requests an encryption of $M_0$ herself; since encryption is deterministic, her result equals $C^*$ exactly iff $b = 0$. Even without the extra query, the first blocks satisfy $C_1 = E_K(X)$ for \\emph{both} candidates, so equality patterns leak. Eve wins with probability $1$, so AES-TWIN with constant IVs is \\term{not IND-CPA secure}. \\term{Why:} the definition's whole point is that encryption must consume fresh randomness per message; remove it and message-equality leaks. The fix is what the original design already specified: fresh independent random IVs per message."
+    }
+  ],
+  "exam_questions": [
+    {
+      "source": "Exam 2024-10-22, Problem 1a-1c (AES-SEC)",
+      "file_ref": "exam-with-solutions.pdf::1a",
+      "problem": "Alice and Bob design the AES-SEC mode of operation: $C_1 = E_K(P_1 \\oplus IV_1) \\oplus IV_2$ and $C_i = E_K(P_i \\oplus C_{i-1}) \\oplus P_{i-1}$ for $i \\geq 2$, where $E_K(b)$ is encryption of an $n$-bit block $b$ under secret key $K$ with a secure block cipher (e.g.\\ AES). A message $P$ is split into $m$ blocks of size $n$, two initialization vectors $IV_1, IV_2$ are chosen, and $(IV_1, IV_2, C_1, \\dots, C_m)$ is sent; the message length is a multiple of $n$, so no padding is needed. (a) [6p] Help Bob derive the decryption formula of a block $P_i$ for $i \\geq 2$ ($D_K$ may be used). (b) [4p] Explain whether or not the encryption formula and the decryption formula can be parallelized. (c) [4p] Suppose AES-SEC reuses the same initialization vectors $IV_1$ and $IV_2$ in all communications between Alice and Bob. Explain if AES-SEC is IND-CPA secure, otherwise provide a counterexample.",
+      "solution_steps": [
+        {
+          "step_ref": "Step 1: Map the recurrence structure",
+          "work": "In $C_i = E_K(P_i \\oplus C_{i-1}) \\oplus P_{i-1}$, the term $P_{i-1}$ is XORed outside the cipher while $P_i \\oplus C_{i-1}$ is the cipher input. Note the \\term{plaintext feedback}: a plaintext block appears in the output mask, which will matter in Step 4."
+        },
+        {
+          "step_ref": "Steps 2-3: Isolate $E_K$, apply $D_K$, solve for $P_i$",
+          "work": "XOR $P_{i-1}$ onto both sides to isolate the cipher term, then apply $D_K$ and move the remaining mask: \\[ C_i = E_K(P_i \\oplus C_{i-1}) \\oplus P_{i-1} \\] \\[ C_i \\oplus P_{i-1} = E_K(P_i \\oplus C_{i-1}) \\] \\[ D_K(C_i \\oplus P_{i-1}) = P_i \\oplus C_{i-1} \\] \\[ P_i = D_K(C_i \\oplus P_{i-1}) \\oplus C_{i-1}. \\] Each line uses only the XOR-cancellation facts ($x \\oplus x = 0$) and $D_K(E_K(x)) = x$."
+        },
+        {
+          "step_ref": "Step 4: Read off parallelizability",
+          "work": "Encryption \\term{cannot be parallelized}: computing $C_i$ requires knowing $C_{i-1}$ (an earlier ciphertext block), so blocks must be produced in order. Decryption also \\term{cannot be parallelized}: the formula $P_i = D_K(C_i \\oplus P_{i-1}) \\oplus C_{i-1}$ requires knowing the \\emph{previous plaintext} $P_{i-1}$, so blocks must be recovered in order. This is the plaintext-feedback trap --- unlike CBC, both directions are sequential here."
+        },
+        {
+          "step_ref": "Step 6: Judge IND-CPA security with reused IVs",
+          "work": "With $IV_1, IV_2$ reused in all communications, the first-block formula $C_1 = E_K(P_1 \\oplus IV_1) \\oplus IV_2$ is a fixed deterministic function of $P_1$. For two messages $(P_1, P_2)$ and $(P_1, P_3)$ that share the same first block $P_1$, the attacker can learn whether or not they are the same by comparing the ciphertexts of the first block. Therefore AES-SEC with reused IVs is \\term{not IND-CPA secure}."
+        }
+      ],
+      "answer": "$P_i = D_K(C_i \\oplus P_{i-1}) \\oplus C_{i-1}$ for $i \\geq 2$; neither encryption nor decryption can be parallelized; with reused IVs AES-SEC is not IND-CPA secure (first ciphertext blocks coincide whenever first plaintext blocks coincide)."
+    },
+    {
+      "source": "Re-exam 2025-12-18, Problem 1a-1c (AES-MIX)",
+      "file_ref": "reexam-problems.-with-solutions.pdf::1c",
+      "problem": "Alice and Bob design the AES-MIX mode of operation: $C_1 = E_K(IV_1 \\oplus P_1)$, $C_2 = E_K(IV_2 \\oplus P_2) \\oplus C_1$, and $C_i = E_K(C_{i-2} \\oplus P_i)$ for $i > 2$, where $E_K(b)$ is encryption of an $n$-bit block under secret key $K$ with a secure block cipher (e.g.\\ AES). A message $P = (P_1, \\dots, P_m)$ of blocks of size $n$ is encrypted with two independent random initialization vectors $IV_1, IV_2$ and $(IV_1, IV_2, C_1, \\dots, C_m)$ is sent; the message is a multiple of $n$, so no padding is needed. (a) [4p] Derive an efficient decryption formula for $P_2$ and for $P_i$, $i > 2$ ($D_K$ may be used). (b) [2p] Explain whether or not the encryption formula and the decryption formula can be parallelized. (c) [6p] Alice encrypts a three-block message $P = (P_1, P_2, P_3)$ to $C = (IV_1, IV_2, C_1, C_2, C_3)$; a network error flips a single bit of the first ciphertext block, $C_1' = C_1 \\oplus 1$. Show what message Bob computes when decrypting $C' = (IV_1, IV_2, C_1', C_2, C_3)$, justifying garbage (unpredictable) output and computing exact results where possible.",
+      "solution_steps": [
+        {
+          "step_ref": "Step 1: Map the recurrence structure",
+          "work": "$C_1$ has no outside term; in $C_2 = E_K(IV_2 \\oplus P_2) \\oplus C_1$ the previous ciphertext $C_1$ is XORed outside the cipher; in $C_i = E_K(C_{i-2} \\oplus P_i)$ the block from \\emph{two positions back} is fed inside $E_K$ together with $P_i$."
+        },
+        {
+          "step_ref": "Steps 2-3: Isolate $E_K$, apply $D_K$, solve for $P_2$",
+          "work": "XOR $C_1$ onto both sides, then decrypt, then move $IV_2$: \\[ C_2 = E_K(IV_2 \\oplus P_2) \\oplus C_1 \\] \\[ C_2 \\oplus C_1 = E_K(IV_2 \\oplus P_2) \\] \\[ D_K(C_2 \\oplus C_1) = IV_2 \\oplus P_2 \\] \\[ P_2 = D_K(C_2 \\oplus C_1) \\oplus IV_2. \\]"
+        },
+        {
+          "step_ref": "Steps 2-3: Solve for $P_i$, $i > 2$",
+          "work": "The general recurrence has $E_K$ already isolated, so apply $D_K$ and move $C_{i-2}$: \\[ C_i = E_K(C_{i-2} \\oplus P_i) \\] \\[ D_K(C_i) = C_{i-2} \\oplus P_i \\] \\[ P_i = D_K(C_i) \\oplus C_{i-2}. \\] (Also $P_1 = D_K(C_1) \\oplus IV_1$ from the first equation, useful in part (c).)"
+        },
+        {
+          "step_ref": "Step 4: Read off parallelizability",
+          "work": "Encryption \\term{cannot be parallelized}: the computation of $C_i$ requires knowing $C_{i-2}$, an earlier ciphertext block. Decryption \\term{can be parallelized}: the computation of $P_i$ does not require knowing any of $P_1, \\dots, P_{i-1}$ --- it uses only ciphertext blocks and the IVs, which Bob holds in full."
+        },
+        {
+          "step_ref": "Step 5: Trace the flip in $C_1$ block by block",
+          "work": "Bob decrypts $C' = (IV_1, IV_2, C_1 \\oplus 1, C_2, C_3)$. \\begin{tightitem} \\item $P_1' = D_K(C_1') \\oplus IV_1 = D_K(C_1 \\oplus 1) \\oplus IV_1 = \\text{Garbage}$: the corrupted block goes inside $D_K$, and avalanche makes the output unpredictable. \\item $P_2' = D_K(C_2 \\oplus C_1') \\oplus IV_2 = D_K(C_2 \\oplus C_1 \\oplus 1) \\oplus IV_2 = \\text{Garbage}$: the corrupted block again enters inside $D_K$ (combined with $C_2$), so this block is also unpredictable. \\item $P_3' = D_K(C_3) \\oplus C_1' = D_K(C_3) \\oplus C_1 \\oplus 1 = P_3 \\oplus 1$: here $C_1'$ appears only as an outside XOR term, so exactly the flipped bit propagates. \\end{tightitem}"
+        }
+      ],
+      "answer": "$P_2 = D_K(C_2 \\oplus C_1) \\oplus IV_2$ and $P_i = D_K(C_i) \\oplus C_{i-2}$; encryption sequential, decryption parallelizable; after the flip Bob recovers $(\\text{Garbage}, \\text{Garbage}, P_3 \\oplus 1)$."
+    },
+    {
+      "source": "Exam 2025-10-20, Problem 1a-1d (AES-MOD)",
+      "file_ref": "exam-problems-with-solutions.pdf::1c",
+      "problem": "Alice and Bob design the AES-MOD mode of operation: $C_1 = E_K(P_1 \\oplus IV_1 \\oplus IV_2)$ and $C_i = E_K(P_i \\oplus IV_1 \\oplus IV_2 \\oplus C_1 \\oplus \\cdots \\oplus C_{i-1})$ for $i \\geq 2$, where $E_K(b)$ is encryption of an $n$-bit block under secret key $K$ with a secure block cipher (e.g.\\ AES). A message $P = (P_1, \\dots, P_m)$ of blocks of size $n$ is encrypted with two independent, randomly generated initialization vectors $IV_1, IV_2$, and $(IV_1, IV_2, C_1, \\dots, C_m)$ is sent; the message is a multiple of $n$, and no padding is needed. (a) [4p] Derive an efficient decryption formula of a block $P_i$ for any $i \\geq 1$ ($D_K$ may be used). (b) [2p] Explain whether or not the encryption formula and the decryption formula can be parallelized. (c) [4p] Mallory flips a single bit in $C_2$ of a four-block ciphertext, so Bob receives $C' = (IV_1, IV_2, C_1, C_2', C_3, C_4)$; show what message Bob computes, justifying garbage output and computing exact results where possible. (d) [4p] Justify if AES-MOD is IND-CPA secure; if not, give two three-block plaintexts that win the IND-CPA game, otherwise an informal justification.",
+      "solution_steps": [
+        {
+          "step_ref": "Step 1: Map the recurrence structure",
+          "work": "Every term --- $P_i$, $IV_1$, $IV_2$, and the running XOR of all previous ciphertext blocks $C_1 \\oplus \\cdots \\oplus C_{i-1}$ --- sits \\emph{inside} $E_K$; nothing is XORed outside the cipher. This makes inversion easy but makes encryption depend on the entire ciphertext history."
+        },
+        {
+          "step_ref": "Steps 2-3: Apply $D_K$ and solve for $P_i$",
+          "work": "The cipher term is already isolated, so apply $D_K$ and XOR the remaining mask over (shown for $C_i$): \\[ C_i = E_K(P_i \\oplus IV_1 \\oplus IV_2 \\oplus C_1 \\oplus \\cdots \\oplus C_{i-1}) \\] \\[ D_K(C_i) = P_i \\oplus IV_1 \\oplus IV_2 \\oplus C_1 \\oplus \\cdots \\oplus C_{i-1} \\] \\[ P_i = D_K(C_i) \\oplus IV_1 \\oplus IV_2 \\oplus C_1 \\oplus \\cdots \\oplus C_{i-1}. \\] The special case is $P_1 = D_K(C_1) \\oplus IV_1 \\oplus IV_2$."
+        },
+        {
+          "step_ref": "Step 4: Read off parallelizability",
+          "work": "Encryption \\term{cannot be parallelized}: computing $C_i$ requires knowing all of $C_1, \\dots, C_{i-1}$. Decryption \\term{can be parallelized}: computing $P_i$ does not require knowing any of $P_1, \\dots, P_{i-1}$, and the ciphertexts of all previous blocks are already known to Bob."
+        },
+        {
+          "step_ref": "Step 5: Trace the flip in $C_2$ block by block",
+          "work": "Bob decrypts $(IV_1, IV_2, C_1, C_2 \\oplus 1, C_3, C_4)$. \\begin{tightitem} \\item $P_1' = D_K(C_1) \\oplus IV_1 \\oplus IV_2 = P_1$: the formula never references $C_2$, so block 1 is unchanged. \\item $P_2' = D_K(C_2 \\oplus 1) \\oplus IV_1 \\oplus IV_2 \\oplus C_1 = \\text{Garbage}$: the tampered block enters inside $D_K$, so avalanche makes this block unpredictable. \\item $P_3' = D_K(C_3) \\oplus IV_1 \\oplus IV_2 \\oplus C_1 \\oplus C_2' = P_3 \\oplus 1$: $C_2'$ is only an XOR term here, so exactly one bit flips. \\item $P_4' = D_K(C_4) \\oplus IV_1 \\oplus IV_2 \\oplus C_1 \\oplus C_2' \\oplus C_3 = P_4 \\oplus 1$: same reason, one bit flips. \\end{tightitem} Bob recovers $(P_1, \\text{Garbage}, P_3 \\oplus 1, P_4 \\oplus 1)$."
+        },
+        {
+          "step_ref": "Step 6: Judge IND-CPA security",
+          "work": "AES-MOD is \\term{IND-CPA secure} (informal justification): the initialization vectors $IV_1, IV_2$ are chosen independently at random for each message, providing fresh randomness to every ciphertext, and the use of all previous ciphertext blocks in the encryption of the current block ensures that no two blocks are ever encrypted in exactly the same way --- equal plaintexts therefore encrypt to different ciphertexts and the deterministic-comparison attack fails."
+        }
+      ],
+      "answer": "$P_1 = D_K(C_1) \\oplus IV_1 \\oplus IV_2$, $P_i = D_K(C_i) \\oplus IV_1 \\oplus IV_2 \\oplus C_1 \\oplus \\cdots \\oplus C_{i-1}$; encryption sequential, decryption parallelizable; after the flip Bob recovers $(P_1, \\text{Garbage}, P_3 \\oplus 1, P_4 \\oplus 1)$; AES-MOD is IND-CPA secure (fresh random IVs plus full chaining)."
+    }
+  ],
+  "practice_refs": [
+    "re-exam-problems-with-sample-solutions.pdf::8c"
+  ]
+}
