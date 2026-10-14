@@ -1,11 +1,11 @@
 \contentsline {section}{\numberline {1}Question Type 1: Security analysis of a custom hash-function construction}{2}{}%
-\contentsline {section}{\numberline {2}Question Type 2: Cache/timing side-channel attack analysis and constant-time fix}{11}{}%
-\contentsline {section}{\numberline {3}Question Type 3: Memory-safety vulnerability identification and exploit construction}{21}{}%
-\contentsline {section}{\numberline {4}Question Type 4: Bell-LaPadula access-control decisions and label lattice}{32}{}%
-\contentsline {section}{\numberline {5}Question Type 5: Security protocol flaw analysis and repair}{39}{}%
-\contentsline {section}{\numberline {6}Question Type 6: Concept true/false (or multiple-choice) with one-to-three-sentence justification}{48}{}%
-\contentsline {section}{\numberline {7}Question Type 7: Custom block-cipher mode analysis: decryption, parallelizability, bit-flip propagation, IND-CPA}{56}{}%
-\contentsline {section}{\numberline {8}Question Type 8: Web attack construction: XSS, CSRF, SQLi with origin/cookie reasoning}{66}{}%
-\contentsline {section}{\numberline {9}Question Type 9: Password storage and authentication-scheme analysis}{76}{}%
-\contentsline {section}{\numberline {10}Question Type 10: DoS attack construction and countermeasure/responsibility analysis}{90}{}%
-\contentsline {section}{\numberline {11}Question Type 11: Social-engineering scenario analysis}{98}{}%
+\contentsline {section}{\numberline {2}Question Type 2: Cache/timing side-channel attack analysis and constant-time fix}{14}{}%
+\contentsline {section}{\numberline {3}Question Type 3: Memory-safety vulnerability identification and exploit construction}{26}{}%
+\contentsline {section}{\numberline {4}Question Type 4: Bell-LaPadula access-control decisions and label lattice}{41}{}%
+\contentsline {section}{\numberline {5}Question Type 5: Security protocol flaw analysis and repair}{51}{}%
+\contentsline {section}{\numberline {6}Question Type 6: Concept true/false (or multiple-choice) with one-to-three-sentence justification}{63}{}%
+\contentsline {section}{\numberline {7}Question Type 7: Custom block-cipher mode analysis: decryption, parallelizability, bit-flip propagation, IND-CPA}{74}{}%
+\contentsline {section}{\numberline {8}Question Type 8: Web attack construction: XSS, CSRF, SQLi with origin/cookie reasoning}{87}{}%
+\contentsline {section}{\numberline {9}Question Type 9: Password storage and authentication-scheme analysis}{101}{}%
+\contentsline {section}{\numberline {10}Question Type 10: DoS attack construction and countermeasure/responsibility analysis}{120}{}%
+\contentsline {section}{\numberline {11}Question Type 11: Social-engineering scenario analysis}{132}{}%
