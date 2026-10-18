@@ -1,0 +1,239 @@
+\section{Memory-Safety Vulnerabilities, Stack/Heap Exploitation, and Mitigations}
+
+\subsection{Process Address Space, Stack Frame Geometry, and Bug Taxonomy}
+A memory-safety violation occurs whenever a program reads (\term{spatial/temporal over-read}) or writes (\term{spatial/temporal overwrite}) outside the bounds or lifetime of the intended memory object, leading to four canonical consequences: \term{secret data disclosure}, \term{data corruption}, \term{unexpected transfer of control}, or \term{arbitrary code execution}.
+
+\textbf{Address Space \& Stack Frame Offset Equations (Pointer Width $w \in \{4, 8\}$ bytes):}
+\begin{compactitem}
+  \item \term{Directional Asymmetry:} The stack grows \textbf{downward} (toward lower memory addresses) as functions are called, whereas array indexing \code{buf[i]} ($i = 0, 1, \dots$), \code{struct} fields, and heap chunks grow \textbf{upward} (toward higher memory addresses).
+  \item \term{Canonical Stack Frame Layout (Low to High Addresses):}
+  \[
+    \underbrace{\code{buf[0..B-1]}}_{\text{offset } 0 \text{ (size } B\text{)}} \to
+    \underbrace{\text{Adjacent Locals}}_{\text{offset } B \text{ (size } L_{\text{loc}}\text{)}} \to
+    \underbrace{\text{Stack Canary}}_{\text{offset } B + L_{\text{loc}} \text{ (size } w\text{)}} \to
+    \underbrace{\text{Saved Frame Ptr (SFP)}}_{\text{size } w \text{ (or } 0 \text{ if omitted)}} \to
+    \underbrace{\text{Saved Return Addr (RET)}}_{\text{offset } \Delta_{\text{ret}} \text{ (size } w\text{)}} \to
+    \text{Args}.
+  \]
+  \item \term{Little-Endian Serialization ($\mathrm{LE}_w$):} On x86/x86-64, a $w$-byte pointer $A = \texttt{0x}\,B_{w-1}\dots B_1 B_0$ is stored in memory with its least-significant byte at the lowest address: $\mathrm{LE}_w(A) = B_0 \, B_1 \, \dots \, B_{w-1}$ (e.g., $\mathrm{LE}_8(\code{0x00000000004011c8}) = \code{c8\,11\,40\,00\,00\,00\,00\,00}$).
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.3cm} L{4.5cm} Y@{}}
+\toprule
+\textbf{Bug Class / Construct} & \textbf{Unsafe Primitives / Pattern} & \textbf{Operational Mechanism \& Exploitability} \\
+\midrule
+\term{Stack/Heap Buffer Overflow} & \code{gets(b)}, \code{strcpy(b,s)}, \code{strcat(b,s)}, \code{sprintf(b,...)}, \code{scanf("\%s",b)}, \code{memcpy(b,s,n)} ($n > |b|$) & Writes past $\code{b}[|b|-1]$ toward higher addresses, corrupting adjacent locals, struct fields, heap metadata, SFP, or RET. Note: \code{strcpy}/\code{strcat} stop at first \code{0x00}; \code{memcpy}/\code{read} copy raw \code{0x00} bytes intact. \\
+\term{Buffer Over-Read} & \code{strcat(uninit\_buf, s)}, \code{printf("\%s", non\_nul\_buf)}, \code{memcpy(out, b, len)} ($\code{len} > |b|$) & Reads past object boundary. Calling \code{strcat} or \code{printf("\%s")} on an uninitialized or non-NUL-terminated buffer scans upward through stack/heap memory until encountering a random \code{0x00} byte, leaking adjacent secrets (e.g., Heartbleed). \\
+\term{Off-by-One / Missing NUL} & \code{for (i=0; i<=N; i++)}, \code{strncpy(b, s, sizeof(b))} & Writing $N$ chars via \code{strncpy} into $\code{b}[N]$ when $|s| \ge N$ leaves $\code{b}$ \emph{without a NUL terminator}; subsequent \code{strlen}/\code{strcpy}/\code{printf} over-reads or overflows using the concatenated adjacent memory. \\
+\term{Integer / Signedness Overflow} & \code{if (len < MAX)} with signed \code{int len < 0}; \code{malloc(n * sizeof(T))} & Negative signed \code{len} passes upper-bound check \code{len < MAX} then converts to huge unsigned \code{size\_t} in \code{memcpy}; or $n \cdot \mathrm{sizeof}(T)$ wraps modulo $2^{32}/2^{64}$, allocating a tiny buffer followed by a large write. \\
+\term{Use-After-Free (Dangling Ptr)} & Using pointer \code{p} after \code{free(p)} or returning $\&\code{local}$ & Allocator reuses freed chunk for a new attacker-controlled object; dereferencing dangling \code{p} interprets attacker bytes as the old type/function pointer. \\
+\term{Type Confusion / Double Free} & Invalid downcast \code{(Cat*)dog\_ptr}; \code{free(p); free(p);} & Reinterprets memory layout across incompatible types (treating data field as code pointer) or corrupts heap freelist metadata to achieve arbitrary write. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{2.7cm} L{3.1cm} L{3.6cm} Y@{}}
+\toprule
+\textbf{Mitigation Mechanism} & \textbf{What It Stops} & \textbf{What Bypasses It} & \textbf{Technical Reason for Bypass / Limitation} \\
+\midrule
+\term{Stack Canary} & Linear stack overflow to \textbf{RET} & Adjacent-local overwrite; Heap/struct overflow; Arbitrary pointer write & Canary sits immediately below SFP/RET and is checked \emph{only at function return}. Overwriting a local flag, local pointer, or heap function pointer triggers before (or without) modifying the canary. Leaking the canary via an over-read also allows rewriting the exact canary value. \\
+\term{NX / $\text{W}\XOR\text{X}$ (DEP)} & \textbf{Code injection} (shellcode in stack/heap/data) & \textbf{Code reuse} (\code{ret2func}, \code{ret2libc}, \textbf{ROP}); Data-only attacks & Pages are never simultaneously writable and executable, so CPU faults on jumping to stack/heap. Jumping to existing executable instructions (\code{printf}, \code{spawn\_console}, ROP gadgets) requires no new executable pages. \\
+\term{Stack-Base ASLR Only} & Jumps to \textbf{stack addresses} (e.g., stack shellcode) & Fixed-address code reuse (\code{ret2func}); Adjacent-local / relative-offset overwrites & Randomizing only the stack base makes $\mathrm{addr}(\code{buf})$ unpredictable, but leaves code segment addresses (\code{0x4011c8}), heap addresses, and intra-frame relative distances ($\Delta_{\text{adj}}, \Delta_{\text{ret}}$) unchanged. \\
+\term{Full ASLR (+ PIE)} & Jumps to any hardcoded absolute address & Info-leak / over-read + offset math; Adjacent-local data overwrites & Relative offsets within a segment remain constant; a single leaked pointer defeats ASLR for that module. Non-pointer data overwrites (e.g., \code{authenticated = 1}) need no addresses at all. \\
+\term{Guard Pages} & Contiguous linear overflow crossing page boundary & Intra-frame / intra-chunk overflows; Indexed out-of-bounds writes & Unmapped guard pages sit only between large regions (or page-sized allocations), never between adjacent variables inside the same stack frame or struct. \\
+\term{CFI / Shadow Stack} & Invalid indirect calls \& corrupted RET addresses & Data-only attacks (corrupting flags, UIDs, amounts, keys) & CFI validates control-flow transfers against a static call graph and Shadow Stack mirrors RET in protected memory, but neither inspects non-control data. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Applied Solution Scheme: Procedural Vulnerability Audit \& Exploit Construction}
+
+\begin{schemebox}{7-Step Memory-Safety Vulnerability Audit, Payload Synthesis, and Defense Evaluation}
+\begin{enumerate}[label=\textbf{Step \arabic*:}, leftmargin=3.8em]
+  \item \textbf{Locate All Unsafe Memory Operations and Classify Delivery Semantics:}
+  Inspect every buffer read/write and pointer operation:
+  \begin{compactitem}
+    \item \emph{Unbounded String Copy (\code{gets}, \code{strcpy}, \code{strcat}, \code{sprintf}):} Stops at the first \code{0x00} byte in the source; overflows destination \code{buf} of capacity $B$ whenever source string length $\ge B$.
+    \item \emph{Raw Binary Copy (\code{memcpy(dst, src, plen)}, \code{read}, \code{fread}):} Copies exactly \code{plen} bytes including embedded \code{0x00} bytes; overflows whenever $\code{plen} > \mathrm{sizeof}(\code{dst})$ (or when a negative signed \code{plen} bypasses $\code{plen} \le B$ and wraps to a large unsigned \code{size\_t}).
+    \item \emph{Uninitialized / Unterminated String Scan (\code{strcat(buf, in)} without prior \code{buf[0]='\textbackslash 0'}):} Scans from $\code{buf}[0]$ until the first \code{0x00} byte in memory; if none occurs within $B$ bytes, it \textbf{over-reads} adjacent stack/heap data and begins appending \code{in} out-of-bounds.
+  \end{compactitem}
+
+  \item \textbf{Draw the Byte-Exact Stack Frame and Heap/Struct Layout:}
+  State the architectural assumptions explicitly: pointer size $w \in \{4, 8\}$ bytes, endianness (little-endian), and stack ordering from \textbf{low to high addresses}.
+  \begin{compactitem}
+    \item \emph{Heap/Struct Layout:} Fields are laid out in declaration order from offset $0$ upward: field $k$ starts at $\sum_{j < k} \mathrm{sizeof}(\text{field}_j)$.
+    \item \emph{Stack Frame Layout:} From low to high addresses: local arrays/variables $\to$ saved frame pointer ($\mathrm{SFP}$, $w$ bytes, or $0$ bytes if omitted by simplified model) $\to$ saved return address ($\mathrm{RET}$, $w$ bytes).
+  \end{compactitem}
+
+  \item \textbf{Compute Exact Byte Distance $\Delta$ from Buffer Start to Target Slot:}
+  \begin{align*}
+    \Delta_{\text{adj}} &= \mathrm{addr}(\text{target field / local / func ptr}) - \mathrm{addr}(\code{buf}[0]), \\
+    \Delta_{\text{ret}} &= \mathrm{sizeof}(\code{buf}) + \mathrm{sizeof}(\text{intervening locals above }\code{buf}) + \mathrm{sizeof}(\mathrm{SFP}).
+  \end{align*}
+
+  \item \textbf{Synthesize Adjacent-Overwrite or Code-Reuse (\code{ret2func}) Payload:}
+  \begin{compactitem}
+    \item \emph{Adjacent Data / Function-Pointer Overwrite:} Total length $= \Delta_{\text{adj}} + w$. Payload $= \code{'A'}^{\Delta_{\text{adj}}} \concat \mathrm{LE}_w(\text{target\_value})$. Fires as soon as the corrupted variable or function pointer \code{s->fn()} is evaluated (before function return).
+    \item \emph{Saved Return Address Hijack (\code{ret2func}):} Total length $= \Delta_{\text{ret}} + w$. Payload $= \code{'A'}^{\Delta_{\text{ret}}} \concat \mathrm{LE}_w(\mathrm{addr}(\text{target\_code}))$. Fires when the current function executes \code{ret}, jumping to existing instructions (e.g., \code{printf(secret)} or \code{spawn\_console()}).
+  \end{compactitem}
+
+  \item \textbf{Synthesize Shellcode Injection Payload and State Required Assumptions:}
+  State two mandatory assumptions: (1) stack/heap is \textbf{executable} ($\neg\text{NX}$), and (2) absolute stack/buffer address is \textbf{known} ($\neg\text{ASLR}$).
+  \begin{compactitem}
+    \item \emph{Placement Inside Buffer ($\Delta_{\text{ret}} \ge |\text{shellcode}|$):}
+    \[
+      \text{Payload} = \underbrace{\text{Shellcode}}_{\text{length } k} \concat \underbrace{\code{'A'}^{\Delta_{\text{ret}} - k}}_{\text{padding}} \concat \underbrace{\mathrm{LE}_w\big(\mathrm{addr}(\code{buf})\big)}_{\text{overwrites RET}}.
+    \]
+    \item \emph{Placement Above Saved Return Address (works for any buffer size $B$):}
+    \[
+      \text{Payload} = \underbrace{\code{'A'}^{\Delta_{\text{ret}}}}_{\text{fills up to RET}} \concat \underbrace{\mathrm{LE}_w\big(\mathrm{addr}(\mathrm{RET}) + w\big)}_{\text{points immediately above RET}} \concat \underbrace{\text{Shellcode}}_{\text{placed at }\mathrm{addr}(\mathrm{RET})+w}.
+    \]
+  \end{compactitem}
+
+  \item \textbf{Evaluate Each Mitigation Against Each Attack Variant:}
+  Test every defense against the exact mechanism of each attack: (a) \textbf{Stack Canary} stops $\Delta_{\text{ret}}$ overwrites at \code{ret}, but fails against heap overflows and stack overwrites that corrupt a local flag or local/heap function pointer used before \code{ret}; (b) \textbf{NX / $\text{W}\XOR\text{X}$} stops Step 5 (shellcode injection), but fails against Step 4 (\code{ret2func} / ROP / data-only); (c) \textbf{Stack-Base ASLR} stops Step 5 (since $\mathrm{addr}(\code{buf})$ and $\mathrm{addr}(\mathrm{RET})+w$ are randomized), but fails against Step 4 when jumping to a non-randomized code address or overwriting a relative offset.
+
+  \item \textbf{Formulate the Root-Cause Code Remediation:}
+  Replace unbounded calls with bounds-enforced equivalents: validate $\code{if (plen > sizeof(dst)) return;}$ before \code{memcpy} (using unsigned \code{size\_t}), replace \code{strcpy(b, s)} with \code{snprintf(b, sizeof(b), "\%s", s)} or \code{strncpy(b, s, sizeof(b)-1); b[sizeof(b)-1] = '\textbackslash 0';}, and initialize \code{b[0] = '\textbackslash 0';} before any \code{strcat}.
+\end{enumerate}
+\end{schemebox}
+
+\begin{verifybox}{Memory Layout, Endianness, and NUL-Byte Delivery}
+\begin{compactitem}
+  \item \textbf{NUL-Byte Truncation Check:} When the overflow primitive is \code{strcpy}, \code{strcat}, or \code{gets}, any \code{0x00} byte inside the payload terminates the copy immediately. Thus a 64-bit address like $\code{0x00000000004011c8}$ ($\mathrm{LE}_8 = \code{c8\,11\,40\,00\,00\,00\,00\,00}$) can only be written at the \emph{very end} of a \code{strcpy} payload (where the first \code{0x00} acts as the string terminator if upper bytes are already zero) or must be delivered via \code{memcpy}/\code{read} which copies all 8 bytes including \code{0x00} without stopping.
+  \item \textbf{SFP Inclusion Convention:} Always state explicitly whether your stack diagram includes a $w$-byte Saved Frame Pointer ($\Delta_{\text{ret}} = B + w$, e.g., $24 + 8 = 32$ bytes) or uses a simplified frame where $\mathrm{RET}$ sits directly above $\code{buf}[B]$ ($\Delta_{\text{ret}} = B$, e.g., $50$ bytes). Both are valid if the assumption and byte count match.
+  \item \textbf{Execution Trigger Point:} Verify \emph{when} the corrupted datum is consumed: a corrupted heap/local function pointer \code{s->on\_done()} transfers control at the indirect call site (before \code{ret}, bypassing stack canaries), whereas a corrupted $\mathrm{RET}$ transfers control only when the function executes \code{ret}.
+\end{compactitem}
+\end{verifybox}
+
+\subsection{Worked Applied Problem Templates}
+
+\begin{templatebox}{3A --- Stack Overflow: Shellcode Injection vs.\ Code-Reuse Leak, Stack ASLR \& Canary}
+\textbf{Problem Specification:} Consider the following C function running on a 64-bit little-endian architecture ($w = 8$ bytes):
+\begin{codeblock}
+void check\_password(char *input) \{\\
+\hspace*{1.5em} char buffer[50];\\
+\hspace*{1.5em} char *secret = "Pwd123456";\\
+\hspace*{1.5em} if (strcmp(input, secret) == 0) \{\\
+\hspace*{3.0em} printf("Password matches: \%s\textbackslash n", secret);\\
+\hspace*{1.5em} \} else \{\\
+\hspace*{3.0em} printf("Wrong password!\textbackslash n");\\
+\hspace*{1.5em} \}\\
+\hspace*{1.5em} strcpy(buffer, input);\\
+\}
+\end{codeblock}
+\textbf{Tasks:} (a) Identify the memory-safety vulnerability and explain why it occurs regardless of the password check. (b) Construct an input payload that injects and executes arbitrary machine code, stating all assumptions about binary protections and memory layout. (c) Construct an input payload that leaks \code{secret} without injecting any new code and without knowing \code{"Pwd123456"}. (d) Determine whether randomizing only the base address of the stack (Stack-Base ASLR) prevents attack (b). (e) Determine whether Stack-Base ASLR prevents attack (c). (f) Propose and justify a runtime mitigation that stops whichever attack survives Stack-Base ASLR.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Step 1 (Unsafe Operation Audit --- Task a):}
+  The call \code{strcpy(buffer, input)} copies bytes from \code{input} into \code{buffer[50]} until encountering a NUL byte (\code{'\textbackslash 0'}) without checking destination capacity. Any \code{input} string of length $\ge 50$ chars overflows \code{buffer}. Because \code{strcpy} executes \emph{after} the \code{if/else} block, the stack frame is corrupted even when the \code{else} branch prints \code{"Wrong password!"}.
+  \item \textbf{Steps 2--3 (Memory Layout \& Offset $\Delta_{\text{ret}}$):}
+  Assume a 64-bit stack frame ($w = 8$ bytes) where variables are ordered from low to high addresses as: $\code{secret}$ ($8$ bytes) $\to \code{buffer[50]}$ ($50$ bytes) $\to \text{Saved Return Pointer } (\mathrm{RET}, 8\text{ bytes})$ (omitting SFP, or $\Delta_{\text{ret}} = 50 + 8 = 58$ if SFP is included; we use $\Delta_{\text{ret}} = 50$ below). Writing past $\code{buffer}[49]$ directly overwrites $\mathrm{RET}$ at offset $\Delta_{\text{ret}} = 50$ from $\code{buffer}[0]$.
+  \item \textbf{Step 5 (Shellcode Injection Payload --- Task b):}
+  \begin{compactitem}
+    \item \emph{Assumptions:} (1) The stack is executable ($\neg\text{NX}$), (2) the exact stack address of $\mathrm{RET}$ (or \code{buffer}) is known ($\neg\text{ASLR}$), and (3) injected machine code and address bytes contain no embedded \code{0x00} bytes.
+    \item \emph{Payload Construction (placing shellcode immediately above $\mathrm{RET}$):}
+    \[
+      \text{Input (b)} = \underbrace{\code{'A'}^{50}}_{\text{fills \code{buffer[50]}}} \concat \underbrace{\mathrm{LE}_8\big(\mathrm{addr}(\mathrm{RET}) + 8\big)}_{\text{overwrites RET ($8$ bytes)}} \concat \underbrace{\text{Binary Shellcode}}_{\text{written starting at }\mathrm{addr}(\mathrm{RET})+8}.
+    \]
+    When \code{check\_password} returns, the CPU pops $\mathrm{addr}(\mathrm{RET})+8$ into the instruction pointer and jumps directly into the injected shellcode on the stack. (Alternatively, place NUL-free shellcode inside \code{buffer[0..k-1]}, pad with $50-k$ filler bytes, and overwrite $\mathrm{RET}$ with $\mathrm{LE}_8(\mathrm{addr}(\code{buffer}))$.)
+  \end{compactitem}
+  \item \textbf{Step 4 (Code-Reuse Secret Leak Without Code Injection --- Task c):}
+  Let $\mathrm{addr}_{\text{print}}$ be the code address of the basic block inside the \code{if}-branch that executes \code{printf("Password matches: \%s\textbackslash n", secret);}. Construct:
+  \[
+    \text{Input (c)} = \underbrace{\code{'A'}^{50}}_{\text{fills \code{buffer[50]}}} \concat \underbrace{\mathrm{LE}_8(\mathrm{addr}_{\text{print}})}_{\text{overwrites RET with code address}}.
+  \]
+  When \code{check\_password} returns, execution jumps straight to the existing \code{printf(..., secret)} instruction sequence in the code segment, printing \code{Pwd123456}. No code is injected, so NX/$\text{W}\XOR\text{X}$ does not stop this attack.
+  \item \textbf{Step 6 (Defense Evaluation --- Tasks d, e, f):}
+  \begin{compactitem}
+    \item \emph{Task (d) --- Stack-Base ASLR vs.\ Attack (b):} \textbf{Stopped.} Randomizing the stack base makes $\mathrm{addr}(\code{buffer})$ and $\mathrm{addr}(\mathrm{RET})+8$ unknown to the attacker, so the target address to write into $\mathrm{RET}$ is unknown.
+    \item \emph{Task (e) --- Stack-Base ASLR vs.\ Attack (c):} \textbf{Not stopped.} Attack (c) requires only the relative intra-stack offset $\Delta_{\text{ret}} = 50$ (invariant under stack base shifts) and the code-segment address $\mathrm{addr}_{\text{print}}$ (unaffected by stack-only ASLR).
+    \item \emph{Task (f) --- Countermeasure for Survivor (c):} Place a \term{Stack Canary} (random per-process secret word) between \code{buffer} and $\mathrm{RET}$. Any contiguous overflow from \code{buffer} that reaches $\mathrm{RET}$ must overwrite the canary; before executing \code{ret}, the function epilogue compares the stack canary against its master copy and aborts the process upon mismatch.
+  \end{compactitem}
+\end{itemize}
+\end{templatebox}
+
+\begin{templatebox}{3B --- Heap Struct Function-Pointer Overwrite vs.\ Stack Return Hijack via \texttt{memcpy}}
+\textbf{Problem Specification:} On a 64-bit little-endian machine ($w = 8$ bytes), privileged function \code{spawn\_console()} resides at fixed code address \code{0x00000000004011c8}. Consider the following C code:
+\begin{codeblock}
+typedef struct \{ char user[16]; void (*on\_done)(void); \} session\_t;\\
+void dispatch(session\_t *s, const char *packet, size\_t plen) \{\\
+\hspace*{1.5em} char cmd[24];\\
+\hspace*{1.5em} if (plen <= 24) \{ memcpy(s->user, packet, plen); \hspace*{1em} /* Line A */\\
+\hspace*{8.8em} s->on\_done(); \hspace*{8.2em} /* Line B */ \}\\
+\hspace*{1.5em} else \hspace*{4.2em} \{ memcpy(cmd, packet, plen); \hspace*{2.8em} /* Line C */ \}\\
+\}
+\end{codeblock}
+\textbf{Tasks:} (a) Identify both memory-safety vulnerabilities and explain how \code{memcpy} differs from \code{strcpy} regarding NUL bytes. (b) Construct a payload (\code{plen} and exact hex bytes of \code{packet}) that hijacks control flow via Line A/B to call \code{spawn\_console()}. (c) Assuming a stack frame with an 8-byte SFP between \code{cmd[24]} and $\mathrm{RET}$, construct a payload that hijacks control flow via Line C. (d) Evaluate Stack Canaries, NX, and Stack-Base ASLR against attacks (b) and (c), and provide the code fix.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Step 1 (Vulnerability \& Delivery Semantics --- Task a):}
+  Line A copies up to $\code{plen} \le 24$ bytes into $\code{s->user[16]}$, overflowing the 16-byte buffer by up to 8 bytes into the adjacent struct field $\code{s->on\_done}$. Line C executes when $\code{plen} > 24$ and copies $\code{plen}$ bytes into $\code{cmd[24]}$ with no upper bound check, overflowing the stack frame. Unlike \code{strcpy}, \code{memcpy} does not stop at \code{0x00}, so the five upper zero bytes of the 64-bit address \code{0x00000000004011c8} are copied intact.
+  \item \textbf{Steps 2--3 (Memory Layouts \& Offsets):}
+  \begin{compactitem}
+    \item \emph{Heap Struct \code{session\_t}:} $\code{user[0..15]}$ at offset $0$ ($16$ bytes); function pointer $\code{on\_done}$ at offset $\Delta_{\text{adj}} = 16$ ($8$ bytes).
+    \item \emph{Stack Frame of \code{dispatch}:} $\code{cmd[0..23]}$ ($24$ bytes) $\to \mathrm{SFP}$ ($8$ bytes) $\to \mathrm{RET}$ ($8$ bytes at offset $\Delta_{\text{ret}} = 24 + 8 = 32$).
+  \end{compactitem}
+  \item \textbf{Step 4a (Heap Function-Pointer Hijack --- Task b):}
+  Set $\code{plen} = 16 + 8 = 24$ (which satisfies $\code{plen} \le 24$ and enters Line A):
+  \[
+    \code{packet} = \underbrace{\code{41}\times 16}_{\text{16 filler bytes (\code{'A'})}} \concat \underbrace{\code{c8\,11\,40\,00\,00\,00\,00\,00}}_{\mathrm{LE}_8(\code{0x4011c8}) \text{ overwrites \code{s->on\_done}}}.
+  \]
+  At Line B, the indirect call \code{s->on\_done()} immediately invokes \code{spawn\_console()}.
+  \item \textbf{Step 4b (Stack Return-Address Hijack --- Task c):}
+  Set $\code{plen} = 32 + 8 = 40$ (which satisfies $\code{plen} > 24$ and enters Line C):
+  \[
+    \code{packet} = \underbrace{\code{41}\times 24}_{\text{fills \code{cmd[24]}}} \concat \underbrace{\code{41}\times 8}_{\text{overwrites SFP}} \concat \underbrace{\code{c8\,11\,40\,00\,00\,00\,00\,00}}_{\mathrm{LE}_8(\code{0x4011c8}) \text{ overwrites RET}}.
+  \]
+  When \code{dispatch} returns, the CPU pops $\mathrm{RET}$ and jumps to \code{spawn\_console()}.
+  \item \textbf{Steps 6--7 (Defense Verdicts \& Code Remediation --- Task d):}
+  \begin{compactitem}
+    \item \emph{Stack Canary:} \textbf{Stops (c)} (detects overwritten canary between \code{cmd} and SFP before \code{ret}), but \textbf{fails against (b)} (\code{s} is on the heap/struct and Line B transfers control via \code{s->on\_done()} without touching any stack canary or returning).
+    \item \emph{NX / $\text{W}\XOR\text{X}$ \& Stack-Base ASLR:} \textbf{Fail against both (b) and (c)}, because both attacks reuse existing executable code at fixed text address \code{0x4011c8} and rely only on fixed intra-struct ($16$) or intra-frame ($32$) offsets.
+    \item \emph{Root-Cause Fix:} Enforce exact destination bounds on each branch: replace condition at Line A with \code{if (plen <= sizeof(s->user))} ($16$ bytes) and guard Line C with \code{else if (plen <= sizeof(cmd))} ($24$ bytes), rejecting any $\code{plen} > 24$.
+  \end{compactitem}
+\end{itemize}
+\end{templatebox}
+
+\begin{templatebox}{3C --- Uninitialized \texttt{strcat} Buffer Over-Read \& Adjacent Local Flag Overwrite}
+\textbf{Problem Specification:} Consider the following C authentication routine on a 64-bit platform where stack locals are ordered from low to high addresses as $\code{msg[32]} \to \code{auth\_ok (4B)} \to \code{canary (8B)} \to \code{SFP (8B)} \to \code{RET (8B)}$:
+\begin{codeblock}
+int login\_handler(const char *user\_in) \{\\
+\hspace*{1.5em} char msg[32];\\
+\hspace*{1.5em} int auth\_ok = 0;\\
+\hspace*{1.5em} if (check\_credentials(user\_in)) auth\_ok = 1;\\
+\hspace*{1.5em} strcat(msg, user\_in); \hspace*{2.0em} /* Line X */\\
+\hspace*{1.5em} printf("Log: \%s\textbackslash n", msg); \hspace*{1.0em} /* Line Y */\\
+\hspace*{1.5em} return auth\_ok;\\
+\}
+\end{codeblock}
+\textbf{Tasks:} (a) Explain how Line X and Line Y cause a \term{buffer over-read} (information disclosure) even when \code{user\_in} is short (e.g., 4 bytes). (b) Construct an input \code{user\_in} (assuming \code{msg[0] == '\textbackslash 0'} initially) that forces \code{login\_handler} to return a non-zero (authenticated) value \emph{without} knowing valid credentials and \emph{even when a Stack Canary, NX, and Full ASLR are all enabled}. (c) Provide the exact code fix.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Step 1 (Uninitialized \code{strcat} Over-Read --- Task a):}
+  Local array \code{char msg[32]} is never initialized, so it contains arbitrary residual bytes left on the stack by earlier function frames. At Line X, \code{strcat(msg, user\_in)} scans forward from $\code{msg}[0]$ looking for the first NUL byte (\code{0x00}) before appending \code{user\_in}. If no \code{0x00} byte exists in $\code{msg[0..31]}$, \code{strcat} scans out-of-bounds into adjacent stack memory, appends \code{user\_in} past the end of \code{msg}, and Line Y (\code{printf("Log: \%s\textbackslash n", msg)}) prints all non-zero stack bytes from $\code{msg}[0]$ up to the terminating NUL --- leaking stale secrets, pointers (defeating ASLR), or canary bytes (\textbf{buffer over-read}).
+  \item \textbf{Steps 2--4 (Adjacent-Local Non-Control-Data Overwrite --- Task b):}
+  From low to high addresses, $\code{auth\_ok}$ sits immediately above $\code{msg[0..31]}$ at byte offset $\Delta_{\text{adj}} = 32$, \emph{below} the stack canary at offset $36$. Supply a 33-character string:
+  \[
+    \code{user\_in} = \underbrace{\code{'A'}^{32}}_{\text{fills \code{msg[0..31]}}} \concat \underbrace{\code{'B'}}_{\text{writes \code{0x42} into lowest byte of \code{auth\_ok}}} \quad (\text{plus trailing }\code{0x00}).
+  \]
+  \emph{Why All Three Mitigations Are Bypassed:} (1) \textbf{Stack Canary} sits above \code{auth\_ok} (at offset $36$) and is never touched by a 34-byte write (offsets $0..33$); (2) \textbf{NX} is irrelevant because no code is injected; (3) \textbf{Full ASLR} is irrelevant because the attack writes a non-zero integer (\code{0x00000042 != 0}), not a memory address, at a fixed relative offset $\Delta_{\text{adj}} = 32$. The function returns $\code{auth\_ok} \neq 0$, bypassing authentication.
+  \item \textbf{Step 7 (Root-Cause Remediation --- Task c):}
+  Initialize $\code{msg[0] = '\textbackslash 0';}$ at declaration and replace \code{strcat} with bounds-checked formatting: \code{snprintf(msg, sizeof(msg), "\%s", user\_in);}.
+\end{itemize}
+\end{templatebox}
+
+
+

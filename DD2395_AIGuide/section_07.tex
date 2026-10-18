@@ -1,0 +1,85 @@
+\section{Symmetric Encryption, Block-Cipher Modes of Operation, and IND-CPA}
+
+\subsection{Symmetric Ciphers, One-Time Pad, Block Ciphers (PRP), and Standard Modes}
+A symmetric encryption scheme $\Pi = (\mathrm{KeyGen}, \mathrm{Enc}, \mathrm{Dec})$ over key space $\{0,1\}^k$ and block/message space satisfies \term{correctness} if $\mathrm{Dec}_K(\mathrm{Enc}_K(M)) = M$ for all $K, M$.
+\begin{compactitem}
+  \item \term{One-Time Pad (OTP):} For $M, K \in \{0,1\}^n$, $\mathrm{Enc}_K(M) = K \XOR M$ and $\mathrm{Dec}_K(C) = K \XOR C$ (since $K \XOR (K \XOR M) = M$). Achieves \term{perfect information-theoretic secrecy} ($\Pr[\text{Eve guesses } b] = 1/2$) when $K$ is uniform, as long as $|M|$, and used \textbf{once}. Reusing $K$ across $M_1, M_2$ leaks $C_1 \XOR C_2 = M_1 \XOR M_2$ and fails IND-CPA immediately.
+  \item \term{Block Cipher (Pseudorandom Permutation --- PRP):} A deterministic, keyed bijective family $E_K : \{0,1\}^n \to \{0,1\}^n$ with inverse $D_K : \{0,1\}^n \to \{0,1\}^n$ satisfying $D_K(E_K(X)) = X$ and $E_K(D_K(Y)) = Y$ for all $X, Y \in \{0,1\}^n$ (AES: $n = 128$ bits, $k \in \{128, 192, 256\}$ bits). Without $K$, $E_K$ is computationally indistinguishable from a uniform random permutation $\pi$, and flipping $\ge 1$ bit of the input to $E_K$ or $D_K$ flips $\approx 50\%$ of output bits unpredictably (\term{avalanche effect}). Because raw $E_K$ is deterministic, \textbf{no raw block cipher is IND-CPA secure}.
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{1.1cm} L{3.4cm} L{3.2cm} L{1.8cm} L{1.8cm} Y@{}}
+\toprule
+\textbf{Mode} & \textbf{Encryption Formula} & \textbf{Decryption Formula} & \textbf{Enc / Dec Parallel?} & \textbf{IND-CPA?} & \textbf{Operational Properties \& Malleability} \\
+\midrule
+\term{ECB} & $C_i = E_K(P_i)$ & $P_i = D_K(C_i)$ & Yes / Yes & \textbf{No} & Deterministic: identical plaintext blocks $P_i = P_j \implies C_i = C_j$ (leaks block equality patterns). \\
+\term{CBC} & $C_i = E_K(P_i \XOR C_{i-1})$, $C_0 = IV$ & $P_i = D_K(C_i) \XOR C_{i-1}$ & \textbf{No} / \textbf{Yes} & \textbf{Yes} (random fresh $IV$) & Requires block padding (\textbf{PKCS\#7}: pad $p \in \{1..B\}$ bytes each of value $p$; full $B$-byte block if aligned). Reused $IV$ leaks equal prefixes. \\
+\term{CTR} & $C_i = P_i \XOR E_K(\text{nonce} \concat i)$ & $P_i = C_i \XOR E_K(\text{nonce} \concat i)$ & \textbf{Yes} / \textbf{Yes} & \textbf{Yes} (unique nonce) & Stream cipher mode: uses \emph{only} $E_K$ (never $D_K$), needs no padding. Nonce reuse leaks $C_i \XOR C_i' = P_i \XOR P_i'$. Bit-flip on $C_i$ flips exact bit in $P_i$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Algebraic Analysis of Custom Block-Cipher Modes of Operation}
+Let a custom mode encrypt $P = (P_1, \dots, P_m)$ using key $K$ and public random initialization vectors $\overrightarrow{IV} = (IV_1, IV_2, \dots)$, producing ciphertext $(\overrightarrow{IV}, C_1, \dots, C_m)$ via a general block recurrence:
+\[
+  C_i = E_K\big(P_i \XOR M_{\text{in}, i}\big) \XOR M_{\text{out}, i},
+\]
+where $M_{\text{in}, i}$ (inner mask) and $M_{\text{out}, i}$ (outer mask) are XOR combinations of $\overrightarrow{IV}$, prior ciphertexts $C_{<i}$, or prior plaintexts $P_{<i}$.
+
+\begin{summarybox}{1. Exact Algebraic Decryption Inversion Recipe}
+To derive the decryption formula for $P_i$ from $C_i = E_K(P_i \XOR M_{\text{in}, i}) \XOR M_{\text{out}, i}$, apply XOR self-cancellation ($X \XOR X = 0$) and $D_K(E_K(Z)) = Z$ in three algebraic steps:
+\begin{align*}
+  \textbf{(1) Isolate } E_K(\cdot): \quad & E_K\big(P_i \XOR M_{\text{in}, i}\big) = C_i \XOR M_{\text{out}, i} \\
+  \textbf{(2) Invert permutation via } D_K: \quad & P_i \XOR M_{\text{in}, i} = D_K\big(C_i \XOR M_{\text{out}, i}\big) \\
+  \textbf{(3) Isolate } P_i: \quad & P_i = D_K\big(C_i \XOR M_{\text{out}, i}\big) \XOR M_{\text{in}, i}.
+\end{align*}
+\emph{Special-Case Boundary ($i=1, 2$):} Always write out the explicit base-case formulas for $P_1$ (and $P_2$ if $i \ge 3$ is the general recurrence) separately from the general $P_i$ formula.
+\end{summarybox}
+
+\begin{summarybox}{2. Parallelizability Decision Rules (Encryption vs.\ Decryption)}
+\begin{compactitem}
+  \item \term{Encryption Parallelizability:} Encryption \textbf{can be parallelized} iff for every $i$, the encryption formula for $C_i$ depends only on $(P_1, \dots, P_m)$, $\overrightarrow{IV}$, and block index $i$, and \textbf{does not reference any earlier ciphertext block $C_j$ ($j < i$)}. If $C_i$ depends on $C_{i-1}$, $C_{i-2}$, or $\bigoplus_{j=1}^{i-1} C_j$, encryption is strictly \textbf{sequential}.
+  \item \term{Decryption Parallelizability:} When decrypting $(\overrightarrow{IV}, C_1, \dots, C_m)$, \textbf{all ciphertext blocks $C_1, \dots, C_m$ are already known at the start}. Therefore, decryption \textbf{can be parallelized} iff the derived formula for $P_i$ \textbf{does not reference any earlier plaintext block $P_j$ ($j < i$)}. (If $P_i$ depends on $P_{i-1}$, decryption is sequential; if $P_i$ depends only on $C_i, C_{i-1}, \dots, C_1, \overrightarrow{IV}$, decryption is parallelizable.)
+\end{compactitem}
+\end{summarybox}
+
+\begin{summarybox}{3. Bit-Flip Error Propagation Rules ($C_k' = C_k \XOR 1$)}
+Suppose an active attacker flips a single bit in ciphertext block $C_k$ (written $C_k' = C_k \XOR 1$, where $1$ denotes a 1-bit error mask). Substitute $C_k'$ into the decryption formula for every block $P_j'$ ($j = 1, \dots, m$):
+\begin{compactitem}
+  \item \term{Case A (No Dependence on $C_k$):} If $C_k$ (and any tainted $P_r'$) does not appear in the formula for $P_j'$, then $\mathbf{P_j' = P_j}$ (\textbf{unchanged}).
+  \item \term{Case B ($C_k'$ Enters Inside $D_K(\cdots C_k' \cdots)$):} By the block cipher's avalanche property, changing $1$ input bit to $D_K$ scrambles $\approx 50\%$ of its output bits unpredictably: $\mathbf{P_j' = \text{\textbf{Garbage}}}$ (unpredictable random-looking block).
+  \item \term{Case C ($C_k'$ Appears Only Outside $D_K$ as a Linear XOR Mask):} If the argument to $D_K$ is untampered and $C_k' = C_k \XOR 1$ is XORed outside $D_K$ an odd number of times, the exact same single bit flips in the recovered plaintext: $\mathbf{P_j' = P_j \XOR 1}$. (If XORed an even number of times, $1 \XOR 1 = 0 \implies P_j' = P_j$.)
+  \item \term{Case D (Cascaded Plaintext Feedback $P_{j-1}'$):} If $P_j'$ depends on $P_{j-1}'$ outside $D_K$ (e.g., $P_j' = D_K(C_j) \XOR P_{j-1}'$), substitute the already-determined status of $P_{j-1}'$: if $P_{j-1}' = \text{Garbage}$, then $P_j' = \text{Garbage}$ unless algebraic cancellation removes $D_K(C_k')$.
+\end{compactitem}
+\end{summarybox}
+
+\subsection{IND-CPA Security Game and Distinguisher Construction}
+In the \term{IND-CPA (Indistinguishability under Chosen-Plaintext Attack)} game: (1) adversary Eve may query an encryption oracle $\mathrm{Enc}_K(\cdot)$ on chosen messages; (2) Eve submits two equal-length challenge plaintexts $M_0 = (P_{0,1}, \dots, P_{0,m})$ and $M_1 = (P_{1,1}, \dots, P_{1,m})$ ($|M_0| = |M_1|$); (3) the challenger samples $b \xleftarrow{\$} \{0,1\}$ and returns $C^* = \mathrm{Enc}_K(M_b)$; (4) Eve outputs a guess $b'$. The mode is \term{IND-CPA secure} iff for every PPT adversary, $\Pr[b' = b] \le \frac{1}{2} + \mathrm{negl}(k)$.
+\begin{compactitem}
+  \item \term{Distinguisher Technique 1 (Deterministic or Reused IV):} If $\overrightarrow{IV}$ is constant, missing, or predictable/reused across messages, the mode is \textbf{not IND-CPA secure}: Eve queries $\mathrm{Enc}_K(M_0)$ (or submits $M_0, M_1$ and compares $C_1^*$ with a prior encryption sharing the same $IV$ and first block) and wins with probability $1$.
+  \item \term{Distinguisher Technique 2 (Intra-Message Block Collision via Repeated IV Mask):} Even when $\overrightarrow{IV} = (IV_1, IV_2)$ is chosen freshly at random per message, inspect the input $X_i$ to $E_K(X_i)$ across blocks $i = 1, \dots, m$. If two distinct block positions $i \neq j$ depend on the \textbf{exact same random IV combination} without an unpredictable ciphertext block $C_r$ inside $E_K$ (for example, $C_1 = E_K(P_1 \XOR IV_1)$, $C_2 = E_K(P_2 \XOR IV_2)$, $C_3 = E_K(P_3 \XOR IV_1)$):
+  \begin{enumerate}[label=\arabic*., leftmargin=1.5em]
+    \item Eve submits 3-block challenge messages $M_0 = (A, A, A)$ (where $P_{0,1} = P_{0,3} = A$) and $M_1 = (A, A, B)$ with $A \neq B$.
+    \item Under $M_0$, $X_1 = A \XOR IV_1 = X_3 \implies C_1^* = E_K(A \XOR IV_1) = C_3^*$ with probability $1$. Under $M_1$, $A \neq B \implies X_1 \neq X_3 \implies C_1^* \neq C_3^*$ (since $E_K$ is a permutation).
+    \item Eve outputs $b' = 0$ if $C_1^* = C_3^*$ and $b' = 1$ otherwise, winning the IND-CPA game with probability $1 > 1/2$.
+  \end{enumerate}
+  \item \term{Distinguisher Technique 3 (Cancelable Outer Mask):} If the chaining $C_{i-1}$ or $IV$ sits \emph{outside} $E_K$, e.g., $C_1 = E_K(P_1) \XOR IV_1$ and $C_2 = E_K(P_2) \XOR C_1$, then $C_1 \XOR C_2 = E_K(P_1) \XOR E_K(P_2) \XOR IV_1$: Eve chooses $M_0 = (A, A)$ (so $E_K(A) \XOR E_K(A) = 0 \implies C_1^* \XOR C_2^* = IV_1$) and $M_1 = (A, B)$ ($A \neq B$), testing whether $C_1^* \XOR C_2^* \stackrel{?}{=} IV_1$ to win with probability $1 - 2^{-n}$.
+  \item \term{When Custom Modes ARE IND-CPA Secure:} If fresh uniform IVs mask the first block(s) \emph{inside} $E_K$ and every subsequent block $i$ includes an unpredictable ciphertext block $C_{i-1}$ (or running XOR $C_1 \XOR \cdots \XOR C_{i-1}$) \emph{inside} $E_K$ (e.g., $C_i = E_K(P_i \XOR IV_1 \XOR IV_2 \XOR C_1 \XOR \cdots \XOR C_{i-1})$), Eve cannot predict $C_{i-1}$ before choosing $M_0, M_1$, so no two $E_K$ inputs can be forced to collide and the mode is \textbf{IND-CPA secure}.
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{4.8cm} L{3.0cm} c L{3.8cm} Y@{}}
+\toprule
+\textbf{Custom Recurrence ($m=4$, flip in $C_2$)} & \textbf{Decryption $P_i$} & \textbf{Enc/Dec Par.} & \textbf{Recovered $(P_1', P_2', P_3', P_4')$} & \textbf{IND-CPA Verdict} \\
+\midrule
+$C_i = E_K(P_i \XOR IV_1 \XOR IV_2 \XOR C_{<i})$ & $D_K(C_i) \XOR IV_{1,2} \XOR C_{<i}$ & No / \textbf{Yes} & $(P_1,\; \text{Garbage},\; P_3 \XOR 1,\; P_4 \XOR 1)$ & \textbf{Secure} (fresh IVs $+$ full inner chain) \\
+$C_1 = E_K(P_1 \XOR IV_1)$, $C_i = E_K(P_i \XOR IV_2) \XOR C_{i-1}$ & $D_K(C_i \XOR C_{i-1}) \XOR IV_2$ & No / \textbf{Yes} & $(P_1,\; \text{Garbage},\; \text{Garbage},\; P_4)$ & \textbf{Insecure}: $C_2 \XOR C_1 = C_3 \XOR C_2$ if $P_2 = P_3$ \\
+$C_{\text{odd}} = E_K(P_i \XOR IV_1)$, $C_{\text{even}} = E_K(P_i \XOR IV_2)$ & $D_K(C_i) \XOR IV_{1\text{ or }2}$ & \textbf{Yes} / \textbf{Yes} & $(P_1,\; \text{Garbage},\; P_3,\; P_4)$ & \textbf{Insecure}: $M_0=(A,A,A) \implies C_1 = C_3$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+

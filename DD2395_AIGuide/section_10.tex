@@ -1,0 +1,37 @@
+\section{Denial-of-Service (DoS) Mechanics, Amplification, and Network Defenses}
+
+\subsection{Resource Exhaustion Vectors, Spoofing Asymmetry, and Amplification}
+A \term{Denial-of-Service (DoS)} attack targets \term{availability} by exhausting a finite system resource; a \term{Distributed DoS (DDoS)} coordinates many compromised hosts (\term{botnet}). An attack succeeds with limited attacker resources whenever \term{cost asymmetry} holds: $\mathrm{Cost}_{\text{victim}}(\text{req}) \gg \mathrm{Cost}_{\text{attacker}}(\text{req})$.
+\begin{compactitem}
+  \item \term{Four Resource Exhaustion Vectors:}
+  \begin{enumerate}[label=(\arabic*), leftmargin=1.8em]
+    \item \term{Bandwidth Exhaustion:} Saturates the victim's upstream network link (e.g., ICMP ping flood, UDP reflection/amplification).
+    \item \term{State / Memory Exhaustion:} Fills fixed-size kernel/application tables with fake entries (e.g., TCP \term{SYN flood} filling the half-open connection backlog; forged UDP \code{subscribe} packets exhausting server subscription memory).
+    \item \term{Computational (CPU/Disk) Exhaustion:} Forces expensive server-side processing per cheap unauthenticated packet (e.g., replaying signed requests to trigger file malware scans, public-key signature verifications, or $O(N)$ hash searches).
+    \item \term{Correctness / Crash Exploitation:} A single malformed packet triggers an unhandled exception, null dereference, or buffer overflow.
+  \end{enumerate}
+  \item \term{Transport Spoofing Asymmetry (UDP/ICMP vs.\ TCP):}
+  \textbf{UDP and ICMP are stateless and connectionless}: an attacker can emit packets with a forged source IP address ($\mathrm{IP}_{\text{src}} := \mathrm{IP}_{\text{victim}}$, \term{IP spoofing}) without verification. \textbf{TCP requires a 3-way handshake} ($\text{SYN} \to \text{SYN-ACK}(\mathrm{ISN}_S) \to \text{ACK}(\mathrm{ISN}_S+1)$): a blind spoofer never receives the $\text{SYN-ACK}$ sent to $\mathrm{IP}_{\text{victim}}$ and cannot complete the handshake to send application data.
+  \item \term{Reflection \& Amplification Mechanics:}
+  Attacker sends small UDP requests with spoofed source $\mathrm{IP}_{\text{src}} = \mathrm{IP}_{\text{victim}}$ to third-party servers (\term{reflectors}), which send large replies of size $|\text{Reply}| = A \cdot |\text{Req}|$ to the victim (e.g., DNS amplification: $\sim 60\text{ B}$ query $\to 4\text{ KB}$ response, amplification factor $A \approx 60\times$). The reflectors' aggregate bandwidth floods the victim regardless of how small the attacker's own bandwidth is. Similarly, if a protocol sends $E_{K_i}(\mathrm{IP}_i) \concat L$ with cleartext response-size $L$, a MitM or replay attacker modifies $L \to L_{\max}$ to make the server flood client $C_i$.
+\end{compactitem}
+
+\subsection{Countermeasure Architecture and Entity Responsibility Matrix}
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.1cm} L{2.7cm} L{3.4cm} Y@{}}
+\toprule
+\textbf{DoS Attack / Flaw} & \textbf{Exhausted Resource} & \textbf{Primary Countermeasure} & \textbf{Responsible Entity \& Technical Justification} \\
+\midrule
+\term{ICMP / UDP Spoofed Flood} & Upstream link bandwidth & \textbf{Ingress / Egress Filtering (BCP 38)} & \textbf{Attacker's ISP} (drops packets whose source IP is outside the customer's subnet at the network edge). \emph{Why victim firewall fails:} packets reaching the victim's firewall have \textbf{already congested the upstream link}. \\
+\term{Volumetric Link Flood} & Gateway link capacity & \textbf{Geo-redundant multi-gateway hosting / Anycast CDN} & \textbf{Service Owner} (designs distributed/stateless server app) $+$ \textbf{Cloud Provider} (deploys across distinct physical gateways/regions). \\
+\term{TCP SYN Flood} & Kernel half-open SYN backlog table & \textbf{SYN Cookies} (stateless handshake) & \textbf{Victim Server OS:} encodes state into $\mathrm{ISN}_S = t \concat \text{MSS} \concat H(K_S, \text{IPs}, \text{ports}, t)$; allocates TCB memory \emph{only after} valid $\text{ACK}(\mathrm{ISN}_S+1)$ returns. \\
+\term{UDP State / Fake Subscriptions} & Application memory table & \textbf{Stateless challenge-response / TCP migration} & \textbf{Service Developer:} verify source IP ownership via a stateless cookie echo before allocating table entries, or switch from UDP to TCP. \\
+\term{Tampered Cleartext Length $L$} & Client/Server bandwidth & \textbf{Authenticate all fields + Freshness} & \textbf{Protocol Designer:} bind $L$ and a sequence number/timestamp inside the encryption/MAC: $E_{K_i}(\mathrm{IP}_i \concat L \concat \text{seq})$. \\
+\term{Unauthenticated CPU Work} & Server CPU cycles & \textbf{Early MAC/Nonce check + Rate limiting} & \textbf{Service Developer:} verify lightweight MAC and replay nonce/counter \emph{before} invoking expensive scans or DB queries. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+

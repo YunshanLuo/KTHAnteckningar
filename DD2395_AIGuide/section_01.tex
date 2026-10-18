@@ -1,0 +1,74 @@
+\section{Cryptographic Hash Functions, Combiner Algebra, MACs, and Integrity}
+
+\subsection{Cryptographic Hash Function Definitions and Security Games}
+A cryptographic hash function $H : \{0,1\}^* \to \{0,1\}^n$ is a deterministic, efficiently computable mapping from arbitrary-length bitstrings to fixed-length $n$-bit digests. Because $|\{0,1\}^*| = \infty > 2^n$, collisions exist unconditionally by the \term{pigeonhole principle}; security requires that finding them is computationally infeasible for any probabilistic polynomial-time (PPT) adversary $\mathcal{A}$.
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.4cm} L{2.8cm} L{2.6cm} Y@{}}
+\toprule
+\textbf{Property} & \textbf{Challenger Input} & \textbf{Adversary Output} & \textbf{Formal Winning Condition \& Operational Role} \\
+\midrule
+\term{One-Wayness} (Preimage Resistance) & Target digest $h \in \{0,1\}^n$ & Input $x \in \{0,1\}^*$ & Find any $x$ such that $H(x) = h$. Protects secret inputs (e.g., password digests) from inversion. Generic cost: $\mathcal{O}(2^n)$. \\
+\term{Weak Collision Resistance} (2nd-Preimage) & Fixed input $x \in \{0,1\}^*$ & Input $y \in \{0,1\}^*$ & Find $y \neq x$ such that $H(y) = H(x)$. Prevents substituting a forged file $y$ for a fixed legitimate file $x$. Generic cost: $\mathcal{O}(2^n)$. \\
+\term{Strong Collision Resistance} (Collision) & None (free choice) & Pair $(x, y)$ & Find any pair $x \neq y$ such that $H(x) = H(y)$. Birthday bound generic cost: $\mathcal{O}(2^{n/2})$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Logical Hierarchy and Reduction Rules:}
+\begin{compactitem}
+  \item \term{Strong $\implies$ Weak Collision Resistance:} Any adversary $\mathcal{A}_{\text{weak}}$ that finds $y \neq x$ with $H(y)=H(x)$ for a given $x$ immediately solves the strong collision game by fixing any arbitrary $x$ and invoking $\mathcal{A}_{\text{weak}}(x)$ to output $(x, y)$. Contrapositive: \term{Weak fails $\implies$ Strong automatically fails}; \term{Strong fails $\not\implies$ Weak fails}.
+  \item \term{Independence of One-Wayness:} Collision resistance does \emph{not} follow from one-wayness (e.g., $H(x) = \mathrm{SHA256}(x_1 \XOR \cdots \XOR x_m)$ is one-way if $\mathrm{SHA256}$ is one-way, yet trivially fails both weak and strong collision resistance). Conversely, a function leaking part of its input verbatim can be collision-resistant on the remaining bits while failing one-wayness on the leaked prefix.
+  \item \term{Reduction Template (Proving a Property Holds via Primitive $P$):} Assume for contradiction an efficient inverter/collider $g$ exists for $H$. Construct an explicit wrapper $f$ around $g$ that inverts or collides the underlying secure primitive $P$: for $H(x) = P(C(x))$, if $g(h)$ returns $x$ with $H(x)=h$, then $f(h) \triangleq C(g(h))$ satisfies $P(f(h)) = H(g(h)) = h$ for every $h$, contradicting the one-wayness of $P$.
+\end{compactitem}
+
+\subsection{Algebraic Combiner Laws and Structural Vulnerability Taxonomy}
+Composite candidate hashes decompose into a secure primitive $P \in \{\mathrm{SHA256}, E_K\}$ and a block combiner $C$ operating on $b$-bit blocks $x = (x_1, x_2, \dots, x_m)$.
+\begin{align*}
+  \textbf{Bitwise XOR ($\XOR$) on $\{0,1\}^b$:} \quad & u \XOR u = 0^b \text{ (self-cancel)}, \;\; u \XOR 0^b = u \text{ (identity)}, \;\; u \XOR v = v \XOR u, \;\; u \XOR v = w \iff u = w \XOR v. \\
+  \textbf{Modular Arithmetic ($\bmod\, 2^b$):} \quad & a \cdot z \equiv c \pmod{2^b} \text{ has unique } z \equiv a^{-1} c \pmod{2^b} \iff \gcd(a, 2^b) = 1 \text{ ($a$ is odd)}.
+\end{align*}
+
+\textbf{Boundary Constraints on Counterexamples:}
+\begin{compactitem}
+  \item \term{Zero-Padding Invariance:} When trailing zeros are stripped or blocks are zero-padded, appending $b \concat b$ with a non-zero block $b \in \{0,1\}^b \setminus \{0^b\}$ guarantees $y \neq x$ under XOR combiners without relying on trailing zero blocks.
+  \item \term{Single-Block Fixed Input $x = (x_1)$ in Weak Collision:} Block permutation $x_1 \leftrightarrow x_2$ fails when $m=1$; always use length extension $y = (x_1, b, b)$ (for XOR) or block splitting $y = ((x_1 - 1) \bmod 2^b, 1)$ (for unweighted modular sum) so $y \neq x$ holds for every $m \geq 1$.
+\end{compactitem}
+
+\subsection{Hash Standards, Length Extension, MACs, and Authenticated Encryption}
+\begin{compactitem}
+  \item \term{Hash Standards:} \textbf{MD5} ($128$-bit, broken: practical collisions), \textbf{SHA-1} ($160$-bit, broken: practical collisions), \textbf{SHA-2} ($\mathrm{SHA256}/\mathrm{SHA512}$, Merkle--Damg\aa rd construction: collision-resistant and one-way, but vulnerable to \emph{length extension}), \textbf{SHA-3} (Keccak sponge construction: immune to length extension).
+  \item \term{Length-Extension Vulnerability (Merkle--Damg\aa rd):} Given $H(x)$ and byte-length $|x|$ of an unknown prefix $x = K \concat M$, an attacker initializes the compression function state with $H(x)$ to compute $H(K \concat M \concat \mathrm{pad}(|K \concat M|) \concat M')$ for any chosen suffix $M'$ without knowing $K$. Thus, naive secret-prefix $\mathrm{MAC}_K(M) = H(K \concat M)$ is \textbf{existentially forgeable}.
+  \item \term{Unkeyed Hashes vs.\ MACs:} An unkeyed digest $H(M)$ protects integrity \emph{only} when $H(M)$ is delivered over an authenticated/read-only channel. Over an insecure channel where an active attacker modifies both $M \to M'$ and $h \to H(M')$, unkeyed hashes provide \textbf{zero integrity}.
+  \item \term{Message Authentication Code (MAC) \& EU-CPA Security:} A keyed scheme $T = \mathrm{Mac}(K, M)$ with verification $\mathrm{Verify}(K, M, T) \in \{0,1\}$. Under \term{Existential Unforgeability under Chosen-Plaintext Attack (EU-CPA)}, an adversary with oracle access to $\mathrm{Mac}(K, \cdot)$ on chosen messages $\{M_1, \dots, M_q\}$ cannot produce a valid tag $T^*$ for any new message $M^* \notin \{M_1, \dots, M_q\}$.
+  \begin{align*}
+    \mathrm{NMAC}_{(K_1, K_2)}(M) &= H\big(K_1 \concat H(K_2 \concat M)\big), &
+    \mathrm{HMAC}_K(M) &= H\big((K' \XOR \mathrm{opad}) \concat H((K' \XOR \mathrm{ipad}) \concat M)\big), \\
+    \textbf{MtE:} \;\; C &= \mathrm{Enc}_{K_e}\big(M \concat \mathrm{Mac}_{K_m}(M)\big), &
+    \textbf{EtM:} \;\; C &= \mathrm{Enc}_{K_e}(M), \; T = \mathrm{Mac}_{K_m}(C), \; \text{send } (C, T).
+  \end{align*}
+  Where $\mathrm{ipad}=\code{0x36}^*$, $\mathrm{opad}=\code{0x5c}^*$. A MAC is deterministic (provides \textbf{integrity/authenticity only}, no confidentiality or replay defense without a nonce). For Authenticated Encryption (AE), always use \term{Encrypt-then-MAC (EtM)} with independent keys $(K_e, K_m)$: EtM verifies $T$ \emph{before} decryption, preventing tampered ciphertexts from reaching $\mathrm{Dec}_{K_e}$ (closing chosen-ciphertext, padding-oracle, and decryption timing channels).
+\end{compactitem}
+
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{4.3cm} c c c Y@{}}
+\toprule
+\textbf{Construction Shape} & \textbf{One-Way} & \textbf{Weak CR} & \textbf{Strong CR} & \textbf{Algebraic Attack / Reduction Mechanism} \\
+\midrule
+$H(x) = P(x_1 \XOR x_2 \XOR \cdots \XOR x_m)$ & \textbf{Holds} & \textbf{Fails} & \textbf{Fails} & \textbf{Collision:} Given $x$, set $y = x \concat b \concat b$ for any block $b$ ($b \XOR b = 0^b$), or append $0^b$, or swap $x_1 \leftrightarrow x_2$ if $x_1 \neq x_2$. \textbf{One-way:} Reduction $f(h) = \bigoplus_{i} g(h)_i$ inverts $P$. \\
+$H(x) = P\big((\sum_{i=1}^m x_i) \bmod 2^b\big)$ & \textbf{Holds} & \textbf{Fails} & \textbf{Fails} & \textbf{Collision:} Given $x$, append $0^b$ ($y = x \concat 0^b$), or split block $x_1$ into $(x_1 - 1) \concat 1$, or swap $x_1 \leftrightarrow x_2$. \textbf{One-way:} Reduction $f(h) = (\sum_i g(h)_i) \bmod 2^b$ inverts $P$. \\
+$H(x) = P\big((\sum_{i=1}^m a_i x_i) \bmod 2^b\big)$ & \textbf{Holds} & \textbf{Fails} & \textbf{Fails} & \textbf{Collision:} Given $x$, append $y_{m+1} = 0^b$ (if $a_{m+1} \cdot 0 = 0$), or choose index $j$ with odd $a_j$, perturb $y_k \neq x_k$ ($k \neq j$), and solve $y_j \equiv a_j^{-1}(C(x) - \sum_{i \neq j} a_i y_i) \pmod{2^b}$. \\
+$H(x) = (\sum_{i=1}^m i \cdot x_i) \bmod 2^b$ (No $P$) & \textbf{Fails} & \textbf{Fails} & \textbf{Fails} & \textbf{Preimage of $h$:} Single-block $x = (h)$ gives $1 \cdot h \bmod 2^b = h$ (or for $m$ blocks, set $x_1 = h, x_2=\dots=x_m=0$). \textbf{Collision:} Append $0^b$ block: $y = (x_1, \dots, x_m, 0^b)$. \\
+$H(x) = P(x_1) \XOR P(x_2) \XOR \cdots \XOR P(x_m)$ & \textbf{Holds} & \textbf{Fails} & \textbf{Fails} & \textbf{Collision:} Given $x$, append $b \concat b$ for any block $b$ since $P(b) \XOR P(b) = 0^n$; or permute blocks. \textbf{One-way:} Holds when $P$ is modeled as a one-way random oracle. \\
+$H(x) = P(x_1 \concat x_3 \concat x_5 \concat \cdots)$ & \textbf{Holds} & \textbf{Fails} & \textbf{Fails} & \textbf{Collision:} Modify any dropped/even block $x_{2k}' \neq x_{2k}$ while keeping odd blocks identical; $C(y) = C(x) \implies H(y) = H(x)$. \\
+$H(x) = x_1 \concat P(x_2 \concat \cdots \concat x_m)$ & \textbf{Fails} & \textbf{Holds} & \textbf{Holds} & \textbf{Preimage Leak:} First $b$ bits of $h = h_1 \concat h_2$ immediately reveal $x_1 = h_1$ in cleartext. Collisions require colliding $P$ on $(x_2 \concat \cdots \concat x_m)$ with $y_1 = x_1$. \\
+$H(x) = E_K(x_1 \XOR \cdots \XOR x_m)$ ($K$ public) & \textbf{Fails} & \textbf{Fails} & \textbf{Fails} & \textbf{Preimage of $h$:} Since $K$ is known, apply inverse cipher $D_K$: choose 1-block $x = (D_K(h))$, then $E_K(D_K(h)) = h$. \textbf{Collision:} $y = x \concat b \concat b$. \\
+Davies--Meyer: $h_i = E_{x_i}(h_{i-1}) \XOR h_{i-1}$ & \textbf{Holds} & \textbf{Holds} & \textbf{Holds} & Feed-forward $\XOR h_{i-1}$ binds input and output of $E_{x_i}$: omitting $\XOR h_{i-1}$ allows inverting $h_{i-1} = D_{x_i}(h_i)$ for any chosen block $x_i$. \\
+\bottomrule
+\end{tabularx}
+\end{table}

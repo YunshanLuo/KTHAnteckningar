@@ -1,0 +1,69 @@
+\section{Security Foundations, Saltzer--Schroeder Principles, Firewalls, and IDS}
+
+\subsection{Security Properties, Threat Taxonomy, TCB, and Saltzer--Schroeder Principles}
+\begin{compactitem}
+  \item \term{CIA Triad \& Threat Mapping:}
+  \begin{compactitem}
+    \item \term{Confidentiality:} Protection against unauthorized \emph{disclosure} (read leaks). \term{Privacy} is distinct: it governs information \emph{about individuals}, including consent, context, and metadata (even when message content is confidential).
+    \item \term{Integrity:} Protection against unauthorized \emph{modification}, \emph{deception} (falsified data), and \emph{usurpation} (unauthorized control); ensures system state and outputs conform to specification.
+    \item \term{Availability:} Protection against \emph{loss of use} (\term{disruption} / \term{denial of service}); ensures authorized principals can access resources within operational time bounds.
+  \end{compactitem}
+  \item \term{Accountability (``Gold Standard''):} Binds principals to actions via three pillars: \term{Authentication} (proving a claimed identity/attribute to a verifier; distinct from \emph{identification}, which locates an unknown principal in a population), \term{Authorization} (access control governing permitted operations, meaningless without prior authentication), and \term{Audit} (tamper-evident logging for post-incident attribution).
+  \item \term{Trust, Trustworthiness, and Trusted Computing Base (TCB):} \term{Trust} is an assumption that a component behaves according to policy; \term{trustworthy} means backed by objective evidence/verification. The \term{TCB} is the minimal subset of hardware, firmware, and software (e.g., CPU, hypervisor, OS kernel, reference monitor, SSH daemon, root CA store) whose failure compromises system security. \term{Assurance} reduces whole-system security to TCB correctness.
+  \item \term{Defensive Strategies:} \term{Prevent} (block attack execution), \term{Deter} (increase attacker effort/risk), \term{Deflect} (make alternative targets or honeypots more attractive), \term{Mitigate} (limit blast radius/damage), \term{Detect} (monitor during/after attack), \term{Recover} (restore state via backups/rollbacks).
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.1cm} Y Y@{}}
+\toprule
+\textbf{Design Principle} & \textbf{Exact Operational Definition} & \textbf{Canonical Violation / Contrast Boundary} \\
+\midrule
+\term{Least Privilege} & Every subject/process operates with the minimal set of privileges needed to complete its current task (fine-grained rights, privilege attenuation). & Granting all students write access to all course pages, or running a web server as \code{root}. (\emph{Contrast:} About \textbf{who gets which rights}, not mechanism complexity.) \\
+\term{Economy of Mechanism} & Keep the security mechanism and TCB as \textbf{simple and small} as possible (KISS principle) so it can be audited and verified. & Bloated security kernels or complex policy engines. (\emph{Contrast:} About \textbf{mechanism simplicity/size}, not over-privileged users.) \\
+\term{Fail-Safe Defaults} & Default access decision is \textbf{deny}; policies enumerate permitted actions (\term{allowlists}), never prohibited ones (\term{denylists}); errors abort safely. & Blacklist input filters (XSS/firewall denylists) or failing open on authentication timeout. \\
+\term{Complete Mediation} & The reference monitor intercepts and checks \textbf{every} access to \textbf{every} object without caching unchecked permissions across state changes. & Checking file permissions only at \code{open()} and not re-checking on subsequent \code{read()}/\code{write()} after revocation (TOCTOU). \\
+\term{Open Design} (Kerckhoffs' Principle) & Security must depend solely on the secrecy of keys/passwords, \textbf{never on the secrecy of the algorithm or design} (no security through obscurity). & Proprietary secret hash/cipher algorithms whose compromise breaks all users simultaneously. \\
+\term{Separation of Privilege} (Separation of Duty) & Require \textbf{two or more independent keys, factors, or principals} to collude before authorizing a sensitive operation. & Single-administrator approval for root key issuance, or using two items from the \emph{same} authentication factor category (password $+$ PIN). \\
+\term{Least Common Mechanism} & Minimize shared state, shared caches, and shared communication channels between distinct security domains. & Co-resident VMs sharing an unpartitioned CPU L1/LLC data cache (enabling Prime+Probe side channels) or shared \code{/tmp} directories. \\
+\term{Psychological Acceptability} & Security interfaces must align with user mental models and impose minimal friction; unusable security gets bypassed. & Onerous password composition + forced monthly rotation (drives users to sticky notes or \code{Pass1}$\to$\code{Pass2}), or habitual warning popups. \\
+\term{Defense in Depth} & Layer multiple independent security mechanisms (e.g., firewall $+$ input sanitization $+$ canary $+$ ASLR $+$ least-privilege sandbox) so a single bypass is not fatal. & Relying solely on a perimeter firewall with unpatched, root-privileged internal services. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Firewalls, Intrusion Detection Systems (IDS), Base-Rate Fallacy, and Isolation}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.2cm} L{3.2cm} L{2.8cm} Y@{}}
+\toprule
+\textbf{Mechanism} & \textbf{Inspection Layer} & \textbf{State / Context} & \textbf{Capabilities, Blind Spots \& Operational Constraints} \\
+\midrule
+\term{Packet-Filtering Firewall} & Network / Transport headers (IP, TCP/UDP) & Stateless (per-packet) & Filters solely on header fields (src/dst IP, src/dst port, protocol, interface). \textbf{Cannot inspect application payload}; vulnerable to IP spoofing and fragmented packets. \\
+\term{Stateful Firewall} & L3/L4 headers $+$ connection table & Tracks active TCP streams & Allows inbound packets only if they match an established connection in the state table; still does not parse application-layer syntax. \\
+\term{Application Gateway / DPI} & Full L7 payload (HTTP, DNS, SMTP) & Full proxy / deep packet inspection & Parses application protocol and blocks malicious payloads, \textbf{except when traffic is end-to-end encrypted (TLS/HTTPS)} unless the proxy terminates TLS with a trusted certificate. \\
+\term{Network IDS (NIDS)} & Wire traffic at network tap/switch & Passive network monitor & Cheap, covers entire subnet without host overhead; fails on encrypted traffic (TLS) and suffers \textbf{evasion / inconsistent interpretation} (TTL tricks, overlapping TCP segments seen differently by NIDS vs.\ endpoint OS). \\
+\term{Host IDS (HIDS)} & OS syscalls, logs, filesystem on host & Local endpoint agent & Sees decrypted traffic and exact OS state; no inconsistent-interpretation ambiguity, but adds per-host overhead and can be disabled if attacker gains root on the host. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{IDS Detection Models, Confusion Metrics, and the Base-Rate Fallacy:}
+\begin{compactitem}
+  \item \term{Signature (Misuse) vs.\ Anomaly (Statistical) Detection:} \textbf{Signature-based IDS} matches known attack patterns (low false-positive rate $\mathrm{FPR}$, but \textbf{zero-day attacks are missed} $\implies$ high false-negative risk on novel attacks). \textbf{Anomaly-based IDS} flags deviations from a learned benign baseline (can detect novel/zero-day attacks, but suffers high $\mathrm{FPR}$ whenever legitimate behavior shifts).
+  \item \term{Confusion Matrix Rates \& Base-Rate Fallacy (Bayes' Theorem):} Let $A$ be a real attack event (prior base rate $p = \Pr(A) \ll 1$) and $+$ be an IDS alarm:
+  \[
+    \mathrm{TPR} = \Pr(+\mid A) = 1 - \mathrm{FNR}, \qquad \mathrm{FPR} = \Pr(+\mid \neg A), \qquad
+    \Pr(A \mid +) = \frac{\mathrm{TPR} \cdot p}{\mathrm{TPR} \cdot p + \mathrm{FPR} \cdot (1 - p)}.
+  \]
+  \term{Operational Consequence:} Total false alarms equal $\mathrm{FPR} \times N_{\text{benign}}$. When attacks are rare ($N_{\text{attack}} \ll N_{\text{benign}}$), even an extremely accurate detector (e.g., $\mathrm{FPR} = 0.01\% = 10^{-4}$ over $10^7$ benign events/day $\implies 1{,}000$ false alarms/day vs.\ $5$ real attacks) yields $\Pr(A \mid +) \ll 1$. Thus an overwhelming flood of false alarms does \emph{not} imply the vendor lied about the $0.01\%$ $\mathrm{FPR}$; it is a mathematical consequence of the small base rate $p$.
+  \item \term{System Isolation Hierarchy \& Verification Semantics:}
+  \begin{compactitem}
+    \item \emph{OS Processes vs.\ Containers vs.\ Virtual Machines:} \textbf{Processes} isolate virtual address spaces via CPU MMU/page tables; \textbf{Containers} (namespaces/cgroups) virtualize user-space views but \textbf{share the single host OS kernel} (a kernel vulnerability escapes all containers); \textbf{Hypervisor VMs} virtualize hardware beneath separate guest kernels (smaller, simpler hypervisor TCB, though still exposed to cross-VM hardware side channels like LLC Prime+Probe and Rowhammer).
+    \item \emph{Testing / Fuzzing vs.\ Static Analysis vs.\ Formal Verification:} \textbf{Testing/Fuzzing} executes concrete inputs to demonstrate the \emph{presence} of bugs (sound for bug-finding, cannot prove absence); \textbf{Static Analysis} inspects code without execution (scales well, subject to false positives/undecidability); \textbf{Formal Verification} mathematically proves specification compliance for all inputs, bounded by the \emph{validity of the formal model's assumptions} (e.g., symbolic models abstract away timing and bit-flips).
+  \end{compactitem}
+\end{compactitem}
+

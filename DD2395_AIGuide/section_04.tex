@@ -1,0 +1,90 @@
+\section{Access Control Models, Bell--LaPadula Lattice, Biba, and Capabilities}
+
+\subsection{Multilevel Security (MLS), Security Labels, and Lattice Dominance}
+In a \term{Multilevel Security (MLS)} architecture, every active \term{subject} $S$ (user or process acting on a principal's behalf) carries a \term{clearance label} $L_S = (SL_S, C_S)$, and every passive \term{object} $O$ (file, database record, resource) carries a \term{classification label} $L_O = (SL_O, C_O)$:
+\begin{compactitem}
+  \item \term{Sensitivity Level ($SL$):} Drawn from a partially or linearly ordered hierarchy $(H, \le)$, canonically:
+  \[
+    \text{Unclassified } (U) < \text{Restricted } (R) < \text{Confidential } (C) < \text{Secret } (S) < \text{Top Secret } (TS).
+  \]
+  (Note: A specification may also define non-linear sensitivity hierarchies, e.g., $P < C < TS$ and $P < S < TS$ with $C$ and $S$ incomparable.)
+  \item \term{Compartment Set ($C \subseteq \mathcal{C}$):} Subset of need-to-know topic domains (e.g., $\mathcal{C} = \{\text{Nuclear}, \text{Crypto}, \text{Industry}\}$).
+  \item \term{Dominance Relation ($\dom$):} Label $L_1 = (SL_1, C_1)$ is dominated by $L_2 = (SL_2, C_2)$ iff \textbf{both} conditions hold simultaneously:
+  \[
+    L_1 \dom L_2 \iff \big(SL_1 \le SL_2\big) \;\land\; \big(C_1 \subseteq C_2\big).
+  \]
+  \item \term{Partial Order \& Lattice Structure:} The relation $\dom$ is reflexive, antisymmetric, and transitive (a partial order). Two labels $L_1, L_2$ are \term{incomparable} ($L_1 \ndom L_2 \land L_2 \ndom L_1$) whenever $SL_1, SL_2$ are unordered or $C_1 \not\subseteq C_2$ while $C_2 \not\subseteq C_1$ (or when level order opposes subset order, e.g., $(TS, \{A\})$ vs.\ $(C, \{A, B\})$). Over a linear level hierarchy, the set of all labels forms a bounded \term{lattice} with join (least upper bound), meet (greatest lower bound), top, and bottom:
+  \[
+    L_1 \sqcup L_2 = \big(\max(SL_1, SL_2),\; C_1 \cup C_2\big), \quad
+    L_1 \sqcap L_2 = \big(\min(SL_1, SL_2),\; C_1 \cap C_2\big), \quad
+    \bot = (SL_{\min}, \emptyset), \quad
+    \top = (SL_{\max}, \mathcal{C}).
+  \]
+\end{compactitem}
+
+\subsection{Bell--LaPadula (BLP) Confidentiality Model and Access Mode Matrix}
+\term{Bell--LaPadula (BLP)} is a \term{Mandatory Access Control (MAC)} state-transition model enforcing unidirectional information flow from low labels to high labels ($\text{Low} \to \text{High}$), preventing unauthorized disclosure and Trojan-horse data laundering.
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.4cm} L{2.4cm} L{4.2cm} Y@{}}
+\toprule
+\textbf{BLP Rule / Property} & \textbf{Access Mode} & \textbf{Formal Dominance Condition} & \textbf{Operational Semantics \& Edge Cases} \\
+\midrule
+\term{Simple Security Property} (\emph{ss-property}: \textbf{No Read Up}) & \textbf{Read} ($S$ reads $O$) & $L_O \dom L_S \iff SL_O \le SL_S \;\land\; C_O \subseteq C_S$ & Subject's clearance must dominate object's classification. Prevents reading higher-sensitivity or unauthorized-compartment data. \\
+\term{Star Property} (\emph{$*$-property}: \textbf{No Write Down}) & \textbf{Write / Append} ($S$ writes $O$) & $L_S \dom L_O \iff SL_S \le SL_O \;\land\; C_S \subseteq C_O$ & Object's classification must dominate subject's label. Permits \term{blind write-up} ($L_S \sqsubset L_O$); forbids leaking high secrets into lower/lateral objects. \\
+\term{Combined Read+Write} (\emph{Write-Implies-Read}) & \textbf{Read-Write} ($S$ modifies $O$) & $L_O \dom L_S \;\land\; L_S \dom L_O \iff L_S = L_O$ & When ``write'' includes reading existing contents, both properties must hold simultaneously, restricting read-write to \textbf{identical labels} $L_S = L_O$. \\
+\term{Discretionary Security} (\emph{ds-property}) & Any mode $m \in \{r, w, a\}$ & $m \in M[S, O]$ (access matrix entry) & Optional discretionary overlay requiring explicit authorization in matrix $M$ in addition to $ss$- and $*$-properties. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Decision Rules, Clearance Distinctions, and Biba Dual Model:}
+\begin{compactitem}
+  \item \term{Complete 4-Outcome Decision Table for Pure Read \& Pure Write:}
+  \begin{align*}
+    L_S = L_O &\implies \textbf{Read \& Write} &
+    L_O \sqsubset L_S &\implies \textbf{Read-only} \;\; (ss\text{ holds, } *\text{ fails}) \\
+    L_S \sqsubset L_O &\implies \textbf{Write-only} \;\; (*\text{ holds, } ss\text{ fails}) &
+    L_S \parallel L_O &\implies \textbf{Neither Read nor Write}.
+  \end{align*}
+  \item \term{Append Mode (Pure Write-Only):} Governed \textbf{exclusively by the $*$-property} ($L_S \dom L_O$). A subject with $L_S = (R, \{N\})$ may append to $L_O = (TS, \{N, E, K\})$ because $R \le TS$ and $\{N\} \subseteq \{N, E, K\}$, even though reading $O$ is denied.
+  \item \term{Maximum Clearance $f_s(S)$ vs.\ Current Security Level $f_c(S)$:} To allow high-clearance users to edit low-classified files without violating No-Write-Down, a subject holds a maximum clearance $f_s(S)$ and logs into a session at a lowered current level $f_c(S) \dom f_s(S)$ (\term{attenuated login}):
+  \[
+    \textbf{Read check:} \;\; f_o(O) \dom f_s(S) \;\; (\text{or } f_o(O) \dom f_c(S)), \qquad
+    \textbf{Write check:} \;\; f_c(S) \dom f_o(O).
+  \]
+  Declassification ($\text{High} \to \text{Low}$) violates the $*$-property and requires a verified \term{trusted subject} exempt from the $*$-property.
+  \item \term{Biba Integrity Model (Mathematical Dual of BLP):} Assigns integrity labels $I = (IL, C)$ ordered from Untrusted ($U$) $<$ Trusted ($T$). Enforces information flow strictly from high integrity to low integrity ($\text{High Integrity} \to \text{Low Integrity}$):
+  \[
+    \textbf{No Read Down:} \;\; S \text{ reads } O \iff I_S \dom I_O, \qquad
+    \textbf{No Write Up ($*$-prop):} \;\; S \text{ writes } O \iff I_O \dom I_S.
+  \]
+\end{compactitem}
+
+\subsection{Access Control Matrix, ACLs, Capabilities, and the Confused Deputy}
+An access control policy is modeled by a protection state $\mathrm{Auth} \subseteq \mathcal{P} \times \mathcal{O} \times \mathcal{M}$ (an \term{Access Control Matrix} $M[P, O] \subseteq \mathcal{M}$ over principals $\mathcal{P}$, objects $\mathcal{O}$, and operations $\mathcal{M}$), enforced by a \term{Reference Monitor} that mediates every request $\langle P, O, op \rangle$ (\term{Complete Mediation}).
+\begin{compactitem}
+  \item \term{Discretionary (DAC) vs.\ Mandatory Access Control (MAC):} In \textbf{DAC}, the object owner defines and modifies permissions (e.g., UNIX \code{chmod}); vulnerable to Trojan horses running with the owner's ambient authority. In \textbf{MAC} (e.g., BLP, Biba, SELinux), a central system policy assigns labels and forbids principals from passing access rights at their own discretion.
+  \item \term{Protection Domains \& Privilege Transitions:} Threads execute inside a protection domain carrying a privilege set. Domain transitions occur via controlled gates (system calls, \code{setuid} binaries): \term{amplification} temporarily adds privileges for a subsystem operation; \term{attenuation} drops privileges to enforce \term{Least Privilege}.
+  \item \term{Confused Deputy Vulnerability:} Occurs under ACL-based ambient authority when a privileged server (\emph{deputy}) accepts a resource name (e.g., output filename \code{"charges.txt"}) from an unprivileged client and accesses that resource using the \emph{deputy's own ambient privileges} rather than the client's privileges.
+  \item \term{Remediation of Confused Deputy:} Either (1) replace ambient ACL checks with \textbf{Capabilities} (client must pass a capability it legitimately holds for the target file, combining designation and authorization into one unforgeable token), or (2) explicitly drop/attenuate privileges or check the client's identity against the target object's ACL before opening.
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.0cm} Y Y@{}}
+\toprule
+\textbf{Dimension} & \textbf{Access Control Lists (ACLs --- Matrix Column per Object)} & \textbf{Capabilities (Matrix Row per Principal)} \\
+\midrule
+\textbf{Representation} & Each object $O$ stores a list of pairs $\langle P, \text{privs} \rangle$. & Each principal $P$ holds unforgeable tokens $\langle O, \text{privs} \rangle$. \\
+\textbf{Authority Binding} & \textbf{Ambient authority:} naming an object is separate from authority; OS checks caller's identity $P$ against $O$'s ACL. & \textbf{Bundled authority:} capability both names $O$ and authorizes access (possession $=$ permission). \\
+\textbf{Review \& Audit} & \textbf{Fast per-object review} (who can access $O$?); slow per-principal review (scan all objects). & \textbf{Fast per-principal review} (what can $P$ access?); hard per-object review (capabilities scattered). \\
+\textbf{Delegation \& Revocation} & Easy immediate revocation on object $O$; coarse delegation. & Easy fine-grained delegation (pass capability token); hard revocation (requires indirection/revocation tables). \\
+\textbf{Confused Deputy} & \textbf{Vulnerable} (deputy uses its own identity on client-supplied path). & \textbf{Immune} (deputy uses the exact capability token passed by client). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+

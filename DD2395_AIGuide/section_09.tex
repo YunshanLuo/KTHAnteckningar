@@ -1,0 +1,76 @@
+\section{Authentication Factors, Password Storage Cost Algebra, and Hash Chains}
+
+\subsection{Authentication Factors, Password Entropy, Salting, and KDFs}
+\begin{compactitem}
+  \item \term{Three Authentication Factor Categories:}
+  \begin{enumerate}[label=(\arabic*), leftmargin=1.8em]
+    \item \term{Something You Know} (knowledge factor: password, PIN, passphrase, security question).
+    \item \term{Something You Have} (possession factor: hardware token, smartcard, ATM card, mobile Authenticator/BankID device).
+    \item \term{Something You Are} (inherence factor: fingerprint, iris/retinal scan, facial/voice biometrics).
+  \end{enumerate}
+  \term{Multi-Factor Authentication (2FA / MFA) Rule:} Requires combining mechanisms from \textbf{at least two independent categories} (e.g., ATM card $+$ PIN). Requiring a password plus a PIN uses two secrets from the \emph{same} category and is \textbf{single-factor authentication}.
+  \item \term{Password Entropy \& Guessing Strength:} If breaking a scheme requires $2^X$ guesses, its strength is $X$ bits. For uniform random passwords of length $L_{\text{len}}$ over an alphabet of size $N_{\text{alph}}$:
+  \[
+    X = \log_2\big(N_{\text{alph}}^{L_{\text{len}}}\big) = L_{\text{len}} \cdot \log_2(N_{\text{alph}}) \text{ bits}.
+  \]
+  Shannon entropy overestimates real human password security because user choices are heavily skewed (the top 20 passwords cover $\approx 10\%$ of accounts; a random word from a $50{,}000$-word dictionary provides only $\log_2(50{,}000) \approx 15.6$ bits).
+  \item \term{Offline Attack Model, Salts, and Slow Key Derivation Functions (KDFs):}
+  In an \term{offline attack}, the adversary steals the password database of $U$ accounts and evaluates candidate hashes locally without network rate limits or account lockouts.
+  \begin{compactitem}
+    \item \term{Per-User Salt ($s_u$):} A random, \textbf{public (non-secret)}, unique value generated per user and stored in cleartext alongside the digest: $\langle u,\; s_u,\; H(s_u \concat p) \rangle$. Ensures identical passwords yield distinct digests across users, defeating precomputed \term{rainbow tables} and forcing cross-user work from $\mathcal{O}(L + U)$ to $\mathcal{O}(U \cdot L)$. \textbf{A single global salt shared by all users fails completely}: all users still share one hash function $H(s_{\text{global}} \concat p)$, so a single dictionary pass of $L$ hashes cracks all $U$ users.
+    \item \term{Slow Hash / KDF (\code{PBKDF2}, \code{bcrypt}, \code{scrypt}, \code{Argon2}):} Iterates a cryptographic primitive (e.g., $\mathrm{HMAC}$ in $\mathrm{PBKDF2}$) $R \sim 10^4\text{--}10^6$ times with $(p, s_u)$, multiplying every attacker guess by $R$ while adding negligible delay ($\sim 50\text{ ms}$) to a legitimate single login.
+  \end{compactitem}
+\end{compactitem}
+
+\subsection{Offline Dictionary-Cracking and Password-Replacement Cost Algebra}
+Let a stolen database contain $U$ users, where every user's password belongs to a known candidate list $\mathcal{D}$ of size $L$. Under the standard cost model, \textbf{only evaluations of $H(\cdot)$ count} (string concatenation, table lookups, comparisons, and DB writes cost $0$).
+\begin{compactitem}
+  \item \term{Subexpression Factoring Principle:} Decompose the stored digest expression $S(u, p)$ into: (1) \emph{User-Independent Terms} (e.g., inner $H(p)$): evaluate once per candidate across $\mathcal{D}$ ($\mathbf{L}$ \textbf{hashes total}, reused across all $U$ users); (2) \emph{Password-Independent Per-User Terms} (e.g., inner $H(u)$): evaluate once per user ($\mathbf{U}$ \textbf{hashes total}, reused across all $L$ candidates); (3) \emph{Joint Terms} (outer $H(\cdot)$ wrapping both $p$ and $u$): evaluate separately for every $(u, p)$ pair ($\mathbf{U \cdot L}$ \textbf{hashes total}).
+  \item \term{Mass Password Replacement Cost (Overwriting All $U$ Accounts with $p_{\text{new}}$):} If $p_{\text{new}} \notin \mathcal{D}$ (e.g., \code{"letmein"} not in the candidate list), an inner $H(p_{\text{new}})$ costs $\mathbf{+1}$ fresh hash evaluation, reused across all $U$ users; if $p_{\text{new}} \in \mathcal{D}$ was already hashed during recovery, inner $H(p_{\text{new}})$ costs $0$ fresh hashes.
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.5cm} c c c c Y@{}}
+\toprule
+\textbf{Stored Digest Formula} & \textbf{Crack 1} & \textbf{Crack All $U$} & \textbf{Replace ($p_{\text{new}} \notin \mathcal{D}$)} & \textbf{Replace (Reuse)} & \textbf{Decomposition \& Reuse Justification} \\
+\midrule
+(a) $H(p)$ (Unsalted) & $L$ & $\mathbf{L}$ & $\mathbf{1}$ & $0$ (if $p_{\text{new}} \in \mathcal{D}$) & Hash $L$ candidates once; compare against all $U$ rows. Replace: compute $H(p_{\text{new}})$ once, write $U$ times. \\
+(b) $H(p \concat u)$ or $H(u \concat p)$ & $L$ & $\mathbf{U \cdot L}$ & $\mathbf{U}$ & $\mathbf{U}$ & $u$ sits inside the only hash; no subexpression is reusable across users. Replace: 1 hash per user. \\
+(c) $H\big(H(p) \concat u\big)$ & $2L$ & $\mathbf{L + U \cdot L}$ & $\mathbf{1 + U}$ & $\mathbf{U}$ (if $H(p_{\text{new}})$ known) & Precompute $D[p] = H(p)$ for all $L$ candidates ($L$ hashes), then evaluate outer $H(D[p] \concat u)$ for $U \cdot L$ pairs. \\
+(d) $H\big(p \concat H(u)\big)$ & $1 + L$ & $\mathbf{U + U \cdot L}$ & $\mathbf{2U}$ (fresh) & $\mathbf{U}$ (reuse $H(u)$) & Precompute $K[u] = H(u)$ once per user ($U$ hashes), then evaluate outer $H(p \concat K[u])$ for $U \cdot L$ pairs. \\
+(e) $H(s_{\text{global}} \concat p)$ & $L$ & $\mathbf{L}$ & $\mathbf{1}$ & $0$ (if $p_{\text{new}} \in \mathcal{D}$) & Global salt is constant across all $U$ users; behaves identically to unsalted $H(p)$ once $s_{\text{global}}$ is known. \\
+(f) $H^R(s_u \concat p)$ ($R$-iter KDF) & $R \cdot L$ & $\mathbf{R \cdot U \cdot L}$ & $\mathbf{R \cdot U}$ & $\mathbf{R \cdot U}$ & Each candidate test for each user requires $R$ sequential invocations of $H$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Lamport One-Time Password (OTP) Hash Chains and Policy Critique}
+Let $H^k(x) = \underbrace{H(H(\cdots H(x)\cdots))}_{k \text{ applications}}$ with base case $H^0(x) = x$. A \term{Lamport Hash Chain} of length $N$ (e.g., $N = 500$ or $N = 1000$) authenticates logins $i = 1, 2, \dots, N$ over an unencrypted channel:
+\begin{align*}
+  \textbf{Registration ($i = 0$):} \quad & \text{Client computes } v_0 = H^N(\text{pwd} \concat \text{salt}); \quad \text{Server initializes } \code{stored} \gets v_0. \\
+  \textbf{Login } i \in \{1, \dots, N\}: \quad & \text{Client sends } t_i = H^{N - i}(\text{pwd} \concat \text{salt}); \quad \text{Server checks } H(t_i) \stackrel{?}{=} \code{stored}; \quad \text{if valid, } \code{stored} \gets t_i.
+\end{align*}
+\textbf{Operational Properties, Boundary Conditions, and Attack Vectors:}
+\begin{compactitem}
+  \item \term{Server Storage Minimalism:} The server needs \textbf{neither \code{pwd} nor \code{salt} (nor $i$)}; it stores only the single latest digest $\code{stored} = H^{N-(i-1)}(\text{pwd} \concat \text{salt})$ and performs exactly $\mathbf{1}$ hash evaluation $H(t_i)$ per login verification.
+  \item \term{Eavesdropper Forward Infeasibility \& Client Recomputation Cost:} An eavesdropper who intercepts $t_i = H^{N-i}(\text{pwd} \concat \text{salt})$ at login $i$ cannot compute the next token $t_{i+1} = H^{N-(i+1)}(\text{pwd} \concat \text{salt})$ because $t_i = H(t_{i+1})$ and inverting $H$ violates \textbf{one-wayness}. For the same reason, a stateless client cannot derive $t_{i+1}$ from $t_i$ and must recompute $t_{i+1}$ from $\text{pwd} \concat \text{salt}$ at a cost of $\mathbf{N - (i + 1) = N - i - 1}$ \textbf{hash evaluations} (and $N - i$ hashes at login $i$).
+  \item \term{Terminal Exhaustion Boundary ($i = N$ Cleartext Leak):} At login $i = N$, the client sends $t_N = H^{N - N}(\text{pwd} \concat \text{salt}) = H^0(\text{pwd} \concat \text{salt}) = \text{pwd} \concat \text{salt}$ \textbf{in plaintext}. Any passive network eavesdropper observing the $N$-th login immediately learns both $\text{pwd}$ and $\text{salt}$ (chain must be re-initialized before $i = N$).
+  \item \term{Server Database Write-Compromise Attack:} If an attacker Trudy can overwrite the server's \code{stored} variable (without knowing $\text{pwd}$, $\text{salt}$, or $i$), Trudy picks any arbitrary bitstring $v$ of her choice, overwrites $\code{stored} \gets H(v)$, and logs in by sending $v$. The server evaluates $H(v) = \code{stored}$ and grants access.
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.2cm} L{3.0cm} Y Y@{}}
+\toprule
+\textbf{Flawed Organizational Measure} & \textbf{Threat Partially Addressed} & \textbf{Remaining Vulnerability / Principle Violated} & \textbf{Sound Technical Countermeasure} \\
+\midrule
+Proprietary secret hash $+$ single global salt & Plaintext DB leak; pre-built standard rainbow tables & Violates \textbf{Open Design (Kerckhoffs)}; global salt leaves equal passwords with equal hashes across all $U$ users ($O(L)$ crack). & Public, vetted slow KDF (\code{Argon2}, \code{bcrypt}, \code{PBKDF2}) with a \textbf{unique random per-user salt}. \\
+Strict complex rules $+$ forced 30-day rotation & Naive dictionary guessing; long-term use of a leaked password & Violates \textbf{Psychological Acceptability}: drives users to write passwords down or increment (\code{Pass1} $\to$ \code{Pass2}). & Allow long passphrases, screen against breached-password lists, eliminate forced periodic rotation, enable \textbf{2FA}. \\
+Hard lockout after 3 failed logins $+$ phone reset & Online brute-force guessing & Enables \textbf{user-targeted DoS} (attacker locks out any known username in 3 tries); unauthenticated phone reset allows social-engineering takeover. & Exponential backoff / CAPTCHA / per-IP rate limiting; authenticated email/2FA reset flows. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+

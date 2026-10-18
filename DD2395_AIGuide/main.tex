@@ -1,0 +1,149 @@
+\documentclass[9pt, a4paper]{extarticle}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{geometry}
+\geometry{a4paper, left=12mm, right=12mm, top=13mm, bottom=13mm, headheight=12pt, footskip=15pt}
+\usepackage{booktabs, array, tabularx, multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+% --- Color Palette ---
+\definecolor{navy}{HTML}{1B365D}
+\definecolor{slate}{HTML}{2C3E50}
+\definecolor{tealaccent}{HTML}{006666}
+\definecolor{crimson}{HTML}{8B0000}
+\definecolor{boxbg}{HTML}{F7F9FC}
+\definecolor{schemebg}{HTML}{F0F4F8}
+\definecolor{templatebg}{HTML}{FBF9F5}
+\definecolor{verifybg}{HTML}{F2F8F2}
+
+% --- Compact Spacing & Typography ---
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt plus 1pt minus 0.5pt}
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{4pt}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt plus 1pt minus 1pt}%
+  \setlength{\belowdisplayskip}{3pt plus 1pt minus 1pt}%
+  \setlength{\abovedisplayshortskip}{1.5pt}%
+  \setlength{\belowdisplayshortskip}{1.5pt}%
+}
+
+\setlist[itemize]{leftmargin=1.3em, itemsep=1pt, topsep=1.5pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=1.5pt, topsep=1.5pt, parsep=0pt, partopsep=0pt}
+\newlist{compactitem}{itemize}{2}
+\setlist[compactitem,1]{label=$\bullet$, leftmargin=1.1em, itemsep=0.8pt, topsep=1pt, parsep=0pt}
+\setlist[compactitem,2]{label=$\circ$, leftmargin=1.1em, itemsep=0.5pt, topsep=0.8pt, parsep=0pt}
+
+% --- Section Headings ---
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection.}{0.5em}{}[\vspace{-2pt}\titlerule]
+\titlespacing*{\section}{0pt}{6pt plus 1.5pt minus 1pt}{3pt}
+\titleformat{\subsection}{\normalsize\bfseries\color{slate}}{\thesubsection}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{4.5pt plus 1pt minus 0.5pt}{1.5pt}
+\titleformat{\subsubsection}{\small\bfseries\color{tealaccent}}{\thesubsubsection}{0.4em}{}
+\titlespacing*{\subsubsection}{0pt}{3pt plus 1pt}{1pt}
+
+% --- Header & Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\scriptsize\textbf{DD2395 Computer Security --- Technical Reference \& Applied Solution Guide}}
+\fancyhead[R]{\scriptsize\textbf{Section \thesection}}
+\fancyfoot[C]{\scriptsize Page \thepage\ of 20}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- Semantic Macros ---
+\newcommand{\term}[1]{\textbf{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\XOR}{\oplus}
+\newcommand{\concat}{\,\|\,}
+\newcommand{\dom}{\sqsubseteq}
+\newcommand{\ndom}{\not\sqsubseteq}
+\newcommand{\llbracket}{[\![}
+\newcommand{\rrbracket}{]\!]}
+
+% Keep all tables inline at their exact section position (no deferred float queue)
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\renewenvironment{table}[1][]{\par\vspace{1.5pt}\noindent\ignorespaces}{\unskip\par\vspace{1.5pt}\ignorespacesafterend}
+
+% --- Custom TColorBoxes ---
+\tcbset{
+  compactbox/.style={
+    boxrule=0.5pt,
+    arc=2pt,
+    left=4.5pt, right=4.5pt, top=3pt, bottom=3pt,
+    before skip=3pt, after skip=3pt,
+    fonttitle=\bfseries\small,
+    breakable
+  }
+}
+
+\newtcolorbox{summarybox}[1]{
+  compactbox,
+  colback=boxbg,
+  colframe=slate,
+  title={#1}
+}
+
+\newtcolorbox{schemebox}[1]{
+  compactbox,
+  colback=schemebg,
+  colframe=navy,
+  title={Applied Solution Scheme: #1}
+}
+
+\newtcolorbox{verifybox}[1]{
+  compactbox,
+  colback=verifybg,
+  colframe=tealaccent,
+  title={Verification, Boundary Conditions \& Sanity Checks: #1}
+}
+
+\newtcolorbox{templatebox}[1]{
+  compactbox,
+  colback=templatebg,
+  colframe=crimson,
+  title={Applied Problem Template: #1}
+}
+
+\newtcolorbox{codeblock}{
+  compactbox,
+  colback=black!3!white,
+  colframe=black!45!white,
+  left=6pt, right=6pt, top=3pt, bottom=3pt,
+  fontupper=\ttfamily\footnotesize
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries\color{navy} DD2395 Computer Security: Condensed Technical Study Guide}\\[3pt]
+  {\footnotesize Formal Models, Operational Mechanics, Cryptographic Constructions, and Procedural Solution Frameworks}
+\end{center}
+\vspace{-4pt}
+\hrule height 0.8pt
+\vspace{4pt}
+
+\input{section_01.tex}
+\input{section_02.tex}
+\input{section_03.tex}
+\input{section_04.tex}
+\input{section_05.tex}
+\input{section_06.tex}
+\input{section_07.tex}
+\input{section_08.tex}
+\input{section_09.tex}
+\input{section_10.tex}
+\input{section_11.tex}
+
+\end{document}

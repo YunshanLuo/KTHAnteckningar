@@ -1,0 +1,252 @@
+\section{Cache \& Timing Side-Channel Analysis and Constant-Time Remediation}
+
+\subsection{Cache Geometry, Non-Interference, and Attacker Observation Models}
+Let program state $s = (s_H, s_L)$ be partitioned into \term{High (secret)} variables $s_H$ and \term{Low (public / attacker-controlled)} variables $s_L$. A program satisfies \term{non-interference} with respect to an observation function $\mathcal{O}$ iff:
+\[
+  \forall s_L, \forall s_H, s_H' : \quad \mathcal{O}\big(\llbracket P \rrbracket(s_H, s_L)\big) = \mathcal{O}\big(\llbracket P \rrbracket(s_H', s_L)\big).
+\]
+Even when architectural outputs match, hardware execution exposes microarchitectural state via $\mathcal{O}$.
+
+\textbf{Direct-Mapped Cache Geometry and Line Mapping Formulas:}
+\begin{compactitem}
+  \item \term{Parameters:} Total cache capacity $S_{\text{cache}}$ bytes, $N$ cache lines, line size $L$ bytes ($S_{\text{cache}} = N \cdot L$), array element size $b$ bytes (typically $b=4$ for 32-bit \code{int}, $L=64$ bytes).
+  \item \term{Entries per Cache Line:} $E = \frac{L}{b}$ contiguous array elements share a single cache line (for $L=64, b=4 \implies E = 16$ elements per line).
+  \item \term{Cache Line of Array Element $M[i]$:} If array $M$ starts at cache line $\ell_0$ (either $0$-indexed $\ell_0 \in \{0,\dots,N-1\}$ or $1$-indexed $\ell_0 \in \{1,\dots,N\}$ per specification):
+  \[
+    \ell(M[i]) = \left(\ell_0 + \left\lfloor \frac{i \cdot b}{L} \right\rfloor\right) \bmod N = \left(\ell_0 + \left\lfloor \frac{i}{E} \right\rfloor\right) \bmod N.
+  \]
+  \item \term{Spatial Locality \& Contiguous Slices:} Accessing $M[i]$ fetches the entire $E$-element block $M\big[E\lfloor i/E\rfloor \dots E\lfloor i/E\rfloor + E - 1\big]$ into line $\ell(M[i])$. Any subsequent access $M[j]$ with $\lfloor j/E \rfloor = \lfloor i/E \rfloor$ (and no intervening eviction) is a \term{cache hit}.
+  \item \term{Direct-Mapped Eviction (Conflict Miss):} Two distinct memory blocks $B_1 \neq B_2$ mapping to the same cache line $\ell(B_1) = \ell(B_2)$ cannot coexist in the cache; loading $B_2$ unconditionally evicts $B_1$.
+\end{compactitem}
+
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{2.3cm} L{3.6cm} L{3.3cm} Y@{}}
+\toprule
+\textbf{Attacker Model} & \textbf{Observable $\mathcal{O}$} & \textbf{Setup Mechanism} & \textbf{Operational Capability \& Resolution} \\
+\midrule
+\term{Time-Driven} & Total miss count $M_{\text{total}} \in \mathbb{N}$ & Cold cache or known initial state & Measures overall execution time $\propto M_{\text{total}}$. Distinguishes runs iff $M_{\text{total}}(s_H, s_L) \neq M_{\text{total}}(s_H', s_L)$. \\
+\term{Access-Driven} & Set of touched lines $T \subseteq \{1,\dots,N\}$ & \textbf{Flush+Reload} or \textbf{Prime+Probe} & Flushes cache or primes all $N$ lines with attacker data before victim runs; probes reload latency to identify every cache line touched/evicted by victim, but \emph{not} intra-line offset $i \bmod E$ or access count per line. \\
+\term{Trace-Driven} & Sequence $(o_1, o_2, \dots, o_k) \in \{\text{H},\text{M}\}^k$ & Per-instruction power/EM/timing profile & Observes exact ordered hit/miss outcome of each memory operation; immediately reveals taken branches and loop trip counts. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{Applied Solution Scheme: Procedural Side-Channel Analysis \& Remediation}
+
+\begin{schemebox}{6-Step Side-Channel Leak Extraction, Correlation, and Remediation Workflow}
+\begin{enumerate}[label=\textbf{Step \arabic*:}, leftmargin=3.8em]
+  \item \textbf{Derive the Exact Cache-Line Partition and Initial State:}
+  Compute $E = L / b$. Partition each array into contiguous slices of $E$ indices and write the explicit map $M[i] \mapsto \ell(M[i])$. Record which line holds scalar local variables ($\ell_{\text{scalar}}$), whether the cache starts empty (cold) or flushed, and whether two arrays $A, B$ share lines ($\ell(A[i]) = \ell(B[i])$).
+
+  \item \textbf{Perform a Line-by-Line Taint \& Control-Flow Audit:}
+  Classify every variable as \textbf{High (secret)} or \textbf{Low (public/input)}. Flag an instruction as a leak source iff at least one of the following holds:
+  \begin{compactitem}
+    \item \emph{Direct Secret-Indexed Access:} Memory access $M[\phi(s_H, s_L)]$ where index $\phi$ depends on a secret variable.
+    \item \emph{Indirect (Dataflow) Secret-Indexed Access:} A variable $C$ receives a value dependent on a secret (e.g., $C \gets M[\phi(s_H, s_L)]$ when $M[i]=i$) and $C$ is subsequently used as an array index $M[C]$.
+    \item \emph{Secret-Dependent Branch:} Condition \code{if ($p(s_H)$)} executes different memory accesses or accesses different arrays on the \code{then} vs.\ \code{else} path (even when the index $q$ inside the branch is public).
+    \item \emph{Secret-Dependent Loop Bound:} Loop \code{while ($i < s_H$)} varies the total number of memory accesses or cache lines touched as a function of $s_H$.
+  \end{compactitem}
+  Instructions accessing only scalars on $\ell_{\text{scalar}}$ or constant/public indices $M[\psi(s_L)]$ do \emph{not} leak directly, though they alter cache residency for subsequent instructions.
+
+  \item \textbf{Construct the Single-Run Observation Function $\mathcal{O}(s_H, s_L)$:}
+  \begin{compactitem}
+    \item \emph{Access-Driven Model:} Write the set of touched cache lines $T(s_H, s_L) = \{\ell_{\text{scalar}}\} \cup \{\ell(M[\phi_k(s_H, s_L)])\}_{k}$.
+    \item \emph{Time-Driven Model:} Trace cache residency sequentially from instruction $1$ to $m$. Each first access to a block adds $+1$ miss and caches that block in line $\ell$; each subsequent access to the \emph{same} block while resident adds $0$ misses (hit); accessing a \emph{colliding} block on line $\ell$ adds $+1$ miss and evicts the prior block. Sum to obtain $M_{\text{total}}(s_H, s_L)$.
+  \end{compactitem}
+
+  \item \textbf{Execute Multi-Run Input Sweep \& Boundary Correlation:}
+  \begin{compactitem}
+    \item \emph{Fixed Input (No Attacker Knob):} Partition the secret space by $\mathcal{O}(s_H)$. An access $M[A]$ reveals $\ell^* = \ell_0 + \lfloor A/E \rfloor$, narrowing $A$ to the $E$-element candidate set $\{E(\ell^* - \ell_0), \dots, E(\ell^* - \ell_0) + E - 1\}$.
+    \item \emph{Swept Attacker Input $D \in \{0, 1, \dots, D_{\max}-1\}$:} When the leaked line is $\ell(D) = \ell_0 + \lfloor (D + A)/g \rfloor$ (where $g = E$ for index $D+A$, or $g = kE$ for index $\lfloor(D+A)/k\rfloor$):
+    \begin{enumerate}[label=(\alph*), leftmargin=1.6em]
+      \item Query $D = 0$ to observe baseline line $\ell(0) = \ell_0 + \lfloor A/g \rfloor$, pinning the coarse interval of $A$.
+      \item Increment $D = 1, 2, \dots$ until the first input $D^*$ where $\ell(D^*) = \ell(0) + 1$ (or where a line collision alters $M_{\text{total}}$).
+      \item Solve the exact boundary transition equation:
+      \[
+        D^* + A = g \cdot \big(\lfloor A/g \rfloor + 1\big) \implies A = g \cdot \big(\lfloor A/g \rfloor + 1\big) - D^*.
+      \]
+    \end{enumerate}
+  \end{compactitem}
+
+  \item \textbf{Synthesize a Leak-Matched Constant-Time or Cache-Normalized Fix:}
+  \begin{compactitem}
+    \item \emph{Cache Preloading (Priming):} Valid \textbf{only} when all blocks of $M$ fit simultaneously in the cache without conflict eviction. Preload one element per cache line before the secret access: \code{C = M[0]; C = M[E]; C = M[2E]; ...; C = 0;}. Every run touches all array lines and incurs the exact same miss count.
+    \item \emph{Branchless Constant-Time Selection (for Secret Branches / Colliding Arrays):} When arrays $A$ and $B$ collide on the same cache lines, preloading fails because loading $B$ evicts $A$. Eliminate the branch by executing \emph{both} loads unconditionally in fixed order and selecting arithmetically for $v \in \{0,1\}$:
+    \[
+      \code{t1 = B[q]; \; t2 = A[q]; \; r += v * t1 + (1 - v) * t2;}
+    \]
+    \item \emph{Constant-Bound Loop Dummy Padding (for Secret Loop Bounds):} Replace \code{while (i < A)} with the fixed worst-case bound \code{while (i < A\_MAX)}, touching every cache line on each pass and using a branchless mask $m = (i < A)$ to accumulate into the real result or a dummy sink.
+  \end{compactitem}
+
+  \item \textbf{Evaluate Speculative Execution (Spectre-v1) Amplification:}
+  On a mispredicted branch (e.g., bounds check \code{if (D < 64)}), the CPU transiently executes instructions along the wrong path whose cache line fetches persist after architectural rollback. Additional secret disclosure occurs \textbf{iff both gadgets exist}:
+  \begin{compactitem}
+    \item \term{Reading Gadget:} A transient out-of-bounds or unauthorized load fetches a secret variable $B$ into a register $C$ (e.g., choosing $D$ so address $\&M[(D+A)/2] = \&B$).
+    \item \term{Transmitting Gadget:} A subsequent transient memory operation uses the register $C$ as part of an address (e.g., \code{M[C]}), loading cache line $\ell(M[B])$ into the cache where Prime+Probe / Flush+Reload recovers $\lfloor B/E \rfloor$.
+  \end{compactitem}
+  If no instruction uses the transiently read secret as a memory address, speculative execution leaks \textbf{zero additional secret information}.
+\end{enumerate}
+\end{schemebox}
+
+\begin{verifybox}{Cache Side-Channel \& Speculative Execution Analysis}
+\begin{compactitem}
+  \item \textbf{Effective Granularity Check ($g$):} If the array index is $\lfloor (D + A)/k \rfloor$ with integer division by $k$ and $E$ entries per line, the line index is $\ell_0 + \lfloor (D + A)/(k \cdot E) \rfloor$. The transition step size is $g = k \cdot E$ (e.g., $k=2, E=16 \implies g = 32$, not $16$).
+  \item \textbf{Boundary Off-By-One Sanity Check:} Test $A = 0$ and $A = g - 1$. At $A = g - 1$, $D = 0$ gives $\lfloor (g-1)/g \rfloor = 0$, while $D^* = 1$ gives $\lfloor g/g \rfloor = 1$; substituting $D^* = 1$ into $A = g(\lfloor A/g \rfloor + 1) - D^*$ yields $A = g(0 + 1) - 1 = g - 1$ (\checkmark).
+  \item \textbf{Scalar Line Accounting:} If all scalar variables ($A, B, C, D, i$) reside in dedicated line $\ell_{\text{scalar}}$, the first scalar touch in a cold cache costs exactly $1$ miss and every subsequent scalar access in that run is a hit ($0$ misses), provided no array block maps to $\ell_{\text{scalar}}$.
+  \item \textbf{Colliding Array Fix Verification:} If array $A$ and array $B$ map to the same lines, verify that in the constant-time rewrite \code{t1 = B[q]; t2 = A[q];}, the access \code{B[q]} always evicts any resident $A$-block on line $\lfloor q/E \rfloor$, forcing \code{A[q]} to miss unconditionally. Thus the miss count is strictly constant across all values of $u, v, q$.
+\end{compactitem}
+\end{verifybox}
+
+\subsection{Worked Applied Problem Templates}
+
+\begin{templatebox}{2A --- Access-Driven Leak, Indirect Taint, Input-Sweep Recovery, Priming Fix, and Spectre-v1}
+\textbf{Problem Specification:} Consider a system with a non-shared direct-mapped data cache of total size $320$ bytes divided into $N = 5$ lines of $L = 64$ bytes each (lines $1..5$). An integer array \code{int M[64]} (4-byte \code{int}s) maps to lines $1..4$, initialized publicly as \code{M[i] = i} for $0 \le i < 64$. Scalar variables \code{A}, \code{B}, \code{C}, \code{D} are 4-byte integers sharing cache line $5$. \code{A} and \code{B} are 6-bit secret keys ($0 \le A, B < 64$); \code{D} is an attacker-chosen input. The attacker is \term{access-driven}: before each run, the cache is flushed, and after the victim terminates, the attacker observes the exact subset of cache lines $\{1,\dots,5\}$ touched during execution.
+\begin{codeblock}
+1: C = 0;\\
+2: if (D < 64) \{\\
+3: \hspace*{1.5em} C += M[D];\\
+4: \hspace*{1.5em} C += M[(D + A) / 2];\\
+5: \hspace*{1.5em} C += M[C] + B;\\
+6: \}
+\end{codeblock}
+\textbf{Tasks:} (a) Identify all instructions that leak secret information via the cache. (b) Formulate the exact multi-run attack procedure to recover the secret $A$. (c) Write a code modification that eliminates the side-channel leak. (d) Determine whether speculative execution across the branch at line 2 allows the attacker to recover secret $B$ as well.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Step 1 (Cache-Line Mapping):} Element size $b = 4$ bytes, line size $L = 64$ bytes $\implies E = 64/4 = 16$ entries per line. With 1-indexed array base $\ell_0 = 1$:
+  \[
+    \ell(\code{M}[i]) = 1 + \lfloor i / 16 \rfloor \in \{1, 2, 3, 4\} \quad (0 \le i < 64), \qquad \ell(A) = \ell(B) = \ell(C) = \ell(D) = 5.
+  \]
+  Specifically: $\code{M}[0..15] \mapsto \text{line } 1$, $\code{M}[16..31] \mapsto \text{line } 2$, $\code{M}[32..47] \mapsto \text{line } 3$, $\code{M}[48..63] \mapsto \text{line } 4$.
+
+  \item \textbf{Step 2 (Line-by-Line Taint \& Leak Audit --- Task a):}
+  \begin{compactitem}
+    \item \emph{Lines 1--3:} Touch only scalars on line 5 and $\code{M}[D]$ whose index $D$ is public (attacker-chosen). No secret dependence.
+    \item \emph{Line 4 (\code{C += M[(D + A) / 2]}):} \textbf{Direct leak.} The array index $\lfloor (D + A)/2 \rfloor$ depends directly on secret $A$.
+    \item \emph{Line 5 (\code{C += M[C] + B}):} \textbf{Indirect (dataflow) leak.} Because $\code{M}[i] = i$, after line 3 we have $C = D$, and after line 4 we have $C = D + \lfloor (D + A)/2 \rfloor$ (or if line 3 is absent, $C = \lfloor (D+A)/2 \rfloor$). Thus variable $C$ is tainted by secret $A$, making the memory index $\code{M}[C]$ in line 5 secret-dependent. Reading scalar $B$ touches only line 5 (already touched at line 1), so $B$ does \emph{not} leak architecturally.
+  \end{compactitem}
+
+  \item \textbf{Step 3 (Single-Run Observation Function):}
+  For any valid run ($0 \le D < 64$), line 5 (scalars) and line $\ell(\code{M}[D]) = 1 + \lfloor D/16 \rfloor$ are known. Line 4 touches cache line:
+  \[
+    \ell_4(D) = 1 + \left\lfloor \frac{\lfloor (D + A)/2 \rfloor}{16} \right\rfloor = 1 + \left\lfloor \frac{D + A}{32} \right\rfloor \in \{1, 2, 3, 4\} \quad (\text{granularity } g = 2 \cdot 16 = 32).
+  \]
+
+  \item \textbf{Step 4 (Multi-Run Input Sweep \& Exact Recovery of $A$ --- Task b):}
+  \begin{enumerate}[label=\arabic*., leftmargin=1.5em]
+    \item \emph{Baseline Run ($D = 0$):} Attacker runs with $D = 0$ and observes $\ell_4(0) = 1 + \lfloor A/32 \rfloor$. Since $0 \le A < 64$:
+    \[
+      \ell_4(0) = 1 \implies A \in \{0, \dots, 31\} \;\; (\text{MSB of } A \text{ is } 0); \qquad \ell_4(0) = 2 \implies A \in \{32, \dots, 63\} \;\; (\text{MSB of } A \text{ is } 1).
+    \]
+    \item \emph{Boundary Sweep ($D = 1, 2, \dots, 32$):} Attacker increments $D$ until observing the smallest $D^* \ge 1$ where the touched line increases to $\ell_4(D^*) = \ell_4(0) + 1$.
+    \item \emph{Exact Algebraic Inversion:} At $D = D^*$, $D^* + A$ crosses $32 \cdot \ell_4(0)$:
+    \[
+      D^* + A = 32 \cdot \ell_4(0) \implies A = 32 \cdot \ell_4(0) - D^*.
+    \]
+    (\emph{Sanity Check:} If $A = 29$, then $D=0 \implies \ell_4(0) = 1 + \lfloor 29/32 \rfloor = 1$; first jump to line 2 occurs when $D^* + 29 = 32 \implies D^* = 3$; formula gives $A = 32(1) - 3 = 29$ \checkmark.)
+  \end{enumerate}
+
+  \item \textbf{Step 5 (Cache-Normalized Remediation --- Task c):}
+  Because \code{M[0..63]} occupies 4 lines and the cache has 5 lines (with scalars in line 5), the entire array fits simultaneously without self-eviction. Preload (prime) all four array lines prior to line 2:
+  \[
+    \code{C = M[0]; \; C = M[16]; \; C = M[32]; \; C = M[48]; \; C = 0;}
+  \]
+  \emph{Verification:} Every execution now touches the exact same line set $T = \{1, 2, 3, 4, 5\}$ (and incurs 5 cold misses) regardless of $A, B, D$.
+
+  \item \textbf{Step 6 (Speculative Execution / Spectre-v1 Analysis --- Task d):}
+  \textbf{Yes --- speculative execution leaks secret $B$.} After training the branch predictor on line 2 with inputs $D < 64$ and recovering $A$, the attacker supplies an out-of-bounds value $D \ge 64$ chosen such that the address of $\code{M}[(D+A)/2]$ equals the memory address of scalar $B$ on line 5 (i.e., $(D + A)/2 = (\&B - \&M)/4$). When line 2 mispredicts as taken:
+  \begin{compactitem}
+    \item \emph{Reading Gadget (Line 4):} Transiently executes \code{C += M[(D + A) / 2]}, performing an out-of-bounds read that loads the value of secret $B$ into $C$.
+    \item \emph{Transmitting Gadget (Line 5):} Transiently executes \code{C += M[C] + B}, using the secret-tainted $C$ (which now depends on $B$) as the index into $\code{M}[C]$. This fetches cache line $\ell(\code{M}[C])$ into the cache, allowing the access-driven attacker to observe the touched cache line and recover $B$.
+  \end{compactitem}
+\end{itemize}
+\end{templatebox}
+
+\begin{templatebox}{2B --- Time-Driven Attack on Colliding Arrays, Miss-Count Matrix, and Branchless Fix}
+\textbf{Problem Specification:} A processor has a 3-line direct-mapped data cache ($N = 3$ lines, $0..2$, $L = 64$ bytes/line). Two 4-byte integer arrays \code{A[32]} and \code{B[32]} both map to cache lines $0$ and $1$: specifically, $\code{A}[0..15]$ and $\code{B}[0..15]$ collide on line $0$, while $\code{A}[16..31]$ and $\code{B}[16..31]$ collide on line $1$. Scalar variables \code{u}, \code{v}, \code{q}, \code{r} occupy cache line $2$. Secret $u \in \{0,\dots,31\}$ is a 5-bit secret index, secret $v \in \{0,1\}$ is a 1-bit secret flag, and $q \in \{0,\dots,31\}$ is an attacker-chosen input. The cache is initially empty before each run, and a \term{time-driven} attacker measures total cache misses $M_{\text{total}}(u, v, q)$.
+\begin{codeblock}
+1: r = 0;\\
+2: r += A[u];\\
+3: if (v == 1)\\
+4: \hspace*{1.5em} r += B[q];\\
+5: else\\
+6: \hspace*{1.5em} r += A[q];
+\end{codeblock}
+\textbf{Tasks:} (a) Identify all leak sources. (b) Derive $M_{\text{total}}(u,v,q)$ for every case and show what the attacker learns by sweeping $q \in \{0,\dots,31\}$. (c) Rewrite the program so execution time is strictly independent of $u$ and $v$, and prove why cache preloading alone cannot fix this program. (d) Evaluate whether speculative execution of line 3 leaks additional information.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Step 1 (Cache-Line Mapping \& Collisions):} $E = 64/4 = 16$. $\ell(\code{A}[i]) = \ell(\code{B}[i]) = \lfloor i/16 \rfloor \in \{0, 1\}$, and $\ell_{\text{scalar}} = 2$. Because the cache is direct-mapped, $\code{A}[16\ell..16\ell+15]$ and $\code{B}[16\ell..16\ell+15]$ evict each other on line $\ell \in \{0,1\}$.
+  \item \textbf{Step 2 (Leak Sources --- Task a):} Line 2 (\code{r += A[u]}) has a secret-dependent index $u$, loading the $A$-block of line $\lfloor u/16 \rfloor$. Line 3 (\code{if (v == 1)}) is a secret-dependent branch that selects between $\code{B}[q]$ (line 4) and $\code{A}[q]$ (line 6), making the hit/miss behavior of lines 4/6 depend on both $v$ and $\lfloor u/16 \rfloor$ even though index $q$ is public.
+  \item \textbf{Step 3 (Single-Run Miss-Count Derivation):}
+  \begin{compactitem}
+    \item Line 1 touches scalar line 2 (cold) $\implies \textbf{1 miss}$ (line 2 now holds scalars; all later scalar touches are hits).
+    \item Line 2 accesses $\code{A}[u]$ on cold line $\lfloor u/16 \rfloor \implies \textbf{+1 miss}$ (line $\lfloor u/16 \rfloor$ now holds the $A$-block).
+    \item \emph{Case $v = 1$ (Line 4 executes \code{B[q]}):} Requires the $B$-block of line $\lfloor q/16 \rfloor$. Line $\lfloor q/16 \rfloor$ is either empty (if $\lfloor q/16 \rfloor \neq \lfloor u/16 \rfloor$) or holds the colliding $A$-block (if $\lfloor q/16 \rfloor = \lfloor u/16 \rfloor$). In both subcases, the $B$-block is not resident $\implies \textbf{+1 miss}$. Thus $M_{\text{total}}(u, 1, q) = 3 \text{ misses}$ for all $q$.
+    \item \emph{Case $v = 0$ (Line 6 executes \code{A[q]}):} Requires the $A$-block of line $\lfloor q/16 \rfloor$. This is a \textbf{cache hit ($+0$ misses)} iff $\lfloor q/16 \rfloor = \lfloor u/16 \rfloor$, and a \textbf{cache miss ($+1$ miss)} iff $\lfloor q/16 \rfloor \neq \lfloor u/16 \rfloor$. Thus:
+    \[
+      M_{\text{total}}(u, v, q) = \begin{cases}
+        2 \text{ misses}, & \text{if } v = 0 \text{ and } \lfloor q/16 \rfloor = \lfloor u/16 \rfloor, \\
+        3 \text{ misses}, & \text{if } v = 1 \text{ or } \lfloor q/16 \rfloor \neq \lfloor u/16 \rfloor.
+      \end{cases}
+    \]
+  \end{compactitem}
+  \item \textbf{Step 4 (Multi-Run Sweep over $q \in \{0,\dots,31\}$ --- Task b):}
+  \begin{compactitem}
+    \item If \emph{every} $q \in \{0,\dots,31\}$ yields $3$ misses, then $v = 1$ (recovered \textbf{exactly}), and $u$ remains completely unknown ($32$ candidates), because no $B[q]$ access ever hits the cached $A[u]$ block.
+    \item If some $q^*$ yields a fast run ($2$ misses), then $v = 0$ (recovered \textbf{exactly}), and $\lfloor u/16 \rfloor = \lfloor q^*/16 \rfloor$, narrowing $u$ to the $16$ candidates in that cache line ($\{0,\dots,15\}$ if $q^* < 16$, or $\{16,\dots,31\}$ if $q^* \ge 16$). Because $q$ does not add to $u$ inside a shared index, the intra-line offset $u \bmod 16$ cannot be resolved.
+  \end{compactitem}
+  \item \textbf{Step 5 (Constant-Time Branchless Rewrite --- Task c):}
+  \emph{Why Preloading Fails:} $A$ and $B$ occupy 4 blocks total but both map solely to lines $0$ and $1$; loading $B$ evicts $A$, so both arrays can never reside in cache simultaneously. Instead, remove the secret branch and load $B[q]$ before $A[q]$:
+  \begin{codeblock}
+1: r = 0; \; r += A[u]; \; t1 = B[q]; \; t2 = A[q]; \; r += v * t1 + (1 - v) * t2;
+  \end{codeblock}
+  \emph{Miss-Count Verification:} Scalar line 2 ($1$ miss) $+$ $\code{A}[u]$ ($1$ miss) $+$ $\code{B}[q]$ ($1$ miss, since no $B$-block is resident) $+$ $\code{A}[q]$ ($1$ miss, because $\code{B}[q]$ just evicted line $\lfloor q/16 \rfloor$, so $\code{A}[q]$ misses even if $\lfloor q/16 \rfloor = \lfloor u/16 \rfloor$). Total $= \textbf{4 misses}$ unconditionally for all $(u, v, q)$.
+  \item \textbf{Step 6 (Speculative Execution --- Task d):}
+  \textbf{No additional secret information is leaked.} Mispredicting line 3 transiently executes $\code{B}[q]$ or $\code{A}[q]$, whose index $q$ is already public (no \emph{reading gadget} over a secret) and no subsequent instruction indexes memory using a transiently read secret (no \emph{transmitting gadget}).
+\end{itemize}
+\end{templatebox}
+
+\begin{templatebox}{2C --- Secret-Dependent Loop Bound, Multi-Line Footprint, and Constant-Bound Rewrite}
+\textbf{Problem Specification:} Consider the 5-line direct-mapped cache from Template 2A ($\code{M}[0..63]$ in lines $1..4$ with $E = 16$ ints/line, scalars $A, B, C, D, i$ in line $5$, secret $0 \le A, B < 64$, attacker input $D$). An access-driven attacker flushes the cache before each run and observes the set of touched cache lines:
+\begin{codeblock}
+1: C = 0; \; i = 0;\\
+2: if (D < 64) \{\\
+3: \hspace*{1.5em} while (i < A) \{\\
+4: \hspace*{3.0em} C += M[(D + i) \% 64];\\
+5: \hspace*{3.0em} i = i + 1;\\
+6: \hspace*{1.5em} \}\\
+7: \hspace*{1.5em} C += B;\\
+8: \}
+\end{codeblock}
+\textbf{Tasks:} (a) Identify the leak sources. (b) Explain how the access-driven attacker recovers $A$ by varying $D$ (and how a time-driven attacker recovers $A$ even with fixed $D=0$). (c) Write a constant-time fix that eliminates both access-driven and time-driven leakage.
+
+\medskip
+\textbf{Procedural Solution Execution:}
+\begin{itemize}
+  \item \textbf{Steps 1--2 (Cache Mapping \& Leak Audit --- Task a):}
+  $\ell(\code{M}[k]) = 1 + \lfloor k/16 \rfloor \in \{1..4\}$, $\ell_{\text{scalar}} = 5$. Line 3 (\code{while (i < A)}) is a \textbf{secret-dependent loop bound}: the loop executes $A$ iterations, so the set of accessed indices $\{(D + i) \bmod 64 : 0 \le i < A\}$ and total loop runtime depend directly on secret $A$. Line 7 (\code{C += B}) touches only scalar line 5 (already loaded at line 1) and does not leak $B$.
+  \item \textbf{Steps 3--4 (Single-Run Observation \& Multi-Run Recovery of $A$ --- Task b):}
+  \begin{compactitem}
+    \item \emph{Access-Driven Recovery:} For $A = 0$, the loop body never executes and only scalar line $5$ is touched ($T = \{5\} \implies A = 0$ immediately). For $A \ge 1$, the loop touches contiguous indices $D, D+1, \dots, (D + A - 1) \bmod 64$. At $D = 0$, the highest index accessed is $A - 1$, touching lines $\{1, \dots, 1 + \lfloor (A-1)/16 \rfloor\}$, which narrows $A$ to a 16-value interval. Incrementing $D = 1, 2, \dots, 16$ shifts the interval $[D, D + A - 1]$ upward; the first $D^*$ where a new cache line $1 + \lfloor (A-1)/16 \rfloor + 1$ appears satisfies $D^* + A - 1 = 16 \cdot (\lfloor (A-1)/16 \rfloor + 1)$, pinning $A$ \textbf{uniquely}.
+    \item \emph{Time-Driven Recovery:} Even simpler if instruction execution time is measured: $A$ iterations execute $A$ loop passes (and incur $\lceil A/16 \rceil$ array misses at $D=0$), leaking $A$ directly from total cycle count.
+  \end{compactitem}
+  \item \textbf{Step 5 (Constant-Bound + Cache-Normalized Fix --- Task c):}
+  To defeat both access-driven and time-driven attackers, replace the secret loop bound $A$ with the fixed maximum $64$ and accumulate conditionally without branching:
+  \begin{codeblock}
+1: C = 0; \; i = 0;\\
+2: if (D < 64) \{\\
+3: \hspace*{1.5em} while (i < 64) \{ int m = (i < A); \; C += m * M[(D + i) \% 64]; \; i = i + 1; \}\\
+4: \hspace*{1.5em} C += B;\\
+5: \}
+  \end{codeblock}
+  \emph{Verification:} For every $A \in \{0,\dots,63\}$ and $D < 64$, the loop executes exactly $64$ iterations and touches all $64$ entries of $\code{M}$ across all $4$ array cache lines $\{1,2,3,4\}$ (plus scalar line $5$), making both the touched-line set $T = \{1,2,3,4,5\}$ and total execution time completely independent of $A$.
+\end{itemize}
+\end{templatebox}
+
+

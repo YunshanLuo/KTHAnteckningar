@@ -1,0 +1,47 @@
+\section{Social Engineering Attack Lifecycle, Psychological Levers, and Defenses}
+
+\subsection{Attack Lifecycle Phases and Fragment Aggregation Mechanics}
+\term{Social engineering} bypasses technical controls by manipulating human decision-making into disclosing confidential data, authorizing actions (e.g., signing a \term{BankID} request), or executing untrusted payloads.
+\begin{compactitem}
+  \item \term{Six Canonical Attack Phases:}
+  \begin{enumerate}[label=(\arabic*), leftmargin=1.8em]
+    \item \term{Research (OSINT):} Harvest public fragments from directories and social media (\code{hitta.se}, \code{hemnet.se}, LinkedIn) such as full name, address, floor, neighbors' names, employer, and birth date (\code{YYYYMMDD}).
+    \item \term{Pretexting:} Construct a plausible identity/scenario (bank fraud department, IT support, charity partner) and establish credibility and rapport.
+    \item \term{Elicitation (Get the Data):} Exploit trust/emotion to extract credentials, PII, payment authorization, or file execution.
+    \item \term{Maintain Connection:} Keep the victim engaged without triggering suspicion; back off if questioned to avoid burning the pretext.
+    \item \term{Data Aggregation (Combine Fragments):} Fuse harmless-looking fragments across sources into high-value secrets (e.g., combining a public birth date \code{YYYYMMDD} from \code{hitta.se} with the \textbf{last 4 digits} spoken over the phone yields the complete 12-digit Swedish \term{personnummer} \code{YYYYMMDD-XXXX}).
+    \item \term{Exploitation (Follow-On Use):} Monetize or pivot using the harvested assets.
+  \end{enumerate}
+\end{compactitem}
+
+\subsection{Manipulation Strategies, Exploited Human Traits, and Countermeasures}
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}L{3.6cm} L{3.4cm} Y@{}}
+\toprule
+\textbf{Manipulation Strategy} & \textbf{Human Trait Exploited} & \textbf{Concrete Scenario Indicators \& Operational Mechanism} \\
+\midrule
+\term{Pretext: Trappings of the Role} & \textbf{Attribution / Trust in Authority} & Spoofed official caller ID, hold music, fake case/order numbers, official logos, named institutional partners (\code{Stockholms Stad}, housing board), ``we never send links'' disclaimers. \\
+\term{Urgency / Rush} & \textbf{Reduced Cognitive Ability} (under time pressure) & Artificial deadlines (``within 24 hours'', ``final push before Lucia tomorrow'') that suppress systematic verification. \\
+\term{Threat / Fear} & \textbf{Reduced Cognitive Ability} (panic / stress response) & High-stakes alarm (``the fraudulent payment has already gone through'', ``your account is being emptied right now''). \\
+\term{Rapport / Empathy / Banter} & \textbf{Liking} (compliance with liked peers) & Friendly small talk, shared personal experiences (``moving is so stressful, we also moved this year and haven't unpacked''). \\
+\term{Peer Pressure / Social Proof} & \textbf{Conformity / Social Expectations} & Naming specific peers who already complied (``your neighbors the Ericssons and the Smiths have already donated''). \\
+\term{Altercasting: Helper Role} & \textbf{Desire to Help} (altruism / cooperation) & Framing the victim as a rescuer (``people are suffering in conflicts, we need your help'') so refusing feels socially unacceptable. \\
+\term{Altercasting: Victim Role} (Create-then-Fix Problem) & \textbf{Reactance / Gratitude \& Reciprocity} & Attacker manufactures a crisis (fake 14,000 SEK purchase, or tricking NOC into disabling victim's network port) and offers to ``cancel/fix'' it, inducing relief and obligation (\term{reciprocity}). \\
+\term{Momentum of Compliance} (Burying Questions) & \textbf{Consistency Bias} & Starting with trivial, routine confirmations (confirming name/address/order number) before requesting sensitive digits, credentials, or BankID approval. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Technical Deception Enablers, Harvest vs.\ Follow-On Accounting, and Defenses}
+\begin{compactitem}
+  \item \term{Technical Deception Enablers:} \textbf{Typosquatting / Lookalike Domains} (\code{stockholmhelps.paypa1.com}), \textbf{Misleading Subdomains} (\code{www.microsoft.com.junk.evil.com} where \code{evil.com} is the actual registered domain), \textbf{Browser-in-the-Browser (BitB)} fake OAuth popup windows rendered via HTML/CSS/JS canvas inside the page, and \textbf{Callback Vishing} (sending an SMS asking the victim to call a fraudulent number, making the victim feel in control because \emph{they} placed the call).
+  \item \term{Strict Distinction Between Immediate Harvest vs.\ Follow-On Capabilities:}
+  \begin{compactitem}
+    \item \emph{Immediate Harvest (What the Attacker Got):} State \textbf{only} what was actually transmitted, entered, or executed in the transcript: e.g., (i) login credentials entered into \code{paypa1.com} (note: if the victim only logged into a fake page after clicking ``200 SEK'', the attacker got the \textbf{credentials}, \emph{not} the 200 SEK yet!), (ii) a downloaded/opened file (potential malware execution), (iii) full \code{personnummer} + home address + phone number, or (iv) a completed BankID signature on an attacker-initiated transfer.
+    \item \emph{Follow-On Actions (What the Attacker Can Do Now):} (i) Use captured credentials to initiate a real payment or take over the account (if 2FA is absent) or try \term{credential stuffing} on other services where the user reuses the password; (ii) trigger ransomware, keylogging, or remote access from the downloaded executable; (iii) use aggregated PII (\code{personnummer} + address) for identity theft on services relying on single-factor PII verification.
+  \end{compactitem}
+  \item \term{Organizational \& Technical Defenses:} Enforce clear out-of-band verification protocols, cultivate a workplace culture where saying ``No'' to authority/urgency is supported, eliminate security myths via training, deploy phishing/email filters, require phishing-resistant \textbf{2FA} (bound to origin), and enforce \textbf{Least Privilege} and \textbf{Separation of Duty} on high-value transactions.
+\end{compactitem}
+
