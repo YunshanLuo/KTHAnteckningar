@@ -40,6 +40,56 @@
 \newpage
 
 \section{Lecture 1a: Introduction to AI}
+\textbf{Rational agent approach:} An agent does the thing to maximize its expected performance measure
+
+\vspace{10pt}
+\textbf{PEAS} framework:
+\begin{itemize}
+    \item \textbf{Performane measure:} What is the goal of the agent?
+    \item \textbf{Environment: } What is the environment in which the agent operates?
+    \item \textbf{Actuators:} What are the actuators of the agent?
+    \item \textbf{Sensors:} What are the sensors of the agent?
+\end{itemize}
+
+Core definitions:
+\begin{itemize}
+    \item \textbf{AI (4 viewpoints):} 
+    \begin{enumerate}
+        \item Thinking humanly
+        \item Acting humanly
+        \item Thinking rationally
+        \item Acting rationally
+    \end{enumerate}
+    \item \textbf{Agent:} Anything that perceives its environment through sensors and acts through actuators.
+    \item \textbf{Agent function:} The mathematical mapting from percept history to action
+    \item \textbf{Rational behavior:} Choosing the action that maximizes expected performance measure, given the available information
+    \item Perfection rationality is not possible due to imperfect information and computational limits 
+\end{itemize}
+
+\vspace{10pt}
+\textbf{Gartner's hype cycle:}
+\begin{enumerate}
+    \item Innovation trigger
+    \item Peak of inflated expectations
+    \item Trough of disillusionment
+    \item Slope of enlightenment
+    \item Plateau of productivity
+\end{enumerate}
+
+\textbf{Environment properties}
+\begin{itemize}
+    \item \textbf{Fully vs partially observable:} Does the agent see all relevant states?
+    \item \textbf{Determinstic vs stochastic:} Does an action determine the next state? (Stochastic $\implies$ HMMs, MDPs)
+    \item \textbf{Episodic vs sequential:} Do earlier actions affect later decisions? (Sequential $\implies$ Planning, RL)
+    \item \textbf{Static vs dynamic:} Can the environment change while the agents is deliberating? (Dynamic $\implies$ time pressure, online search)
+    \item \textbf{Discrete vs continuous:} Are states/actions/time discrete
+    \item \textbf{Single vs multi-agent:} Do other agents' actions matter? (multi-agent $\implies$ game theory/adversarial search)
+    \item \textbf{Cooperative vs competitive:} Aligned or opposed objecties? (cooperative $\implies$ multi-agent planning, competitive $\implies$ adversarial search)
+\end{itemize}
+
+% continue at lab presentation prep
+
+
 
 
 
