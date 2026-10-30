@@ -1,0 +1,244 @@
+DD2380 Artificial Intelligence
+          Course Practicalities
+Intended learning outcomes
+After passing the course, the student should be able to
+    • apply different principles of Artificial Intelligence (AI)
+    • choose appropriate tools and implement efficient solutions to problems in AI
+    • integrate tools to design computer programs that show different properties that are expected by an intelligent
+      system
+    • present, analyse, and entitle an own solution to an AI problem
+    • reflect on and discuss current social and ethical aspects of AI
+in order to be able to
+    • draw use of methods of artificial intelligence in analysis, design and implementation of computer programs
+    • contribute to design of an intelligent system in both academic and industrial applications.
+Lectures
+• Introduction and Practicalities
+• AI and society
+• Problem solving
+     •   Search
+     •   Games
+
+• Logic and planning
+• Taming uncertainty
+     •   Probabilistic reasoning, Bayesian Networks
+     •   Hidden Markov Models
+
+• Decision making under uncertainty
+     •   Decision making using MDPs and POMDPs
+     •   Reinforcement learning
+
+• Multi agent systems + robotics
+• Machine learning
+• Natural language processing and conversational systems
+• Computer vision
+• Generative AI and wrap-up
+Examination overview
+• RAP1
+   • Essay
+• TENQ
+   • 3 classroom quizzes
+   • 6 canvas quizzes
+• LAB2
+   • Prerequisite: Code of conduct quiz
+   • 3 programming assignments (code and learning journal)
+         • Search
+         • HMMs
+         • RL
+Essay
+Aim and idea: Impossible to talk about AI without talking about societal and ethical issues
+
+
+• An individual reflection, a group discussion, and a group summary (essay) on risks and benefits of AI
+• Will be up today Thursday, October 29th after the lecture and is due on Mon November 9th, 19:00
+• Pass/fail
+On-campus quizzes 1-3
+Aim and idea: Recall and apply the basic concepts and principles; a way to stimulate continuous learning
+
+
+• There will be a on-campus quiz for each of the 3 main topics
+     • enroll in Canvas for one of the slots that will open
+• 8 multiple-choice questions
+• 45 minutes
+• Pass/fail (50% correct answers to pass)
+• If you fail
+     • During the regular period you can repeat ONE
+          • New slots will open possibly on 4th and 5th of January (an announcement for enrolling will come a week before)
+     • In the re-exam period, you will be able to repeat each once
+Canvas quizzes Q1-Q6
+Aim and idea: Recall and apply the basic concepts and principles; a way to stimulate continuous learning
+
+
+• Quizzes released online after lectures on a topic
+• A quiz must be completed (typically 4-5/6 points)
+    • Individually, within 60 min, and with 5 attempts
+    • Before the deadline
+• Multiple-choice/multiple-answer questions
+• Pass/fail
+Canvas quizzes: a tip from previous generations
+• Do them after each lecture, not all in the end
+Programming assignments
+• Aim and idea: Get you to work hands-on with the course material
+
+
+• Each assignment structured into E-D, C, B-A levels
+   • Search
+   • HMMs
+   • RL
+• You need to be comfy with Python (prerequisite)
+Programming assignments
+• Strongly encouraged to be carried out in pairs
+• Each assignment is assessed by
+    • Kattis: checks whether your implementation passes the required tests
+    • Assignment Learning Journal: explains your solution, design choices, limitations, and reflection questions
+• Kattis does not directly give the grade
+    • It gives the highest-grade range you are eligible for
+    • The journal determines the grade within that range
+    • https://kth.kattis.com/courses/DD2380/ht26
+• Individual oral examination
+    • One of Search, HMM, or RL is selected independently for each student
+    • You must be able to explain the selected assignment, your code, and your Assignment Learning Journal
+    • The oral examination sets your individual maximum LAB2 grade
+• Deadline rule
+    • Grade A requires all code and Assignment Learning Journals on time
+    • If any assignment code or Assignment Learning Journal is late, maximum final LAB2 grade is B
+Prog. assignments: tips from previous generations
+• Start right away when they are up
+Grading
+Assignment task                                      Evaluation
+Essay                                                Pass/Fail
+Quizzes                                              Pass/Fail
+Search                                                  A-F
+HMM                                                     A-F
+RL                                                      A-F
+Pass the course:
+• Pass the essay
+• Pass all the quizzes
+• Get at least E on Search, HMM and RL
+• Final grade = LAB2 grade
+     • Rounded-down average of Search, HMM, and RL
+     • Subject to:
+          • Individual oral-examination cap
+          • Deadline cap
+Practicalities
+The course Canvas site
+• https://canvas.kth.se/courses/65313
+• Events start quarter past.
+           Crew
+
+
+
+
+    André Pereira              Iolanda Leite               Petter Ögren                Noemie Jaquier
+    (course responsible)       • Ethics                    • Reinforcement             • Logic & Planning
+    • Problem Solving                                        Learning
+    • Taming Uncertainty                                   • Multi Agent
+                                                             Systems +
+                                                             Robotics
+
+•    Guest lecturers
+       •   Josephine Sullivan, Johan Boye, Gabriel Skantze, Mårten Björkman and Gustav Eje Henter
+•    10 teaching assistants (TAs)
+Understanding the schedule
+•   Lectures: 14 lectures, each given once; some fundaments and some guest lectures
+•   Tutorials: 3 tutorials, given in multiple timeslots
+•   On-campus quizzes: 3 quizzes, given in multiple timeslots
+•   Individual Oral Examinations: in person
+•   TAs will have
+     •   1-1 consultations (“office hours”): By using the KTH queue you can have a short Zoom
+         meeting with a TA, we will offer these once per week when the assignments start (mostly
+         Tuesday’s)
+•   For tutorials, on-campus quizzes, individual oral examinations, you need to sign
+    up -> Canvas, Calendar, Appointments.
+     Timeline                                                                     Assignment open → due           Tutorial      Classroom quiz       Oral exam
+
+     DD2380 Artificial Intelligence · all deadlines at 19:00
+                                 W44          W45              W46           W47           W48          W49         W50          W51      W52–53          W1
+                                29 Oct        2 Nov            9 Nov        16 Nov        23 Nov       30 Nov       7 Dec       14 Dec     Break         4 Jan
+
+Essay
+                                     Opens 29 Oct          Due Mon 9 Nov
+AI and society
+
+Search                                         Opens 3 Nov                               Due Mon 23 Nov
+Problem solving
+                                              5 Nov    10–11 Nov
+
+HMMs                                                                   Opens 13 Nov                    Due Mon 30 Nov
+Taming uncertainty
+                                                                       16 Nov         24–25 Nov
+
+RL                                                                                       Opens 23 Nov              Due Mon 7 Dec
+Decisions under
+uncertainty
+                                                                                                   30 Nov       8–9 Dec
+
+Oral exams
+Random topic                                                                                                     8 & 11 Dec   15–17 Dec          4 Jan
+
+Final quizzes
+Any topic                                                                                                                                        4–5 Jan
+
+                                Today
+Where is the course material?
+•   Lecture slides will appear on Canvas in Modules (we will upload them before the lectures)
+
+
+•   Recommended reading is Russell & Norvig’s ”Artificial Intelligence A Modern Approach”, Pearson New
+    International Edition, 2013.
+Communicating with us
+•   English only
+
+
+•   Important and urgent matters will be posted in Announcements
+•   If we contact you directly, it will be through Canvas Conversations (Inbox) or KTH email
+
+
+•   Primary communication via discussion forums at Canvas
+•   If you need to contact us via email:
+
+
+
+                     rpl-ai-teachers@eecs.kth.se
+Email communication
+• When to send an email to rpl-ai-teachers@eecs.kth.se:
+   • I did a part of the course in HT22 and would like to know what to do to finish.
+   • We created an essay group of 3 people and a 4th person just clicked themselves in in the Canvas.
+     The person is not responding, not doing their job. Can you remove them from our group?
+   • …
+• When not to send an email:
+   •   When is the next tutorial? How do I sign up for it?
+   •   I keep getting timeout on HMM assignment. Why?
+   •   We are three friends and would like to do the programming assignments together. Is it ok?
+   •   …
+Registration for the course
+• Make sure to have registered for the semester. Once you get registered, you get to see the course in
+  Canvas, too (within 3 hours or so)
+Registration in Kattis
+•   You need to have an account in Kattis
+    (https://kth.kattis.com) and you need to register for the course in Kattis to submit assignments
+    •   Kattis account
+    •   https://kth.kattis.com/courses/DD2380/ht26 (make sure to login first)
+
+
+
+
+                                             …
+Signing up for tutorials and labs
+•   Canvas -> calendar -> appointments
+•   You may need to click on “view appointments” or similar.
+TODO Now
+• Register for the course (web)
+• Go to Canvas!
+    • Go to Account -> Notifications, consider switching on Announcement, Conversation Message, Appointment
+      Availability as right away, or daily summary
+    • Go to Courses -> DD2380 HT26 (AIHT26_2), checkout the Home page, the Syllabus, the Grading criteria
+    • Do your Code of conduct quiz now!
+• Get access to Kattis
+• Make sure you know your Python
+Already some real stuff this week and the next
+• After today’s lecture on Ethics
+    • Start on your essay (due on Nov 9th at 19:00)
+• After next Tuesday’s lecture on Adversarial Search
+    • Start on your first programming assignment (due on Nov 23rd at 19:00)
+Questions?
+

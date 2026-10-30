@@ -1,0 +1,339 @@
+                                         ICRES 2020: 5th International Conference on Robot
+                                         Ethics and Standards, Taipei, Taiwan, 28-29 September 2020.
+
+
+
+
+                                                           RoboTed: a case study in Ethical Risk Assessment
+
+                                                                          Alan F.T. Winfield and Katie Winkle
+                                                                     Bristol Robotics Laboratory, UWE Bristol, UK
+                                                                      E-mail: alan.winfield/katie.winkle@brl.ac.uk
+arXiv:2007.15864v2 [cs.RO] 29 Sep 2020
+
+
+
+
+                                                                                      www.brl.ac.uk
+
+
+                                             Risk Assessment is a well known and powerful method for discovering and mitigating risks, and
+                                             hence improving safety. Ethical Risk Assessment uses the same approach but extends the envelope
+                                             of risk to cover ethical risks in addition to safety risks. In this paper we outline Ethical Risk
+                                             Assessment (ERA) and set ERA within the broader framework of Responsible Robotics. We then
+                                             illustrate ERA with a case study of a hypothetical smart robot teddy bear: RoboTed. The case
+                                             study shows the value of ERA and how consideration of ethical risks can prompt design changes,
+                                             resulting in a more ethical and sustainable robot.
+
+                                             Keywords: Ethical Risk Assessment, Responsible Robotics, Social Robots, BS8611
+
+
+                                         1. Introduction
+                                         Risk Assessment is a well known method for discovering and mitigating risks, and hence
+                                         improving safety. Ethical Risk Assessment is not new either; it is essentially what research
+                                         ethics committees do.1 But the idea of extending the envelope of safety risk assessment of
+                                         intelligent systems to encompass ethical risks is new. Given the growing awareness of the
+                                         ethical risks of intelligent systems in recent years, ethical risk assessment offers a powerful
+                                         method for systematically identifying and mitigating the ethical, societal and environmental
+                                         risks associated with the use of robots and artificial intelligence (AI).
+                                             In this paper we first define ethical risk assessment (ERA) with reference to British
+                                         Standard BS8611 then, in section 3, present a worked example of ERA based upon a hypo-
+                                         thetical smart robot teddy bear we call RoboTed. The paper concludes with an appraisal of
+                                         both the benefits and limitations of ERA.
+
+                                         2. Ethical Risk Assessment
+                                         Risk Assessment is a process which typically has three stages:
+                                         (1) identify and analyse potential events (hazards) that may cause harm to individuals,
+                                             property, and/or the environment;
+                                         (2) make judgments on the acceptability and likely impact of the harm arising from exposure
+                                             to the hazard (risks), then
+                                         (3) determine what steps should be taken to mitigate those risks and hence minimise or
+                                             eliminate possible harms.
+                                            Standards for risk assessment are well established in safety critical systems. ISO
+                                         14971:2007 Application of risk management to medical devices, for instance, provides re-
+                                         quirements and guidance on risk assessment for medical devices. And ISO 12100:2010 Safety
+                                         of machinery – Risk assessment and risk reduction sets out requirements on performing risk
+                                         assessments, notably including risk analysis focused on hazard identification.
+                                            Almost certainly the world’s first explicitly ethical standard in robotics is BS8611-2016
+                                         Guide to the ethical design and application of robots and robotic systems. “BS8611 is not
+                                         a code of practice, but instead guidance on how designers can undertake an ethical risk
+assessment of their robot or system, and mitigate any ethical risks so identified. At its heart
+is a set of 20 distinct ethical hazards and risks, grouped under four categories: societal, ap-
+plication, commercial and financial, and environmental. Advice on measures to mitigate the
+impact of each risk is given, along with suggestions on how such measures might be verified
+or validated”.2 Societal hazards include, for example, anthropomorphisation, loss of trust,
+deception, infringements of privacy & confidentiality, addiction, and loss of employment.
+    BS8611 defines an ethical harm as “anything likely to compromise psychological and/or
+societal and environmental well-being”. An ethical hazard as “a potential source of ethical
+harm” and an ethical risk as the “probability of ethical harm occurring from the frequency
+and severity of exposure to a hazard”.3 Ethical risk assessment thus extends the envelope of
+risk assessment to include ethical harms, hazards and risks (in addition to physical harms,
+hazards and risks).
+    Ethical Risk Assessment is part of the practice of Responsible Robots, which we define
+as “the application of Responsible Innovation4 in the design, manufacture, operation, repair
+and end-of-life recycling of robots, that seeks the most benefit to society and the least
+harm to the environment”.5 We would expect ERA to be undertaken within a framework
+of responsible innovation – such as EPSRC’s AREA frameworka – and alongside ethically
+aligned6 and values-based design.7
+
+3. RoboTed
+Our hypothetical robot teddy bear is inspired by the robot Teddy in the 2001 movie A.I.
+Artificial Intelligence, directed by Steven Spielbergb . Teddy, shown in Fig.1, is far more
+advanced in intelligence, mobility and longevity than we can presently contemplate, so let
+us instead specify a robot teddy bear closer to today’s capabilities.
+
+
+
+
+                                         Fig. 1.   Teddy
+
+
+    Our fictional RoboTed is designed to:
+(1) Recognise its owner, learning their face and name, turning its face toward the child,
+(2) respond to physical play such as hugs and tickles,
+(3) tell stories, while allowing a child to interrupt the story to ask questions or ask for
+    sections to be repeated,
+
+a https://epsrc.ukri.org/research/framework/area/
+b as a tribute to Stanley Kubrick.
+(4) sing songs, while encouraging the child to sing along and learn the song, and
+(5) act as a child minder, allowing parents to remotely listen, watch and speak via RoboTed.
+   And is based upon the following technology:
+(1) RoboTed is an Internet (WiFi) connected device,
+(2) RoboTed has cloud-based speech recognition and conversational AI (chatbot) and local
+    speech synthesis,
+(3) RoboTeds eyes are functional cameras allowing the robot to recognise faces, and
+(4) RoboTed has motorised arms and legs to provide it with limited baby-like movement
+    and locomotion – not walking but shuffling and crawling.
+
+3.1. Assessing the Ethical Risks of RoboTed
+As a worked example we now consider the ethical hazards and risks of RoboTed, under the
+four categories of: physical (safety) risks, psychological risks, privacy & security risks, and
+environmental risks.
+
+3.1.1. Physical Risks
+We first consider physical hazards and risks, summarized here in Table 1, together with an
+assessment of the likelihood of occurrence of the risk (High, Medium or Low).
+
+                               Table 1.   Physical Risk Analysis for RoboTed
+
+     Hazard             Risk                               Levela    Mitigation
+
+     Tripping           User(s) trip over RoboTed          M         Audible crawling sound to
+                        when it is crawling on the floor             alert users to its presence
+     Battery            Defective batteries or battery     M         Design to make use of con-
+     overheating        chargers can overheat or in ex-              sumer rechargeable batteries
+                        tremis catch fire                            rather than high-risk Li-Ion
+                                                                     batteries.
+
+    Note: a Risk level: (H)igh, (M)edium or (L)ow
+
+
+
+
+Tripping As RoboTed crawls on the floor, it has the potential to become a trip hazard. A
+mitigation strategy might be to have RoboTed make an audible crawling sound when it is
+moving, to alert users (particularly adults) to its presence.
+
+Battery overheating There is a risk that defective batteries or battery chargers can over-
+heat or in extremis catch fire. In mitigation RoboTed should be designed to make use of
+low-risk consumer rechargeable batteries rather than high-risk Li-Ion batteries. In addition
+parents should be advised to supervise battery re-charging.
+
+3.1.2. Psychological Risks
+We now consider the psychological hazards and risks summarised in Table 2.
+
+Addiction RoboTed might be so compelling that it leads to a child playing obsessively
+with RoboTed and neglecting his or her family.8 This also increases the risk of emotional
+distress should RoboTed’s behaviour change or fail in any way (e.g. if the facial recognition
+was to fail and no longer recognises the child). A mitigation strategy might be to explore
+the addition of a RoboTed needs to sleep function, as a way of limiting length of play times.
+                          Table 2.   Psychological Risk Analysis for RoboTed
+
+     Hazard            Risk                             Levela    Mitigation
+
+     Addiction         Child plays with RoboTed ob-     M         Explore ‘RoboTed needs to
+                       sessively and neglects family              sleep now’ function
+     Deception (of     Child believes that RoboTed      M         Design chatbot to avoid lan-
+     child)            has feelings (for her)                     guage that suggests feelings
+     Over trusting     Child cannot distinguish mode    H         Notification when child minder
+     (by child)        of operation                               mode activated, uses parents’
+                                                                  voice rather than RoboTed’s
+                                                                  voice
+     Over trusting     Parents come to rely on the      H         Remove the child minder func-
+     (by parents)      child minder function                      tion
+     The Uncanny       Child becomes fearful of robot   L         Use cartoon voice; engage chil-
+     Valley                                                       dren in early user trials
+
+    Note: a (H)igh, (M)edium or (L)ow
+
+
+Deception There is a risk that the child comes to believe that RoboTed has feelings for
+her.9 To mitigate this risk we could design the chatbot to avoid language that suggest
+feelings, so that RoboTed never says things like I like you or why are you sad?.
+
+Over trusting by the child Building on deception there is a risk that the child cannot tell
+whether RoboTed is operating autonomously or is in child minder mode. This may result in
+her sharing sensitive information in the belief that no one else will hear it, when actually her
+parents are watching and listening. The reverse is also true, in that she may share something
+she wishes her parents to know but is too embarrassed to raise face to face, when actually
+the robot is operating autonomously and her parents are not listening. Mitigation strategies
+would be concerned with making the mode of operation as obvious to the child as possible,
+for example only using RoboTed’s speech synthesis when in autonomous operation.
+
+Over trusting by parents The risk here is that parents become over reliant on RoboTeds
+child minder function.10 The risk and its consequences are so great as to suggest the child
+minder function should be removed altogether.
+
+The Uncanny Valley The Uncanny Valley can lead to a fearful reaction when a robot
+is close to but not 100% lifelike.11 The risk of this is probably low with RoboTed, both
+because RoboTed is not human-like at all, and children are already familiar with teddy
+bears. However, the risk should be explored by engaging children in early trials of RoboTed,
+and if the uncanny value reaction is demonstrated it might be mitigated by, for instance,
+equipping the robot with a cartoon voice.
+
+
+3.1.3. Privacy and Security Risks
+We next consider privacy and transparency risks, summarised in Table 3.
+
+Weak security Weak security could lead to malicious hackers gaining access to RoboTeds
+sensors & control functions. This could be very frightening for a child and her parents. To
+reduce the risk we need to implement strong encryption of the communications between
+RoboTed and the cloud, alongside best practice password protection to make it very hard
+for hackers to guess the password.
+
+Privacy Here the risk is that personal data, including images and voice recordings of chil-
+dren (and the house they live in) are stolen. One way of reducing this risk would be to
+                        Table 3.   Privacy and Security Risk Analysis for RoboTed
+
+     Hazard             Risk                               Levela   Mitigation
+
+     Weak security      Malicious hackers gain access      H        Implement strong encryption
+                        to RoboTeds sensors & control               together with best practice
+                        functions                                   password protection
+     Privacy            Personal data, including im-       M        Put in place auditable mea-
+                        ages and voice recordings of                sures to ensure personal data
+                        child are stolen                            is deleted immediately
+     Lack of trans-     Lack of data logs makes it hard    H        Build a secure local data logger
+     parency            or impossible to investigate ac-            into RoboTed
+                        cidents
+
+    Note: a (H)igh, (M)edium or (L)ow
+
+
+ensure that personal data sent to the cloud is deleted immediately after it has been used.
+
+Lack of transparency The risk is that if there were an accident in which RoboTed harmed
+a child - noting that it could be either physical or psychological harm - it would be very
+difficult to investigate what happened to cause the accident unless the robot keeps a data
+log of its actions and responses. This is a serious risk and to mitigate the risk a secure data
+logger - ethical black box - needs to be built into RoboTed.12 The data would only be stored
+locally, and only the most recent few hours of data would need to be saved.
+
+
+3.1.4. Environmental Risks
+Finally we consider the environmental risks summarised in Table 4.
+
+                           Table 4.   Environmental Risk Analysis for RoboTed
+
+     Hazard             Risk                               Levela   Mitigation
+
+     Unsustainability   Robot uses unsustainable or        M        Use materials (e.g. RoboTeds
+     (of materials)     high carbon cost materials                  fur) from sustainable sources,
+                                                                    avoiding plastics.
+     Unrepairability    Robots lifetime is limited be-     M        Design for ease of repair with
+                        cause faults cannot be repaired             replaceable parts – especially
+                        or parts replaced                           battery
+     Unrecyclability    End of life robots are dumped      M        Design for ease of recycling
+                        in land fill                                parts and materials
+
+    Note: a (H)igh, (M)edium or (L)ow
+
+
+
+
+Unsustainability of materials Here the risk is that the robot uses unsustainable or high
+carbon materials. To mitigate this risk we could use materials (e.g. RoboTeds fur) from
+sustainable sources. We could also avoid plastics by, for instance, using wood for RoboTeds
+skeleton.
+
+Unrepairability This leads to the risk that the robots lifetime is limited because faults
+cannot be repaired or parts replaced. This risk can be minimized by designing RoboTed for
+ease of repair, using replaceable parts as much as possible - especially the battery. Addi-
+tionally RoboTeds manufacturers should provide a repair manual so that local workshops
+can fix most faults.
+Unrecyclability All products will eventually come to the end of their useful life, and if
+they cannot be repaired or recycled we risk them being dumped in landfill. To mitigate this
+risk RoboTed should be designed to make it easy to recycle parts. Ideally after these parts
+have been recovered for recycling the remaining materials are biodegradable.
+
+4. Discussion and conclusions
+Through a fictional case study this paper has demonstrated the value of ethical risk asses-
+ment. Our RoboTed ERA has shown that attention to ethical risks can
+ • suggest new functions, such as RoboTed needs to sleep now,
+ • draw attention to how designs can be modified to mitigate some risks,
+ • highlight the need for user engagement, and
+ • reject some product functionality as too risky.
+    ERA is, however, not guaranteed to expose all ethical risks. It is a subjective process
+which will only be successful if the risk assessment team are prepared to think both critically
+and creatively about the question: what could go wrong? As Vallor et al write,13 design
+teams must develop the “habit of exercising the skill of moral imagination to see how an
+ethical failure of the project might easily happen, and to understand the preventable causes
+so that they can be mitigated or avoided”.
+    The ethical hazards and risks set out in BS8611 are an excellent starting point, but the
+standard does not provide an exhaustive taxonomy of ethical hazards, encompassing all do-
+mains of robotics. Our RoboTed case study has identified several additional ethical hazards,
+some of which are specific to social robots, including the Uncanny Valley, weak security,
+lack of transparency (for instance the lack of data logs needed to investigate accidents),
+unrepairability and unrecyclability.
+    Evaluating and quantifying psychological risks is especially difficult given that there are
+no agreed measures for hazards such as over trusting or the Uncanny Valley. Assessment
+is further complicated by the likelihood that cultural differences may lead to lower risks of
+psychological harm to some individuals than others. For these reasons design teams cannot
+rely on their own judgement and instead should engage with potential users representative
+of the full range of age, gender and ethnic diversity, and seek the guidance of psychologists
+and/or social scientists both to ask the user group the right questions and interpret their
+responses. Given also that ERA is not a one-time process but one that should iterate through
+a product life-cycle, good practice suggests that in-house assessments undertaken early in
+the design process would be shared with user groups during later iterations as the product
+undergoes user trials.
+    In summary ethical risk assessment is a powerful and essential addition to the responsible
+roboticist’s toolkit. ERA can also be thought of as the opposite face of robot accident
+investigation,5 seeking - at design time - to prevent risks becoming accidents.
+
+Acknowledgments
+The work of this paper has been conducted within EPSRC project Robo-TIPS, grant ref-
+erence EP/S005099/1 RoboTIPS: Developing Responsible Robots for the Digital Economy
+The authors are also grateful for the comments of the anonymous reviewers.
+
+References
+ 1. R. D. L. C. Bernabe, G. J. M. W. van Thiel, J. A. M. Raaijmakers, and van Delden J. L. J.,
+    “The risk-benefit task of research ethics committees: An evaluation of current approaches and
+    the need to incorporate decision studies methods,” BMC Med Ethics, vol. 13, 2012.
+ 2. A. Winfield, “Ethical standards in robotics and AI,” Nature Electronics, vol. 2, no. 2, pp. 46–48,
+    2019.
+ 3. BSI, BS8611:2016 Robots and robotic devices, Guide to the ethical design and application of
+    robots and robotic systems. British Standards Institute, 2016.
+ 4. J. Stilgoe, R. Owen, and P. Macnaghten, “Developing a framework for responsible innovation,”
+    Research Policy, vol. 42, no. 9, pp. 1568 – 1580, 2013.
+ 5. A. F. Winfield, K. Winkle, H. Webb, U. Lyngs, M. Jirotka, and C. Macrae, “Robot accident
+    investigation: a case study in responsible robotics,” arXiv preprint arXiv:2005.07474, 2020.
+ 6. IEEE, “The IEEE global initiative on ethics of autonomous and intelligent systems. ethically
+    aligned design: A vision for prioritizing human well-being with autonomous and intelligent
+    systems, first edition,” tech. rep., IEEE Standards Association, 2019.
+ 7. S. Spiekermann and T. Winkler, “Value-based engineering for ethics by design,” arXiv preprint
+    arXiv:2005.07474, 2020.
+ 8. N. Sharkey and A. Sharkey, “The crying shame of robot nannies: an ethical appraisal,” Inter-
+    action Studies, vol. 11, no. 2, pp. 161–190, 2010.
+ 9. R. Sparrow and L. Sparrow, “In the hands of machines? the future of aged care,” Minds and
+    Machines, vol. 16, no. 2, pp. 141–161, 2006.
+10. D. Feil-Seifer and M. J. Mataric, “Socially assistive robotics-ethical issues related to technol-
+    ogy,” IEEE Robotics and Automation Magazine, vol. 18, no. 1, p. 24, 2011.
+11. R. Moore, “A bayesian explanation of the uncanny valley - effect and related psychological
+    phenomena,” Sci Rep, vol. 2, p. 864, 2012.
+12. A. F. Winfield and M. Jirotka, “The case for an ethical black box,” in Towards Autonomous
+    Robotic Systems (TAROS 2017) Lecture Notes in Computer Science Vol. 10454 (Y. e. a. Gau,
+    ed.), pp. 262–273, Springer, Cham, 2017.
+13. S. Vallor, B. Green, and I. Raicu, “Ethics in technology practice,” tech. rep., The Markkula
+    Center for Applied Ethics at Santa Clara University, 2018.
+

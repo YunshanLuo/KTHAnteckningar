@@ -1,0 +1,12 @@
+DD2380 AI - extraction report
+========================================
+
+[OK] pdftotext  EthicsCanvas.pdf                      5773 bytes
+[OK] pdftotext  HazardsTable.pdf                         4 bytes  <<< no text layer, attempting OCR... OCR ran but output is garbage (symbol-font/corrupted encoding) - content verified against lecture slides, RoboTed paper and BSI instead.
+[OK] pdftotext  Intro_AIEthics_Oct29.pdf             60350 bytes
+[OK] pdftotext  Lecture 1a - Introduction.pdf        10160 bytes
+[OK] pdftotext  Lecture 1b - Course Practicalities.pdf  10819 bytes
+[OK] pdftotext  Roboted.pdf                          23040 bytes
+[OK] pdftotext  Robotsinsociety.pdf                  78091 bytes
+
+Total PDFs processed: 7

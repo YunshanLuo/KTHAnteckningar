@@ -1,0 +1,1345 @@
+Introduction to (Practical) AI Ethics
+Iolanda Leite
+(Original slides from Katie Winkle)
+             Scope and Framing
+
+
+             Why this is relevant…: this talk will be completely practical (rather than
+             philosophical), grounded mainly in empirical research and practices; covering
+
+             (1) ethical implications of AI and
+
+             (2) how to develop new technologies ethically.
+
+
+             Note: Will use terms AI, technology, autonomous system and robot/robotics fairly
+             interchangeably as the distinction doesn’t really matter for today’s topic
+
+
+
+2026-10-29                                                                                      2
+             Outline
+
+
+             1. (Some) Topical Issues around Ethics and AI
+             2. Embracing Ethics as an (AI) Engineer
+             3. Mutually Shaping Technology and Society
+             4. [Break]
+             5. Ethical Standards in AI and Robotics
+             6. Worked example: Autonomous Robot Fitness Coach
+             7. Recap and Conclude
+             8. Assignment overview
+
+
+2026-10-29                                                       3
+             Energy and Exploitation
+
+
+
+
+2026-10-29          adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/06/energy-and-exploitation-ais-dirty.html   4
+             Energy and Exploitation
+
+                        50 kW
+                 (50,000x > Sedol)
+                    ~ an industrial
+                 lighting generator
+
+
+
+                                                                                                                                     170 kcal
+                                                                                                                                     ~ 1 Watt
+                                                                                                                                     ~ an LED
+                                                                                                                                     nightlight
+
+2026-10-29            adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/06/energy-and-exploitation-ais-dirty.html   5
+               Energy and Exploitation
+
+                                                                                                         Strubell, Emma, Ananya Ganesh, and
+                                                                                                         Andrew McCallum. "Energy and Policy
+                                                                                                         Considerations for Deep Learning in
+                                                                                                         NLP." Proceedings of the 57th Annual
+                                                                                                         Meeting of the Association for
+                                                                                                         Computational Linguistics. 2019.
+                                                                                                         [available here:
+                                                                                                         https://arxiv.org/abs/1906.02243]
+
+
+
+
+A more recent example:
+Luccioni, Jernite & Strubell, “Power Hungry Processing: Watts Driving the Cost of AI Deployment?”
+Proceedings of the 2024 ACM Conference on Fairness, Accountability, and Transparency (FAccT '24). https://arxiv.org/abs/2311.16863
+
+  2026-10-29                     adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/06/energy-and-exploitation-ais-dirty.html   6
+     Energy and Exploitation
+
+
+                                                                                                                                          Google
+Google contract                                                                                                                          employee:
+worker: $15/hr =                                                                                                                      $246,804 + the
+$31,200 a year                                                                                                                          free meals,
+                                                                                                                                      massages etc.
+
+
+
+
+    https://www.theguardian.com/technology/2019/may/28/a-white-collar-sweatshop-google-
+    assistant-contractors-allege-wage-theft
+                    adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/06/energy-and-exploitation-ais-dirty.html       7
+             Energy and Exploitation
+
+
+
+
+             https://www.theverge.com/2019/2/25/18229714/cognizant-facebook-content-moderator-
+             interviews-trauma-working-conditions-arizona
+2026-10-29                  adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/06/energy-and-exploitation-ais-dirty.html   8
+               Energy and Exploitation
+
+             Human-in-the-loop Reinforcement Learning
+
+
+              “… ChatGPT seems so human because it
+              was trained by an AI that was mimicking
+              humans who were rating an AI that was
+              mimicking humans who were pretending to
+              be a better version of an AI that was trained
+              on human writing”
+
+
+
+
+  https://www.theverge.com/features/23764584/ai-artificial-intelligence-data-notation-labor-scale-surge-
+  remotasks-openai-chatbots
+2026-10-29                                                                                                 9
+             Energy and Exploitation
+
+
+
+
+                                       https://www.theguardian.com/
+                                       global-
+                                       development/2026/jun/24/indi
+                                       an-factory-workers-told-film-
+                                       themselves-for-ai-robots
+
+
+
+2026-10-29                                                             10
+          Anthropomorphism and Deception
+
+
+
+
+                                             Google Assistant, 2016
+Nest Thermostat, 2011
+
+
+
+
+                        Hello Barbie, 2015                            Amazon Astro, 2021
+
+
+
+
+                                                                                           11
+             Anthropomorphism and Deception
+
+                                      Not every version of Barbie was a hit. Check out these flops
+
+                                      CNN.com
+                                      https://www.cnn.com › barbie-dolls-weird-launches
+
+
+
+
+https://www.nytimes.com/2015/09/20/magazine/barbie-wants-to-get-to-know-your-child.html
+https://www.theguardian.com/technology/2015/nov/26/hackers-can-hijack-wi-fi-hello-barbie-to-spy-on-your-children
+
+https://www.cnbc.com/2015/12/22/why-you-should-say-goodbye-to-hello-barbie.html
+                                                                                                                   12
+Anthropomorphism and Deception
+
+
+
+
+https://spectrum.ieee.org/automaton/robotics/home-robots/moxie-a-social-robot-for-childhood-development
+
+
+
+                                                                                                          13
+         Anthropomorphism and Deception
+
+
+
+
+https://spectrum.ieee.org/automaton/robotics/home-robots/moxie-a-social-robot-for-childhood-development
+Embodied shut down in Dec 2024 — parents documented children grieving a "dying" companion, and it's now
+catalogued as an OECD AI incident: https://oecd.ai/en/incidents/2024-12-09-ab89
+                                                                                                          14
+             Anthropomorphism and Deception
+             What Is Google Duplex? The Smartest Chatbot Ever, Explained | Digital Trends
+
+
+
+
+               https://youtu.be/D5VN56jQMWM
+
+2026-10-29                           as also highlighted on slides by Prof Verena Rieser: https://www.slideshare.net/VerenaRieser/ethics-for-conversational-ai/1 (slide 17)   15
+             Sexism, Racism and (Mis)Representation
+
+
+
+
+2026-10-29             from the UNESCO report “I’d Blush if I could”: https://unesdoc.unesco.org/ark:/48223/pf0000367416   16
+         The Gendering of AI – UNESCO Report
+
+
+Female gendered digital assistants (think Siri, Alexa) are:
+
+
+• obliging, docile and eager-to-please (regardless of user
+  tone/hostility)
+• too tolerant of sexual harassment and insults, sometimes
+  flirting in response to sexually explicit language
+
+
+and therefore run the risk of propagating harmful stereotypes
+and cultural norms
+
+
+                                                                17
+             Sexism, Racism and (Mis)Representation
+
+
+
+
+             Joy Buolamwini (as discussed in D’Ignazio and Klein’s Data Feminism):
+
+             On digging into why she wasn’t recognised by facial analysis software during a
+             class project, Buolamwini found the training data set for the facial recognition
+             system (widely used elsewhere too) contains 78% male and 84% white faces.
+2026-10-29                                                                                      19
+             Sexism, Racism and (Mis)Representation
+
+
+
+
+             In further work, on commercial gender classification systems: “darker-skinned
+             females are the most misclassified group (with error rates of up to 34.7%). The
+             maximum error rate for lighter-skinned males is 0.8%”
+             Buolamwini, Joy, and Timnit Gebru. "Gender shades: Intersectional accuracy disparities in commercial gender
+             classification." Conference on fairness, accountability and transparency. 2018.
+2026-10-29                                                                                                                 20
+             Sexism, Racism and (Mis)Representation
+
+
+
+
+             https://www.theguardian.com/technology/2020/sep/21/twitter-
+             apologises-for-racist-image-cropping-algorithm
+
+2026-10-29                                                                 21
+            How did we miss this? A Case Study on
+            Unintended Biases in Robot Social Behavior
+
+
+
+
+Maria Teresa Parreira, Sarah Gillet, Katie Winkle, and Iolanda Leite. 2023. How Did We Miss This? A Case Study on Unintended Biases in Robot
+Social Behavior. In Companion of the 2023 ACM/IEEE International Conference on Human-Robot Interaction (HRI '23)
+               How did we miss this? A Case Study on
+               Unintended Biases in Robot Social Behavior
+
+
+
+
+   Both models backchannel ↑
+with male than female participants
+              BUT
+     perception of the robot                Backchanneling behavior over time from the heuristic model                 Backchanneling behavior over time from the data-driven
+                                               (NaïveL) across genders (male - blue, female – red).                   model (DataL) across genders (male - blue, female – red).
+        did not change
+
+
+  Maria Teresa Parreira, Sarah Gillet, Katie Winkle, and Iolanda Leite. 2023. How Did We Miss This? A Case Study on Unintended Biases in Robot Social Behavior. In
+  Companion of the 2023 ACM/IEEE International Conference on Human-Robot Interaction (HRI '23)
+              Troubleshooting                                                                                                                           What can be done?
+                                                                                                                                                        Preventative measures:
+              Dataset Gender Imbalances
+                                                                                                                                                         •   examine dataset to form a pool of gender-diverse participants
+              -3F, 29M - de Kok et al. [3]                                                                                                               •   test developed behaviors while being sensitive to impressions of the
+                                                                                                                                                             robot's behaviors across people of different identities
+              -4F, 16M - Poppe et al. [4]
+                                                                                                                                                         •   quantify behavior prior to study to objectively observe the robot's
+              -67F, 37M -Morency et al. [5]                                                                                                                  behavior towards participants with different (gender) identities
+              -0F, 22M - Okato et al. [6]
+                                                                                                                                                         •   avoid over reliance on perceptual only; compare and contrast
+                                                                                                                                                             objective measures of robot
+              -2F, 10M - Ward and Tsukahara [2]
+
+              -4F, 12M - CCDb [7]
+                                                                                                                                                        How should the robot behave? 3 different options…
+               -of which we used (0F, 6M)
+                                                                                                                                                         •   reproduce differences observed in human-human interactions
+                                                                                                                                                         •   treat users of all gender identities exactly equally
+                                                                                                                                                         •   overcompensate differences observed in human-human interactions
+[2] Nigel Ward and Wataru Tsukahara. 2000. Prosodic feat ures which cue backchannel responses in English and Japanese. Journal of Pragmatics 32,
+8 1177–1207.
+[3] Iw an de Kok, D irk Heylen, and Louis -Philippe Morency. 2013. Speaker-Adaptive Multim odal Prediction Model for Listener R espon ses. I n
+Proceedings of the 15t h ICMI (Sydney, Australia). AC M, New York, NY, USA, 51–58
+[4] Ronald Poppe, Khiet P. Truong, Dennis Reidsma, and Dirk Heylen. 2010. Backchannel Strategies for Artificial Listeners. In Proceedings of the 10th
+IVA (Philadelphia, PA). Springer-Verlag, Berlin, Heidelberg, 146 –158
+[5] Louis-Philippe Morency, Iwan Kok, and Jonathan Gratch. 2010. A probabilistic multimodal approach for predicting list ener backchannels.
+Autonomous Agents and Multi-Agent Systems 20 (01 2010), 70–84.
+[6] Y. Okato, K. Kato, M. Kamamoto, and S. Itahashi. 1996. Insertion of interjectory response based on prosodic information. In Proceedings of IVTTA
+’96. Workshop on Interactive Voice T echnology for T elecommunications Applications. 85–88.
+[7] A. J. Aubrey, D. Marshall, P. L. Rosin, J. Vandeventer, D. W. Cunningham, and C. Wallraven. 2013. Cardiff C onversation Da tabase (CC Db): A
+Database of Natural D yadic Conversations. In 2013 IEEE Conference on C VPR Workshops. 277 –282.
+             Copyright, fair use and creativity
+
+
+
+
+ https://www.theguardian.com/commentisfree/2023/may/08/ai-
+ machines-hallucinating-naomi-klein
+
+                                                             Image generated by DALL·E 2
+
+
+2026-10-29                                                                                 25
+             AI-generated fake content in politics
+
+
+
+
+ https://www.theguardian.com/us-news/article/2024/aug/19/trump-ai-swift-harris-musk-deepfake-images
+ https://www.bbc.com/news/world-us-canada-68440150
+ https://www.theverge.com/policy/24098798/2024-election-ai-generated-disinformation
+2026-10-29                                                                                            26
+             Additional suggestions: Tech + Social (In)Justice
+
+
+
+
+        + Ben Shneiderman notes on Human-Centred AI:
+        https://medium.com/@ben.shneiderman
+
+2026-10-29                                                   27
+             Additional suggestions: Tech + Social (In)Justice
+
+
+
+
+        Bonus podcast recommendation: Introduction to Feminism and Social Justice Studies ~
+        Dr Alex Ketchum of McGill University. Episode 17 focuses specifically on tech.
+
+2026-10-29                                                                                    28
+             What Do I Mean By ‘Ethical AI’ ?
+
+
+
+              Designing and Developing (Any and All) AI Ethically
+
+
+
+
+               Moral Decision Making
+                                       Actively Tackling Social Injustice with AI
+               in/with/by AI
+
+
+
+
+2026-10-29                                                                          29
+             What Do I Mean By ‘Ethical AI’ ?
+
+
+
+              Designing and Developing (Any and All) AI Ethically
+
+
+
+                                          Actively Tackling Social Injustice with AI
+               Moral Decision Making
+               in/with/by AI              AI4SG Movement • Unbiased Recruitment
+                                          [AT KTH]: AI and the UN Sustainable
+               e.g. the trolley problem   Development Goals • Feminist Social Robots
+                                          • Inclusion of Newly Arrived Children
+
+
+2026-10-29                                                                             30
+             What Do I Mean By ‘Ethical AI’ ?
+
+              Designing and Developing (Any and All) AI Ethically
+
+              Pursuing responsible innovation in design and deployment • Critical
+              evaluation of ethical and societal, ‘real-world’ impact • ‘Do No Harm’
+              as a minimum principle
+
+
+               Moral Decision Making
+                                          Actively Tackling Social Injustice with AI
+               in/with/by AI
+
+
+
+
+2026-10-29                                                                             31
+             Embracing Ethics as an (AI) Engineer
+
+
+
+
+             A (cynical) take on how it feels some* perceive the notion of ethical AI…
+
+
+
+
+2026-10-29                                                                               32
+             Embracing Ethics as an (AI) Engineer
+
+
+
+
+2026-10-29                                          33
+             Embracing Ethics as an (AI) Engineer
+
+
+
+
+                Who actually                 How do we ‘cost’
+                 defines what                a technology? $?
+               ‘success’ looks                 CO2? Labour
+                     like?                        hours?
+
+
+
+
+2026-10-29                                                      34
+             Embracing Ethics as an (AI) Engineer
+
+
+
+
+             Even for those of us who are on-board with pursuing responsible innovation… it
+             can feel like a restrictive, ‘tick-box’ exercise where we just need to take our
+             existing research/development plan and somehow adjust or ‘rein it in’ to make it
+             pass some pre-provided set of rules or guidelines.
+
+
+
+
+2026-10-29                                                                                      35
+             Embracing Ethics as an (AI) Engineer
+
+
+
+             Instead, from the very beginning of a new project, let’s:
+             • Design, deploy and evaluate new tech. using inherently responsible and ethical
+               approaches
+             • Consider the ethical implications and any associated risk from our tech.
+             • Critically evaluate the real-world impact(s) (good and bad) of our tech.
+
+
+
+
+2026-10-29                                                                                      36
+             Embracing Ethics as an (AI) Engineer
+
+
+             Instead, from the very beginning of a new project, let’s:
+             • Design, deploy and evaluate new tech. using inherently responsible and ethical
+               approaches
+             • Consider the ethical implications and any associated risk from our tech.
+             • Critically evaluate the real-world impact(s) (good and bad) of our tech.
+
+
+             because (i) this leads to better [smarter / more impactful / more innovative]
+             technologies, whilst also allowing us to follow the ‘do no harm’ principle.
+
+
+
+
+2026-10-29                                                                                      37
+             Embracing Ethics as an (AI) Engineer
+
+
+             Instead, from the very beginning of a new project, let’s:
+             • Design, deploy and evaluate new tech. using inherently responsible and ethical
+               approaches
+             • Consider the ethical implications and any associated risk from our tech.
+             • Critically evaluate the real-world impact(s) (good and bad) of our tech.
+
+
+             and (ii) we have something to offer here! We are good at analysing and trying to
+             solve complex problems! This is an opportunity to creatively apply those skills in
+             considering more ‘social’ constraints and outcomes.
+
+
+
+2026-10-29                                                                                        38
+             How?
+             Two practical things you can do, from today, to deliver more ethical AI:
+
+
+             1. Taking a mutual shaping view of, and approach to, technology and society.
+
+
+             2. Using ethical standards for best practice and ethical risk assessment.
+
+
+             I’ll be asking you to apply these to a worked example later ;)
+
+
+
+
+2026-10-29                                                                                  39
+Mutual Shaping of Technology and
+Society
+             Mutual Shaping of Technology & Society
+
+
+
+
+             Šabanović, Selma. "Robots in society, society in
+             robots." International Journal of Social Robotics 2.4
+             (2010): 439-450.
+
+
+             [available here and on canvas:
+             https://homes.luddy.indiana.edu/selmas/Sabanovic-IJSR2010.pdf]
+
+
+
+
+2026-10-29                                                                    41
+             Mutual Shaping of Technology & Society
+             The prevalent world view in robotics and AI has traditionally been technological
+             determinism, which can be summarised with the saying:
+
+
+                             “Science finds ~ industry applies ~ man conforms”
+
+
+             Typical signs of technological determinism:
+             • Technological advancement ≡ societal success
+             • Focus on (justifying) technological fixes, not understanding the problem
+             • Design/application choices being made only by ‘technical’ experts
+
+
+
+2026-10-29                                                                                      42
+             Mutual Shaping of Technology & Society
+
+
+             TD is a pretty arrogant and narrow viewpoint:
+             “In their emphasis on technological advancement as the determinant of
+             societal success, roboticists define the societal issues they wish to solve
+             ‘not [as] social, political, cultural, historical problems, but [as] biotechnological
+             problems that call for biotechnological solutions’. Society, in turn, is displayed
+             as a passive receptor of the products of visioning and negotiation performed by
+             experts in the process of design.”
+
+
+             TD neglects human agency and ignores social context
+
+
+
+
+2026-10-29                                                                                           43
+             Mutual Shaping of Technology & Society
+
+
+
+             Luckily for us, Sabanovic then provides us with some examples of iterative,
+             contextual, and participatory design and evaluation practices that:
+             “enable the mutual shaping of technology and society to play out through iteration
+             between social analysis and technology design.”
+
+
+
+
+2026-10-29                                                                                        46
+             [1] Situating Technology Design in Society
+
+
+             [1A] Evaluate technology in society
+             • Get out of the lab and test things out ‘in the wild’; in the environments they’re
+               expected to go in and with the people who are actually expected to use them
+
+
+
+
+2026-10-29                                                                                         47
+             [1] Situating Technology Design in Society
+
+
+             [1A] Evaluate technology in society
+             • Get out of the lab and test things out ‘in the wild’; in the environments they’re
+               expected to go in and with the people who are actually expected to use them
+
+
+             [1B] Studying socio-technological ecologies
+             • Undertake systemic study of the context of use before starting to design and
+               build things! and again once the tech. has been deployed to look at
+               performance, how it’s being used and the impact it’s had on the socio-technical
+               ecology
+
+
+
+2026-10-29                                                                                         48
+             Example: Interactions with Roomba…
+
+
+                                                                 • 6 families, initial interviews to
+                                                                   understand household management
+                                                                 • Half given a Roomba and half given an
+                                                                   equivalent traditional vacuum
+                                                                 • Photo diary to capture first 12 uses
+                                                                 • Follow-up interviews at 3, 6, 9 and 12
+                                                                   months
+
+
+
+             Forlizzi, Jodi. "How robotic products become social products: an ethnographic study of cleaning in the
+             home." 2007 2nd ACM/IEEE International Conference on Human-Robot Interaction (HRI). IEEE, 2007.
+
+2026-10-29                                                                                                            49
+             …the Pet-Friendly, Feminist Robot Vacuum?
+
+
+
+
+             “They also saw an evolution of the social system of cleaning after the Roomba
+             came into the house—household members, including teenagers and males, who
+             had not been participating in cleaning activities started to do so when the Roomba
+             was involved.”
+             Sabanovic on Forlizzi’s. "How robotic products become social products: an ethnographic study of cleaning in
+             the home."
+
+2026-10-29                                                                                                                 50
+             …the Pet-Friendly, Feminist Robot Vacuum?
+
+
+
+
+             “They also saw an evolution of the social system of cleaning after the Roomba
+             came into the house—household members, including teenagers and males, who
+             had not been participating in cleaning activities started to do so when the Roomba
+             was involved.”
+             Sabanovic on Forlizzi’s. "How robotic products become social products: an ethnographic study of cleaning in
+             the home."
+
+2026-10-29                                                                                                                 51
+             [1] Situating Technology Design in Society
+
+
+
+             [1C] Outside-in Design
+             • Combines 1A (evaluating technology in society) and 1B (studying socio-
+               technological ecologies) into an iterative cycle.
+
+               Sabanovic says: “It starts with situated observation and empirical research and
+               follows with an iterative process of prototype building and testing in the real
+               world to construct robots through a continuing conversation with the social
+               environment of their use”
+
+
+
+
+2026-10-29                                                                                       52
+             [1] Situating Technology Design in Society
+
+
+
+
+             A nice thought with which Sabanovic concludes on this is that such an approach
+             can encourage roboticists and technologists like us to think of ourselves: “not as
+             primarily technologists, solving technical problems, but as problem-oriented
+             researchers who can work across disciplinary boundaries and consciously
+             tackle social issues”.
+
+
+
+
+2026-10-29                                                                                        53
+             [2] Involving Society in Technology Design
+
+
+             Including users at the early stages of design is important for “developing socially
+             robust, rather than merely acceptable, robotic technologies.”
+
+
+             Stakeholders (people who are going to be directly impacted by the tech. being
+             developed, and who have tacit knowledge of the application domain) should have
+             opportunities to influence its design, the kind of applications to be developed, how
+             such tech. will be used and what their broader social meaning will be.
+
+
+             Participatory design, co-design: focus groups, interviews, workshops,
+             interdisciplinary hackathons, crowdsourcing…
+
+
+2026-10-29                                                                                          54
+              Example: A Study with Therapists
+
+                         Focus Group Structure
+  Pre-Discussion                  Acceptability questionnaire
+  Discussion Part 1               Conventional therapy delivery
+                                  Using social robots for therapy
+  Project Talk & Demo             Project motivations
+                                  Supporting literature
+                                  2x robot demonstrations
+  Discussion Part 2               Revisit of social robots for therapy
+  Post-Discussion                 Acceptability questionnaire
+
+  Winkle, Katie, et al. "Mutual shaping in the design of socially assistive robots: A case study on social robots for
+  therapy." International Journal of Social Robotics (2019): 1-20.
+2026-10-29                                                                                                              55
+              Example: A Study with Therapists
+
+                         Focus Group Structure
+  Pre-Discussion                  Acceptability questionnaire
+  Discussion Part 1               Conventional therapy delivery                       Mutual Learning 1
+                                  Using social robots for therapy                     Participants → Researcher
+                                                                                      • share expertise +
+  Project Talk & Demo             Project motivations
+                                                                                         understanding of current use
+                                  Supporting literature
+                                                                                         context
+                                  2x robot demonstrations
+                                                                                      • give own ideas before being
+  Discussion Part 2               Revisit of social robots for therapy                   biased
+  Post-Discussion                 Acceptability questionnaire
+
+  Winkle, Katie, et al. "Mutual shaping in the design of socially assistive robots: A case study on social robots for
+  therapy." International Journal of Social Robotics (2019): 1-20.
+2026-10-29                                                                                                              56
+              Example: A Study with Therapists
+
+                         Focus Group Structure
+  Pre-Discussion                  Acceptability questionnaire
+  Discussion Part 1               Conventional therapy delivery
+                                  Using social robots for therapy
+  Project Talk & Demo             Project motivations
+                                  Supporting literature
+                                  2x robot demonstrations
+                                                                                           Mutual Learning 2
+  Discussion Part 2               Revisit of social robots for therapy                     Researcher → Participants
+                                                                                           • share motivations
+  Post-Discussion                 Acceptability questionnaire
+                                                                                           • showcase technology
+  Winkle, Katie, et al. "Mutual shaping in the design of socially assistive robots: A case study on social robots for
+  therapy." International Journal of Social Robotics (2019): 1-20.
+2026-10-29                                                                                                              57
+              Example: A Study with Therapists
+
+                         Focus Group Structure
+  Pre-Discussion                  Acceptability questionnaire
+  Discussion Part 1               Conventional therapy delivery                        Mutual Shaping
+                                  Using social robots for therapy                      Researcher → Participants
+                                                                                       • revisit discussions as equal
+  Project Talk & Demo             Project motivations                                    participants
+                                  Supporting literature                                • ensures data of interest (i.e.
+                                  2x robot demonstrations                                that accounts for tech.
+  Discussion Part 2               Revisit of social robots for therapy                   constraints) still collected
+
+  Post-Discussion                 Acceptability questionnaire
+
+  Winkle, Katie, et al. "Mutual shaping in the design of socially assistive robots: A case study on social robots for
+  therapy." International Journal of Social Robotics (2019): 1-20.
+2026-10-29                                                                                                                58
+              Example: A Study with Therapists
+
+   New ideas for applications as
+    well as the Pepper/project-
+    specific) data required
+
+   Identified real world
+    considerations academically
+    interesting & crucial to
+    acceptability
+
+   Significantly increased therapists’
+    own acceptance of robots
+
+  Winkle, Katie, et al. "Mutual shaping in the design of socially assistive robots: A case study on social robots for
+  therapy." International Journal of Social Robotics (2019): 1-20.
+2026-10-29                                                                                                              59
+             TL; DR: Mutual Shaping helps to avoid…
+
+
+
+
+2026-10-29                                            60
+             Part 1 Summary
+
+
+
+             We talked through some topical issues around the Ethics of AI – energy and
+             exploitation, anthropomorphism and deception, racism and sexism. But we also
+             identified our working definition of Ethical AI to be ‘any and all AI designed
+             ethically’ – with a focus on how we can develop new technologies following the
+             minimum guiding principle of do no harm.
+
+
+
+
+2026-10-29                                                                                    61
+             Part 1 Summary
+
+
+
+             I suggested that maybe this concept of ‘being ethical’ gets a bit of a tough time in
+             the tech. community (whether that’s in industry or academia) because it can feel
+             like a bit of a chore that might somehow restrain our work.
+             But a key purpose of today is for me to try and show you how, on the contrary,
+             this leads to better tech and is pretty interesting to work on and consider.
+
+
+
+
+2026-10-29                                                                                          62
+             Part 1 Summary
+
+
+
+             Finally, we introduced the concept of mutual shaping, both as a (better) way to
+             think about the interactions between technology and society, but also as an
+             approach to take when developing new tech. Practically this means doing a
+             thorough study of the ‘problem’ (in all it’s socio-technological complexity) and
+             pursuing participatory design and evaluation methodologies with domain experts,
+             users and other stakeholders.
+
+
+
+
+2026-10-29                                                                                      63
+Time for a Break!
+Ethical Standards in AI and Robotics
+Ethical Standards in AI and Robotics
+Quick acknowledgement! ~
+The following draws a lot on the work of Prof. Alan
+Winfield on the (ongoing) ROBOTIPS project.
+Alan was the first ever Professor of Robot Ethics (that
+we know of) and has heavily contributed to national and
+international initiatives on ethical robot standards.
+Check out his blog (https://alanwinfield.blogspot.com/)
+for robots, ethics and more.
+             What are Standards?
+
+
+
+
+2026-10-29          adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/07/ethical-standards-in-robotics-and-ai.html   67
+             Standards vs Principles
+
+
+
+             An informal survey in 2019 revealed a total of 25 different sets of ethical principles
+             for robotics and artificial intelligence (AI) to date.
+             The earliest (1950) are Asimov’s laws of robotics: important because they
+             established the principle that robots should be governed by principles.
+             But a lot of them are more recent - 22 were published from 2017 onwards
+
+
+
+
+             https://alanwinfield.blogspot.com/2019/04/an-updated-round-up-of-ethical.html
+2026-10-29                 adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/07/ethical-standards-in-robotics-and-ai.html   68
+             Asimov’s three laws of Robotics (1950)
+
+             1.   A robot may not injure a human
+                  being or, through inaction, allow a
+                  human being to come to harm.
+             2.   A robot must obey the orders given it
+                  by human beings except where such
+                  orders would conflict with the First
+                  Law.
+             3.   A robot must protect its own
+                  existence as long as such protection
+                  does not conflict with the First or
+                  Second Laws.
+
+
+
+
+2026-10-29                                                69
+             Standards vs Principles
+             A cynical person might say it’s much easier to publish another set of principles
+             than it is to actually implement them:
+
+                                          PRINCIPLES
+
+
+
+
+                            SETS OF                               PRINCIPLES
+                                                                    SETS OF
+                           PRINCIPLES                             PRINCIPLES
+
+
+
+
+2026-10-29                                                                                      70
+             Standards vs Principles
+
+
+
+
+             Principles are not practice.
+             Standards are vital in bridging the gap between good intentions and good
+             practice, as demonstrated by current big-impact industries.
+
+
+
+
+2026-10-29                     c.f. Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/07/ethical-standards-in-robotics-and-ai.html   71
+             Standards, Regulation and Trust
+
+
+
+
+2026-10-29           adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2016/09/how-do-we-trust-our-robots.html   72
+             Ethics – Standards – Regulation => Trust
+
+
+
+
+2026-10-29             slide by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2016/09/how-do-we-trust-our-robots.html   73
+             Ethics – Standards – Regulation => Trust
+
+
+                                                Instead we could create
+                                              and utilise expert-informed
+                                                standards to share best
+                                               practices & ensure we are
+                                              delivering safe, effective &
+                                                   verifiable systems.
+
+
+
+
+2026-10-29                                                                   74
+             Ethics – Standards – Regulation => Trust
+
+
+
+
+             Some key initiatives (and practical resources) to be aware of. These can help you
+             assess and critique new technologies/typical design and development methods
+             you observe as well as inform your own practice.
+
+
+
+
+2026-10-29                                                                                       75
+             IEEE Ethics in Action
+
+
+
+
+             “The goal of The IEEE Global Initiative on Ethics of Autonomous and Intelligent Systems (“The IEEE
+             Global Initiative”) is that Ethically Aligned Design will provide pragmatic and directional insights
+             and recommendations, serving as a key reference for the work of technologists, educators
+             and policymakers in the coming years.”
+
+             https://standards.ieee.org/content/dam/ieee-standards/standards/web/documents/other/ead1e.pdf
+2026-10-29                                                                                                     76
+             IEEE Ethics in Action
+
+
+                            EAD1e: “provides a mapping of the conceptual
+                            framework of Ethically Aligned Design. It outlines the
+                            logic behind “Three Pillars” that form the basis of
+                            EAD1e, and it connects the Pillars to high-level
+                            “General Principles” which guide all manner of ethical
+                            A/IS design.”
+
+
+                            This is also informing current work on a bunch of new
+                            standards (although EAD1e itself does provide some
+                            recommendations on putting this stuff into practice)
+
+
+
+
+2026-10-29                                                                           77
+             IEEE Ethics in Action
+
+
+                                     - 14 standards, many are now
+                                     published, some are still being
+                                     worked on by expert working
+                                     groups (that you can join!)
+
+
+                                     - Standards exist; the question is
+                                     adoption…
+
+
+
+
+2026-10-29                                                                78
+             European Commission
+             Ethics Guidelines for Trustworthy AI
+
+
+
+
+2026-10-29    https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai   79
+               TL; DR: The EU AI Act
+               • The EU aims to regulate AI to ensure its safe and beneficial use
+               • AI systems will be classified based on their risk levels, with different
+                 regulations for each
+                  – Unacceptable risk AI systems, like those used for social scoring or harmful
+                    manipulation, will be banned
+                  – High-risk AI systems, used in critical areas like healthcare or law enforcement, will be
+                    strictly regulated
+               • Transparency requirements will be enforced for generative AI models like
+                 ChatGPT
+               • The AI Act expected to “begin” in 2026, but with some delays:
+                 https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-
+                 risk-deadlines-and-other-key-changes/
+
+             https://www.europarl.europa.eu/topics/en/article/20230601STO93804/eu-ai-act-first-regulation-on-artificial-intelligence
+2026-10-29
+             Key Takeaways on Ethical Guidelines and
+             Regulation
+
+             • The Ethics Guidelines are recommendations, while the AI Act is a legally
+               binding regulation with enforcement mechanisms
+             • The AI Act’s risk-based approach categorizes AI systems based on their
+               potential impact, with stricter regulations for high-risk systems
+
+
+             Both instruments emphasize a human-centric approach to AI, prioritizing human
+             safety, well-being and fundamental rights.
+
+
+
+
+2026-10-29                                                                                   81
+             ISO 42001: AI governance and compliance
+
+
+
+
+https://www.iso.org/home/insights-news/resources/iso-42001-explained-what-it-is.html
+2026-10-29                                                                        82
+               BS8611: Ethical Risk Assessment
+
+
+               British Standard BS8611 articulates a set of 20 distinct
+               ethical hazards and risks grouped under the categories:
+               • Societal Risks
+               • Application Risks
+               • Commercial/Financial Risks
+               • Environmental Risks
+               and provides advice for mitigating the impact of each
+               risk, plus suggestions on how such measures might be
+               verified or validated.
+  Updated 2023 version:
+  https://knowledge.bsigroup.com/products/robots-and-robotic-devices-ethical-design-and-application-of-robots-and-robotic-systems-guide
+
+2026-10-29                         adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2019/07/ethical-standards-in-robotics-and-ai.html   83
+             Example: An ERA of RoboTed
+
+             RoboTed uses the following technologies:
+             • Internet (WiFi) connection
+             • Cloud-based speech recognition and conversational AI
+               (chatbot) plus local speech synthesis
+             • Camera eyes for (local) facial recognition
+             • Motorised arms and legs to provide for limited baby-like
+               movement and locomotion.
+
+
+
+
+             A. Winfield and K. Winkle, “RoboTed: a case study in Ethical Risk Assessment" in Proceedings of the 2020
+             International Conference on Robot Ethics and Standards [available here]
+
+2026-10-29                     adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2020/10/roboted-case-study-in-ethical-risk.html   84
+             Example: An ERA of RoboTed
+
+             RoboTed is designed to:
+             • Recognise its owner, turning its face toward them
+             • Respond to physical play such as hugs and tickles.
+             • Tell stories (allowing for interruptions to answer
+               questions/repeat sections)
+             • Sing songs and encourage singing along
+             • Act as a child minder, allowing parents to both remotely
+               listen, watch and speak via RoboTed.
+
+
+             A. Winfield and K. Winkle, “RoboTed: a case study in Ethical Risk Assessment" in Proceedings of the 2020
+             International Conference on Robot Ethics and Standards [available here]
+
+2026-10-29                     adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2020/10/roboted-case-study-in-ethical-risk.html   85
+             Example: An ERA of RoboTed
+
+
+
+
+             A. Winfield and K. Winkle, “RoboTed: a case study in Ethical Risk Assessment" in Proceedings of the 2020
+             International Conference on Robot Ethics and Standards [available here]
+
+2026-10-29                     adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2020/10/roboted-case-study-in-ethical-risk.html   86
+             Example: An ERA of RoboTed
+
+
+
+
+             A. Winfield and K. Winkle, “RoboTed: a case study in Ethical Risk Assessment" in Proceedings of the 2020
+             International Conference on Robot Ethics and Standards [available here]
+
+2026-10-29                     adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2020/10/roboted-case-study-in-ethical-risk.html   87
+             Example: An ERA of RoboTed
+
+
+
+
+             A. Winfield and K. Winkle, “RoboTed: a case study in Ethical Risk Assessment" in Proceedings of the 2020
+             International Conference on Robot Ethics and Standards [available here]
+
+2026-10-29                     adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2020/10/roboted-case-study-in-ethical-risk.html   88
+             Example: An ERA of RoboTed
+
+
+
+
+             A. Winfield and K. Winkle, “RoboTed: a case study in Ethical Risk Assessment" in Proceedings of the 2020
+             International Conference on Robot Ethics and Standards [available here]
+
+2026-10-29                     adapted from slides by Prof. Alan Winfield: https://alanwinfield.blogspot.com/2020/10/roboted-case-study-in-ethical-risk.html   89
+Worked Example – Your Turn
+             Brief: Autonomous Robot Fitness Coach
+             You are tasked to design an autonomous social robot to help motivate people
+             through a pre-prescribed national health service programme. The aim is to
+             improve motivation in sessions where people would normally work out alone.
+
+
+
+
+                  Left:: J. Fasola and M. J. Matarić, ‘R obot exerc is e instructor: a s ocially assistive robot sys tem to monitor and encourage physical exerc is e for the elderly’, in RO-MAN, 2010 IEEE, 2010, pp. 416–421.
+
+                   Right: S. Schneider, M. Goerlic h, and F. Kummert, ‘A framework for designing socially as sistive robot interactions’, Cognitive Systems Researc h, vol. 43, no. Supplement C, p p. 301–312, Jun. 2017.
+
+
+2026-10-29                                                                                                                                                                                                                         91
+             Exercise Programme: NHS Couch to 5km
+
+
+                           Early sessions include short burst of running
+                           interspersed with periods of walking (e.g. 1 minute
+                           walk, 1.5 minute run x 8).
+                           Running times get longer and longer until you run
+                           non-stop for about 30 minutes/cover about 5km.
+                           The whole programme is 27 sessions, designed to
+                           be undertaken as 3x sessions per week for 9
+                           weeks.
+                           The programme is currently delivered by an app,
+                           and is designed for people of all ages who have no
+                           major health concerns that prevent safely running
+                           (slowly if necessary) for about 30 minutes non-stop.
+
+
+2026-10-29                                                                        92
+             Task 1: Taking a Mutual Shaping Approach
+
+
+             Can you sketch out a research and development pipeline, detailing the key
+             activities you would undertake between getting this brief and delivering the
+             finished, ready-to-use robot?
+
+
+
+
+2026-10-29                                                                                  93
+             Task 1: Taking a Mutual Shaping Approach
+
+
+             Can you sketch out a research and development pipeline, detailing the key
+             activities you would undertake between getting this brief and delivering the
+             finished, ready-to-use robot?
+             • What are the key design, development and evaluation activities you might want
+               to do? Some key milestones?
+             • Who would you want to talk to? Anywhere you want to visit? When?
+             • Any thoughts on how to automate the robot, and any related mutual shaping
+               considerations to be made?
+
+
+
+
+2026-10-29                                                                                     94
+             Expert-in-the-Loop IML as Participatory Design
+
+                                         1.   Co-design robot actions and
+                                              input space with a domain
+                                              expert
+
+
+                                         2.   Co-design a ‘teaching
+                                              interface’ for using those
+                                              actions and responding to
+                                              robot suggestions
+
+
+                                         3.   Domain expert teaches the
+                                              robot via interactive machine
+                                              learning in-the-wild
+
+
+2026-10-29                                                                    95
+             Expert-in-the-Loop IML as Participatory Design
+
+
+
+
+2026-10-29                                                    96
+> 12 hours co-design
+      sessions
+             Expert-in-the-Loop IML as Participatory Design
+
+
+             Installed in university gym for 3
+             months, used with 10 participants of
+             whom 1 dropped out
+
+
+             Ran a total of 232 exercise sessions
+             •   151 supervised (training the ML)
+             •   32 autonomous, trained ML
+             •   49 autonomous heuristic based
+                 ‘control’
+
+
+
+2026-10-29                                                    98
+             Expert-in-the-Loop IML as Participatory Design
+
+
+
+
+2026-10-29                                                    100
+             Expert-in-the-Loop IML as Participatory Design
+
+
+              Studied context of use before deploying - with some willing colleagues as test
+               subjects ;)
+              Worked with a domain expert throughout design and automation
+              Domain expert presence throughout ensured safety of participants
+              Final system ‘explainable’ in the sense of knowing exactly where the training
+               data has come from
+              Real world deployment allowed for study of emergent mutual shaping effects
+
+
+             …something obvious they didn’t do, but ideally would have?
+
+
+2026-10-29                                                                                      101
+             Expert-in-the-Loop IML as Participatory Design
+
+
+              Studied context of use before deploying - with some willing colleagues as test
+               subjects ;)
+              Worked with a domain expert throughout design and automation
+              Domain expert presence throughout ensured safety of participants
+              Final system ‘explainable’ in the sense of knowing exactly where the training
+               data has come from
+              Real world deployment allowed for study of emergent mutual shaping effects
+
+
+             X No design/development work with target users
+
+
+2026-10-29                                                                                      102
+             Task 2: Ethical Risk Assessment
+
+
+
+                                     With reference to BS8611, IEEE’s
+                                     EAD1e or by taking inspiration from
+                                     the RoboTed example, can you
+                                     identify some ethical risks that might
+                                     arise from our robot fitness coach?
+                                     Can you also suggest any potential
+                                     mitigating strategies?
+
+
+
+
+2026-10-29                                                                    103
+              More case studies
+
+
+
+
+             https://pair.withgoogle.com/guidebook/case-studies
+2026-10-29                                                        104
+Final Recap
+
+
+Technological determinism has driven a lot of tech. development, and likely
+resulted in a lot the problematic issues we see know (e.g. racism, sexism in AI).
+
+
+A more accurate view of tech in the world can be achieved by taking a mutual
+shaping view. Actively pursuing mutual shaping means to (i) properly situate tech
+into our lives and social systems and (ii) invite society into tech design. Both of
+which leads to more effective tech.
+
+
+Emerging ethical standards build on this provide practical guidance for ethical AI
+development and tangible ways to assess and address ethical risk.
+Final Recap
+
+
+AI can impact several aspects of our daily lives, such as
+• Labour
+• Surveillance & privacy
+• Sustainability
+• Decision-making (credit-score attribution, health diagnosis, recommendations, …)
+• …
+Take Home Message
+
+
+
+
+Ethical AI (that is any AI that is designed, developed and deployed ethically) is
+better AI, and is incredibly fulfilling to develop.
+             Assignment: Essay on Ethical and Societal
+             Aspects of AI
+             Step 0
+             • Form a group of 3-4 people (4 is strongly preferred).
+             • Register as a group on Canvas
+             • Agree on a meeting date
+
+
+             Step 1 (individually)
+             • Choose at least two papers to read (from the ones listed in the assignment on
+               canvas)
+             • Write an essay (500-600 words excluding references) summarizing the most
+               important take-aways regarding ethical and societal aspects of AI from the reading
+               material
+
+2026-10-29                                                                                      108
+             Assignment: Essay on Ethical and Societal
+             Aspects of AI
+
+             Step 2
+             • Meet with your essay group and discuss your findings from individual reflection
+             • Take a picture! ☺
+             • Produce a text (500-600 words) that summarizes the conclusions from this
+               discussion
+
+
+             Deadline
+             • Nov 9, 7:00 pm
+             Read the assignment description carefully on canvas for all the details,
+             •
+             particularly the note on using LLMs in this assignment.
+2026-10-29                                                                                       109
+

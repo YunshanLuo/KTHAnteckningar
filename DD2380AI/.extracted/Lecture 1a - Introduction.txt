@@ -1,0 +1,306 @@
+DD2380 Artificial Intelligence
+            Introduction
+                                         Go to
+                                     www.menti.com
+                                     www.menti.com
+
+
+
+
+Mentimeter 1
+What is Artificial Intelligence?
+
+                                   Use code 3863 2516
+AI is not a new thing
+• 1956: Dartmouth Conference, AI term is born.
+• 1959: computers play checkers better than the average human
+• 1974-80: funding cuts (first “AI winter”).
+• 1985: billion dollars spent on expert systems
+• 1987: market for specialized AI hardware collapses
+• 1997: IBM’s Deep Blue beats Garry Kasparov
+• 2012: Deep learning with ImageNet breakthrough
+• 2016: AlphaGo beats Lee Sedol
+• 2017: Attention is all you need (Transformers)
+• 2022: ChatGPT
+• …
+
+
+                                                                3
+ChatGPT boom
+               Between
+               June 2022
+               and March      ChatGPT user update:
+               2023, global   November 2023: ~100 M
+               searches for   August 2026 > 1.000 M
+               'AI' almost
+               quadrupled
+               from 7.9
+               million to
+               30.4 million
+Rate of growth of training performance
+
+
+
+
+Sources: ARK Investment Management LLC, 2024. This ARK analysis is based on a range of data sources,
+including Benaich 2023, Touvron et al. 2023, Yang et al. 2023, Leviathan et al. 2022, and Dao 2023
+Gartner’s Hype Cycle
+• A model that describes the typical progression of new
+  technologies from initial excitement to mainstream
+  adoption. The hype cycle has five stages:
+1. Innovation Trigger – A new technology emerges and
+   garners interest.
+2. Peak of Inflated Expectations – Hype builds as people
+   start seeing potential applications, often leading to
+   overblown expectations.
+3. Trough of Disillusionment – The initial excitement fades,
+   and limitations or challenges become more apparent.
+4. Slope of Enlightenment – Some companies and users
+   continue developing and understanding the technology's
+   practical uses and realistic applications.
+5. Plateau of Productivity – The technology matures,
+   stabilizes, and finds its niche in the market, leading to
+   mainstream adoption and steady progress.
+                                                   Go to
+                                               www.menti.com
+                                               www.menti.com
+
+
+
+
+Mentimeter 2
+Where is generative AI in this year’s hype
+cycle?
+                                             Use code 3863 2516
+                                            Go to
+                                        www.menti.com
+                                        www.menti.com
+
+
+
+
+Mentimeter 3
+I use LLMs to help me in my studies
+
+                                      Use code 3863 2516
+Harvard Undergraduate Study
+• A survey of 326 Harvard students
+  (August 2024) revealed that 87.5
+  percent use generative AI, at least
+  weekly.
+• ChatGPT is by far the most popular. AI is
+  often used to answer questions, as a
+  replacement for traditional sources of
+  information such as Wikipedia and to
+  support writing and programming.
+                                    Go to
+                                www.menti.com
+                                www.menti.com
+
+
+
+
+Mentimeter 4
+I use LLMs when programming
+
+                              Use code 3863 2516
+Programming with Github Copilot
+
+
+
+
+Source: quantifying GitHub Copilot’s impact on developer
+productivity and happiness - The GitHub Blog (2022)
+Amazon
+• Amazon Web Services CEO, Matt Garman,
+  reportedly hinted at the possibility of artificial
+  intelligence taking over a significant portion of
+  coding tasks.
+• “If you go forward 24 months from now, or some
+  amount of time — I can’t exactly predict where it
+  is — it’s possible that most developers are not
+  coding,” said Garman
+ Narrow (weak) AI vs. general (strong) AI
+Solves a single task, even better than   Solves any task a human can solve
+a human                                  without being tailored for it
+
+
+
+
+                                                                             14
+General (strong, full) AI
+A system that solves any task a human can solve without being tailored for it
+
+
+How could we test for general intelligence?
+• ”IKEA” Test
+• The Robot College Student Test
+• The Employment test
+• The Coffee Test
+• The Turing Test
+
+
+
+
+                                                                                15
+2022: Blake Lemoine on LaMDA
+
+
+
+
+                               16
+                                                Go to
+                                            www.menti.com
+                                            www.menti.com
+
+
+
+
+Mentimeter 5
+When will we achieve Artificial General
+Intelligence (AGI)?
+                                          Use code 3863 2516
+AI “today”
+Andrew Ng in January 25, 2017, feels even more convincing today:
+• “Just as electricity transformed almost everything 100 years ago, today I actually have a hard time
+  thinking of an industry that I don’t think AI will transform in the next several years,”
+
+
+
+
+                                                                                                        18
+Where we are today: NLP and Gen AI
+         (2023
+         )
+Where we are today: image understanding
+Where we are today: autonomous driving
+
+
+
+
+Navlab 1 autonomous vehicle (86-90, CMU)
+  Where are we today:
+robotics
+About me
+• Andre Pereira
+    • Associate Professor in Human-Robot Interaction
+    • Joined KTH in 2018
+• Previously
+    •   Masters and PhD (2014) – IST Technical University of Lisbon
+    •   Postdoc – Yale University
+    •   Senior Research Associate – Disney Research Pittsburgh
+    •   Senior Solutions Architect – Furhat Robotics
+• Teaching
+    •   Course responsible for DD2380 – Artificial Intelligence
+    •   Course responsible for FDT3304 – Topics in Social Robotics
+    •   Teacher, assistant for DD2421 – Machine Learning
+    •   Assistant for DT2140 – Multimodal Interaction and Interfaces
+Four viewpoints on AI
+
+                        Humanly                 Rationally
+
+
+
+                   Think like humans         Think rationally
+        Thinking   Cognitive modelling    “Laws of thought” / logic
+                       approach                 approach
+
+
+                     Act like humans           Act rationally
+         Acting
+                   Turing Test approach   Rational-agent approach
+
+
+
+                                                                      26
+                                             Go to
+                                         www.menti.com
+                                         www.menti.com
+
+
+
+
+Mentimeter 6
+Which Viewpoint defines AI the best?
+
+                                       Use code 3863 2516
+Act rationally: intelligent agents
+• "AI: A Modern Approach" covers all four AI viewpoints, but primarily adopts the rational-agent approach
+• Rational behavior (doing the right thing given the available information): choosing the action expected to
+  maximize the performance measure.
+• Perfect rationality may be impossible because of computational and imperfect information limitations.
+                                                                            Environment/World
+• An agent perceives its environment and acts upon it.
+
+
+           Agent function:
+Assembly robot arm
+• What are the performance measures?
+   • Percentage of correctly assembled objects, speed, damage/safety, energy/cost
+• What are the sensor inputs?
+   • Camera images, joint positions, force-torque readings
+• What are the actions?
+   • Arm movements, gripper commands
+• What is the environment?
+   • Conveyer belt with pieces, partially observable, stochastic, sequential, dynamic, continuous,
+     single-agent
+
+
+
+
+                                                                                                     29
+Environment properties
+
+Property                        Meaning
+Fully vs partially observable   Does the agent have access to all relevant state information?
+Deterministic vs stochastic     Does an action uniquely determine the next state?
+Episodic vs sequential          Do previous actions affect future decisions?
+Static vs dynamic               Can the environment change while the agent is deciding?
+Discrete vs continuous          Are states/actions/time discrete or continuous?
+Single vs multi-agent           Are there other agents whose actions matter?
+Cooperative vs competitive      Are the agents' objectives aligned or opposed?
+
+
+
+
+                                                                                                30
+Mentimeter 7-10
+•   Think, Pair, Share
+                                                         Go to
+•   For an autonomous car and for a chess engine
+                                                     www.menti.com
+                                                     www.menti.com
+
+
+
+
+     • What are the performance measures?
+     • What are the inputs?
+     • What are the outputs?
+     • What are the environment properties?
+         •   Observability (Full/Partial)
+         •   Deterministic vs Stochastic
+         •   Episodic vs sequential
+         •   Static vs Dynamic
+         •   Discrete vs Continuous
+         •   Single agent vs Multi agent
+         •   Cooperative vs competitive            Use code 3863 2516
+AI is the ability of an artificial machine to
+• Solve problems
+    • search, adversarial search
+• Reason, plan, make decisions
+    • logic, inference, planning algorithms,
+      reinforcement learning
+• Learn
+    • machine learning, neural nets
+• Communicate and perceive
+    • computer vision, perception, speech recognition
+      and synthesis, natural language processing
+• Move and manipulate objects
+    • robotics
+
+
+
+
+                                                        32
+

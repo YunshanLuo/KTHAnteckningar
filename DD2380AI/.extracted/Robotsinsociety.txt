@@ -1,0 +1,706 @@
+Int J Soc Robot (2010) 2: 439–450
+DOI 10.1007/s12369-010-0066-7
+
+
+
+
+Robots in Society, Society in Robots
+Mutual Shaping of Society and Technology as a Framework for Social Robot Design
+
+Selma Šabanović
+
+
+
+
+Accepted: 21 June 2010
+© Springer Science & Business Media BV 2010
+
+
+Abstract This paper analyzes scientists’ discourses on the       1 Introduction
+social impacts and acceptability of robotics, based on data
+collected through participant observation and interviews         The expectation that robots will become a part of every-
+with robotics researchers in the US and Japan. It shows that     day life, working alongside humans as assistants, team-
+a linear, technologically determinist, view of the interaction   mates, care-takers, and companions, has brought the dis-
+between robots and society is dominant in the field; in this     cussion of societal consequences and reactions to robots to
+narrative the social impact of robotic technologies derives      the forefront of robotics research. In these future-oriented
+mostly from their technological capabilities and the aim is      discussions, social robots often represent “technological
+for society to accept and adapt to technological innovations.    fixes” [39]—applications of technology meant to solve so-
+The framework of mutual shaping and co-production, which         cial problems that are non-technical in nature—for a vari-
+explores the dynamic interaction between robotics and so-        ety of pressing issues in contemporary society. Telepresence
+ciety, is proposed as an alternative perspective on the dy-      robots enable knowledge workers to be in multiple places
+namics between society and technology and a framework            at once [29, 32]; companion and care-taking robots provide
+for envisioning and evaluating social robots. This approach      supervision and social interaction for children and the el-
+                                                                 derly [36, 42]; robotic educational assistants assist teach-
+focuses on analyzing how social and cultural factors influ-
+                                                                 ers in busy classrooms [28, 47]; and socially assistive ro-
+ence the way technologies are designed, used, and evaluated
+                                                                 bots help patients follow their dietary and therapeutic regi-
+as well as how technologies affect our construction of social
+                                                                 mens [19, 23]. Though motivated by particular social issues,
+values and meanings. Finally, the paper describes a range of
+                                                                 such as an increasing elderly population or the globalization
+methodologies of contextually grounded and participatory
+                                                                 of work, these research aims emphasize the exploration of
+design that fit the mutual shaping framework and support a
+                                                                 technical capabilities and define social problems in terms
+socially robust understanding of technological development
+                                                                 that make them amenable to technological intervention.
+that enables the participation of multiple stakeholders and          A technocentric approach to robotics is further supported
+disciplines.                                                     by dominant perspectives on the relationship between social
+                                                                 change and technological development, which depict a lin-
+Keywords Mutual shaping of technology and society ·              ear relationship between robotics and society. In these nar-
+Technological determinism · Design · Social analysis of          ratives, technological development in robotics, led by ex-
+robotics                                                         perts from academia, industry, and government, figures as
+                                                                 the primary driver of social progress, while society fills a
+                                                                 passive role of accepting and adapting to the results of tech-
+Supported by NSF Grant #SES-0522630.                             nological innovation. This technologically determinist fram-
+                                                                 ing of the dynamics between technology and society acts
+S. Šabanović ()                                                as a self-fulfilling prophecy, encouraging the public to view
+School of Informatics and Computing, Indiana University,
+901 E. 10th Street, Bloomington, IN 47408, USA
+                                                                 technological change as an inevitability and focus “on how
+e-mail: selmas@indiana.edu                                       to adapt to technology, not on how to shape it” [22, p. 5].
+440                                                                                                             Int J Soc Robot (2010) 2: 439–450
+
+Furthermore, these contemporary formulations of the “sci-                      Institutionalized forms of robotics practice highlight lab-
+ence finds, industry applies, man conforms”1 principle do                  oratories, academic conferences, and funding agencies as
+little to address the role socio-cultural norms, values, and               the main loci of knowledge production in the field. Within
+assumptions play in the daily practices of designing robotic               the lab, the social relations and cultural assumptions that un-
+technologies, allowing these to stay implicit in the design                derly robot design, while forming the implicit basis of tech-
+process and out of broader societal debate and decision-                   nical decision-making, are obscured by explicit attention
+making.                                                                    to technological innovation. The social context of use and
+    In this paper, I propose mutual shaping of robotics and                potential users come into focus once robotic technologies
+society, which depicts a bidirectional dynamic between so-                 have been developed and are ready to be evaluated. Even in
+ciety and technology, as an alternative framework for devel-               these moments of reflection on the interplay between tech-
+oping social applications of robots. I use data collected dur-             nology and society, the emphasis on technical benchmarks
+ing participant observation and interviews with robotics re-               and breakthroughs can persist, although it is becomingly in-
+searchers in the US and Japan between 2005 and 2007 to an-                 creasingly clear that the measures of success of social robots
+alyze existing discourses on social impacts and acceptability              should include the subjective perceptions of users [1, 48].
+in the context of social robotics research.2 I particularly fo-                The identification of robots with advanced technology,
+cus on depictions of the dynamics between technology and                   so complex that its functioning can only be understood
+society, showing that the dominant discourse in social robot-              by experts, further promotes the distancing of social and
+ics relies on a technologically determinist notion of social               technological decision-making in robotics from broader
+change. I follow with a description of the concept of mutual               society. Faced with the complexity of advanced socio-
+shaping of society and technology and discuss how we can                   technical systems, everyday people—the potential users of
+use it to analyze the process and outcomes of robot design.                technologies—leave decisions about the directions for fu-
+Finally, I suggest a number of participatory and contextually              ture development to technical experts. Such development of-
+grounded methods of design, which reflect and include mul-                 ten moves ahead without inclusive discussions of the conse-
+tiple social and disciplinary perspectives, as ways to develop             quences of technological innovation for relevant user groups
+more socially robust and responsible technologies.                         and society as a whole. The potential users of robotics tech-
+                                                                           nologies come to occupy a secondary role in the process of
+                                                                           designing robotic technologies; they are present in the field
+                                                                           as objects of study, rather than active subjects and partici-
+2 Social origins of autonomous technologies
+                                                                           pants in the construction of the future uses of robots.
+                                                                               Contrary to the dominant narrative and practices in robot-
+The notion of robotic autonomy in practice suggests that,                  ics, the relationship between robotics and society is neither
+once programmed, robots should be able to operate with                     autonomous nor linear. Robot design is influenced from its
+minimal human intervention. Robots can also be viewed as                   very inception by the cultural assumptions of designers [33].
+“autonomous technologies” [46] in a conceptual sense, indi-                Social interactions and evaluations are a fundamental com-
+cating that their development is led by scientific imperatives             ponent of the production of technological knowledge and
+and technological possibilities rather than explicitly defined             artifacts [13]. The social context of design regulates the rela-
+social choices.3 While it is generally accepted that robots                tions of production and defines notions of social interaction
+stand to have notable social implications, society often fig-              that are built into robots. Making social choices, explicitly
+ures as an externality for a significant portion of the design             or implicitly, is therefore an integral part of the daily prac-
+process, until it is time to apply and evaluate designs.                   tice of robotics; these choices then motivate technological
+                                                                           design and suggest ways to measure the significance of its
+1 This was the motto of the 1933 Chicago World Fair “Century of            results.
+Progress Exposition.”                                                          The practice of robot design extends beyond the produc-
+2 I was a visiting scholar at the National Institute for Advanced Indus-   tion of technological artifacts to include the construction of
+trial Science and Technology from March to June 2005, as well as           “technoscientific imaginaries”—narratives about social or-
+at the Robotics Institute from July to December 2005. During 2005–         der, human behavior and psychology, and common norms,
+2007, I also participated in robotics exhibitions and conferences and
+                                                                           beliefs, desires, and expectations.4 Societal applications of
+interviewed 40 robotics researchers across Japan and the US. All inter-
+views were conducted in English; quotations from them are presented
+here in their spoken form. All interviewees are anonymized.                4 Science and technology studies scholars such as Verran [38], Gre-
+3 Beyond its literal technical meaning, the concept of “autonomous
+                                                                           gory [15], Fujimura [13], Fortun and Fortun [12], Suchman [34] use
+technology” refers to a social discourse which frames technological        the notion of technoscientific imaginaries to show how the production
+development as inevitable and self-generating, “the belief that some-      of scientific facts and technological artifacts relies on implicit and ex-
+how technology has gotten out of control and follows its own course,       plicit commonly held understanding of society, social norms, and prac-
+independent of human direction” [46, p. 13].                               tices. The “social imaginary” signifies a shared world-view that enables
+Int J Soc Robot (2010) 2: 439–450                                                                                                          441
+
+robots can reproduce conceptions of social order that fa-
+vor a particular status quo, such as patriarchal family rela-
+tions [31] or gendered notions of work [2]. Popular culture,
+in turn, can be “engineered” to support the introduction of
+robots into society [16]. In the words of Andrew Pickering,
+“the world makes us in one and the same process as we make
+the world.” [30, p. 26].
+    The role of social practices and cultural values in robot-
+ics and the concurrent production of robotic technologies
+and social imaginaries suggest that unconscious as well as
+conscious decisions in technology design can “open certain
+social options and close others” [22]. In the next section, we
+reflect on these emerging robotics imaginaries through an
+analysis of discourses about society and technology in the
+robotics community.
+
+
+3 Technological push, social pull
+
+In developing robots as technological solutions to social
+problems, robotics researchers describe the interactions they
+expect to occur between emerging robotic technologies and
+society. While social issues are invoked to motivate robot-
+                                                                          Fig. 1 Bill Gates’ visions robots in the home, as shown in Scientific
+ics research, they are quickly subsumed by discussions of                 American [14, p. 61]. Illustration by Don Foley
+technological possibilities and concerns. Roboticists refer-
+ence a panoply of technological advances—the PC revo-
+lution, Moore’s Law,5 ubiquitous technologies—as models                   chance to interact with approximately one hundred differ-
+and resources supporting the successful implementation and                ent types of robots [21]. Held in the following year in New
+adoption of robots in society. In their emphasis on techno-               York, Wired NextFest 2006 featured robots as the future of
+logical advancement as the determinant of societal success,               exploration, transportation, security, health, entertainment,
+roboticists define the societal issues they wish to solve “not            design, and communication. In Japan, communications and
+[as] social, political, cultural, historical problems, but [as]           electronics firms NEC, Hitachi and Sony are taking part in
+biotechnological problems that call for biotechnological so-              the robotics market with personal and entertainment robot-
+lutions” [31, p. 372]. Society, in turn, is displayed as a pas-           ics projects along with automobile firms Honda, Toyota, and
+sive receptor of the products of visioning and negotiation
+                                                                          Mitsubishi. In the US, Microsoft’s Bill Gates promotes ro-
+performed by experts in the process of design.
+                                                                          botics as the next step in the computer revolution; he en-
+                                                                          visions robots as PCs that “will get up off the desktop and
+3.1 Following the technological imperative
+                                                                          allow us to see, hear, touch and manipulate objects in places
+Comparing robotics to the computer and automobile indus-                  where we are not physically present” [14]. Similarly to com-
+tries, roboticists, governments, and technological enthusi-               puters, the trajectory of social robots starts in the laboratory,
+asts expect robots to become equally ubiquitous. Proclaim-                is expected to spread to society through hobby and toy ap-
+ing that “we live in the robot age,”6 the Aichi Expo held                 plications, and finally ends with “robots in every home” [14]
+in Japan in the spring of 2005 featured robots as a promi-                (see Fig. 1).
+nent component of everyday urban life, giving visitors a                      In this technologically optimistic perspective on the place
+                                                                          of robots in society, technological innovation pushes society
+                                                                          to a better, though vaguely described, future. The introduc-
+the functioning of the group and its members in performing common
+tasks [37]; they also include tacit knowledge and legitimate collective
+                                                                          tion of social robots into our everyday lives is expected to
+assumptions about how things are regularly done. As such, imaginar-       have a dramatic effect, in the manner of computer and inter-
+ies support the production of particular types of scientific knowledge    net technologies:
+and technological artifacts, and transform the broader societal imagi-
+nary [37] by encouraging new practices and world-views.                      “Of course we knew computers had many possibili-
+5 See Moravec [27], Kurzweil [20].
+                                                                             ties, but we did not know how it was going to change
+6 http://www.expo2005.or.jp/en/robot/index.html.
+                                                                             our life-styles. . . Robots have many possibilities, but
+442                                                                                                      Int J Soc Robot (2010) 2: 439–450
+
+   we don’t know how to use [them]. I’m just inviting                 the cognitively and socially impaired; housework and care-
+   the same story as computer, no expectations.”7                     taking aides for busy families; and pet and companion robots
+                                                                      to provide social and cognitive stimulation. Justifications for
+Raj Reddy, founding Director of the Robotics Institute at
+                                                                      such projects rely on the identification of social issues that
+CMU, sees the possibility for a “human-robot symbio-
+                                                                      are amenable to intervention using robotics. Discussions of
+sis. . . that might give us super-human capabilities that would
+                                                                      the social space and actors, in turn, are geared towards sup-
+make it possible for us to think and do things hundreds of
+                                                                      porting the development of new robotic technologies rather
+times faster and cheaper than we do now.”8 Ray Kurzweil
+                                                                      than developing a robust analysis of the problem, technol-
+proposes that the law of accelerating returns will solve the
+                                                                      ogy’s potential role (positive and negative) in its resolution,
+digital divide as well as “disease, poverty, environmental
+                                                                      and the different meanings that technology might come to
+destruction, unnecessary suffering of all kinds,” and finally         have for users.
+supersede biological evolution [20]. Rodney Brooks agrees                Social applications for robots are often envisioned as
+with the “Moravec-Kurzweil salvation” scenario:                       replacing or assisting humans in various tasks or as im-
+   “Intelligent computers and robots will provide us with             provements on existing technologies. One future scenario
+   unimaginable wealth brought on by the fantastic lev-               envisions humanoid robots and androids as more natural
+   els of productivity that the new technology will pro-              communication interfaces that can replace not only mobile
+   vide. If history is any guide, this is unquestionably              phones and computers, but other people, as sources of infor-
+   true. We in the Western world live in levels of comfort            mation:
+   that were unimaginable to royalty just a few centuries                “At the train station, you may want to ask for di-
+   ago. . . The introduction of intelligent robots into our              rections, where is the exit, where is the ticket ma-
+   everyday lives will surely continue the objective in-                 chine. . . In the local area, maybe fifty years ago, we
+   creases in our standard of living” [4, p. 205].                       could ask [anyone]. Now we have some problems,
+According to Brooks, stress poses a potential negative effect            maybe it’s a social problem, but it is difficult to ask
+on our “subjective standard of living,” but does little to un-           each other in urban areas. People. . . don’t like to type
+dermine the objectively measurable signs of social progress.             or watch a small display. If we had more human-like
+    The examples above share a technocentric, linear view                media this would be better.”9
+of history, in which both technological growth and social             Beyond their roles as naturalistic interfaces and social medi-
+progress are inevitable, the former driving the latter. Techno-       ators, the embodied presence of robots may also be used to
+logical development can be predicted and controlled, while            simulate human social presence:
+societal dynamics are less easily determined, but expected
+                                                                         “If you look at Japanese generations, we are going
+to follow the technological imperative. There is little recog-
+                                                                         to have a huge number of elderly and small number
+nition that robotics technologies might have differential ef-
+                                                                         of young. But in town or city you want to see peo-
+fects on different parts of society; the technologically op-
+                                                                         ple, . . . not a ghost town. Human presence is very im-
+timistic view of the future of robots in society assumes an
+                                                                         portant in our daily lives, for the quality of [life]. I
+upper middle class subject, similar to robotics researchers
+                                                                         think simple interactive tasks, one to five minutes, can
+themselves, as its main consumer. The possibility for tech-
+                                                                         be done with these kinds of robots [Points to a photo
+nological progress to have controversial or socially disrup-
+                                                                         of an android].”10
+tive effects, such as in the bombings of Nagasaki and Hi-
+roshima or the Bhopal disaster, also evades the purview of            This application narrowly defines presence in short-term
+these reductionist depictions of our robotic futures.                 interactions as human-like embodiment, which supports
+                                                                      the development of humanoid social robots. Roboticists at
+3.2 Developing “technological fixes”                                  Waseda University take the social role of their humanoid
+                                                                      robot, Wabot, one step further by casting it as a social in-
+In accordance with the technologically driven view of social          termediary, a tool for building community, a “bridge of the
+progress, robots are proposed as “technological fixes” for            heart and the heart” [26, p. 12]. In a series of books in-
+far-reaching social issues, often including vulnerable popu-          troducing Wabot to the public, its creators propose that the
+lations: socially assistive robots for the sick, the elderly, and     robot can resolve issues of social isolation and loneliness
+                                                                      caused by mobile phones and the internet. Even when robots
+                                                                      are suggested as a response to the unintended consequences
+7 Interview with researcher from Advanced Telecommunications Insti-
+
+tute International (ATR), Japan.
+8 Speech at the Robot Hall of Fame inauguration ceremony in October   9 Interview with researcher from Osaka University, Japan.
+
+2004, Pittsburgh, PA.                                                 10 Interview with researcher from Osaka University, Japan.
+Int J Soc Robot (2010) 2: 439–450                                                                                                 443
+
+of other technologies, scientists may fail to consider their            human capability not to sell. It has to surpass human
+possible negative effects as communicative and interactive              capability. So if you have a computer that is as fast as
+technologies.                                                           a person, you don’t buy that. Now you get computers
+    Though referencing a limited scope of social robot appli-           to do number crunching because it’s a million times
+cations, the examples above display a trait typical to techno-          faster and much more accurate. What can a robot pro-
+logically determinist narratives about robots in society. Af-           vide? One is physical capability, motion capability. It
+ter acknowledging a social challenge, in this case social iso-          has to be 100 times and million times better than hu-
+lation, these narratives focus on legitimizing technological            man being. When a robot can provide that, it can walk
+development rather than try to understand the interactions              24 hours, all year. That we cannot do with a human
+between society and technology that have led to them. By                being.12 ”
+focusing on technical capabilities, researchers disregard the        Technological capabilities not only make robots more de-
+complexities of the social world that the resulting artifacts        sirable, but also ensure their ability to function in society.
+are expected to inhabit and affect. The analysis of the so-          Honda’s humanoid ASIMO, purportedly “created with the
+cial environment and the actors in it is relevant only inso-         sole purpose of helping people,”13 has advanced technical
+far as this understanding can be applied to the development          capabilities that enable it to navigate and interact in the hu-
+of new robotic capabilities. Social actors, furthermore, are         man world:
+viewed not as participants in knowledge production, but as
+objects to be computationally described and technologically             “At 4 feet tall, ASIMO’s camera eyes are at just the
+affected, while social ecologies become domains in which                right height to communicate with someone who’s sit-
+new robots can be applied and tested. The social void, iden-            ting in a chair or someone who finds themselves in a
+tified by poorly explained, is ready to be filled with robotic          wheelchair. And this is also the perfect height for be-
+bodies as they become available.                                        ing able to switch the lights on and off, open and close
+                                                                        doors, clear a table, or move things around. . . ASIMO
+                                                                        can also dynamically adjust the speed and the stride of
+3.3 Applying technology in society
+                                                                        his step. ASIMO can take large steps and small steps
+                                                                        and ASIMO can even slow down. That can come in
+While technology as the driver of historical and social
+                                                                        handy when ASIMO is trying to be quiet at night and
+progress underlies many governmental plans for the devel-
+                                                                        not wake up anybody in the home, especially small
+opment and funding of robotics, the difficulty of developing
+                                                                        children.”14
+successful commercial applications of social robots raise the
+issue of constructing a viable market for robotic technolo-          This focus on the technological abilities inherent to ASIMO
+gies. Particularly in Japan, which focuses most prominently          is particularly notable in relation to Honda’s description of
+on commercializing robots, “almost all companies are con-            ASIMO as an example of technology that is “approach-
+cerned [with finding] good product concepts in home robot-           able and warm. . . that people can appreciate, engage with,
+ics. . . they have the technologies, just not applications.”11       and relate to.”15 While aiming to inspire affective responses
+Even in the discourse on commercial robotics, however,               from users, the narrative focuses on ASIMO’s functional
+technological innovation precedes the discussion of social           characteristics and stops short of discussing the subjective
+needs; the search is for applications that will encourage            interpretations people could bring to their interactions with
+users to accept existing and future technological develop-           ASIMO and its presence in their home.
+ments. Once again, the public is put in the passive position            This uncritical view of technological proliferation in
+of taking up technologies after they have been constructed           everyday life extends to considerations about modifying our
+in robotics laboratories; the problem now becomes finding            environments to better suit robots. The combination of ro-
+what kind of technical developments will be attractive and           botics with ubiquitous computing provides new possibilities
+acceptable to users.                                                 for robots in the real world:
+   Robotics researchers understandably focus on their field             “We tend to put robot into our present lifestyle. It’s
+of expertise and suggest that robots can be made more so-               hard to see the difference between the door for the re-
+cially acceptable through the technical advancements they
+offer:                                                               12 Interview with researcher from Sony Computer Science Laborato-
+
+                                                                     ries, Japan.
+   “If you look at the history of products there is a ten-           13 HONDA representative speaking at 2005 Robot Hall of Fame inau-
+   dency for any artificial system which is comparable to
+                                                                     guration.
+                                                                     14 HONDA representative speaking at 2005 Robot Hall of Fame inau-
+
+11 Interview   with researcher from Tokyo Metropolitan University,   guration.
+Japan.                                                               15 http://world.honda.com/news/2006/c061215ASIMO/.
+444                                                                                                  Int J Soc Robot (2010) 2: 439–450
+
+                                                                      privacy and security concerns. The main criteria for mak-
+                                                                      ing sure that robots fit into the social space are practicality
+                                                                      and cost, rather than more qualitative measures or concerns
+                                                                      about people’s perceptions of technologies in everyday liv-
+                                                                      ing spaces. The dominant discourse and practice continue to
+                                                                      rely on a technologically focused notion of social progress,
+                                                                      as well as a physical conception of interaction. In emphasiz-
+                                                                      ing technological capabilities as factors that will make ro-
+                                                                      bots desirable to users and allow them to fit into society, ro-
+                                                                      boticists are developing a further “technological fix” to the
+                                                                      problem of developing a market for personal robotics. They
+                                                                      do not, however, address how such robots and smart environ-
+                                                                      ments will become meaningful for humans and what values
+                                                                      they bring into the living environment.
+
+
+                                                                      4 Mutually shaping robots and society
+
+                                                                      While the technologically determinist linear narratives de-
+                                                                      scribed above don’t interfere with the daily practices of so-
+                                                                      cial robotics, which are focused around the technological
+                                                                      construction of robots, the implementation of robots in the
+                                                                      world outside the laboratory calls for a deeper understanding
+                                                                      of the dynamic interaction between society and technology.
+                                                                      Social robotics researchers agree that the design of social
+                                                                      robots poses both social and technical problems; depending
+Fig. 2 This museum display shows how, in the future, humanoid ro-     on the discipline that particular researchers come from, they
+bots like ASIMO may mediate between humans and other technologies     may suggest a technical or a social approach to social robot
+in their environment                                                  design. After dividing the design of social robots into “robot
+                                                                      sociability problems” and “robot technical problems;” [44]
+   stroom and the door of the refrigerator. . . We can add            suggest that safety issues arising from the application of ro-
+   an ID tag on the door and it will help the robot a lot             bots in society may be countered by developing a “legal ma-
+   and it’ll be much easier. . . We can put a lot of sensors          chine language,” computer code that expresses ethical val-
+   in the environment to help robots. That means we are               ues that will constrain a robot’s actions. [48] suggest several
+   helped by robots and by the sensors indirectly.”16                 theories from social psychology can be used to gauge how
+A display in Miraikan, a science museum near Tokyo, fea-              users will respond to robots and design them accordingly.
+tures a smart house filled with ubiquitous technologies that          Researchers also propose that the characteristics of users as
+the residents can access through interactions with ASIMO              well as those of robots need to be considered when design-
+(see Fig. 2). The Wabot House, developed by Waseda Uni-               ing robots for particular applications, such as elder-care [3].
+versity researchers in collaboration with architects, includes        The difficulty comes in bridging social analysis and techni-
+separate environments for people and robots, as well as               cal design, particularly when dealing with the uncertain and
+spaces for cohabitation. The researchers are “looking for a           open-ended contexts that social robots will be entering.
+reasonable point at which environment is good for both ro-               One way that roboticists, aiming to practice a “science
+bots and humans, from the point of view of cost [and practi-          for society” [35], see as a path to developing more success-
+cality]. [We] also [want to know] what kind of function the           ful societal applications of robots is to be involved in more
+robot has in such an environment in the future, what kind of          substantive dialogue with users:
+task can they do in daily life.”17                                       “Our research is done considering that technology will
+   As of yet, these visions fail to consider the broader impli-          be used by society in the future. So if the society will
+cations for the human inhabitants of these spaces, including             not accept [it], there is no reason for us to make the
+                                                                         technology. In the current situation society doesn’t in-
+16 Toyota representative at Tech Epoch University Roundtable, Japan      teract with engineers, it has no impact. . . The research
+Society, New York City, June 2007.                                       community has to have some understanding of indus-
+17 Interview with researcher from Waseda University, Japan.
+                                                                         try and society interest and attention. . . Application
+Int J Soc Robot (2010) 2: 439–450                                                                                                445
+
+   oriented research should be carried out based on the               various technological choices can and should be questioned
+   request of the society and the user.”18                            throughout the process of technology design. The dynamics
+                                                                      between technology and society are contextually contingent,
+Users are also expected to develop appropriate implementa-
+                                                                      following an iterative dialogue between the (conscious or
+tions of social robots in society, which has generally eluded
+                                                                      unconscious) consideration of social norms and values and
+roboticists so far:
+                                                                      technological capabilities.
+   “Robots have a huge potential which is just like PC                   This suggests the need for users to get involved in the
+   or cellular phone or internet. PC or cellphone are                 early stages of the robot design process and for more re-
+   used kind of far from their original purpose in de-                flexive practices of design, which take into account the on-
+   sign. . . [Similarly,] if a lot of people use robots, [new]        going interchanges between robotics and society. Following
+   purposes and relationships will be born. I think no-               are some examples of iterative, contextual, and participatory
+   body can imagine or forecast, it will grow just like the           design and evaluation practices that enable the mutual shap-
+   PC.”19                                                             ing of technology and society to play out through iteration
+These comments suggest that there is a gap between the vi-            between social analysis and technology design.
+sions of roboticists and the opinions of users, between tech-
+nological research in the lab and social applications. They           4.1 Situating robot design in society
+also allude to dynamics beyond those of the linear narra-
+tives that see technological development as an irreversible           The initial focus of robotics research on industrial applica-
+process of scientific discovery, followed by technological            tions allowed for robot design to be defined as a determinate
+implementation, and finally societal adoption.                        problem with definite conditions, a closed system character-
+    As the examples in Sect. 3 show, social and cultural              ized by specific physical and temporal parameters, only in-
+choices are made in the design process and will “loop back            directly related to social factors and potential consequences.
+to change the very terms in which we human beings think               An industrial robot could, accordingly, be characterized by a
+about ourselves and our positions in the world” [18, p. 2]. In        certain speed, strength, error rate, turns to task completion;
+trying to implement robots in daily life, roboticists need to         it was either working or not working, which is a primarily
+understand this process of co-production. The framework of            technical question.
+mutual shaping describes an alternative way of understand-               Social applications of robots, in contrast, show that a
+ing the dynamics between robotics and society, starting with          technically functioning artifact may not be sufficient for a
+the recognition that technology is not the “driver” of history,       successful interaction. A social robot, as a participant in in-
+but that “the ways in which we know and represent the world           teraction with people, becomes a part of a larger social and
+are inseparable from the ways in which we choose to live in           cultural system and needs to be studied as such; measures of
+it” [18, p. 2]. On one hand, technological affordances shape          success accordingly become dependent on the context and
+the social and cultural processes of their production and use;        other participants in the interaction. The design of robots for
+on the other, the process of designing technology involves            use in broader society calls for a more open definition of
+social as well as technical choices. This recognition paves           the context of robot design, in which uncertainty, situational
+the way for approaching design in a value-centered man-               awareness, adaptability, and social responsibility play an im-
+ner, consciously incorporating social and cultural meaning-           portant role. Social robotics can be approached as a “wicked
+making into design.                                                   problem” in design, which does not progress linearly from
+    The mutual shaping framework does not provide design              problem definition to resolution, has no exhaustive list of
+recommendations directly, as it depicts the relationship be-          rules or conditions, for which explanations are multiple, and
+tween society and technology as one of continuous feedback            the designer must accept full responsibility for the results of
+between practice, sense-making and design. However, we                the design [5]. This calls for the development of new meth-
+can extrapolate design recommendations from an awareness              ods for designing and evaluating social robots, particularly
+of co-production between robotics and society, which we               methods that combine the study of social and technical as-
+have identified as a central issue of social robotics. Rather         pects of technology.
+than waiting until the technology has been constructed to
+evaluate its impacts, mutual shaping suggests that the social         4.1.1 Evaluating robots in society
+values of technology for different groups and the meaning of
+                                                                      Roboticists and potential robot users can come from very
+18 Interview with researcher from Tokyo Metropolitan University,      different backgrounds; their assumptions and experiences of
+Japan.                                                                social interaction may likewise vary widely. This can create
+19 Researcher from Kyoto University at Tech Epoch University Round-   problems in design, particularly when roboticists are using
+table, Japan Society, New York, June 2007.                            the “designing for me” approach [11]. While it falls short
+446                                                                                                        Int J Soc Robot (2010) 2: 439–450
+
+of contacting users at the early stages of design, evaluation               4.1.2 Studying socio-technical ecologies
+of robots in the predicted context of use can serve as a way
+to challenge initial design assumptions and point out cultural              While the situated analysis of human-robot interaction can
+and social factors that roboticists may not initially have been             occur only after at least one prototype of the robot has
+aware of [41]. The ultimate test of a social robot’s capabili-              been produced, the study of the social context of design
+ties is in its real world environment of use; seeing the robot              can be useful before the design of the technological artifact
+succeed and fail in these environments allows robot design-                 has started. By the time evaluations in the context of use
+ers to reflect on the implicit and explicit assumptions in their            are done, the design of robotic systems is often entrenched
+work.                                                                       through expenses made in terms of the hardware, software,
+    In social robotics, quantitative metrics such as the time               and labor costs involved, as well as through the social ne-
+it takes the robot to complete its task are often less relevant             gotiations that designers have gone through to produce the
+than its ability to engage with users and be perceived as a                 artifact. As we saw above, however, the assumptions made
+social actor by them. Engagement and ascription of social                   about users during the design stage in the lab may not hold
+characteristics emerges from situated interactions between                  up to use in a different social context.
+people and robots and should be evaluated through human-                        One way to avoid the problem of developing robots that
+robot interactions outside the laboratory, as a situated activ-             are not appropriate for the social ecology in which they
+ity performed in the context of particular concrete circum-                 will be used is by basing robot design on the systematic
+stances.20 The only way these situated capabilities can be                  study of the potential context of use. In studying the domes-
+evaluated is to remove the robots from the scripted labora-                 tic ecologies of elders, [10] used exploratory ethnographic
+tory setting and engage them in everyday action in human                    methods to gain an understanding of the daily lives, home
+social contexts. Analysis of robots interacting in real-world               environments, activities, and social relationships that the
+environments can be used to understand how humans react                     elderly were involved in. They then used the themes that
+to and interact with a robot; how humans interact with each                 emerged in their research as the basis for developing de-
+other while interacting with the robot; which aspects of the                sign recommendations for robots that support elders’ val-
+robot’s and humans’ actions lead to breakdowns in the inter-                ues and adapt to the activities and members of the ecol-
+action; as well as to reveal factors that were not accounted                ogy. In comparison with the Wabot House approach, de-
+for in the initial design assumptions about social interaction.             scribed in Sect. 3.3, of developing environments in which
+    [25] provide an implementation of this approach in their                robots and humans coexist with a focus on the technological
+study of the robot GRACE’s performance during the open                      needs of robots and people’s ability to adapt to changes to
+interaction exhibition at AAAI05. Their analysis is based                   their own living spaces that would accommodate the ma-
+on videos of interactions between conference attendees and                  chines, [10] use a bottom-up approach to technology de-
+GRACE as they played “social tag,” a simple game in which                   sign that starts with the configuration of the existing ecol-
+the robot tried to find a person with a pink hat by asking peo-             ogy.
+ple to show her the way. Behavioral analysis of the videos                      This approach is particularly appropriate for the early
+overturned a number of initial design assumptions, show-                    stages of the design process, but it can also be used to eval-
+ing that people preferred to interact with GRACE in groups                  uate the performance, styles of use, and effects of an exist-
+rather than one-on-one and that the specific social context                 ing robot on the socio-technical ecology. Some examples of
+was a major determinant of the way humans reacted to the                    this kind of work come from studies of the Roomba vac-
+robot and its quest [25]. Although GRACE had been tested                    uum robot. In these longer-term evaluations, the researchers
+out closer to the lab before the conference, the natural en-                were able to track the evolution of people’s perceptions of
+vironment and open-ended and voluntary nature of the in-                    the robots and their cleaning practices through time. They
+teractions allowed for a much greater variety of interactive                also saw an evolution of the social system of cleaning af-
+and non-interactive behaviors to emerge and gave the design                 ter the Roomba came into the house—household members,
+team a chance to rethink their assumptions about how users                  including teenagers and males, who had not been participat-
+reacted to the robot’s verbal prompts and behavioral cues.                  ing in cleaning activities started to do so when the Roomba
+                                                                            was involved [9]. Through prolonged exposure, some peo-
+                                                                            ple began to ascribe sociality to their Roombas, calling them
+20 The notion of a “socially situated agent” [7] implies both social and
+                                                                            by personal names, and personalizing their appearance. As
+physical interaction with the environment in order to acquire informa-      Roomba is the most commonly used household robot as of
+tion about the social and physical domains. In the case of socially situ-
+ated robotics, the organization of situated action is emergent from the
+                                                                            yet, with over 2.5 million units sold, long-term studies of its
+interaction among actors and between actors and their social and phys-      use can provide further potent examples of the mutual shap-
+ical environments.                                                          ing of technology and society.
+Int J Soc Robot (2010) 2: 439–450                                                                                              447
+
+4.1.3 Designing from the outside in                               ciety, including the elderly, children, autistics, people who
+                                                                  are ill or otherwise needing social and physical assistance,
+The examples above emphasize the importance of basing ro-         and those who interact with them and work in care-giving,
+bot design on studies of real socio-technical ecologies in-       educational, and service environments. The usual process
+habited by potential users and of evaluating robots in real       of creating social robots, however, is open to a very small
+world circumstances with users. “Outside-in design” com-          group of people—university, corporate, and governmental
+bines the two approaches in an iterative cycle—it starts with     researchers and funding agencies. The decisions about what
+situated observation and empirical research and follows with      constitutes a valuable research project, what direction social
+an iterative process of prototype building and testing in the
+                                                                  robotics should go in, how research should be pursued and
+real world to construct robots through a continuing conver-
+                                                                  evaluated, are made by this limited population.
+sation with the social environment of their use [40]. Rather
+                                                                      A further issue is posed by reliance on controlled ex-
+than focusing on the inherent characteristics and capabili-
+                                                                  perimentation in the laboratory to evaluate how people in-
+ties of the robot, this design approach aims to produce ro-
+                                                                  teract with robots. While establishing an incremental mode
+bots with a view to the affordances available in their social
+                                                                  of developing knowledge about social interaction, the ex-
+and physical environment and the affordances they can pro-
+                                                                  perimental method is limited in its capacity to provide ex-
+vide for the human interaction partner. Iterating between real
+                                                                  ploratory results that can help a new field like social robotics
+world observation, technology design, and interactive evalu-
+ation allows for emergent meanings and interactions to drive      get its bearings and identify the big questions that are fac-
+the development of robotic technologies.                          ing it. Furthermore, the experimental method does not leave
+    In the process of outside-in design, the constraints are      much space for polyvocality and the expression of situated
+defined by empirical social research and the social context       points of view, the use of multiple idioms and ways of mak-
+of use, rather than technical capabilities, and the final eval-   ing sense of the technological world. The narrator of exper-
+uation is based on the subjective experiences and opinions        iments is the expert, the one who defines the questions wor-
+of users, rather than internal measures of technical capa-        thy of inspection, brings in subjects to take part in a carefully
+bility and efficiency. [24] demonstrated the outside-in de-       orchestrated interaction, and analyzes and describes the re-
+sign process in the context of shadow puppetry. Observa-          sults of their study. Experimental subjects do not get an open
+tions of human-human interaction were coded and analyzed          opportunity to express how they see the world and robots in
+to identify necessary interactive behaviors for a shadow pup-     it in their own words, or to point out alternative subjects of
+peteering robot. Using learned behaviors and several mod-         importance.
+els of interaction, some developed from the data and some             In contrast to the laboratory experiment, the mutual shap-
+from other theories of interaction, the robot participated in     ing of society and technology perspective emphasizes tech-
+a human-robot interaction scenario and users were surveyed        nological design as a process of negotiation, in which differ-
+to understand how they perceived the robot’s interactivity        ent social groups can influence the development of the tech-
+in the course of a situated performance. This approach pro-       nological system to reflect their interests and beliefs. Instead
+duced dialogue and cross-pollination between the social and       of focusing on technology’s impacts on society, this frame-
+the computer sciences—the robot was used as a tool for            work aims to “make available resources for thinking sys-
+developing and testing different models of social interac-        tematically about the process of sense-making” [18, p. 38]
+tion, while computational models were built and validated         people use to deal with technology and explicitly describe
+through observation and analysis of human-robot interac-          the “untidy, uneven processes through which the produc-
+tion.                                                             tion of science and technology becomes entangled with so-
+    Besides providing a research practice that bridges the tra-   cial norms and hierarchies” [18, p. 2]. As discussed above,
+ditional divide of humanities/social sciences and the nat-        real-world interactions enable the development of situated
+ural/design sciences, outside-in design can encourage ro-         understandings of robots in specific contexts, allowing de-
+boticists to think of themselves not as primarily technolo-       signers to express their visions of sociality and users to ac-
+gists, solving technical problems, but as problem-oriented        tively make sense of robots as they integrate them into their
+researchers who can work across disciplinary boundaries           lives.
+and consciously tackle social issues. It also opens up the
+possibility of including non-technical groups, such as do-
+                                                                  4.2.1 Designing with users
+main experts, potential users, and other stakeholders, at dif-
+ferent points in robot design.
+                                                                  The inclusion of users at the early stages of design is im-
+4.2 Involving society in robot design                             portant for developing socially robust, rather than merely
+                                                                  acceptable, robotic technologies. Participating only at the
+Social robot applications take place far away from the spaces     conclusion of the design process, the users may be unduly
+of their production and involve a much broader swath of so-       constrained by affordances and assumptions already built
+448                                                                                                Int J Soc Robot (2010) 2: 439–450
+
+into robotic artifacts. A focus on social robustness and re-        surroundings. In this way, design can increase the robust-
+sponsibility implies more awareness of the multiplicity of          ness of the robot and its capabilities to function in a variety
+values and practices in society, which suggests “polycentric,       of contexts, including those not foreseen by designers.
+interactive, and multipartite processes of knowledge-making
+within institutions that have worked for decades at keeping
+expert knowledge away from the vagaries of populism and             5 Conclusion
+politics” [17, p. 235]. Stakeholders—people who stand to
+be directly impacted by the technologies being developed            This paper analyzed the dominant discourses relating to
+and who have tacit knowledge of the application domain—             “social impacts” and “social acceptability” of robots and
+should have opportunities to influence robot design and be          showed that they describe technological innovation as the
+included in the deliberation on what kinds of applications          main cause of social change. Robotics researchers use ex-
+should be developed, how such technologies will be used,            isting narratives about computer technologies and their ac-
+and what their broader social meaning will be. The con-             ceptance and consequences in society to project the possi-
+nections between technological and social choices, accord-          bilities for a future with social robots as technologies used
+ingly, should be more transparent and “reflexive about the          in everyday life and to suggest “technological fixes” for so-
+processes of co-evolution of technology and society, of tech-       cial issues. These narratives rely on a linear and techno-
+nology and its impacts”’ to facilitate public learning [43].        logically determinist understanding of the relationship be-
+   Collaborative and participatory robotics, in which com-          tween technology in society, in which society plays a passive
+munity members and potential users become designers                 role in adapting to technological innovations. In accordance
+themselves, deal directly with the issue of developing partic-
+                                                                    with this view of technology as the driver of social change,
+ipatory, socially robust technologies. These participatory ap-
+                                                                    decision-making about the aims and designs of social robots
+proaches to robot design involve the public in the construc-
+                                                                    generally takes place in the closed confines of robotics labs,
+tion of technological artifacts and putting robots to uses that
+                                                                    without the direct participation of members of the public.
+they consider interesting and worthwhile. In their work on
+                                                                        Although robotics research focuses on the technical as-
+Neighborhood Nets, [8] remark that collaborative robotics
+                                                                    pects of design and expects society to follow, it is not help-
+not only allows the participants to develop an understand-
+                                                                    ful to treat technologies and their social contexts as sepa-
+ing of the technology and their ability to shape it, but also
+                                                                    rate phenomena. We discussed how the framework of mu-
+enables them to use the technology to investigate and expe-
+                                                                    tual shaping allows us to consciously reflect on technologi-
+rience their world in new and creative ways. Robotics tech-
+                                                                    cal artifacts as products of the particular social arrangements
+nologies designed in this fashion can spark reflection and di-
+                                                                    and practices through which they are designed. While the fo-
+alogue about important social issues facing the community,
+as well as provide tools that can be used in resolving these        cus of discussion during robot design is on the development
+problems. This creates opportunities for designers and users        of technical characteristics, each stage in the generation and
+of robots to work together to “identify opportunities to influ-     implementation of robotics technologies also involves so-
+ence technological change and its social consequences at an         cial choices. Even seemingly purely technical decisions are
+early stage—moments at which accountability and control             based on assumptions about the social context in which the
+could be exercised” [45, p. 860]. In fact, the roles of users       robot will be implemented. Different technological and so-
+and designers are made more fluid, as robotics researcher           cial outcomes are possible and design choices can have dif-
+can become users of technologies designed by community              fering implications for different groups in society.
+members and users are designers and explorers of their own              More participatory and contextually situated design
+environment.                                                        methodologies, such as those described above, allow robot-
+   The design frameworks and methodologies described                ics research to reflect the bidirectional relationship between
+above rely on the coupled development of technological ca-          technology and society. One way to do this is to include
+pabilities, social interpretations of their significance, and ne-   more empirical research on the context of robotics applica-
+gotiations about the contextual appropriateness of their ap-        tions in the design of robots from early on. Participation of
+plications. As a hybrid science, which encourages focus-            users in the design of robots can also allow multiple per-
+ing on problem-oriented issues that transcend disciplinary          spectives on technology and society to be expressed in the
+boundaries and fosters a reflexive awareness of ongoing in-         course of deciding on the uses and technological capabilities
+terchanges between science and society [6], social robotics         of robotic artifacts. The explicit and systematic exploration
+allows users and researchers to learn not only about tech-          of the feedback between social and technological choices
+nology, but about their surroundings, personal relationships,       can inspire reflection by robot designers, analysts, and users
+and themselves. The focus is on designing for the interaction       on the social norms and values robots embody and enable
+and enabling the robot’s designers to be more aware, respon-        us to mindfully create more socially robust, responsive, and
+sive and adaptive to its surroundings, particularly its social      responsible robots.
+Int J Soc Robot (2010) 2: 439–450                                                                                                               449
+
+Acknowledgements I am grateful to all the researchers who dis-             22. MacKenzie D, Wajcman J (1999) Introductory essay: the social
+cussed their thoughts and ideas with me. I also greatly appreciate the         shaping of technology. In: MacKenzie D, Wajcman J (eds) The
+constructive comments of reviewers and colleagues.                             social shaping of technology. Open University Press, Philadelphia,
+                                                                               pp 3–27
+                                                                           23. Matarić M, Eriksson J, Feil-Seifer D, Winstein C (2007) Socially
+                                                                               assistive robotics for post-stroke rehabilitation. J NeuroEng Rehab
+References                                                                     4(5)
+                                                                           24. Meisner E, Šabanović S, Isler V, Caporael L, Trinkle J (2009)
+ 1. Bartneck C, Kulic D, Croft E, Zoghbi S (2009) Measurement                  ShadowPlay: a generative model for nonverbal human-robot in-
+    instruments for the anthropomorphism, animacy, likeability, per-           teraction. In: HRI’09: IEEE/ACM international conference on
+    ceived intelligence, and perceived safety of robots. Int J Soc Robot       human-robot interaction, La Jolla, CA
+    1(1):71–81                                                             25. Michalowski M, Šabanović S, DiSalvo C, Busquets D, Hiatt L,
+ 2. Boyer L (2004) The robot in the kitchen: the cultural politics of          Melchior N, Simmons R (2005) Socially distributed perception:
+    care-work and the development of in-home assistive technology.             grace plays social tag at AAAI 2005. Auton Robots 22(4)
+    Middle-States Geogr 37:72–79                                           26. Miwa T, Yabuno K (2002) The book of Wabot: the evolution of
+ 3. Broadbent E, Stafford R, MacDonald B (2009) Acceptance of                  robot and the future of people. Chuokoron-Shinsha, Inc, Tokyo
+    healthcare robots for the older population: review and future di-      27. Moravec H (1999) Robot: mere machine to transcendent mind.
+    rections. Int J Soc Robot 1(4):319–330                                     Oxford University Press, Oxford
+ 4. Brooks R (2002) Flesh and machines: how robots will change us.         28. Movellan J, Tanaka F, Fortenberry B, Aisaka K (2005) The
+    Vintage Books, New York                                                    RUBI/QRIO project: origins, principles, and first steps. In: 4th
+ 5. Buchanan R (1998) Wicked problems in design thinking. In: Mar-             IEEE international conference on development and learning
+    golin V, Buchanan R (eds) The idea of design: a design issues          29. Naditz A (2009) Anybots QA telepresence robot. Telemed
+    reader. MIT Press, Cambridge, pp 5–21                                      e-Health 15(2):205–207
+ 6. Caporael LR (2001) Evolutionary psychology: toward a unifying          30. Pickering A (1995) The mangle of practice: time, agency, and sci-
+    theory and a hybrid science. Ann Rev Psychol 52:607–628                    ence. University of Chicago Press, Chicago
+ 7. Dautenhahn K, Ogden B, Quick T (2002) From embodied to so-             31. Robertson J (2007) Robo sapiens japanicus: humanoid robots and
+    cially embedded agents: implications for interaction-aware robots.         the posthuman family. Crit Asian Stud 39(3):369–398
+    Cognit Syst Res 3:397–428                                              32. Sakamoto D, Kanda T, Ono T, Ishiguro H, Hagita N (2007) An-
+ 8. DiSalvo C, Nourbakhsh I, Holstius D, Akin A, Louw A (2008)                 droid as a telecommunication medium with a human-like pres-
+    The neighborhood networks project: a case study of critical en-            ence. In: HRI ’07: proceedings of the ACM/IEEE international
+    gagement and creative expression through participatory design. In:         conference on human-robot interaction. ACM, New York, pp 193–
+    Proceedings of PDC 2008, pp 41–50                                          200
+ 9. Forlizzi J (2007) How robotic products become social products: an      33. Suchman L (2001) Human/machine reconsidered
+    ethnographic study of cleaning in the home. In: HRI ’07: proceed-      34. Suchman L (2007) Human-machine reconfigurations: plans and
+    ings of the ACM/IEEE international conference on human-robot               situated actions. Cambridge University Press, Cambridge
+    interaction. ACM, New York, pp 129–136                                 35. Takanishi A, Yabuno K (2004) The book of Wabot 4: what are
+10. Forlizzi J, DiSalvo C, Gemperle F (2004) Assistive robotics and            humanoid robots? Chuokoron-Shinsha, Inc, Tokyo
+    an ecology of elders living independently in their homes. Hum-         36. Tanaka F, Cicourel A, Movellan J (2007) Socialization between
+    Comput Interact 19:25–59                                                   toddlers and robots at an early childhood education center. Proc
+11. Forsythe D (2001) Studying those who study us: an anthropologist           Nat Acad Sci USA 104(46):17,054–17,958
+    in the world of artificial intelligence. Stanford University Press,    37. Taylor C (2002) Modern social imaginaries. Public Cult 14(1):91–
+    Stanford                                                                   124
+12. Fortun K, Fortun M (2005) Scientific imaginaries and ethi-             38. Verran H (1998) Re-imagining land ownership in Australia. Post-
+    cal plateaus in contemporary U.S. toxicology. Am Anthropol                 colon Stud 1(2):237–254
+    107(1):43–54                                                           39. Volti R (2006) Society and technological change. Macmillan, Lon-
+13. Fujimura J (2003) Future imaginaries: genome scientists as so-             don
+    ciocultural entrepreneurs. In: Goodman AH (ed) Genetic na-             40. Šabanović S, Meisner E, Caporael L, Isler V, Trinkle J (2009)
+    ture/culture: anthropology and science beyond the two-culture di-          Outside-in design for interdisciplinary HRI research. In: AAAI
+    vide. University of California Press, Ewing, pp 176–195                    spring symposium on experimental design for real-world systems.
+14. Gates B (2007) A robot in every home. Sci Am 296(1):58–65                  Stanford, CA
+15. Gregory J, Hyysalo S, Kangasoja J (2003) Imaginaries at work:          41. Šabanović S, Michalowski M, Simmons R (2006) Robots in the
+    conceptualizing technology beyond individual projects. In: Soci-           wild: observing human-robot social interaction outside the lab. In:
+    ety for Social Studies of Science Conference. Atlanta, GA                  AMC 2006: proceedings of the international conference on ad-
+16. Ito K (2007) Astroboy’s birthday: robotics and culture in contem-          vanced motion control
+    porary Japanese society. In: The second East Asian science, tech-      42. Wada K, Shibata T (2009) Social effects of robot therapy in a care
+    nology, and society conference                                             house—change of social network of the residents for one year.
+17. Jasanoff S (2003) Technologies of humility: citizen participation          J Adv Comput Intell Intell Inform 13(4):386–392
+    in governing science. Minerva 41:223–244                               43. Weingart P (2008) How robust is socially robust knowledge? In:
+18. Jasanoff S (2007) States of Knowledge: the co-production of sci-           Carrier M, Howard D, Kourany J (eds) The challenge of the social
+    ence and social order. Routledge, New York                                 and the pressure of practice science and values revisited. Univer-
+19. Kidd C, Breazeal C (2007) A robotic weight loss coach. In: The             sity of Pittsburgh Press, Pittsburgh, pp 131–145
+    national conference on artificial intelligence, pp 1985–1986           44. Weng Y, Chen C, Sun C (2009) Toward the human-robot co-
+20. Kurzweil R (2005) The singularity is near: when humans tran-               existence society: on safety intelligence for next generation robots.
+    scend biology. Viking Penguin, New York                                    Int J Soc Robot 1:267–282
+21. Kusuda Y (2006) How Japan sees the robotics for the future: ob-        45. William R, Edge D (1996) The social shaping of technology. Res
+    servation at the world expo 2005. Indust Robot 33(1):11–18                 Policy 25:856–899
+450                                                                                                         Int J Soc Robot (2010) 2: 439–450
+
+46. Winner L (1977) Autonomous technology: technics-out-of-             explores how social robots are designed in different cultural contexts
+    control as a theme in political thought. MIT Press, Cambridge       and how human-robot interaction studies can be used to develop and
+47. Yorita A, Hashimoto T, Kobayashi H, Kubota N (2009) Remote          evaluate models of social cognition. From 2008–2009, Selma was a
+    education based on robot edutainment. Prog Robot 44:204–213         lecturer in Stanford University’s Program in Science, Technology and
+48. Young J, Hawkins R, Sharlin E, Igarashi T (2009) Toward accept-     Society. She was a visiting scholar at the Intelligent Systems Institute
+    able domestic robots: applying insights from social psychology.     in AIST, Tsukuba, Japan in 2005 and the Robotics Institute at Carnegie
+    Int J Soc Robot 1(1):95–108                                         Mellon University from 2005–2006. Selma received her Ph.D. in Sci-
+                                                                        ence and Technology Studies from Rensselaer Polytechnic Institute in
+                                                                        2007.
+Selma Šabanović is an Assistant Professor at the School of Informat-
+ics and Computing in Indiana University Bloomington. Her research
+
