@@ -1,0 +1,1673 @@
+DD2380 Artificial Intelligence
+            Search
+Lectures
+•   Introduction and Practicalities
+•   AI and society
+
+• Problem solving
+       •   Search
+       •   Games
+•   Logic and planning
+•   Taming uncertainty
+       • Probabilistic reasoning, Bayesian Networks
+       • Hidden Markov Models
+•   Decision making under uncertainty
+       • Decision making using MDPs and POMDPs
+       • Reinforcement learning
+•   Multi agent systems + robotics
+•   Machine learning
+•   Natural language processing and conversational systems
+•   Computer vision
+•   Generative AI and wrap-up
+Problem solving via search
+• A problem is composed of 4 components:
+     •   An initial state
+     •   Successor function, new_state = f(old_state, action)
+     •   A goal test
+     •   A path cost specification
+• State space is the set of all states reachable from the initial state
+• A solution is a sequence of actions.
+• An optimal solution is a solution with minimum cost.
+
+
+
+
+                                                                          3
+Example: Routing problem
+
+
+
+
+Initial state:                Successor function:   Goal test:
+Arad                          Zerind = f(Arad,…)    Is the state Bucharest?
+                              …
+Path cost specification: distance traveled
+Example: 8-puzzle
+Initial state:           Successor function:   Goal test:
+
+
+
+
+                                     ...
+
+
+
+
+Path cost specification: number of moves
+Example: 8-queens
+
+
+
+
+Initial state:             Successor function:   Goal test:
+       ?                           ?                ?
+
+
+Path cost specification:
+            ?
+Example: 8-queens
+
+
+
+
+Initial state:          Successor function:          Goal test:
+An empty                Add one queen, ideally one   No queen is under attack,
+chessboard              column at a time             and all are on the board
+
+
+
+Path cost specification:
+Number of moves (1 per placement or movement)
+Characterization of search methods
+•   Time and space complexity is measured in terms of
+    • b branch factor (max num of successors of any node)
+    • d depth of optimal solution
+    • m maximum length of a path in the state space (could be ∞)
+
+
+
+
+            What is b?             What is d? and m?
+
+
+
+
+                                                                   8
+Uninformed search
+Generic tree search algorithm
+• Add root node (start state) to container
+• Repeat
+    •   If container empty → FAILED
+    •   Choose a node to take out from the container
+    •   If node corresponds to goal → FOUND IT!
+    •   Add successors / children to the container
+
+
+
+• Search method depends on how we add/take out node from the container
+
+
+
+
+                                                                         10
+Breadth-first search (BFS)
+• Expand the shallowest unexpanded node
+• Implementation:
+       • Fringe is a FIFO queue, i.e., new successors go at the end
+
+
+
+
+goal
+                                                                      11
+Breadth-first search (BFS)
+• Expand the shallowest unexpanded node
+• Implementation:
+       • Fringe is a FIFO queue, i.e., new successors go at the end
+
+
+
+
+goal
+                                                                      12
+Breadth-first search (BFS)
+• Expand the shallowest unexpanded node
+• Implementation:
+       • Fringe is a FIFO queue, i.e., new successors go at the end
+
+
+
+
+goal
+                                                                      13
+Breadth-first search (BFS)
+• Expand the shallowest unexpanded node
+• Implementation:
+       • Fringe is a FIFO queue, i.e., new successors go at the end
+
+
+
+
+goal
+                                                                      14
+Breadth-first search properties
+(Tree version with goal test at node generation)
+• Completeness: Yes
+• Time: 1 + b + b2 + b3 + ... + bd = O(bd)
+• Space: keeps all nodes in memory O(bd)
+     • This can easily become a bottleneck
+• Optimal: Not in general
+
+
+
+     • b branch factor
+     • d depth of optimal solution
+
+
+
+
+                                                   15
+Example: Routing problem (is bfs optimal here?)
+
+
+
+
+Initial state:                Successor function:   Goal test:
+Arad                          Zerind = f(Arad,…)    Is the state Bucharest?
+                              …
+Path cost specification: distance traveled
+Example: 8-puzzle (is bfs optimal here?)
+Initial state:           Successor function:   Goal test:
+
+
+
+
+                                     ...
+
+
+
+
+Path cost specification: number of moves
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   18
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   19
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   20
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   21
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   22
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   23
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   24
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   25
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   26
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   27
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   28
+Depth-first search (DFS)
+• Expand the deepest unexpanded node
+• Implementation:
+    • fringe = LIFO stack, i.e., put successors at front
+
+
+
+
+                                                           goal   29
+Depth-first search properties
+(Tree version with goal test at node generation)
+• Completeness: Fails in spaces with loops
+• Time: O(bm) - m could be much larger than d
+• Space: O(bm) - linear in space
+• Optimal: No
+
+
+
+    b branch factor
+    d depth of optimal solution
+    m maximum length of a path in the state space (could be ∞)
+
+
+
+
+                                                                 30
+Tree vs. graph search variant
+• Without vs. with remembering which states have been visited already
+• DFS graph search is complete if the graph is finite
+
+
+
+
+                                                                        31
+Generic graph search algorithm
+• Add root node (start state) to container
+• Repeat
+    •   If container empty → FAILED
+    •   Choose a node to take out from the container
+    •   Store the state to avoid it in the future
+    •   If node corresponds to goal → FOUND IT!
+    •   Add successors / children to the container if not already visited
+• Search method depends on how we add/take out node from the container
+
+
+
+
+                                                                            32
+Avoid visited states
+• Can speed up search.
+• Must check for repeated states many times
+    • Should be fast!
+
+
+• Q: So how do we implement this efficiently?
+    • We use a hash table, which gives us very fast lookups. Typically, constant time!
+
+
+
+
+                                                                                         33
+Hash table
+• Want to find a way to know which of all previously visited states we should compare the new state to, so we do
+  not have to compare to all
+• Use hash function to map the state (“key”) into an index
+• Often implemented as
+                                  𝑖𝑛𝑑𝑒𝑥 = ℎ𝑎𝑠ℎ_𝑓𝑢𝑛𝑐𝑡𝑖𝑜𝑛(𝑘𝑒𝑦) % 𝑁
+    where N is the number of buckets or bins and % is modulo, i.e. maps to index [0, N-1]
+
+
+
+• Lots of hash functions have been suggested
+    • For example, Zobrist hashing common in games
+
+
+
+
+                                                                                                                   34
+BFS vs. DFS properties
+BFS                                           DFS
+• Completeness: Yes                           • No (yes for graph search on a finite graph)
+• Time: O(bd)                                 • O(bm)
+• Space: O(bd)                                • O(bm)
+• Optimality: Not in general                  • No
+
+
+      b branch factor
+      d depth of optimal solution
+      m maximum length of a path (can be ∞)
+
+
+
+
+                                                                                              35
+DFS variation: Depth-limited search
+• DFS with depth limit l
+     • Do not expand nodes at depth l
+
+
+• If we pick l < d we are in trouble
+
+• How to set the depth limit if the depth is unknown?
+
+
+
+
+                                                        36
+DFS variation: Iterative deepening search (IDS)
+• Idea: Iterate depth-limited search with increasing depth limit.
+
+
+
+
+                                                                    37
+Iterative deepening search l =0
+
+
+
+
+                                  38
+Iterative deepening search l =1
+
+
+
+
+                                  39
+Iterative deepening search l =2
+
+
+
+
+                                  40
+Iterative deepening search l =3
+
+
+
+
+                                  41
+Iterative deepening search (IDS)
+• Does this not lead to a massive waste of time?
+
+
+
+
+                                                   42
+Iterative deepening search
+• Number of nodes generated in a depth-limited search to depth d with branching factor b:
+                            NDLS = b0 + b1 + b2 + … + bd-2 + bd-1 + bd
+
+• Number of nodes generated in an iterative deepening search to depth d with branching factor
+  b:
+                    NIDS = (d+1)b0 + d b1 + (d-1)b2 + … + 3bd-2 +2bd-1 + 1bd
+
+• For b = 10, d = 5,
+    • NDLS = 1 + 10 + 100 + 1,000 + 10,000 + 100,000 = 111,111
+    • NIDS = 6 + 50 + 400 + 3,000 + 20,000 + 100,000 = 123,456
+
+• Overhead = (123,456 - 111,111)/111,111 = 11%
+
+
+                                                                                            43
+Properties of iterative deepening search
+(Tree version with goal test at node generation)
+• Completeness: Yes
+• Time: (d + 1)b0 + db1 + (d - 1)b2 + ... + bd = O(bd)
+• Space: O(bd)
+• Optimal: under the same conditions as BFS
+
+
+
+
+                                                         44
+Bi-directional search
+• Motivation: bd/2+bd/2 << bd
+• How do we see this in the figure?
+
+
+
+
+                          The area of the two circles much smaller than one circle
+                          with twice the radius
+
+                                                                                     45
+Bi-directional search
+• Search in parallel
+     • start → goal
+     • goal → start
+• Look for them to meet
+• Why may this be difficult?
+     • Need predecessor function and not just successor
+     • Need goal states not just goal test
+
+
+
+
+                                                          46
+Break
+Informed search
+Informed search and exploration
+• Un-informed search (e.g., BFS and DFS) often very inefficient
+• Will look at two ways to improve
+    • Integrate task knowledge into the search
+    • Use information for local search
+
+• We want to make the expand function cleverer, i.e., which node to look at next
+• Ideally: Expand nodes heading directly for the goal and no others
+
+
+
+
+                                                                                   49
+Grid example
+• Imagine a large grid
+• Want to find a path to a cell 14 cells away
+
+
+
+
+                                                50
+Grid example cont'd
+• We want something that makes us expand nodes in the direction of the goal!
+• Ideally, we could get down to 14 nodes expanded
+     •   BFS naïve: ~1.000.000.000 (O(bd+1), b=4)
+     •   BFS avoid immediate backtracking: ~10.000.000
+     •   BFS avoid visited states: ~500 (area of square)
+     •   “Optimal” informed: 14
+
+• A lot to gain!
+
+
+
+
+                                                                               51
+Uninformed vs informed search
+                                Uninformed search region
+
+                                   Ideal informed
+                                   search region
+
+              start
+
+
+
+                                   goal
+
+
+
+
+                                                           52
+Informed search
+• Often, we have more information than
+    •   Initial state
+    •   Successor function
+    •   Goal test
+    •   Path cost
+
+
+• We know something about the problem
+• Use this to direct the search towards the goal
+
+
+
+
+                                                   53
+            Example
+            • Where would you go first on the way from Arad to Bucharest? Why?
+
+
+
+                     Oradea
+            71
+                                                                                           Neamt
+start
+                 Zerind                                                                                  87
+       75                      151
+                                                                                                                    Iasi
+Arad
+                     140
+                                                                                                                           92
+                                         Sibiu                Fagaras
+                                                     99
+  118                                                                                                                           Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                 54
+Informed search strategies
+• General form: “Best First Search"
+• Expand low-cost nodes before higher cost nodes
+• Use evaluation function f(n) to estimate cost
+
+
+
+
+                                                   55
+A first go at the evaluation function
+• Design of a heuristic function h(n)
+     • Estimated cost of the cheapest path from node n to goal
+
+
+
+
+                                                                 56
+            Example
+            • What would you pick for h(n) in this case?
+
+
+
+                     Oradea
+            71
+                                                                                           Neamt
+start
+                 Zerind                                                                                  87
+       75                      151
+                                                                                                                    Iasi
+Arad
+                     140
+                                                                                                                           92
+                                         Sibiu                Fagaras
+                                                     99
+  118                                                                                                                           Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                 57
+            Example
+            • Straight line distance from current city to Bucharest as h(n)
+                                                                                                                                                   Straight-line distance
+                                                                                                                                                   to Bucharest
+                                                                                                                                                  Arad                 366
+                                                                                                                                                  Bucharest              0
+                                                                                                                                                  Craiova              160
+                     Oradea                                                                                                                       Dobreta              242
+                                                                                                                                                  Eforie               161
+            71
+                                                                                           Neamt                                                  Fagaras              178
+start                                                                                                                                             Giurgiu               77
+                 Zerind                                                                                  87                                       Hirsova              151
+       75                      151
+                                                                                                                                                  Iasi                 226
+                                                                                                                    Iasi
+                                                                                                                                                  Lugoj                244
+Arad
+                     140                                                                                                                          Mehadia              241
+                                                                                                                           92                     Neamt                234
+                                         Sibiu                Fagaras
+                                                     99                                                                                           Oradea               380
+  118                                                                                                                           Vaslui            Pitesti               98
+                                             80                                                                                                   Rimnicu Vilcea       193
+                                                  Rimnicu Vilcea                                                                                  Sibiu                253
+            Timisoara                                                                                                                             Timisoara            329
+                                                                                                                         142                      Urziceni              80
+              111                                                                   211                                                           Vaslui               199
+                               Lugoj                                Pitesti
+                                                         97                                                                                       Zerind               374
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                                            58
+Greedy best-first search
+• Let h(n) be a heuristic for the search
+     • Ex: hSLD(n) - straight line distance from n to Bucharest
+• Greedy search uses f(n) = h(n) for expansion of nodes that appear to be closest to the goal.
+
+
+
+
+                                                                                                 59
+            Question
+            • What path would greedy best-first find to Bucharest? Is it optimal?
+                                                                                                                                                   Straight-line distance
+                                                                                                                                                   to Bucharest
+                                                                                                                                                  Arad                 366
+                                                                                                                                                  Bucharest              0
+                                                                                                                                                  Craiova              160
+                     Oradea                                                                                                                       Dobreta              242
+                                                                                                                                                  Eforie               161
+            71
+                                                                                           Neamt                                                  Fagaras              178
+start                                                                                                                                             Giurgiu               77
+                 Zerind                                                                                  87                                       Hirsova              151
+       75                      151
+                                                                                                                                                  Iasi                 226
+                                                                                                                    Iasi
+                                                                                                                                                  Lugoj                244
+Arad
+                     140                                                                                                                          Mehadia              241
+                                                                                                                           92                     Neamt                234
+                                         Sibiu                Fagaras
+                                                     99                                                                                           Oradea               380
+  118                                                                                                                           Vaslui            Pitesti               98
+                                             80                                                                                                   Rimnicu Vilcea       193
+                                                  Rimnicu Vilcea                                                                                  Sibiu                253
+            Timisoara                                                                                                                             Timisoara            329
+                                                                                                                         142                      Urziceni              80
+              111                                                                   211                                                           Vaslui               199
+                               Lugoj                                Pitesti
+                                                         97                                                                                       Zerind               374
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                                            60
+            Expansion greedy best-first search
+                                                                                                                                                                             Arad
+                                                                                                                                                   Straight-line distance    366
+                                                                                                                                                   to Bucharest
+                                                                                                                                                  Arad                 366
+                                                                                                                                                  Bucharest              0
+                                                                                                                                                  Craiova              160
+                     Oradea                                                                                                                       Dobreta              242
+                                                                                                                                                  Eforie               161
+            71
+                                                                                           Neamt                                                  Fagaras              178
+start                                                                                                                                             Giurgiu               77
+                 Zerind                                                                                  87                                       Hirsova              151
+       75                      151
+                                                                                                                                                  Iasi                 226
+                                                                                                                    Iasi
+                                                                                                                                                  Lugoj                244
+Arad
+                     140                                                                                                                          Mehadia              241
+                                                                                                                           92                     Neamt                234
+                                         Sibiu                Fagaras
+                                                     99                                                                                           Oradea               380
+  118                                                                                                                           Vaslui            Pitesti               98
+                                             80                                                                                                   Rimnicu Vilcea       193
+                                                  Rimnicu Vilcea                                                                                  Sibiu                253
+            Timisoara                                                                                                                             Timisoara            329
+                                                                                                                         142                      Urziceni              80
+              111                                                                   211                                                           Vaslui               199
+                               Lugoj                                Pitesti
+                                                         97                                                                                       Zerind               374
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                                                   61
+            Expansion greedy best-first search
+                                                                                                                                                                             Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366   Sibiu   Timisoara   Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                   253       329        374
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                 Zerind                                                                                  87                            Hirsova               151
+       75                      151
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                       62
+            Expansion greedy best-first search
+                                                                                                                                                                                       Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366   Sibiu             Timisoara            Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                                       329                 374
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                                                                                                         87                                                                                               Rimnicu
+                 Zerind                                                                                                                Hirsova               151   Arad    Fagaras               Oradea
+       75                      151                                                                                                                                                                         Vilcea
+                                                                                                                                       Iasi                  226   366      176                   380       193
+                                                                                                                    Iasi
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                                           63
+            Expansion greedy best-first search
+                                                                                                                                                                                               Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366   Sibiu                     Timisoara            Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                                               329                 374
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                                                                                                         87                                                                                                       Rimnicu
+                 Zerind                                                                                                                Hirsova               151   Arad            Fagaras               Oradea
+       75                      151                                                                                                                                                                                 Vilcea
+                                                                                                                                       Iasi                  226   366                                    380       193
+                                                                                                                    Iasi
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241           Sibiu             Bucharest
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras                                                                                                       253                   0
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                                                   64
+            Question
+            • Which path would a tree greedy best-first search (i.e. one without repeated state checking) take from Iasi to
+              Fagaras?
+
+
+                     Oradea
+            71
+                                                                                           Neamt                 start
+                 Zerind                                                                                  87
+       75                      151
+                                                                                                                    Iasi
+Arad
+                     140
+                                                                                                                           92
+                                         Sibiu                Fagaras
+  118
+                                                     99                        goal
+                                                                                                                                Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                 65
+Properties of greedy best-first search
+• Completeness: Could get stuck in loops; repeated-state checking needed to ensure completeness
+• Time: O(bm) - a good heuristic can improve this significantly in practice
+• Space: O(bm) - keep all nodes in memory
+• Optimal: no
+
+
+
+
+                                                                                                  66
+How can we make it better?
+• Greedy best-first search ignores the past and only looks at what seems to be the best from where we are now
+• Would be good to take cost so far into account
+
+
+
+
+                                                                                                                67
+A* search
+• Minimizing the total estimated solution cost
+• Still widely used best-first method
+     •   Robot Navigation and Planning
+     •   Autonomous Driving
+     •   Game AI
+     •   Warehouse Logistics
+     •   Drone Flight
+• Evaluation function f (n) = g(n) + h(n)
+     • g(n) the cost from start to node n, i.e. cost thus far
+     • h(n) estimate of cost to get to goal
+     • f (n) estimated total cost of reaching the goal from the start via node n
+
+
+
+
+                                                                                   68
+A* and optimality
+• A* is optimal if h(n) is an admissible heuristic
+     • h(n) admissible if it does not overestimate the cost
+
+
+
+
+                                                              69
+            Question
+            • What path would A* find from Arad to Bucharest using the straight line heuristic?
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366
+                                                                                                                                       Bucharest               0
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                 Zerind                                                                                  87                            Hirsova               151
+       75                      151
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                  70
+            g(n) and h(n)
+            • g(n) is distance traveled so far
+                                                                                                                                         Straight-line distance
+
+            • h(n) is the straight line distance                                                                                         to Bucharest
+                                                                                                                                       Arad                  366
+                                                                                                                                       Bucharest               0
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                 Zerind                                                                                  87                            Hirsova               151
+       75                      151
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                  71
+            Node expansion in A*
+            • f(n) = g(n) + h(n)                                                                                                                                      Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                                                   0 + 366 = 366
+
+                                                                                                                                       Arad                  366
+                                                                                                                                       Bucharest               0
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                 Zerind                                                                                  87                            Hirsova               151
+       75                      151
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                  72
+            Node expansion in A*
+            • f(n) = g(n) + h(n)                                                                                                                                                          Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366        Sibiu          Timisoara          Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                   140 + 253 = 393   118 + 329 = 447   75 + 374 = 449
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                 Zerind                                                                                  87                            Hirsova               151
+       75                      151
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                                           73
+            Node expansion in A*
+            • f(n) = g(n) + h(n)                                                                                                                                                                         Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366        Sibiu                          Timisoara                      Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                                                  118 + 329 = 447                 75 + 374 = 449
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                                                                                                         87                                                                                                                          Rimnicu
+                 Zerind                                                                                                                Hirsova               151        Arad            Fagaras                     Oradea
+       75                      151                                                                                                                                                                                                    Vilcea
+                                                                                                                                       Iasi                  226                                                                  220 + 193 = 413
+                                                                                                                    Iasi                                           280 + 366 = 646   239 + 178 = 417            291 + 380 = 671
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                           Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                                                                      74
+            Node expansion in A*
+            • f(n) = g(n) + h(n)                                                                                                                                                                         Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366        Sibiu                          Timisoara                         Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                                                  118 + 329 = 447                    75 + 374 = 449
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                                                                                                         87                                                                                                                             Rimnicu
+                 Zerind                                                                                                                Hirsova               151        Arad            Fagaras                     Oradea
+       75                      151                                                                                                                                                                                                       Vilcea
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi                                           280 + 366 = 646   239 + 178 = 417            291 + 380 = 671
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                                                                                        Sibiu                    Craiova            Pitesti
+                                                                                                                                Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                                                                                                                                                        300 + 253 = 553            366 + 160 = 526   317 + 98 = 415
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti
+                                                         97                                                                            Zerind                374
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                                                                          75
+            Node expansion in A*
+            • f(n) = g(n) + h(n)                                                                                                                                                                         Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366        Sibiu                          Timisoara                        Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                                                  118 + 329 = 447                    75 + 374 = 449
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                                                                                                         87                                                                                                                            Rimnicu
+                 Zerind                                                                                                                Hirsova               151        Arad            Fagaras                     Oradea
+       75                      151                                                                                                                                                                                                      Vilcea
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi                                           280 + 366 = 646   239 + 178 = 417            291 + 380 = 671
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380
+  118                                                                                                                                                                                        Sibiu                    Craiova           Pitesti
+                                                                                                                                Vaslui Pitesti                98
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                                                                                                                                                        300 + 253 = 553            366 + 160 = 526
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti                                                                                                                 Rimnicu
+                                                         97                                                                            Zerind                374
+                                                                                                                                                                                                                      Craiova         Bucharest
+                                                                                                                                                                                             Vilcea
+                          70                                                                                             98                                                             414 + 193 = 607            455 + 160 = 615   418 + 0 = 418
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                                                                         76
+            Node expansion in A*
+            • f(n) = g(n) + h(n)                                                                                                                                                                                Arad
+                                                                                                                                         Straight-line distance
+                                                                                                                                         to Bucharest
+                                                                                                                                       Arad                  366                Sibiu                         Timisoara                        Zerind
+                                                                                                                                       Bucharest               0
+                                                                                                                                                                                                           118 + 329 = 447                  75 + 374 = 449
+                                                                                                                                       Craiova               160
+                     Oradea                                                                                                            Dobreta               242
+                                                                                                                                       Eforie                161
+            71
+                                                                                           Neamt                                       Fagaras               178
+start                                                                                                                                  Giurgiu                77
+                                                                                                         87                                                                                                                                   Rimnicu
+                 Zerind                                                                                                                Hirsova               151                Arad             Fagaras                     Oradea
+       75                      151                                                                                                                                                                                                             Vilcea
+                                                                                                                                       Iasi                  226
+                                                                                                                    Iasi                                                  280 + 366 = 646                              291 + 380 = 671
+                                                                                                                                       Lugoj                 244
+Arad
+                     140                                                                                                               Mehadia               241
+                                                                                                                           92          Neamt                 234        Sibiu
+                                         Sibiu                Fagaras
+                                                     99                                                                                Oradea                380   338 + 253 = 591
+  118                                                                                                                                                                                                 Sibiu                   Craiova          Pitesti
+                                                                                                                                Vaslui Pitesti                98
+                                                                                                                                                                                     Bucharest
+                                             80                                                                                        Rimnicu Vilcea        193
+                                                                                                                                                                                                 300 + 253 = 553          366 + 160 = 526
+                                                  Rimnicu Vilcea                                                                       Sibiu                 253                 450 + 0 = 450
+            Timisoara                                                                                                                  Timisoara             329
+                                                                                                                         142           Urziceni               80
+              111                                                                   211                                                Vaslui                199
+                               Lugoj                                Pitesti                                                                                                                         Rimnicu
+                                                         97                                                                            Zerind                374
+                                                                                                                                                                                                                              Craiova        Bucharest
+                                                                                                                                                                                                     Vilcea
+                          70                                                                                             98                                                                      414 + 193 = 607          455 + 160 = 615   418 + 0 = 418
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                        Eforie
+                                              Craiova                                     Giurgiu                                                                                                                                                77
+            Q
+            • What is A* search for the routing problem with h(n) = 0? Is it still optimal?                                                        Arad
+
+                                                                                                                                                  0+0=0
+
+
+
+
+                     Oradea
+            71
+                                                                                           Neamt
+start
+                 Zerind                                                                                  87
+       75                      151
+                                                                                                                    Iasi
+Arad
+                     140
+                                                                                                                           92
+                                         Sibiu                Fagaras
+                                                     99
+  118                                                                                                                           Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                         78
+            Q
+            • What is A* search for the routing problem with h(n) = 0? Is it still optimal?                                                                 Arad
+
+
+            • f(n) = g(n)                                                                                                                                 Timisoara
+                                                                                                                                                  Sibiu               Zerind
+                     • This is Uniform-Cost Search (UCS) or Dijkstra                                                                              140       118        75
+
+                     Oradea
+            71
+                                                                                           Neamt
+start
+                 Zerind                                                                                  87
+       75                      151
+                                                                                                                    Iasi
+Arad
+                     140
+                                                                                                                           92
+                                         Sibiu                Fagaras
+                                                     99
+  118                                                                                                                           Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                                      79
+            Q
+            • What is A* search for the routing problem with h(n) = 0? Is it still optimal?                                                                 Arad
+
+
+            • f(n) = g(n)                                                                                                                                 Timisoara
+                                                                                                                                                  Sibiu                      Zerind
+
+                                                                                                                                                  140       118
+
+                     Oradea
+            71                                                                                                                                                        Arad   Oradea
+                                                                                           Neamt
+start                                                                                                                                                                 150     146
+                 Zerind                                                                                  87
+       75                      151
+                                                                                                                    Iasi
+Arad
+                     140
+                                                                                                                           92
+                                         Sibiu                Fagaras
+                                                     99
+  118                                                                                                                           Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                                             80
+            Q
+            • What is A* search for the routing problem with h(n) = 0? Is it still optimal?                                                                                Arad
+
+
+            • f(n) = g(n)                                                                                                                                                Timisoara
+                                                                                                                                                  Sibiu                                     Zerind
+
+                                                                                                                                                  140
+                     Oradea
+            71                                                                                                                                            Arad   Lugoj               Arad   Oradea
+                                                                                           Neamt
+start                                                                                                                                                     236     229                150     146
+                 Zerind                                                                                  87
+       75                      151
+                                                                                                                    Iasi
+Arad
+                     140
+                                                                                                                           92
+                                         Sibiu                Fagaras
+                                                     99
+  118                                                                                                                           Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                     Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                             86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                         Eforie
+                                              Craiova                                     Giurgiu                                                                                            81
+            Q
+            • What is A* search for the routing problem with h(n) = 0? Is it still optimal?                                                                                           Arad
+
+
+            • f(n) = g(n)                                                                                                                                                           Timisoara
+                                                                                                                                                             Sibiu                                     Zerind
+
+
+                                                                                          Arad
+                     Oradea
+                                                                                          280                                                      Rimnicu
+            71                                                                                                Oradea                  Fagaras                        Arad   Lugoj               Arad   Oradea
+                                                                                           Neamt                                                    Vilcea
+start                                                                                                          291                        239        220             236     229                150     146
+
+       75
+                 Zerind
+                               151
+                                                                                                         87                                                                                             …
+                                                                                                                     Iasi
+Arad
+                     140
+                                                                                                                            92
+                                         Sibiu                Fagaras
+                                                     99
+  118                                                                                                                            Vaslui
+                                             80
+                                                  Rimnicu Vilcea
+            Timisoara
+                                                                                                                         142
+              111                                                                   211
+                               Lugoj                                Pitesti
+                                                         97
+                          70                                                                                             98
+                                                                                                                                      Hirsova
+                               Mehadia             146                                              85
+                                                                              101                             Urziceni
+                          75                                                                                                               86
+                                                              138                               Bucharest
+                 Dobreta               120                                goal
+                                                                                           90
+                                                                                                                                          Eforie
+                                              Craiova                                     Giurgiu                                                                                                       82
+Properties of A*
+• Complete: Yes
+• Time: Exponential in length of solution
+• Space: Keeps all nodes in memory
+    • memory main problem
+• Optimal: Yes (under certain conditions)
+
+
+
+
+                                            83
+Variations of A*
+• Memory can pose a problem for A*
+• Variations
+    •   Iterative Deepening A* (IDA*)
+    •   Recursive best first search (RBFS)
+    •   Memory Bounded A* (MA*)
+    •   Simple MA (SMA*)
+
+• See the book for the details of these methods
+
+
+
+
+                                                  84
+Design of heuristic function
+• One of the keys to making your search efficient
+
+
+
+
+                                                    85
+8-puzzle
+• One of the first problems where heuristics was studied
+• Any ideas for a heuristic?
+
+
+
+
+                                                           86
+8-puzzle search tree example
+• Two commonly used heuristics
+    • h1(n): Number of misplaced tiles
+    • h2(n): Sum of distances tiles are from goal position (measured using city-block distance)
+
+
+
+
+                                                                                                  87
+8-puzzle with A*
+• Notice how the search is “pulled” towards the goal
+• Blue area marks explored part of search space
+
+
+
+
+                                                       88
+Dominating heuristics
+• Which of the heuristics is better?
+     • h1(n): Number of misplaced tiles
+     • h2(n): Sum of distance tiles from goal position (measured using city-block distance)
+• The one that needs to expand less nodes before finding an optimal solution
+• If h2(n) ≥ h1(n) for all n, then h2 dominates h1
+• Dominating heuristics is generally better (it leads to fewer node expansions)
+     • Careful with not overestimating (you lose optimality)
+
+
+
+
+                                                                                              89
+Inventing heuristics
+• Strategies to invent heuristics include
+     • Look at relaxed problems
+          • What are the relaxed problems for h1 and h2?
+
+     • Analysis of sub-problems
+          • What is a sub-problem of the 8-puzzle?
+     • Use of pattern databases
+
+
+
+
+                                                           90
+Local search: when the path does not matter.
+Local search methods / Optimization Problems
+• In some cases, the path is irrelevant
+• The goal configuration itself is the solution, not the path to it
+     • train schedule, factory-floor layout, N-queens
+• State space is the set of possible configuration
+• Uses only a single current state, paths are not retained, and we want to try to keep improving the current state
+• Not systematic, but only little memory is needed and often find reasonable solutions
+
+
+
+
+                                                                                                                     92
+Hill climbing search
+• Find the top of Mount Everest in a thick fog while suffering from amnesia
+• Most basic (greedy) local search method
+• Look at neighbors and move “uphill" in performance metric
+
+
+
+
+                                                                              93
+Example: 8-queens
+• h = Number of pairs of queens under attack
+• h = 17 below
+• The values on the board represent the cost to move a queen
+  from the same column to that spot.
+
+
+
+
+                                                               94
+8-queens with local minima h=1
+
+
+
+
+                                 95
+Hill climbing variations
+• Stochastic hill climbing
+     • Pick randomly among “improving successors"
+• First-choice hill climbing
+     • Pick randomly among all successors until finding an improving one
+• Random restart hill climbing
+     • Repeat with random initial states until goal is found
+
+
+
+
+                                                                           96
+Simulated annealing
+• Observation: Cannot move up in all landscapes in all steps!
+• Make a “bad" move occasionally to escape.
+• Reduce frequency/size over time
+
+
+
+
+                                                                97
+   Summary of search methods
+                      Uninformed Path Search     Informed Path Search            Local Search
+                      (BFS, DFS)                 (Greedy, A*)                    (Hill Climbing)
+Uses heuristics?          No                         Yes                             Yes
+
+Maintains paths?          Frontier + paths           Frontier + paths                Usually current state only
+
+What matters?         A path to a goal           A path to a goal                The final configuration
+How next node/state   Structural rule: depth /
+                                                 Evaluation such as ℎ or g + ℎ   Local improvement
+chosen?               frontier order
+
+                                                 Greedy: not optimal;
+Complete / Optimal?   Depends on algorithm                                       Generally, no guarantee
+                                                 A*: yes under conditions
+
+
+Memory                Algorithm-dependent        Usually maintains a frontier    Often very small
+Questions
+

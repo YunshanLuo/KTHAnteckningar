@@ -1,0 +1,516 @@
+DD2380 Artificial Intelligence
+           Adversarial Search
+Lectures
+•   Introduction and Practicalities
+•   AI and society
+
+• Problem solving
+       •   Search
+       •   Games
+•   Logic and planning
+•   Taming uncertainty
+       • Probabilistic reasoning, Bayesian Networks
+       • Hidden Markov Models
+•   Decision making under uncertainty
+       • Decision making using MDPs and POMDPs
+       • Reinforcement learning
+•   Multi agent systems + robotics
+•   Machine learning
+•   Natural language processing and conversational systems
+•   Computer vision
+•   Generative AI and wrap-up
+Introduction to Games
+• Some problems are multi-agent
+    • Cooperative vs competitive interaction
+• Search problems in these environments are called games
+• In competitive environments also adversarial search
+Why study games?
+• Precise rules
+• Limited number of actions
+• They are hard problems!
+• Example: Chess
+    • Average branch factor of 35
+    • Typically, 50 moves for each player
+    • → 35100 ≈ 10154 nodes in search tree
+Why study games?
+• Precise rules
+• Limited number of actions
+• They are hard problems!
+• Example: Chess
+    • Average branch factor of 35
+    • Typically, 50 moves for each player
+    • → 35100 ≈ 10154 nodes in search tree
+
+
+• (1080 atoms in the observable universe)
+• There are between 1078 to 1082 atoms in the observable universe. That's between ten quadrillion vigintillion and
+  one-hundred thousand quadrillion vigintillion atoms.
+Types of games
+Perfect information = fully observable
+Chance games: Backgammon
+First game where a computer defeated a human world champion.
+Deterministic games: Chess
+• DeepBlue defeated human world champion Garry Kasparov in a six-game match 1997.
+• DeepBlue searched 200 million positions/s.
+• Some lines extended up to 40 ply.
+Deterministic games: Checkers
+• “Solved” in 2007
+• 18 years of computing on a cluster with 15+ machines
+  → endgame table (<=10 pieces)
+• → 39 trillion entries
+• Search + end game + computer → success
+Deterministic games: Go
+• Enormous branch factor (b>300)
+• AlphaGo – a bit different principle
+     •   Supervised learning from human expert games to train a policy network
+     •   Reinforcement Learning via self-play to further improve the networks
+     •   DNNs guide search and reduce the need for brute-force exploration
+     •   Monte Carlo Tree Search explores the most promising moves during
+         play, using the neural networks to bias and prune the search
+Today
+• Turn-taking, two-player, zero-sum games
+• Gain of winner same as loss of loser
+Formalizing the problem: MAX and MIN
+• Two players MAX and MIN
+• An initial state (the start situation)
+• A successor function (move, state)
+• A terminal state - when is the game over?
+• A utility (objective, payoff) function gives value for terminal state
+          typically (+1,-1,0)
+• The progression can be modeled as a (game-) tree
+Game tree
+(2-player, deterministic, turn-based)
+Optimal strategies
+• In “normal search”: reach the goal configuration
+• In adversarial search: not enough, MAX needs to reach the goal
+  configuration regardless of what MIN does
+• Optimal strategy: at least as good as any other strategy when playing
+  against an infallible MIN
+Question
+• Consider a 2-ply (half-move) game tree
+    • MAX has actions a1,a2,a3 and MIN has actions b1,b2,b3, c1,c2,c3, d1,d2,d3
+
+
+
+
+• What is the best strategy for MAX?
+The best strategy
+• If MAX picks a1 MIN will pick b1 → 3, if MAX picks a2 MIN will pick c1 → 2, a3 will give d3→2
+
+
+
+
+               Best to pick a1 as it gives utility 3
+The best strategy
+• Q: What if MIN is not infallible, is it still the best strategy?
+The minimax algorithm
+• Assumes that the agents are rational, self-interested
+• The strategy of best achievable payoff against best play by opponent
+Recursion
+• Make sure you know how to work with recursive functions
+Minimax algorithm
+Minimax algorithm
+Minimax algorithm
+Minimax algorithm
+Computational cost of minimax
+• Complexity O(bm)
+Optimal strategies
+• In “normal search”: reach the goal configuration
+• In a game (adversarial search): not enough, MAX needs to reach the
+  goal configuration regardless of what MIN does
+• Optimal strategy: at least as good as any other strategy when playing
+  against an infallible MIN
+• Analysis of the full game tree can be demanding or impossible
+Repeated states
+• Transposition causes repeated states (among others)
+    • Many different moves result in same configuration
+    • Example: chess
+• Store evaluation in transposition (hash) table
+Handling resource limitations
+• When search is cut off, use a heuristic evaluation function to estimate the value of the position
+     • Should order cutoff states in a way that reflects their expected utility
+     • Should be fast to compute
+     • Should use features that are relevant to winning
+
+          Chess: number of white pawns, black pawns, white queens, black queens, etc.
+Handling resource limitations
+• Cuttoff test in addition to terminal test
+     • Limited depth search
+     • Iterative deepening
+α-β pruning
+• Do we really need to analyze all nodes?
+• Stop investigating branches that cannot affect the Minimax result, i.e. prune the tree
+• Cuts down computations, but still gives the same Minimax result
+α-β pruning
+• α: best value MAX can guarantee so far (a lower bound)
+• β: best value MIN can guarantee so far (an upper bound)
+• found along the path till now
+Re-analyze the 2-ply game tree
+Re-analyze the 2-ply game tree
+α-β pruning algorithm
+α-β pruning algorithm
+                                  a1                       a3
+                                            a2
+
+
+
+
+                        b1             b2        0                   d3
+                                                      d1
+                                                            d2
+
+
+                        -1                            1         -1        1
+                             c1             c2
+
+
+                                   1             -1
+                                  [-inf,inf]
+α-β pruning algorithm
+                                  a1                          a3
+                                               a2
+
+
+
+
+                        b1              b2          0                   d3
+                                                         d1
+                                                               d2
+
+
+                        -1                               1         -1        1
+                             c1                c2
+
+
+                                    1               -1
+                                  [-inf,inf]
+α-β pruning algorithm
+                                  a1                          a3
+                                               a2
+
+
+
+
+                        b1              b2          0                   d3
+                                                         d1
+                                                               d2
+
+
+                        -1                               1         -1        1
+                             c1                c2
+
+
+                                    1               -1
+                                          [-inf,inf]
+α-β pruning algorithm
+                                          a1                          a3
+                                                       a2
+
+                        [-inf,inf]
+
+                              b1                b2          0                   d3
+                                                                 d1
+                                                                       d2
+
+
+                              -1                                 1         -1        1
+                                     c1                c2
+
+
+                                            1               -1
+                                          [-inf,inf]
+α-β pruning algorithm
+                                          a1                          a3
+                                                       a2
+
+                        [-inf,inf]
+
+                              b1                b2          0                   d3
+                                                                 d1
+                                                                       d2
+
+
+                              -1                                 1         -1        1
+                                     c1                c2
+
+
+                                            1               -1
+                                         [-inf,inf]
+α-β pruning algorithm
+                                         a1                          a3
+                                                      a2
+
+                        [-inf,-1]
+
+                              b1               b2          0                   d3
+                                                                d1
+                                                                      d2
+
+
+                              -1                                1         -1        1
+                                    c1                c2
+
+
+                                           1               -1
+                                         [-inf,inf]
+α-β pruning algorithm
+                                         a1                          a3
+                                                      a2
+
+                        [-inf,-1]
+
+                              b1               b2          0                   d3
+                                                                d1
+                                                                      d2
+                                                [-inf,-1]
+
+                              -1                                1         -1        1
+                                    c1                c2
+
+
+                                           1               -1
+                                         [-inf,inf]
+α-β pruning algorithm
+                                         a1                         a3
+                                                      a2
+
+                        [-inf,-1]
+
+                              b1              b2       0                      d3
+                                                      𝑣 d1
+                                                                     d2
+                                               [-inf,-1]
+
+                              -1                                1        -1        1
+                                    c1                c2
+
+
+                                           1 𝑣             -1
+                                          [-inf,inf]
+α-β pruning algorithm
+                                          a1                         a3
+                                                       a2
+
+                        [-inf,-1]
+
+                              b1               b2       0                      d3
+                                                       𝑣 d1
+                                                                      d2
+                                                [-inf,-1] β
+
+                              -1                                 1        -1        1
+                                     c1                c2
+
+
+                                            1 𝑣             -1
+
+                                    if 𝑣 ≥ 𝛽 we have a beta cut
+                                         [-1,inf]
+α-β pruning algorithm
+                                         a1                        a3
+                                                    a2
+
+                        [-inf,-1]
+
+                              b1               b2        0                   d3
+                                                              d1
+                                                                    d2
+                                                [-inf,-1]
+
+                              -1                              1         -1        1
+                                    c1              c2
+
+
+                                           1             -1
+                                         [0,inf]
+α-β pruning algorithm
+                                         a1                        a3
+                                                    a2
+
+                        [-inf,-1]
+
+                              b1               b2        0                   d3
+                                                              d1
+                                                                    d2
+                                                [-inf,-1]
+
+                              -1                              1         -1        1
+                                    c1              c2
+
+
+                                           1             -1
+                                         [0,inf]
+α-β pruning algorithm
+                                         a1                        a3
+                                                    a2
+
+                        [-inf,-1]                                        [0,inf]
+
+                              b1               b2        0                   d3
+                                                              d1
+                                                                    d2
+                                                [-inf,-1]
+
+                              -1                              1         -1         1
+                                    c1              c2
+
+
+                                           1             -1
+                                         [0,inf]
+α-β pruning algorithm
+                                         a1                        a3
+                                                    a2
+
+                        [-inf,-1]                                        [0,inf]
+
+                              b1               b2        0                   d3
+                                                              d1
+                                                                    d2
+                                                [-inf,-1]
+
+                              -1                              1         -1         1
+                                    c1              c2
+
+
+                                           1             -1
+                                         [0,inf]
+α-β pruning algorithm
+                                         a1                        a3
+                                                    a2
+
+                        [-inf,-1]                                        [0,1]
+
+                              b1               b2        0                   d3
+                                                              d1
+                                                                    d2
+                                                [-inf,-1]
+
+                              -1                              1         -1        1
+                                    c1              c2
+
+
+                                           1             -1
+                                         [0,inf]
+α-β pruning algorithm
+                                         a1                        a3
+                                                    a2
+
+                        [-inf,-1]                                        [0,1]
+
+                              b1               b2        0                   d3
+                                                              d1
+                                                                    d2
+                                                [-inf,-1]
+
+                              -1                              1         -1        1
+                                    c1              c2
+
+
+                                           1             -1
+                                         [0,inf]
+α-β pruning algorithm
+                                         a1                         a3
+                                                    a2
+                                                                           α
+                        [-inf,-1]                                         [0,1]
+
+                              b1               b2        0                      d3
+                                                               d1
+                                                                     d2
+                                                [-inf,-1]
+
+                              -1                               1         -1 𝑣        1
+                                    c1              c2
+                                                             if 𝑣 ≤ 𝛼 we have a beta cut
+
+                                           1             -1
+Does order matter?
+
+
+             a1                       a3                      a1                        a3
+                       a2                                               a2
+
+
+
+
+                            0                             0        b1             b2                d3
+   b1             b2                             d3                                     d1
+                                 d1                                                           d2
+                                           d2
+
+
+   -1                            1          -1        1            -1                    1     -1        1
+        c1             c2                                                c1            c2
+
+
+
+              1             -1                                                1          -1
+α-β pruning algorithm: order matters!
+
+
+             a1                       a3                      a1                        a3
+                       a2                                               a2
+
+
+
+
+                            0                             0        b1             b2                d3
+   b1             b2                             d3                                     d1
+                                 d1                                                           d2
+                                           d2
+
+
+   -1                            1          -1        1            -1                    1     -1        1
+        c1             c2                                                c1            c2
+
+
+
+              1             -1                                                1          -1
+Properties of α-β pruning
+• Complexity - depends heavily on order of evaluation.
+• With perfect ordering O(bm/2)
+• → Can then look twice as far into the game as minimax in the same time
+Reordering in α-β pruning
+• Try likely the best first
+• Chess: captures, threats, forward moves, backward moves
+• Estimate through limited DFS
+• Repeat killer moves
+Non-deterministic games
+• Expectiminimax
+    • Extends minimax to games with stochastic elements like
+      dice rolls or card draws (e.g., Backgammon, Monopoly).
+• Chance Nodes
+    • Introduced between MAX and MIN layers to compute
+      the expected value (probability-weighted average).
+Games with imperfect information
+• E.g., card games, where opponent's initial cards are unknown
+• Typically, one can compute a probability for each possible deal
+• Simple approximation:
+    • compute the minimax value of each action in each deal
+    • choose the action with highest expected value over all deals
+Summary adversarial search
+• Competitive environment
+• Four components: initial state, successor function, terminal test, and utility function
+• Deterministic, turn-taking, zero-sum games with perfect information
+     • Minimax + α-β pruning to optimize search
+• Use of evaluation functions to allow depth-limited search
+• Today, computers are as good or better than humans at many different games
+Adversarial ideas beyond game-tree search
+What happens next?
+• Search assignment
+    • Opens today, immediately after this lecture, in Canvas and Kattis
+    • Working in pairs is strongly encouraged, but you may work individually
+    • Deadline for remaining eligible for grade A: 23 November at 19:00
+• Search tutorials
+    • They take place on Thursday (check canvas for slots)
+• In-classroom search quiz
+    • Takes place on Tuesday and Wednesday next week (check Canvas for slots)
+    • Covers the Search and Adversarial Search lectures
+    • Further practical details will be available in a Friday announcement on Canvas
+• Individual assignment learning journal
+    •   Required from every student, including students working in pairs
+    •   Be careful to meet every detail asked in the final pages of the assignment description.
+    •   Submit it as a PDF in Canvas by the same deadline
+    •   Your code and journal determine the assignment grade and may inform your oral-examination questions
+Questions?
+
