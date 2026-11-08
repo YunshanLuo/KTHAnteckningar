@@ -89,9 +89,127 @@ Core definitions:
 \end{itemize}
 
 \section{Lecture 2: AI ethics}
+Three layers definition of AI ethics:
+\begin{enumerate}
+    \item \textbf{Designing and developing:} Responsible innovation in desgin/deployment critical evalution of real world impact of AI systems
+    \item \textbf{Moral decision making by AI:} For example the trolley problem, should AI be allowed to make moral decisions?
+    \item \textbf{Actively tackling social injustice:} unbiased recruitment, feminist AI, inclusion projects.
+\end{enumerate}
 
+Terminology:
+\begin{itemize}
+    \item \textbf{Technological determinism:} Technology drives history and society \textbf{science find} $\rightarrow$ \textbf{industry applies} $\rightarrow$ \textbf{man conforms}.
+    \item \text{Technological fix:} Applying technology to solve a social problem that's non-technical by nature.
+    \item \textbf{Mutual shaping/co-production:} Technology and society shape each other design choices are influenced by social and technical considerations.
+    \item \textbf{Socio-technical ecology:} The full system of people, practices, spaces and technology around a technology's use.
+    \item \textbf{Stakeholders:} Entities impacted by a technology, including users, developers, regulators, and society at large.
+    \item \textbf{Praticipatory design/co-design:} Involving stakeholders in the design process to ensure that the technology meets their needs and values.
+    \item \textbf{Wicked problem:} A design problem with non-linear progression from definition to solution.
+\end{itemize}
 
+\section{Lecture 3: Search}
+A problem sovled by search has 4 components:
+\begin{enumerate}
+    \item \textbf{Initial state:} The state from which the agent starts.
+    \item \textbf{Sucessor function:} A function that takes a state and returns a new state after applying an action to old state.
+    \item \textbf{Goal test:} A function that returns true if the state is a goal state.
+    \item \textbf{Path cost:} A function that assigns a numeric cost to each path. The cost of a solution is the sum of the costs of the actions along the path
+\end{enumerate}
 
+Complexity paramters:
+\begin{itemize}
+    \item \textbf{b}: Branching factor, the maximum successor of any node
+    \item \textbf{d:} Depth of the optimal solution
+    \item \textbf{m:} Maximum length of a path in the state space can by infinite
+\end{itemize}
+
+Heuristic function $h(n)$: An estimate cost from node $n$ to the nearest goal. A good heuristic is one that is fast to compute and close to the actual cost.
+
+\newpage
+Search algorithms in previous quizzes:
+\begin{itemize}
+    \item \textbf{BFS:}
+    \begin{itemize}
+        \item \textbf{Container:} FIFO queue
+        \item \textbf{Completeness:} Yes
+        \item \textbf{Time:} $O(b^{d})$
+        \item \textbf{Space:} $O(b^{d})$
+        \item \textbf{Optimality:} Only if all step costs are equal
+    \end{itemize}
+    \item \textbf{DFS}
+    \begin{itemize}
+        \item \textbf{Container:} LIFO stack
+        \item \textbf{Completeness:} No, fails in cyclic graphs
+        \item \textbf{Time:} $O(b^{m})$
+        \item \textbf{Space:} $O(bm)$
+        \item \textbf{Optimality:} No
+    \end{itemize}
+    \item \textbf{Depth-limited search}
+    \begin{itemize}
+        \item \textbf{Container:} LIFO stack + limit $l$
+        \item \textbf{Completeness:} No, fails if $l < d$
+        \item \textbf{Time:} $O(b^{l})$
+        \item \textbf{Space:} $O(bl)$
+        \item \textbf{Optimality:} No
+    \end{itemize}
+    \item \textbf{IDS}
+    \begin{itemize}
+        \item \textbf{Container:} Repeated incremental depth-limited search
+        \item \textbf{Completeness:} Yes
+        \item \textbf{Time:} $O(b^{d})$
+        \item \textbf{Space:} $O(bd)$
+        \item \textbf{Optimality:} Only if all step costs are equal
+    \end{itemize}
+    \item \textbf{Greedy best-first:}
+    \begin{itemize}
+        \item \textbf{Container:} Priority on $h(n)$
+        \item \textbf{Completeness:} Only with repeated state checking
+        \item \textbf{Time:} $O(b^{m})$
+        \item \textbf{Space:} $O(b^{m})$
+        \item \textbf{Optimality:} No
+    \end{itemize}
+    \item \textbf{A*}
+    \begin{itemize}
+        \item \textbf{Container:} Priority on $f(n) = g(n) + h(n)$ where $g(n)$ is the cost to reach node $n$
+        \item \textbf{Completeness:} Yes
+        \item \textbf{Time:} Exponential in the length of the solution
+        \item \textbf{Space:} Exponential in the length of the solution
+        \item \textbf{Optimality:} Yes, if $h(n)$ never overestimates the cost ot reach the goal
+    \end{itemize}
+\end{itemize}
+\newpage
+\textbf{Search theory:}
+\begin{itemize}
+    \item \textbf{Tree vs graph search:} Graph search remembers visited nodes tree search does not.
+    \item \textbf{Bidirectional search:} Search from start $\rightarrow$ goal and goal $\rightarrow$ start simultaneously when they meet the solution is found. Needs successor and predecessor function to work. Explicit goal states not just goal test.
+\end{itemize}
+\vspace{10pt}
+\textbf{Informed search:}  
+\begin{itemize}
+    \item \textbf{Best-first search:} The general idea, guided by an evaluation function $f(n)$ that estimates the desirability of node $n$.
+    \item \textbf{Greedy best-first:} Ignores the cost to reach node $n$ and only considers the estimated cost to reach the goal from $n$, i.e., $f(n) = h(n)$.
+    \item \textbf{A* search:} Considers both the cost to reach node $n$ and the estimated cost to reach the goal from $n$, i.e., $f(n) = g(n) + h(n)$.
+    \item \textbf{Admissible heuristic:} Never overestimates the true cost to the goal
+    \item \textbf{Djikstra:} A* with $h(n) = 0$ for all nodes, uniform cost search. $f(n) = g(n)$
+    \item \textbf{Memory bounded A*:} IDA*, RBFS, SMA*, MA*
+\end{itemize}
+
+\section{Lecture 4: Adversarial search}
+Search with an opponent in zero sum games such as chess, checkers, etc. Find the best move with \textbf{minimax} algorithm assuming optimal play from both parties. Cut off deep search with heuristic \textbf{evaluation function} with $\alpha$-$\beta$ pruning to make a search more efficient.
+
+\vspace{10pt}
+\textbf{Minimax:}
+\begin{itemize}
+    \item MAX nodes take the \textbf{max} of child values, MIN nodes take the \textbf{min} of child values. Algorthms propagate from the leaves to the root to find the best moves.
+    \item \textbf{Complexity:} $O(b^{m})$, full tree search is usually not possible.
+    \item \textbf{Repeated states:} Different moves orders can reach transposition states, which can be stored in a \textbf{transposition table} to avoid repeated search.
+\end{itemize}
+
+\vspace{10pt}
+\textbf{$\alpha$-$\beta$ pruning:}
+\begin{itemize}
+    \item Prune branches that don't affect the minimax result. 
+\end{itemize}
 
 
 
