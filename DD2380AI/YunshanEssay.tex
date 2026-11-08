@@ -1,0 +1,42 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage[colorlinks=true, citecolor=blue, urlcolor=blue, linkcolor=blue]{hyperref}
+
+\title{Catalogues and Trolleys: What Two Papers Demand of AI Ethics}
+\author{Yunshan Luo \\ \texttt{yunshan@kth.se} \\ DD2380 Artificial Intelligence, KTH}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+The two papers under discussion approach the ethics of AI from opposite ends. Weidinger et al.\ \cite{weidinger} catalogue what can go wrong with large language models; Thomson \cite{thomson}, writing about runaway trolleys rather than software, asks when redirecting harm is permissible at all. I argue that the catalogue succeeds as description and stalls as a decision procedure, while Thomson's decades-old thought experiments supply the missing test: does a proposed fix protect the many by quietly imposing on the few?
+
+\section*{The DeepMind Risk Taxonomy}
+Weidinger et al.\ \cite{weidinger} sort the harms of large language models into six areas: discrimination and toxic speech, information hazards such as leaking private training data, misinformation, malicious uses, harms from users over-trusting a system that presents itself as human-like, and automation with its environmental costs. Each risk is marked as observed or merely anticipated, and the stated aim is to break the problem into ``smaller, actionable pieces'' that organizations can mitigate. Their sharpest observation is that mitigations interact: filtering toxic output can degrade performance for the very social groups the filter protects. I agree that enumeration is real work, since a named, concrete risk can be assigned an owner and a countermeasure. Yet the paper stops where decision-making begins. It offers no severity or likelihood scoring and no ranking of one area against another, so the reader learns what can go wrong but never what to fix first. Its authors also work for a laboratory profiting from the systems under review, which may explain why the proposed remedies stay inside the laboratory.
+
+\section*{Thomson's Trolley Problem}
+Thomson \cite{thomson} predates modern AI, yet her argument disciplines anyone who redistributes risk. She dismantles Foot's kill-versus-let-die distinction: a bystander at a switch may turn a runaway trolley away from five workers and onto one, though turning kills rather than lets die. A surgeon, by contrast, may not carve up one healthy patient to save five, even when his own negligence caused the five to need organs. Her positive proposal is the distributive exemption: one may redirect a threat already bearing down on five so that it strikes one instead, provided the means used do not themselves violate a stringent right of that one. Rights trump utilities. The principle scales to harder cases: one may deflect a trolley a villain has started, yet may not send lethal fumes into one person's room to stop that villain from dropping a ceiling on five. I find her loop variant decisive against the Kantian means test, and I accept the resolution. Where I push back is the transfer to machines. Thomson's cases are one-shot dilemmas with certain outcomes; a deployed system faces probabilistic harms repeated across millions of interactions, and it holds no rights and can infringe none. Her framework constrains the designers who redirect risk, not the artifact that executes it.
+
+\section*{Synthesis}
+Read together, the papers expose a gap each leaves in the other. Weidinger et al.\ can tell an engineer what might go wrong and nothing about whether mitigating it is permissible; Thomson can say whether redirecting harm respects rights and nothing about which harms deserve attention first. Combine them and a working procedure emerges: enumerate the risks, then subject each proposed mitigation to Thomson's test. A content filter that spares the majority offense while degrading service for a minority dialect is a trolley problem wearing an engineering costume. Neither paper alone would catch that. Together they do.
+
+\vspace{1em}
+\noindent\textbf{Word count (excluding references and declaration): 562}
+
+\section*{Declaration of AI Assistance}
+Google Gemini was used to count words, summarize the two selected articles, and support my comprehension of the literature. Additionally, Gemini was used to assist with proofreading, grammar, spelling, and adherence to academic writing conventions.
+
+\begin{thebibliography}{9}
+
+\bibitem{weidinger}
+L.~Weidinger \emph{et al.}, ``Ethical and social risks of harm from language models,'' arXiv:2112.04359 [cs.CL], Dec. 2021. [Online]. Available: \url{https://arxiv.org/abs/2112.04359}
+
+\bibitem{thomson}
+J.~J. Thomson, ``The trolley problem,'' \emph{Yale Law J.}, vol.~94, no.~6, pp.~1395--1415, May 1985, doi: 10.2307/796133. [Online]. Available: \url{https://www.jstor.org/stable/796133}
+
+\end{thebibliography}
+
+\end{document}
