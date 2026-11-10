@@ -209,6 +209,11 @@ Search with an opponent in zero sum games such as chess, checkers, etc. Find the
 \textbf{$\alpha$-$\beta$ pruning:}
 \begin{itemize}
     \item Prune branches that don't affect the minimax result. 
+    \item $\alpha$ is the best value that the maximizer currently can guarantee at that level or above. 
+    \item $\beta$ is the best value that the minimizer currently can guarantee at that level or above.
+    \item Propagation of $\alpha$ and $\beta$ values down the tree allows pruning of branches that cannot influence the final decision.
+    \item $\alpha$-$\beta$ pruning reaches twice the depth of minimax.
+    \item \textbf{Ordering heuristics:} The order in which noes are evaluated, significantly affects pruning.
 \end{itemize}
 
 
